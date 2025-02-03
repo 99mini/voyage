@@ -1,0 +1,45 @@
+name: Deploy React to DigitalOcean
+
+on:
+  push:
+    branches:
+      - tool
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 20.x for corepack
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+
+      - name: Enable Corepack and Set Pnpm Version
+        run: |
+          npm install -g corepack@latest
+          corepack enable
+
+      - name: Setup Node.js 20.x for pnpm
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build React app
+        run: pnpm build
+
+      - name: Upload build to Droplet
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" dist/ root@${{ secrets.PUBLIC_IP }}:/mnt/${{ secrets.VOLUME_NAME }}/react-tool-app/
