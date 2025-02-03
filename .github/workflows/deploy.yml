@@ -42,4 +42,4 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" dist/ root@${{ secrets.PUBLIC_IP }}:/mnt/${{ secrets.VOLUME_NAME }}/react-tool-app/
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" apps/frontend/tool/dist/ root@${{ secrets.PUBLIC_IP }}:/mnt/${{ secrets.VOLUME_NAME }}/react-tool-app/
