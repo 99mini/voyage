@@ -13,7 +13,8 @@
 
 ## Tool
 
-- homepage: https://tool.zerovoyage.com/
+- production: https://tool.zerovoyage.com/
+- github: https://github.com/99mini/voyage/tree/main/apps/frontend/tool
 
 ### Feature Tool
 
