@@ -1,0 +1,20 @@
+{
+  "name": "voyage",
+  "author": "99mini",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "workspaces": [
+    "apps/frontend/*",
+    "apps/cli/*",
+    "apps/server/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm -r run dev",
+    "build": "pnpm -r run build",
+    "start": "pnpm -r run start",
+    "lint": "pnpm -r run lint",
+    "test": "pnpm -r run test",
+    "deploy": "bash scripts/deploy.sh"
+  }
+}
