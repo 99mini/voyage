@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "nest start --watch",
-    "build": "tsc -p tsconfig.json",
+    "build": "bash ./.scripts/build.sh",
     "deploy": "bash ./.scripts/deploy.sh"
   },
   "dependencies": {
