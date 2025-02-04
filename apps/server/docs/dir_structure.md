@@ -1,4 +1,4 @@
-# Directory Structure
+# Directory Structure Server
 
 ```
 apps/server/
@@ -39,3 +39,12 @@ apps/server/
 # Functions
 
 1. functions/src/<dir_name>: dir_name은 DigitalOcean Functions의 name과 일치한다. (ex. webhooks)
+
+# REST API 서버
+
+1. rest/src/<dir_name>: dir_name은 end-point의 name과 일치한다. (ex. auth -> api/auth)
+2. rest/src/database: database의 경우 end-point와 독립적이다.
+
+# 배치 작업
+
+1. batch/src/<dir_name>: dir_name은 batch job의 name과 일치하다.
