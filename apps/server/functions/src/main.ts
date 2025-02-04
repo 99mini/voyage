@@ -1,19 +1,21 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import express from 'express';
-import serverless from '@vendia/serverless-express';
+import express, { Express } from "express";
+import dotenv from "dotenv";
 
-const expressApp = express();
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableCors();
-  await app.init();
+// 환경 변수 로드
+dotenv.config();
+
+const app: Express = express();
+
+// JSON 요청 본문 처리
+app.use(express.json());
+
+// 로컬 서버 실행
+if (process.env.NODE_ENV !== "serverless") {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server is running on http://localhost:${PORT}`);
+  });
 }
 
-bootstrap();
-
-// DigitalOcean Functions 핸들러
-export const handler = serverless({
-  app: expressApp
-});
+export default app;

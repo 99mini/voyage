@@ -3,6 +3,14 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
+    "module": "ESNext",         // ESM 모듈 사용
+    "moduleResolution": "node", // Node.js 환경에서 ES 모듈 탐색
+    "target": "ES2020",         // 최신 JavaScript(ES2020) 사용
+    "strict": true,             // 타입 검사를 엄격하게 설정
+    "esModuleInterop": true,    // CommonJS 모듈과 호환
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "emitDeclarationOnly": false
   },
-  "include": ["src"]
+  "include": ["src/**/*"]
 }

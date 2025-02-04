@@ -4,8 +4,8 @@
 rm -rf dist
 
 # build project
-tsc -p tsconfig.json
+tsc --project tsconfig.json
 
-# copy src/project.yml
-cp src/project.yml dist
+# cp project.yml
+cp project.yml dist
 

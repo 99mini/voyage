@@ -1,6 +1,7 @@
 {
   "name": "server-functions",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "dev": "nest start --watch",
     "build": "bash ./.scripts/build.sh",
@@ -8,7 +9,6 @@
   },
   "dependencies": {
     "@server/server-shared": "workspace:*",
-    "@vendia/serverless-express": "^4.12.6",
     "express": "^4.17.1"
   },
   "devDependencies": {
