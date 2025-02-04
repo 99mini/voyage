@@ -6,16 +6,9 @@ provider:
   stage: dev
 
 functions:
-  webhook:
+  health-check:
     handler: dist/serverless.handler
     events:
       - http:
-          path: /webhooks
-          method: post
-
-  report-generator:
-    handler: dist/serverless.handler
-    events:
-      - http:
-          path: /generate-report
-          method: post
+          path: /webhooks/health
+          method: get
