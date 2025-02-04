@@ -1,0 +1,12 @@
+{
+  "name": "server-functions",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "tsc -p tsconfig.json",
+    "deploy": "serverless deploy"
+  },
+  "dependencies": {
+    "@vendia/serverless-express": "^4.12.6"
+  }
+}

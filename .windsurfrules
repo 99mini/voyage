@@ -1,0 +1,19 @@
+# Voyage
+
+> zero voyage is a collection of SaaS apps. 
+
+# 프로젝트 구조
+
+- 모노레포로 구성.
+- apps 하위에 frontend, server, cli.
+- packages 하위에 vds(Voyage Design System), utils.
+- 기술 스택
+  - 공통: Node.js, TypeScript, pnpm, prettier, eslint, pocketbase.
+  - frontend: React(혹은 Next.js), Vite, Tailwind, Shadcn.
+  - server: Nestjs, Express.
+
+# 응답 규칙
+
+1. 한국말로 설명하라
+2. 비지니스 로직을 확인할때는 _docs/PRD.md 파일을 참고하라
+

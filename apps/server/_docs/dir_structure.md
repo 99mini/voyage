@@ -3,12 +3,16 @@
 ```
 apps/server/
 │── functions/              # DigitalOcean Functions (Serverless API)
-│   ├── src/    
-│   │   ├── webhooks/       # 웹훅 API (ex. Stripe 결제 완료)
-│   │   ├── reports/        # 정기 보고서 생성 API
-│   │   ├── tasks/          # 백그라운드 작업 (이메일 발송 등)
-│   │   ├── utils/          # 공통 유틸리티 함수
-│   │   ├── main.ts         # DigitalOcean Functions 엔트리포인트
+│   │── src/
+│   │   ├── modules/            # 도메인별 모듈
+│   │   │   ├── webhooks/       # 웹훅 API (ex. Stripe 결제 완료)
+│   │   │   ├── reports/        # 정기 보고서 생성 API
+│   │   │   ├── auth/           # 인증 및 사용자 관리 API
+│   │   │   ├── utils/          # 공통 유틸리티 함수
+│   │   │   ├── pocketbase/     # PocketBase 클라이언트 모듈
+│   │   ├── main.ts             # 서버리스 핸들러 엔트리포인트
+│   │   ├── app.module.ts       # NestJS 메인 모듈
+│   │   ├── serverless.ts       # Serverless Express 변환
 │   ├── package.json        # DigitalOcean Functions 종속성
 │   ├── tsconfig.json       # TypeScript 설정
 │   ├── serverless.yml      # DigitalOcean Functions 배포 설정

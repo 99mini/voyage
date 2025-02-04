@@ -6,12 +6,16 @@ provider:
   stage: dev
 
 functions:
-  api:
-    handler: dist/main.handler
+  webhook:
+    handler: dist/serverless.handler
     events:
       - http:
-          path: /
-          method: any
+          path: /webhooks
+          method: post
+
+  report-generator:
+    handler: dist/serverless.handler
+    events:
       - http:
-          path: /{proxy+}
-          method: any
+          path: /generate-report
+          method: post
