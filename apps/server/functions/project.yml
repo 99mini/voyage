@@ -1,0 +1,9 @@
+parameters: {}
+environment: {}
+packages:
+  - name: webhooks
+    functions:
+      - name: health
+        runtime: nodejs:18
+        main: ""
+        environment: {}

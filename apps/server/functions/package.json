@@ -1,0 +1,17 @@
+{
+  "name": "server-functions",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "bash ./.scripts/build.sh",
+    "deploy": "bash ./.scripts/deploy.sh"
+  },
+  "dependencies": {
+    "@server/server-shared": "workspace:*",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0"
+  }
+}

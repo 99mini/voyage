@@ -11,10 +11,28 @@
   ],
   "scripts": {
     "dev": "pnpm -r run dev",
+    "dev:tool": "pnpm --filter tool run dev",
     "build": "pnpm -r run build",
     "start": "pnpm -r run start",
     "lint": "pnpm -r run lint",
+    "format": "pnpm -r run format",
     "test": "pnpm -r run test",
     "deploy": "bash scripts/deploy.sh"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@typescript-eslint/eslint-plugin": "^8.23.0",
+    "@typescript-eslint/parser": "^8.23.0",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.19.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-no-relative-import-paths": "^1.5.5",
+    "eslint-plugin-prettier": "^5.0.0",
+    "pnpm": "^9.12.3",
+    "prettier": "^3.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.1.3"
   }
 }

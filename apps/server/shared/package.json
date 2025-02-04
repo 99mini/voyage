@@ -1,0 +1,19 @@
+{
+  "name": "@server/server-shared",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "node": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.7",
+    "pocketbase": "^0.25.1"
+  }
+}
