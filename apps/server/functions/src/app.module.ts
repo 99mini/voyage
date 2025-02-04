@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { WebhooksModule } from './modules/webhooks/webhooks.module';
-import { ReportsModule } from './modules/reports/reports.module';
-import { PocketBaseModule } from './modules/pocketbase/pocketbase.module';
+import { PocketBaseModule } from '@server/server-shared';
 
 @Module({
-  imports: [ConfigModule.forRoot(), WebhooksModule, ReportsModule, PocketBaseModule],
+  imports: [ConfigModule.forRoot(), WebhooksModule, PocketBaseModule],
 })
 export class AppModule {}

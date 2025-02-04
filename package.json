@@ -20,6 +20,7 @@
     "deploy": "bash scripts/deploy.sh"
   },
   "devDependencies": {
+    "@types/node": "^22.10.5",
     "@typescript-eslint/eslint-plugin": "^8.23.0",
     "@typescript-eslint/parser": "^8.23.0",
     "pnpm": "^9.12.3",

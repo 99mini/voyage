@@ -7,6 +7,11 @@
     "deploy": "serverless deploy"
   },
   "dependencies": {
-    "@vendia/serverless-express": "^4.12.6"
+    "@server/server-shared": "workspace:*",
+    "@vendia/serverless-express": "^4.12.6",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0"
   }
 }
