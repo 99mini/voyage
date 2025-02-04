@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# remove dist
+# clean up
 rm -rf dist
 
 # build project
-tsc --project tsconfig.json
+babel src --out-dir dist --extensions .ts --ignore node_modules && node esbuild.config.js
 
-# cp project.yml
+# cp project.yml to dist/
 cp project.yml dist
-
