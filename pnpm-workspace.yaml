@@ -1,7 +1,7 @@
 packages:
-  - "apps/frontend"   
-  - "apps/frontend/*" # 프론트엔드 애플리케이션
-  - "apps/server"     
-  - "apps/server/*"   # 백엔드 API
-  - "apps/cli/*"      # cli 애플리케이션
-  - "packages/*"      # 프론트엔드 & 백엔드 공유 라이브러리
+  - "apps/frontend/tool"
+  - "apps/server/shared" 
+  - "apps/server/rest"
+  - "apps/server/functions"   
+  - "apps/cli/*"      
+  - "packages/*"      

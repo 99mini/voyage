@@ -17,7 +17,10 @@
     "lint": "pnpm -r run lint",
     "format": "pnpm -r run format",
     "test": "pnpm -r run test",
-    "deploy": "bash scripts/deploy.sh"
+    "deploy": "sh scripts/deploy.sh",
+    "install:rest": "pnpm --filter server-rest install",
+    "build:rest": "pnpm --filter server-rest run build",
+    "deploy:rest": "pnpm --filter server-rest run deploy"
   },
   "devDependencies": {
     "@types/node": "^22.10.5",
