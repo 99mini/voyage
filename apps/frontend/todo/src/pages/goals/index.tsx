@@ -4,10 +4,15 @@ import GoalList from './components/GoalList';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PlusIcon } from 'lucide-react';
+import { useTodoListQuery } from '@/apis/todos';
 
 const GoalsPage: React.FC = () => {
   const [newGoalTitle, setNewGoalTitle] = React.useState('');
   const addGoal = useGoalStore((state) => state.addGoal);
+
+  const { data: todos } = useTodoListQuery();
+
+  console.log(todos);
 
   const handleAddGoal = (e: React.FormEvent) => {
     e.preventDefault();
