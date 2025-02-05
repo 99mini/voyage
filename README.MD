@@ -5,21 +5,62 @@
 # Table of Contents
 
 - [Apps](#apps)
-  - [Tool](#tool)
-    - [Feature Tool](#feature-tool)
+  - [Frontend](#frontend)
+    - [Tool](#tool)
+      - [Feature Tool](#feature-tool)
+  - [Server](#server)
+    - [Rest](#rest)
+      - [Rest API](#rest-api)
+    - [Functions](#functions)
+      - [Functions API](#functions-api)
+  - [Batch](#batch) `as soon as possible`
+    - [Batch API](#batch-api)
 - [Author](#author)
 
 # Apps
 
-## Tool
+## Frontend
+
+### Tool
 
 - production: https://tool.zerovoyage.com/
 - github: https://github.com/99mini/voyage/tree/main/apps/frontend/tool
 
-### Feature Tool
+#### Feature Tool
 
 1. merge vertical images
 2. video to gif
+
+## Server
+
+### Rest
+
+- production: https://api.zerovoyage.com
+- github: https://github.com/99mini/voyage/tree/main/apps/server/rest
+
+#### Rest API
+
+1. provide rest api for frontend
+
+### Functions
+
+- github: https://github.com/99mini/voyage/tree/main/apps/server/functions
+
+#### Functions API
+
+provide serverless functions
+
+- wehooks
+- reports
+- auth
+
+### Batch `as soon as possible`
+
+- github: https://github.com/99mini/voyage/tree/main/apps/server/batch
+
+#### Batch API
+
+1. provide batch api
 
 # Author
 
