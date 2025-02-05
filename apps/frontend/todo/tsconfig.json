@@ -1,7 +1,10 @@
 {
-  "extends": "./tsconfig.app.json",
-  "include": ["eslint.config.js", "vite.config.ts"],
+  "files": [],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
   "compilerOptions": {
-    "composite": true
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }
