@@ -1,7 +1,5 @@
 packages:
-  - "apps/frontend/tool"
-  - "apps/server/shared" 
-  - "apps/server/rest"
-  - "apps/server/functions"   
-  - "apps/cli/*"      
-  - "packages/*"      
+  - 'apps/frontend/*'
+  - 'apps/server/*'
+  - 'apps/cli/*'
+  - 'packages/*'

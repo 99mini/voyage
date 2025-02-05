@@ -16,5 +16,7 @@
 
 1. 한국말로 설명하라
 2. 비지니스 로직을 확인할때는 _docs/PRD.md 파일을 참고하라
-3. 패키지를 구성할 때는 상위 디렉토리의 packages.json과 tsconfig.json을 참고하여 중복된 코드를 줄여라.
+3. 새로운 패키지 구성 규칙
+  - 패키지를 구성할 때는 상위 디렉토리의 packages.json과 tsconfig.json을 참고하여 중복된 코드를 줄여라
+  - root에 선언된 package.json에 설치된 라이브러리를 패키지에 추가하지 말아라
 

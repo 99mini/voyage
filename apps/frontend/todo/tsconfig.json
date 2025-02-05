@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.app.json",
+  "include": ["eslint.config.js", "vite.config.ts"],
+  "compilerOptions": {
+    "composite": true
+  }
+}
