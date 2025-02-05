@@ -30,10 +30,15 @@ export class WebhooksHealthService {
         ),
       );
 
-      // 3. 응답을 캐시에 저장
-      this.cache.set('health', response.data);
+      const responseData = {
+        data: response.data.body,
+        status: response.status,
+      };
 
-      return response.data;
+      // 3. 응답을 캐시에 저장
+      this.cache.set('health', responseData);
+
+      return responseData;
     } catch (error) {
       throw new HttpException('Failed to call serverless function', HttpStatus.INTERNAL_SERVER_ERROR);
     }

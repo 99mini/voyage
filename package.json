@@ -17,7 +17,7 @@
     "lint": "pnpm -r run lint",
     "format": "pnpm -r run format",
     "test": "pnpm -r run test",
-    "deploy": "sh scripts/deploy.sh",
+    "deploy": "pnpm -r run deploy",
     "install:rest": "pnpm --filter server-rest install",
     "build:rest": "pnpm --filter server-rest run build",
     "deploy:rest": "pnpm --filter server-rest run deploy"

@@ -1,4 +1,9 @@
 import * as esbuild from 'esbuild';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+console.log('🔨 Building with esbuild...');
 
 await esbuild.build({
   entryPoints: ['src/main.ts'],
@@ -9,6 +14,11 @@ await esbuild.build({
   format: 'cjs',
   minify: process.env.NODE_ENV === 'production',
   sourcemap: process.env.NODE_ENV !== 'production',
+  define: {
+    'process.env.DO_API_KEY': `"${process.env.DO_API_KEY}"`,
+    'process.env.DO_FUNCTIONS_API_KEY': `"${process.env.DO_FUNCTIONS_API_KEY}"`,
+    'process.env.DO_FUNCTIONS_API_ENDPOINT': `"${process.env.DO_FUNCTIONS_API_ENDPOINT}"`,
+  },
   external: [
     // Node.js 내장 모듈
     'path',
@@ -45,3 +55,5 @@ await esbuild.build({
     'class-validator',
   ],
 });
+
+console.log('✅ Build complete.');

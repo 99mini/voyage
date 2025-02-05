@@ -7,7 +7,9 @@
     "dev": "tsx watch src/main.ts",
     "build": "rm -rf dist && node esbuild.js",
     "start": "NODE_ENV=production node dist/main.cjs",
-    "deploy": "sh ./.scripts/deploy.sh"
+    "deploy": "sh ./.scripts/deploy.sh",
+    "format": "prettier --write .",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.0",
