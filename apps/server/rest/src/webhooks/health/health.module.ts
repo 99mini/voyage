@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
-import { HttpModule } from '@nestjs/axios';
-import { CommonModule } from '../../common/common.module';
+import { CommonModule } from '@rest/common/common.module';
 import { WebhooksHealthController } from './health.controller';
 import { WebhooksHealthService } from './health.service';
 

@@ -56,4 +56,4 @@ await esbuild.build({
   ],
 });
 
-console.log('✅ Build complete.');
+console.log('✅ esBuild complete.');

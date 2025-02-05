@@ -1,11 +1,8 @@
-import { healthCheck } from "../../../";
+import { healthCheck } from '@functions/webhooks/health';
 
 export function main(event: any, context: any) {
-  console.log(JSON.stringify(event, null, 2));
-  console.log(JSON.stringify(context, null, 2));
-
   return {
     status: 200,
-    body: healthCheck(),
+    data: healthCheck(),
   };
 }
