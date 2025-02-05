@@ -19,7 +19,7 @@ const VideoToGifControls = ({ videoFile, onCompleted, className }: VideoToGifCon
   useEffect(() => {
     setFFmpeg(
       createFFmpeg({
-        log: process.env.NODE_ENV === "development",
+        log: import.meta.env.DEV,
         progress: ({ ratio }) => {
           // ratio is a number between 0 and 1
           // Multiply by 100 to get a percentage
