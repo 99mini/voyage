@@ -1,5 +1,5 @@
-import { TechnicalAnalysis } from "@/types/analysis";
-import { useTheme } from "@/components/theme-provider";
+import { TechnicalAnalysis } from '@/types/analysis';
+import { useTheme } from '@/components/theme-provider';
 
 interface Props {
   ta: TechnicalAnalysis;
@@ -13,33 +13,21 @@ export default function AnalysTable({ ta }: Props) {
       {/* 현재 가격, 거래량, 기술지표 요약 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* 현재 가격 */}
-        <div
-          className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white"} p-6 rounded-lg shadow-md`}
-        >
-          <h3
-            className={`text-lg font-semibold mb-4 ${theme === "dark" ? "text-gray-200" : "text-gray-700"}`}
-          >
+        <div className={`${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white'} p-6 rounded-lg shadow-md`}>
+          <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
             현재 가격({ta.base_info.created_at})
           </h3>
           <p className="text-3xl font-bold mb-2">{Number(ta.current_price.value).toLocaleString()}원</p>
-          <p
-            className={`text-lg ${
-              Number(ta.current_price.change_percent) > 0 ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {Number(ta.current_price.change_percent) > 0 ? "+" : ""}
+          <p className={`text-lg ${Number(ta.current_price.change_percent) > 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {Number(ta.current_price.change_percent) > 0 ? '+' : ''}
             {ta.current_price.change_percent}%
             <span className="text-sm ml-2">({Number(ta.current_price.change).toLocaleString()}원)</span>
           </p>
         </div>
 
         {/* 거래량 분석 */}
-        <div
-          className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white"} p-6 rounded-lg shadow-md`}
-        >
-          <h3
-            className={`text-lg font-semibold mb-4 ${theme === "dark" ? "text-gray-200" : "text-gray-700"}`}
-          >
+        <div className={`${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white'} p-6 rounded-lg shadow-md`}>
+          <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
             거래량 분석
           </h3>
           <div className="space-y-3">
@@ -59,12 +47,8 @@ export default function AnalysTable({ ta }: Props) {
         </div>
 
         {/* 기술적 지표 */}
-        <div
-          className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white"} p-6 rounded-lg shadow-md`}
-        >
-          <h3
-            className={`text-lg font-semibold mb-4 ${theme === "dark" ? "text-gray-200" : "text-gray-700"}`}
-          >
+        <div className={`${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white'} p-6 rounded-lg shadow-md`}>
+          <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
             기술적 지표
           </h3>
           <div className="space-y-3">
@@ -89,10 +73,8 @@ export default function AnalysTable({ ta }: Props) {
       {/* 이동평균선과 볼린저밴드 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* 이동평균선 */}
-        <div
-          className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white"} p-6 rounded-lg shadow-md`}
-        >
-          <h2 className={`text-xl font-bold mb-6 ${theme === "dark" ? "text-gray-200" : "text-gray-800"}`}>
+        <div className={`${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white'} p-6 rounded-lg shadow-md`}>
+          <h2 className={`text-xl font-bold mb-6 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
             이동평균선
           </h2>
           <div className="grid grid-cols-2 gap-4 mb-6">
@@ -127,10 +109,8 @@ export default function AnalysTable({ ta }: Props) {
         </div>
 
         {/* 볼린저 밴드 */}
-        <div
-          className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white"} p-6 rounded-lg shadow-md`}
-        >
-          <h2 className={`text-xl font-bold mb-6 ${theme === "dark" ? "text-gray-200" : "text-gray-800"}`}>
+        <div className={`${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white'} p-6 rounded-lg shadow-md`}>
+          <h2 className={`text-xl font-bold mb-6 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
             볼린저 밴드
           </h2>
           <div className="space-y-4">
@@ -158,8 +138,8 @@ export default function AnalysTable({ ta }: Props) {
       </div>
 
       {/* 지지/저항 레벨 */}
-      <div className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white"} p-6 rounded-lg shadow-md`}>
-        <h2 className={`text-xl font-bold mb-6 ${theme === "dark" ? "text-gray-200" : "text-gray-800"}`}>
+      <div className={`${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white'} p-6 rounded-lg shadow-md`}>
+        <h2 className={`text-xl font-bold mb-6 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
           지지/저항 레벨
         </h2>
         <div className="grid grid-cols-2 gap-8">

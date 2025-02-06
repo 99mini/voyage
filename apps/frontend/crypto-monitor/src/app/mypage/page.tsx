@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { ProfileCard } from "@/components/mypage/profile-card";
-import { AccountSettingsCard } from "@/components/mypage/account-settings-card";
-import { PortfolioCard } from "@/components/mypage/portfolio-card";
+import { ProfileCard } from '@/components/mypage/profile-card';
+import { AccountSettingsCard } from '@/components/mypage/account-settings-card';
+import { PortfolioCard } from '@/components/mypage/portfolio-card';
 
 export default function MyPage() {
   return (

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { cn } from "@/lib/utils";
+import * as React from 'react';
+import { cn } from '@/lib/utils';
 
 type ToastProps = {
   title?: string;
   description?: string;
-  variant?: "default" | "destructive";
+  variant?: 'default' | 'destructive';
 };
 
 type ToastContextType = {
@@ -33,8 +33,8 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
           <div
             key={i}
             className={cn(
-              "p-4 rounded-md shadow-lg",
-              t.variant === "destructive" ? "bg-destructive text-destructive-foreground" : "bg-background"
+              'p-4 rounded-md shadow-lg',
+              t.variant === 'destructive' ? 'bg-destructive text-destructive-foreground' : 'bg-background',
             )}
           >
             {t.title && <div className="font-semibold">{t.title}</div>}
@@ -49,13 +49,13 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 export function useToast() {
   const context = React.useContext(ToastContext);
   if (!context) {
-    throw new Error("useToast must be used within a ToastProvider");
+    throw new Error('useToast must be used within a ToastProvider');
   }
   return context;
 }
 
 export const toast = (props: ToastProps) => {
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     const context = React.useContext(ToastContext);
     if (context) {
       context.toast(props);

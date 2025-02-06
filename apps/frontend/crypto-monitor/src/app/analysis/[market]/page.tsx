@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
-import { AnalysisData, TechnicalAnalysis } from "@/types/analysis";
-import CandelChart from "@/components/analysis/CandelChart";
-import AnalysTable from "@/components/analysis/AnalysTable";
-import AiReport from "@/components/analysis/AiReport";
-import RsiChart from "@/components/analysis/RsiChart";
-import MacdChart from "@/components/analysis/MacdChart";
-import StochasticChart from "@/components/analysis/StochasticChart";
-import { useEffect, useState } from "react";
-import CoinSelectBox from "@/components/analysis/CoinSelectBox";
+import { AnalysisData, TechnicalAnalysis } from '@/types/analysis';
+import CandelChart from '@/components/analysis/CandelChart';
+import AnalysTable from '@/components/analysis/AnalysTable';
+import AiReport from '@/components/analysis/AiReport';
+import RsiChart from '@/components/analysis/RsiChart';
+import MacdChart from '@/components/analysis/MacdChart';
+import StochasticChart from '@/components/analysis/StochasticChart';
+import { useEffect, useState } from 'react';
+import CoinSelectBox from '@/components/analysis/CoinSelectBox';
 
 // Remove the AnalysisData interface from here since it's now imported
 
 async function getMarketAnalysis(market: string) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"}/api/analysis?market=${market}`,
+    `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/analysis?market=${market}`,
     {
       next: {
         revalidate: 3600, // Revalidate cache every hour
       },
-    }
+    },
   );
   if (!response.ok) {
-    throw new Error("Failed to fetch market analysis");
+    throw new Error('Failed to fetch market analysis');
   }
   return response.json();
 }
@@ -38,7 +38,7 @@ export default function AnalysisMarketPage({ params }: { params: { market: strin
         const data = await getMarketAnalysis(market);
         setAnalysisData(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
+        setError(err instanceof Error ? err.message : 'An error occurred');
       }
     }
     fetchData();
@@ -94,9 +94,7 @@ export default function AnalysisMarketPage({ params }: { params: { market: strin
           </div>
 
           {/* Last Update */}
-          <div className="text-foregroundtext-xl text-right">
-            최종 작성시간: {analysis.ta.base_info.created_at}
-          </div>
+          <div className="text-foregroundtext-xl text-right">최종 작성시간: {analysis.ta.base_info.created_at}</div>
         </div>
       </div>
     </div>

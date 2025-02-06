@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
 type LoginRequestBody = {
   email: string;
@@ -12,13 +12,13 @@ export async function POST(request: Request) {
 
     // Validate request body
     if (!body.email || !body.password) {
-      return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
+      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
 
     // Basic email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(body.email)) {
-      return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
     }
 
     // TODO: Add your authentication logic here
@@ -30,17 +30,17 @@ export async function POST(request: Request) {
     // For now, return a mock successful response
     return NextResponse.json(
       {
-        message: "Login successful",
+        message: 'Login successful',
         // You might want to return user data and/or tokens here
         user: {
           email: body.email,
           // Add other user fields as needed
         },
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
-    console.error("Login error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error('Login error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

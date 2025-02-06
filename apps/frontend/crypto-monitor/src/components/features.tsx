@@ -1,12 +1,10 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 export function Features() {
   return (
     <div className="container mx-auto px-8 py-16">
       <div className="text-center mb-12">
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 tracking-normal">
-          Our Amazing Features
-        </h2>
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 tracking-normal">Our Amazing Features</h2>
         <p className="text-foreground/60 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
           Discover the powerful features that make our platform stand out from the competition.
         </p>

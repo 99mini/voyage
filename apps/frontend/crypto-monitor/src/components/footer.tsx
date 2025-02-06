@@ -32,8 +32,8 @@ export function Footer() {
           <div>
             <h3 className="text-foreground text-xl font-bold mb-4 text-text-primary">면책 조항</h3>
             <p className="text-foreground text-text-secondary text-sm leading-relaxed">
-              본 서비스는 투자 권유를 목적으로 하지 않으며, 제공되는 정보는 참고용입니다. 투자의 책임은
-              전적으로 투자자 본인에게 있습니다.
+              본 서비스는 투자 권유를 목적으로 하지 않으며, 제공되는 정보는 참고용입니다. 투자의 책임은 전적으로 투자자
+              본인에게 있습니다.
             </p>
           </div>
         </div>

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { useTheme } from "@/components/theme-provider";
-import { Moon, Sun } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { useTheme } from '@/components/theme-provider';
+import { Moon, Sun } from 'lucide-react';
 
 export function Navigation() {
   const { theme, setTheme } = useTheme();
@@ -47,10 +47,10 @@ export function Navigation() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
             className="rounded-lg text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
           >
-            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
         </div>
       </div>

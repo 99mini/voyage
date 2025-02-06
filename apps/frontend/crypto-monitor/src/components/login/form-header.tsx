@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 export const FormHeader = () => (
   <div className="text-center">

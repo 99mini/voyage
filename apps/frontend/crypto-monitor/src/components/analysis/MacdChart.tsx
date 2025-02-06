@@ -1,6 +1,6 @@
-import { createChart, ColorType, IChartApi, UTCTimestamp } from "lightweight-charts";
-import { useEffect, useRef } from "react";
-import { useTheme } from "@/components/theme-provider";
+import { createChart, ColorType, IChartApi, UTCTimestamp } from 'lightweight-charts';
+import { useEffect, useRef } from 'react';
+import { useTheme } from '@/components/theme-provider';
 
 interface CandleData {
   candle_date_time_kst: string;
@@ -65,7 +65,7 @@ function calculateMACD(data: CandleData[]) {
   const histogram: HistogramData[] = signalLine.map((signal, i) => ({
     time: signal.time,
     value: macdLine[i].value - signal.value,
-    color: macdLine[i].value >= signal.value ? "#26a69a" : "#ef5350",
+    color: macdLine[i].value >= signal.value ? '#26a69a' : '#ef5350',
   }));
 
   return { macdLine, signalLine, histogram };
@@ -81,7 +81,7 @@ export default function MacdChart({ content }: Props) {
 
     // 데이터 시간순 정렬
     const sortedContent = [...content].sort(
-      (a, b) => new Date(a.candle_date_time_kst).getTime() - new Date(b.candle_date_time_kst).getTime()
+      (a, b) => new Date(a.candle_date_time_kst).getTime() - new Date(b.candle_date_time_kst).getTime(),
     );
 
     // 차트 생성
@@ -113,23 +113,23 @@ export default function MacdChart({ content }: Props) {
 
     // MACD 라인
     const macdSeries = chart.addLineSeries({
-      color: "#2962FF",
-      title: "MACD",
+      color: '#2962FF',
+      title: 'MACD',
       lineWidth: 2,
     });
 
     // 시그널 라인
     const signalSeries = chart.addLineSeries({
-      color: "#FF6B6B",
-      title: "Signal",
+      color: '#FF6B6B',
+      title: 'Signal',
       lineWidth: 2,
     });
 
     // 히스토그램
     const histSeries = chart.addHistogramSeries({
-      color: "#26a69a",
+      color: '#26a69a',
       priceFormat: {
-        type: "price",
+        type: 'price',
         precision: 4,
       },
     });
@@ -148,11 +148,11 @@ export default function MacdChart({ content }: Props) {
       }
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     chartRef.current = chart;
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
       chart.remove();
     };
   }, [content, theme]);

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { FormHeader } from "@/components/login/form-header";
-import { LoginForm } from "@/components/login/login-form";
+import { FormHeader } from '@/components/login/form-header';
+import { LoginForm } from '@/components/login/login-form';
 
 export default function LoginPage() {
   return (

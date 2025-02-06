@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
-import { FormField } from "./form-field";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
+import { FormField } from './form-field';
 
 export const SignupForm = () => {
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
+    email: '',
+    password: '',
+    confirmPassword: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -17,15 +17,15 @@ export const SignupForm = () => {
 
     if (formData.password !== formData.confirmPassword) {
       toast({
-        title: "Error",
-        description: "Passwords do not match",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Passwords do not match',
+        variant: 'destructive',
       });
       return;
     }
 
     // TODO: Implement signup logic here
-    console.log("Form submitted:", formData);
+    console.log('Form submitted:', formData);
   };
 
   return (

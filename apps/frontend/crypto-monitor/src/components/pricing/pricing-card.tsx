@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckIcon } from "./check-icon";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { CheckIcon } from './check-icon';
 
 interface PricingCardProps {
   title: string;
@@ -18,8 +18,8 @@ export function PricingCard({
   price,
   features,
   buttonText,
-  buttonClassName = "",
-  className = "",
+  buttonClassName = '',
+  className = '',
 }: PricingCardProps) {
   return (
     <Card className={`flex flex-col ${className}`}>

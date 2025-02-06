@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 export function Services() {
   return (
@@ -6,8 +6,8 @@ export function Services() {
       <div className="text-center mb-12">
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 tracking-normal">Our Services</h2>
         <p className="text-foreground/60 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
-          We provide comprehensive cryptocurrency monitoring and trading services to help you succeed in the
-          digital asset market.
+          We provide comprehensive cryptocurrency monitoring and trading services to help you succeed in the digital
+          asset market.
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

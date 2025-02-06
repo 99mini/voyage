@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { FormHeader } from "@/components/signup/form-header";
-import { SignupForm } from "@/components/signup/signup-form";
+import { FormHeader } from '@/components/signup/form-header';
+import { SignupForm } from '@/components/signup/signup-form';
 
 export default function SignupPage() {
   return (

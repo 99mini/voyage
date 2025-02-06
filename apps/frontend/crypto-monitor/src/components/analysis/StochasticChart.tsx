@@ -1,6 +1,6 @@
-import { createChart, ColorType, IChartApi, UTCTimestamp } from "lightweight-charts";
-import { useEffect, useRef } from "react";
-import { useTheme } from "@/components/theme-provider";
+import { createChart, ColorType, IChartApi, UTCTimestamp } from 'lightweight-charts';
+import { useEffect, useRef } from 'react';
+import { useTheme } from '@/components/theme-provider';
 
 interface CandleData {
   candle_date_time_kst: string;
@@ -18,12 +18,7 @@ interface StochasticData {
   value: number;
 }
 
-function calculateStochastic(
-  data: CandleData[],
-  period: number = 14,
-  smoothK: number = 3,
-  smoothD: number = 3
-) {
+function calculateStochastic(data: CandleData[], period: number = 14, smoothK: number = 3, smoothD: number = 3) {
   const stochastic: number[] = [];
   const dates: string[] = [];
 
@@ -83,7 +78,7 @@ export default function StochasticChart({ content }: Props) {
 
     // 데이터 시간순 정렬
     const sortedContent = [...content].sort(
-      (a, b) => new Date(a.candle_date_time_kst).getTime() - new Date(b.candle_date_time_kst).getTime()
+      (a, b) => new Date(a.candle_date_time_kst).getTime() - new Date(b.candle_date_time_kst).getTime(),
     );
 
     // 차트 생성
@@ -116,27 +111,27 @@ export default function StochasticChart({ content }: Props) {
 
     // %K 라인
     const kLine = chart.addLineSeries({
-      color: "#2962FF",
-      title: "%K",
+      color: '#2962FF',
+      title: '%K',
       lineWidth: 2,
     });
 
     // %D 라인
     const dLine = chart.addLineSeries({
-      color: "#FF6B6B",
-      title: "%D",
+      color: '#FF6B6B',
+      title: '%D',
       lineWidth: 2,
     });
 
     // 과매수/과매도 라인
     const overBought = chart.addLineSeries({
-      color: "#ef5350",
+      color: '#ef5350',
       lineWidth: 1,
       lineStyle: 1, // 점선
     });
 
     const overSold = chart.addLineSeries({
-      color: "#26a69a",
+      color: '#26a69a',
       lineWidth: 1,
       lineStyle: 1, // 점선
     });
@@ -162,11 +157,11 @@ export default function StochasticChart({ content }: Props) {
       }
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     chartRef.current = chart;
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
       chart.remove();
     };
   }, [content, theme]);

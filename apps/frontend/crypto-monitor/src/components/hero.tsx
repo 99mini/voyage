@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 
 export function Hero() {
   return (
@@ -37,13 +37,7 @@ export function Hero() {
         </Button>
       </div>
       <div className="relative h-[500px]">
-        <Image
-          src="/globe.svg"
-          alt="Cryptocurrency illustration"
-          fill
-          style={{ objectFit: "contain" }}
-          priority
-        />
+        <Image src="/globe.svg" alt="Cryptocurrency illustration" fill style={{ objectFit: 'contain' }} priority />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { PricingCard } from "@/components/pricing/pricing-card";
+import { PricingCard } from '@/components/pricing/pricing-card';
 
 export default function PricingPage() {
   return (
@@ -17,11 +17,7 @@ export default function PricingPage() {
           title="Basic"
           description="Perfect for getting started"
           price={9}
-          features={[
-            "Real-time price monitoring",
-            "Basic portfolio tracking",
-            "Email notifications",
-          ]}
+          features={['Real-time price monitoring', 'Basic portfolio tracking', 'Email notifications']}
           buttonText="Get Started"
         />
 
@@ -29,12 +25,7 @@ export default function PricingPage() {
           title="Pro"
           description="For serious traders"
           price={29}
-          features={[
-            "Everything in Basic",
-            "Advanced technical analysis",
-            "Trading automation",
-            "24/7 support",
-          ]}
+          features={['Everything in Basic', 'Advanced technical analysis', 'Trading automation', '24/7 support']}
           buttonText="Upgrade to Pro"
           buttonClassName="bg-coral-100 hover:bg-coral-200"
           className="border-coral-100"
@@ -44,16 +35,10 @@ export default function PricingPage() {
           title="Enterprise"
           description="For large organizations"
           price={99}
-          features={[
-            "Everything in Pro",
-            "Custom API integration",
-            "Dedicated account manager",
-            "Custom reporting",
-          ]}
+          features={['Everything in Pro', 'Custom API integration', 'Dedicated account manager', 'Custom reporting']}
           buttonText="Contact Sales"
         />
       </div>
     </div>
   );
 }
-

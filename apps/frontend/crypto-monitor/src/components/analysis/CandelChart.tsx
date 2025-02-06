@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef } from "react";
-import { createChart, IChartApi, UTCTimestamp } from "lightweight-charts";
-import { useTheme } from "@/components/theme-provider";
+import React, { useEffect, useRef } from 'react';
+import { createChart, IChartApi, UTCTimestamp } from 'lightweight-charts';
+import { useTheme } from '@/components/theme-provider';
 
 interface CandleData {
   candle_acc_trade_price: number;
@@ -20,6 +20,18 @@ interface CandleData {
   trade_price: number;
 }
 
+interface BollingerBand {
+  time: UTCTimestamp;
+  middle: number;
+  upper: number;
+  lower: number;
+}
+
+interface SMA {
+  time: UTCTimestamp;
+  value: number;
+}
+
 interface Props {
   content: CandleData[];
 }
@@ -34,7 +46,7 @@ const CandelChart: React.FC<Props> = ({ content }) => {
 
     // Sort content first by date
     const sortedContent = [...content].sort(
-      (a, b) => new Date(a.candle_date_time_kst).getTime() - new Date(b.candle_date_time_kst).getTime()
+      (a, b) => new Date(a.candle_date_time_kst).getTime() - new Date(b.candle_date_time_kst).getTime(),
     );
 
     // Create chart instance
@@ -57,24 +69,24 @@ const CandelChart: React.FC<Props> = ({ content }) => {
 
     // Create candlestick series
     const candlestickSeries = chart.addCandlestickSeries({
-      upColor: "#26a69a",
-      downColor: "#ef5350",
+      upColor: '#26a69a',
+      downColor: '#ef5350',
       borderVisible: false,
-      wickUpColor: "#26a69a",
-      wickDownColor: "#ef5350",
+      wickUpColor: '#26a69a',
+      wickDownColor: '#ef5350',
     });
 
     // Create volume series
     const volumeSeries = chart.addHistogramSeries({
-      color: "#26a69a",
+      color: '#26a69a',
       priceFormat: {
-        type: "volume",
+        type: 'volume',
       },
-      priceScaleId: "volume",
+      priceScaleId: 'volume',
     });
 
     // Configure volume scale
-    chart.priceScale("volume").applyOptions({
+    chart.priceScale('volume').applyOptions({
       scaleMargins: {
         top: 0.7,
         bottom: 0.1, // 0.2에서 0.1로 수정
@@ -94,7 +106,7 @@ const CandelChart: React.FC<Props> = ({ content }) => {
     const volumeData = sortedContent.map((item) => ({
       time: (new Date(item.candle_date_time_kst).getTime() / 1000) as UTCTimestamp,
       value: item.candle_acc_trade_volume,
-      color: item.trade_price >= item.opening_price ? "rgba(38, 166, 154, 0.5)" : "rgba(239, 83, 80, 0.5)",
+      color: item.trade_price >= item.opening_price ? 'rgba(38, 166, 154, 0.5)' : 'rgba(239, 83, 80, 0.5)',
     }));
 
     // Set data
@@ -103,11 +115,11 @@ const CandelChart: React.FC<Props> = ({ content }) => {
 
     // Add SMA lines
     const smaData = [
-      { period: 5, color: "#2196F3" },
-      { period: 10, color: "#FF9800" },
-      { period: 20, color: "#E91E63" },
-      { period: 60, color: "#9C27B0" },
-      { period: 120, color: "#673AB7" },
+      { period: 5, color: '#2196F3' },
+      { period: 10, color: '#FF9800' },
+      { period: 20, color: '#E91E63' },
+      { period: 60, color: '#9C27B0' },
+      { period: 120, color: '#673AB7' },
     ];
 
     smaData.forEach(({ period, color }) => {
@@ -122,30 +134,30 @@ const CandelChart: React.FC<Props> = ({ content }) => {
 
     // Add Bollinger Bands
     const middleBand = chart.addLineSeries({
-      color: "#2962FF",
+      color: '#2962FF',
       lineWidth: 1,
-      title: "BB Middle",
+      title: 'BB Middle',
     });
 
     const upperBand = chart.addLineSeries({
-      color: "#2962FF",
+      color: '#2962FF',
       lineWidth: 1,
       lineStyle: 2, // 점선
-      title: "BB Upper",
+      title: 'BB Upper',
     });
 
     const lowerBand = chart.addLineSeries({
-      color: "#2962FF",
+      color: '#2962FF',
       lineWidth: 1,
       lineStyle: 2, // 점선
-      title: "BB Lower",
+      title: 'BB Lower',
     });
 
     const bbData = calculateBollingerBands(sortedContent);
 
-    middleBand.setData(bbData.map(d => ({ time: d.time, value: d.middle })));
-    upperBand.setData(bbData.map(d => ({ time: d.time, value: d.upper })));
-    lowerBand.setData(bbData.map(d => ({ time: d.time, value: d.lower })));
+    middleBand.setData(bbData.map((d) => ({ time: d.time, value: d.middle })));
+    upperBand.setData(bbData.map((d) => ({ time: d.time, value: d.upper })));
+    lowerBand.setData(bbData.map((d) => ({ time: d.time, value: d.lower })));
 
     // Fit content and handle resize
     chart.timeScale().fitContent();
@@ -156,11 +168,11 @@ const CandelChart: React.FC<Props> = ({ content }) => {
       }
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     chartRef.current = chart;
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
       chart.remove();
     };
   }, [content, theme]);
@@ -171,7 +183,7 @@ const CandelChart: React.FC<Props> = ({ content }) => {
 // Calculate Simple Moving Average
 function calculateSMA(data: CandleData[], period: number) {
   // Data is already sorted at this point
-  const sma = [];
+  const sma: SMA[] = [];
   for (let i = period - 1; i < data.length; i++) {
     const sum = data.slice(i - period + 1, i + 1).reduce((acc, item) => acc + item.trade_price, 0);
     sma.push({
@@ -184,8 +196,8 @@ function calculateSMA(data: CandleData[], period: number) {
 
 // Calculate Bollinger Bands
 function calculateBollingerBands(data: CandleData[], period: number = 20, multiplier: number = 2) {
-  const closes = data.map(item => item.trade_price);
-  const bands = [];
+  const closes = data.map((item) => item.trade_price);
+  const bands: BollingerBand[] = [];
 
   for (let i = period - 1; i < closes.length; i++) {
     // 중간 밴드 (20일 이동평균)
@@ -197,13 +209,15 @@ function calculateBollingerBands(data: CandleData[], period: number = 20, multip
     const sqrSum = slice.reduce((a, b) => a + Math.pow(b - sma, 2), 0);
     const std = Math.sqrt(sqrSum / period);
 
-    // 상단과 하단 밴드
-    bands.push({
+    const newBand: BollingerBand = {
       time: (new Date(data[i].candle_date_time_kst).getTime() / 1000) as UTCTimestamp,
       middle: sma,
       upper: sma + multiplier * std,
       lower: sma - multiplier * std,
-    });
+    };
+
+    // 상단과 하단 밴드
+    bands.push(newBand);
   }
 
   return bands;

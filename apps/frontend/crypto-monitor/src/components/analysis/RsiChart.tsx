@@ -1,20 +1,25 @@
-import { createChart, ColorType, IChartApi, UTCTimestamp } from "lightweight-charts";
-import { useEffect, useRef } from "react";
-import { useTheme } from "@/components/theme-provider";
+import { createChart, ColorType, IChartApi, UTCTimestamp } from 'lightweight-charts';
+import { useEffect, useRef } from 'react';
+import { useTheme } from '@/components/theme-provider';
 
 interface CandleData {
   candle_date_time_kst: string;
   trade_price: number;
 }
 
+interface RsiLineData {
+  time: UTCTimestamp;
+  value: number;
+}
+
 interface Props {
   content: CandleData[];
 }
 
-function calculateRSI(data: CandleData[], period: number = 14) {
+function calculateRSI(data: CandleData[], period: number = 14): RsiLineData[] {
   const closes = data.map((item) => item.trade_price);
-  const gains = [];
-  const losses = [];
+  const gains: number[] = [];
+  const losses: number[] = [];
 
   // 가격 변화량 계산
   for (let i = 1; i < closes.length; i++) {
@@ -23,7 +28,7 @@ function calculateRSI(data: CandleData[], period: number = 14) {
     losses.push(difference < 0 ? Math.abs(difference) : 0);
   }
 
-  const rsi = [];
+  const rsi: RsiLineData[] = [];
   let avgGain = gains.slice(0, period).reduce((a, b) => a + b, 0) / period;
   let avgLoss = losses.slice(0, period).reduce((a, b) => a + b, 0) / period;
 
@@ -63,7 +68,7 @@ export default function RsiChart({ content }: Props) {
 
     // 데이터 시간순 정렬
     const sortedContent = [...content].sort(
-      (a, b) => new Date(a.candle_date_time_kst).getTime() - new Date(b.candle_date_time_kst).getTime()
+      (a, b) => new Date(a.candle_date_time_kst).getTime() - new Date(b.candle_date_time_kst).getTime(),
     );
 
     // 차트 생성
@@ -92,20 +97,20 @@ export default function RsiChart({ content }: Props) {
 
     // RSI 라인
     const rsiLine = chart.addLineSeries({
-      color: "#2962FF",
+      color: '#2962FF',
       lineWidth: 2,
-      title: "RSI(14)",
+      title: 'RSI(14)',
     });
 
     // 과매수/과매도 라인
     const overBought = chart.addLineSeries({
-      color: "#ef5350",
+      color: '#ef5350',
       lineWidth: 1,
       lineStyle: 1, // 점선
     });
 
     const overSold = chart.addLineSeries({
-      color: "#26a69a",
+      color: '#26a69a',
       lineWidth: 1,
       lineStyle: 1, // 점선
     });
@@ -131,11 +136,11 @@ export default function RsiChart({ content }: Props) {
       }
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     chartRef.current = chart;
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
       chart.remove();
     };
   }, [content, theme]);

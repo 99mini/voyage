@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
 type SignupRequestBody = {
   email: string;
@@ -13,26 +13,23 @@ export async function POST(request: Request) {
 
     // Validate request body
     if (!body.email || !body.password || !body.confirmPassword) {
-      return NextResponse.json(
-        { error: "Email, password and password confirmation are required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Email, password and password confirmation are required' }, { status: 400 });
     }
 
     // Basic email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(body.email)) {
-      return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
     }
 
     // Password validation
     if (body.password.length < 8) {
-      return NextResponse.json({ error: "Password must be at least 8 characters long" }, { status: 400 });
+      return NextResponse.json({ error: 'Password must be at least 8 characters long' }, { status: 400 });
     }
 
     // Confirm password match
     if (body.password !== body.confirmPassword) {
-      return NextResponse.json({ error: "Passwords do not match" }, { status: 400 });
+      return NextResponse.json({ error: 'Passwords do not match' }, { status: 400 });
     }
 
     // TODO: Add your user registration logic here
@@ -45,16 +42,16 @@ export async function POST(request: Request) {
     // For now, return a mock successful response
     return NextResponse.json(
       {
-        message: "Signup successful",
+        message: 'Signup successful',
         user: {
           email: body.email,
           // Add other user fields as needed
         },
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
-    console.error("Signup error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error('Signup error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

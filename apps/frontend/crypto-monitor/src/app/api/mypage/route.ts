@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
 type UserProfile = {
   id: string;
@@ -6,7 +6,7 @@ type UserProfile = {
   name: string;
   preferences: {
     notifications: boolean;
-    theme: "light" | "dark";
+    theme: 'light' | 'dark';
   };
   portfolio: {
     coins: Array<{
@@ -24,25 +24,25 @@ export async function GET(request: Request) {
 
     // Mock user data for demonstration
     const mockUserProfile: UserProfile = {
-      id: "user123",
-      email: "user@example.com",
-      name: "John Doe",
+      id: 'user123',
+      email: 'user@example.com',
+      name: 'John Doe',
       preferences: {
         notifications: true,
-        theme: "light",
+        theme: 'light',
       },
       portfolio: {
         coins: [
-          { symbol: "BTC", amount: 0.5 },
-          { symbol: "ETH", amount: 5.0 },
+          { symbol: 'BTC', amount: 0.5 },
+          { symbol: 'ETH', amount: 5.0 },
         ],
       },
     };
 
     return NextResponse.json(mockUserProfile, { status: 200 });
   } catch (error) {
-    console.error("Error fetching user profile:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error('Error fetching user profile:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -53,8 +53,8 @@ export async function PUT(request: Request) {
     const body = await request.json();
 
     // Validate request body
-    if (!body || typeof body !== "object") {
-      return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
 
     // TODO: Add authentication check here
@@ -63,13 +63,13 @@ export async function PUT(request: Request) {
     // Mock successful update response
     return NextResponse.json(
       {
-        message: "Profile updated successfully",
+        message: 'Profile updated successfully',
         updatedFields: Object.keys(body),
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
-    console.error("Error updating user profile:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error('Error updating user profile:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

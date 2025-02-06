@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Services } from "@/components/services/services";
-import { ServiceHeader } from "@/components/services/service-header";
-import { ServiceCard } from "@/components/services/service-card";
+import { Services } from '@/components/services/services';
+import { ServiceHeader } from '@/components/services/service-header';
+import { ServiceCard } from '@/components/services/service-card';
 
 export default function ServicePage() {
   return (
@@ -17,10 +17,10 @@ export default function ServicePage() {
             title="Portfolio Management"
             description="Our advanced portfolio management tools provide you with real-time tracking, performance analytics, and risk assessment capabilities. Features include:"
             features={[
-              "Real-time portfolio valuation and tracking",
-              "Performance analytics and historical data",
-              "Risk assessment and diversification analysis",
-              "Customizable alerts and notifications",
+              'Real-time portfolio valuation and tracking',
+              'Performance analytics and historical data',
+              'Risk assessment and diversification analysis',
+              'Customizable alerts and notifications',
             ]}
           />
 
@@ -28,10 +28,10 @@ export default function ServicePage() {
             title="Market Analysis"
             description="Stay ahead of the market with our comprehensive analysis tools and real-time market data. Our platform provides:"
             features={[
-              "Technical analysis indicators and charts",
-              "Market sentiment analysis",
-              "Price alerts and notifications",
-              "Historical data and trend analysis",
+              'Technical analysis indicators and charts',
+              'Market sentiment analysis',
+              'Price alerts and notifications',
+              'Historical data and trend analysis',
             ]}
           />
 
@@ -39,10 +39,10 @@ export default function ServicePage() {
             title="Trading Automation"
             description="Maximize your trading efficiency with our automated trading solutions. Our platform offers:"
             features={[
-              "Customizable trading strategies",
-              "Automated order execution",
-              "Risk management rules",
-              "Performance tracking and reporting",
+              'Customizable trading strategies',
+              'Automated order execution',
+              'Risk management rules',
+              'Performance tracking and reporting',
             ]}
           />
         </div>
