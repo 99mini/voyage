@@ -1,6 +1,6 @@
-import { create } from 'zustand';
+import { Goal, Todo } from '@/lib/types/goal';
 import { v4 as uuidv4 } from 'uuid';
-import { Goal, GoalStatus, Todo, TodoStatus } from '@/lib/types/goal';
+import { create } from 'zustand';
 
 interface GoalStore {
   goals: Goal[];
@@ -45,7 +45,7 @@ export const useGoalStore = create<GoalStore>((set) => ({
               ...updates,
               updatedAt: new Date(),
             }
-          : goal
+          : goal,
       ),
     }));
   },
@@ -99,7 +99,7 @@ export const useGoalStore = create<GoalStore>((set) => ({
                   ...updates,
                   updatedAt: new Date(),
                 }
-              : todo
+              : todo,
           );
           const completedTodos = updatedTodos.filter((todo) => todo.status === 'completed');
           const progress = (completedTodos.length / updatedTodos.length) * 100;
@@ -149,7 +149,7 @@ export const useGoalStore = create<GoalStore>((set) => ({
               todos,
               updatedAt: new Date(),
             }
-          : goal
+          : goal,
       ),
     }));
   },

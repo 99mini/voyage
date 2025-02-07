@@ -6,7 +6,10 @@
     "resolveJsonModule": true,
     "rootDir": "./src",
     "outDir": "./dist",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "@pb-api/*": ["./src/*"]
+    }
   },
   "include": ["./src/**/*"],
   "exclude": ["dist/**/*"]

@@ -2,8 +2,13 @@ import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
+import replace from '@rollup/plugin-replace';
+
+import dotenv from 'dotenv';
 
 import pkg from './package.json';
+
+dotenv.config();
 
 export default [
   {
@@ -18,6 +23,17 @@ export default [
         format: 'cjs',
       },
     ],
-    plugins: [typescript({ tsconfig: 'tsconfig.json' }), json(), nodeResolve({ preferBuiltins: false }), commonjs()],
+    plugins: [
+      typescript({ tsconfig: 'tsconfig.json' }),
+      json(),
+      nodeResolve({ preferBuiltins: false }),
+      commonjs(),
+      replace({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        'process.env.PB_URL_APP': JSON.stringify(process.env.PB_URL_APP),
+        'process.env.PB_URL_API': JSON.stringify(process.env.PB_URL_API),
+        preventAssignment: true,
+      }),
+    ],
   },
 ];

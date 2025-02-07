@@ -12,8 +12,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "start": "vite preview",
     "lint": "eslint .",
-    "preview": "vite preview",
     "prod": "vite build && vite preview"
   },
   "dependencies": {

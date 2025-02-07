@@ -1,7 +1,17 @@
 import PocketBase from 'pocketbase';
+import env from '@pb-api/_config/env';
 
-const API_URL = 'https://api.mywaterpia.com';
+function connect(app: 'app' | 'api') {
+  let baseUrl = env.PB_URL_APP;
+  switch (app) {
+    case 'api':
+      baseUrl = env.PB_URL_API;
+      break;
+  }
+  return new PocketBase(baseUrl);
+}
 
-const pb = new PocketBase(API_URL);
+const pbApp = connect('app');
+const pbApi = connect('api');
 
-export default pb;
+export { pbApp, pbApi };

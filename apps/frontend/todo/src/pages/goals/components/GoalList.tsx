@@ -1,6 +1,5 @@
-import React from 'react';
 import { useGoalStore } from '@/hooks/useGoalStore';
-import { Goal } from '@/lib/types/goal';
+import React from 'react';
 import GoalItem from './GoalItem';
 
 const GoalList: React.FC = () => {
@@ -21,6 +20,8 @@ const GoalList: React.FC = () => {
 
     reorderGoals(updatedGoals);
   };
+
+  console.log(handleDragEnd);
 
   return (
     <div className="space-y-4">

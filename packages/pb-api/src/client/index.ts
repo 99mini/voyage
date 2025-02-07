@@ -1,1 +1,1 @@
-export { default as pb } from './pb-client';
+export * from './pb-client';

@@ -1,10 +1,10 @@
-import React from 'react';
-import { Goal, Todo } from '@/lib/types/goal';
-import { useGoalStore } from '@/hooks/useGoalStore';
-import TodoItem from './TodoItem';
+import LucideIcon from '@/components/lucide/LucideIcon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { PlusIcon } from 'lucide-react';
+import { useGoalStore } from '@/hooks/useGoalStore';
+import { Goal } from '@/lib/types/goal';
+import React from 'react';
+import TodoItem from './TodoItem';
 
 interface TodoListProps {
   goal: Goal;
@@ -38,6 +38,8 @@ const TodoList: React.FC<TodoListProps> = ({ goal }) => {
     reorderTodos(goal.id, updatedTodos);
   };
 
+  console.log(handleDragEnd);
+
   return (
     <div className="space-y-4">
       <form onSubmit={handleAddTodo} className="flex gap-2">
@@ -49,7 +51,7 @@ const TodoList: React.FC<TodoListProps> = ({ goal }) => {
           className="flex-1"
         />
         <Button type="submit" size="sm">
-          <PlusIcon className="h-4 w-4" />
+          <LucideIcon name="Plus" className="h-4 w-4" />
         </Button>
       </form>
       <div className="space-y-2">

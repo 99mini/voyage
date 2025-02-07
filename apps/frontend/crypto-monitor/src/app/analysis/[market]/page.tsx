@@ -1,14 +1,14 @@
 'use client';
 
-import { AnalysisData, TechnicalAnalysis } from '@/types/analysis';
-import CandelChart from '@/components/analysis/CandelChart';
-import AnalysTable from '@/components/analysis/AnalysTable';
 import AiReport from '@/components/analysis/AiReport';
-import RsiChart from '@/components/analysis/RsiChart';
-import MacdChart from '@/components/analysis/MacdChart';
-import StochasticChart from '@/components/analysis/StochasticChart';
-import { useEffect, useState } from 'react';
+import AnalysTable from '@/components/analysis/AnalysTable';
+import CandelChart from '@/components/analysis/CandelChart';
 import CoinSelectBox from '@/components/analysis/CoinSelectBox';
+import MacdChart from '@/components/analysis/MacdChart';
+import RsiChart from '@/components/analysis/RsiChart';
+import StochasticChart from '@/components/analysis/StochasticChart';
+import { AnalysisData } from '@/types/analysis';
+import React, { useEffect, useState } from 'react';
 
 // Remove the AnalysisData interface from here since it's now imported
 
@@ -65,7 +65,6 @@ export default function AnalysisMarketPage({ params }: { params: { market: strin
   }
 
   const analysis = analysisData.analysis[0];
-  const { ta } = analysis;
 
   return (
     <div className="min-h-screen bg-background">
