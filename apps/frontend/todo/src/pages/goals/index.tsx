@@ -2,9 +2,9 @@ import { useTodoListQuery } from '@/apis/todos';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useGoalStore } from '@/hooks/useGoalStore';
+import { PlusIcon } from 'lucide-react';
 import React from 'react';
 import GoalList from './components/GoalList';
-import LucideIcon from '@/components/lucide/LucideIcon';
 
 const GoalsPage: React.FC = () => {
   const [newGoalTitle, setNewGoalTitle] = React.useState('');
@@ -34,7 +34,7 @@ const GoalsPage: React.FC = () => {
           className="flex-1"
         />
         <Button type="submit">
-          <LucideIcon name="Plus" className="h-4 w-4 mr-2" />
+          <PlusIcon className="h-4 w-4 mr-2" />
           목표 추가
         </Button>
       </form>

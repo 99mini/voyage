@@ -1,8 +1,8 @@
-import LucideIcon from '@/components/lucide/LucideIcon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useGoalStore } from '@/hooks/useGoalStore';
 import { Goal } from '@/lib/types/goal';
+import { PlusIcon } from 'lucide-react';
 import React from 'react';
 import TodoItem from './TodoItem';
 
@@ -51,7 +51,7 @@ const TodoList: React.FC<TodoListProps> = ({ goal }) => {
           className="flex-1"
         />
         <Button type="submit" size="sm">
-          <LucideIcon name="Plus" className="h-4 w-4" />
+          <PlusIcon className="h-4 w-4" />
         </Button>
       </form>
       <div className="space-y-2">

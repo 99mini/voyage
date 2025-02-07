@@ -1,8 +1,8 @@
-import LucideIcon from '@/components/lucide/LucideIcon';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useGoalStore } from '@/hooks/useGoalStore';
 import { Todo } from '@/lib/types/goal';
+import { TrashIcon } from 'lucide-react';
 import React from 'react';
 
 interface TodoItemProps {
@@ -42,7 +42,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, goalId }) => {
           onClick={() => deleteTodo(goalId, todo.id)}
           className="text-destructive hover:text-destructive/80"
         >
-          <LucideIcon name="Trash" className="h-4 w-4" />
+          <TrashIcon className="h-4 w-4" />
         </Button>
       </div>
     </div>
