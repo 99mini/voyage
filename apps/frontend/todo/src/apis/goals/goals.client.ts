@@ -1,16 +1,18 @@
 import client from '@/database/client';
-import { Goal } from '@/lib/types/goal';
+import { GoalResponse } from './goals.modal';
 
 export async function getAllGoals() {
-  const records = await client.collection<Goal>('goals').getFullList();
-
-  console.log(records);
+  const records = await client.collection<GoalResponse>('goals').getFullList({
+    expand: 'todos',
+  });
 
   return records;
 }
 
 export async function getGoal(id: string) {
-  const record = await client.collection<Goal>('goals').getOne(id);
+  const record = await client.collection<GoalResponse>('goals').getOne(id, {
+    expand: 'todos',
+  });
 
   return record;
 }

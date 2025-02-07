@@ -1,10 +1,10 @@
 import { useGoalStore } from '@/hooks/useGoalStore';
 import React from 'react';
 import GoalItem from './GoalItem';
-import { useGoalListQuery } from '@/apis/goals';
+import useGoals from '@/store/useGoalStore';
 
 const GoalList: React.FC = () => {
-  const { data: goals, isPending } = useGoalListQuery();
+  const { goals, isPending } = useGoals();
   const reorderGoals = useGoalStore((state) => state.reorderGoals);
 
   if (isPending) return null;
