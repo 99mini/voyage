@@ -1,4 +1,3 @@
-import { useTodoListQuery } from '@/apis/todos';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useGoalStore } from '@/hooks/useGoalStore';
@@ -9,10 +8,6 @@ import GoalList from './components/GoalList';
 const GoalsPage: React.FC = () => {
   const [newGoalTitle, setNewGoalTitle] = React.useState('');
   const addGoal = useGoalStore((state) => state.addGoal);
-
-  const { data: todos } = useTodoListQuery();
-
-  console.log(todos);
 
   const handleAddGoal = (e: React.FormEvent) => {
     e.preventDefault();

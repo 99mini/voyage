@@ -1,10 +1,14 @@
 import { useGoalStore } from '@/hooks/useGoalStore';
 import React from 'react';
 import GoalItem from './GoalItem';
+import { useGoalListQuery } from '@/apis/goals';
 
 const GoalList: React.FC = () => {
-  const goals = useGoalStore((state) => state.goals);
+  const { data: goals, isPending } = useGoalListQuery();
   const reorderGoals = useGoalStore((state) => state.reorderGoals);
+
+  if (isPending) return null;
+  if (!goals) return null;
 
   const handleDragEnd = (result: any) => {
     if (!result.destination) return;

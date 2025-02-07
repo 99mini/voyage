@@ -22,6 +22,7 @@
 4. Frontend 앱 구성 규칙
 - 상태 관리 라이브러리로 zustand, @tanstack/react-query를 활용하여라
 - Page Driven Development. 페이지를 기준으로 폴더를 구성하라
+- jsx component의 타입에 React.FC를 사용하지 않는다
 예시
 src/pages/home/[components|hooks|utils]: home page에 관련된 소스 코드 폴더 
 src/[components|hooks|utils]: 공통 소스 코드 폴더

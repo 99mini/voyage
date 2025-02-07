@@ -1,9 +1,14 @@
+import { useGoalListQuery, useGoalQuery } from '@/apis/goals';
 import { Goal, Todo } from '@/lib/types/goal';
 import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 
 interface GoalStore {
   goals: Goal[];
+  isPending: boolean;
+  error: Error | null;
+  getGoals: () => Goal[];
+  getGoal: (id: string) => Goal | undefined;
   addGoal: (title: string, description?: string, dueDate?: Date) => void;
   updateGoal: (id: string, updates: Partial<Goal>) => void;
   deleteGoal: (id: string) => void;
@@ -16,6 +21,18 @@ interface GoalStore {
 
 export const useGoalStore = create<GoalStore>((set) => ({
   goals: [],
+  isPending: false,
+  error: null,
+  getGoals: () => {
+    const { data: goals, isPending, error } = useGoalListQuery();
+    set({ isPending, error });
+    return goals || [];
+  },
+  getGoal: (id: string) => {
+    const { data: goal, isPending, error } = useGoalQuery(id);
+    set({ isPending, error });
+    return goal;
+  },
 
   addGoal: (title, description, dueDate) => {
     const newGoal: Goal = {
