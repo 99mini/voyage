@@ -1,4 +1,4 @@
-import { Goal, Todo } from '@/lib/types/goal';
+import { Goal, Todo } from '@/lib/types/goal.type';
 import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 

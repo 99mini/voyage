@@ -1,5 +1,5 @@
 import { useGoalListQuery } from '@/apis/goals';
-import { Goal } from '@/lib/types/goal';
+import { Goal } from '@/lib/types/goal.type';
 
 const useGoals = () => {
   const { data: _goals, isPending } = useGoalListQuery();

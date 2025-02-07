@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useGoalStore } from '@/hooks/useGoalStore';
-import { Todo } from '@/lib/types/goal';
+import { Todo } from '@/lib/types/goal.type';
 import { TrashIcon } from 'lucide-react';
 import React from 'react';
 

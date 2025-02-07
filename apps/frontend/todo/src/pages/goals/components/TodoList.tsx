@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useGoalStore } from '@/hooks/useGoalStore';
-import { Goal } from '@/lib/types/goal';
+import { Goal } from '@/lib/types/goal.type';
 import { PlusIcon } from 'lucide-react';
 import React from 'react';
 import TodoItem from './TodoItem';

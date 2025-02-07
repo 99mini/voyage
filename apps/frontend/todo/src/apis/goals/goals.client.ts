@@ -1,5 +1,5 @@
 import client from '@/database/client';
-import { GoalResponse } from './goals.modal';
+import { GoalResponse } from './goals.model';
 
 export async function getAllGoals() {
   const records = await client.collection<GoalResponse>('goals').getFullList({
