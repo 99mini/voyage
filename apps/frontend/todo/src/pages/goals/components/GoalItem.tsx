@@ -1,6 +1,5 @@
 import React from 'react';
 import { Goal } from '@/lib/types/goal.type';
-import { useGoalStore } from '@/hooks/useGoalStore';
 import TodoList from './TodoList';
 
 interface GoalItemProps {
@@ -8,8 +7,9 @@ interface GoalItemProps {
 }
 
 const GoalItem: React.FC<GoalItemProps> = ({ goal }) => {
-  const updateGoal = useGoalStore((state) => state.updateGoal);
-  const deleteGoal = useGoalStore((state) => state.deleteGoal);
+  // TODO: implement updateGoal and deleteGoal
+  const updateGoal = (target: string, data: Partial<Goal>) => console.log(target, data);
+  const deleteGoal = (target: string) => console.log(target);
 
   return (
     <div className="border rounded-lg p-4 space-y-4 bg-card">

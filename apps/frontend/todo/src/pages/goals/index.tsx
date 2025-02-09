@@ -1,13 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useGoalStore } from '@/hooks/useGoalStore';
 import { PlusIcon } from 'lucide-react';
 import React from 'react';
 import GoalList from './components/GoalList';
 
 const GoalsPage: React.FC = () => {
   const [newGoalTitle, setNewGoalTitle] = React.useState('');
-  const addGoal = useGoalStore((state) => state.addGoal);
+
+  // TODO: implement addGoal
+  const addGoal = (val: string) => console.log(val);
 
   const handleAddGoal = (e: React.FormEvent) => {
     e.preventDefault();

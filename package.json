@@ -18,6 +18,7 @@
     "format": "pnpm -r run format",
     "test": "pnpm -r run test",
     "deploy": "pnpm -r run deploy",
+    "dev:packages": "pnpm --filter @packages/pb-api run dev",
     "install:func": "pnpm --filter server-functions install",
     "build:func": "pnpm --filter server-functions run build",
     "deploy:func": "pnpm --filter server-functions run deploy",
