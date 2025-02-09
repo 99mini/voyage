@@ -14,4 +14,7 @@ function connect(app: 'app' | 'api') {
 const pbApp = connect('app');
 const pbApi = connect('api');
 
-export { pbApp, pbApi };
+const batchApp = pbApp.createBatch();
+const batchApi = pbApi.createBatch();
+
+export { pbApp, pbApi, batchApp, batchApi };

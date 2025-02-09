@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useGoalStore } from '@/hooks/useGoalStore';
-import { Goal } from '@/lib/types/goal';
+import { Goal } from '@/lib/types/goal.type';
 import { PlusIcon } from 'lucide-react';
 import React from 'react';
 import TodoItem from './TodoItem';
+import { Todo } from '@/lib/types';
 
 interface TodoListProps {
   goal: Goal;
@@ -12,8 +12,11 @@ interface TodoListProps {
 
 const TodoList: React.FC<TodoListProps> = ({ goal }) => {
   const [newTodoTitle, setNewTodoTitle] = React.useState('');
-  const addTodo = useGoalStore((state) => state.addTodo);
-  const reorderTodos = useGoalStore((state) => state.reorderTodos);
+
+  // TODO: implement addTodo
+  const addTodo = (target: string, val: string) => console.log(target, val);
+  // TODO: implement reorderTodos
+  const reorderTodos = (target: string, data: Todo[]) => console.log(target, data);
 
   const handleAddTodo = (e: React.FormEvent) => {
     e.preventDefault();

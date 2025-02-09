@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useGoalStore } from '@/hooks/useGoalStore';
-import { Todo } from '@/lib/types/goal';
+import { Todo } from '@/lib/types/';
 import { TrashIcon } from 'lucide-react';
 import React from 'react';
 
@@ -11,8 +10,9 @@ interface TodoItemProps {
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo, goalId }) => {
-  const updateTodo = useGoalStore((state) => state.updateTodo);
-  const deleteTodo = useGoalStore((state) => state.deleteTodo);
+  // TODO: implement updateTodo and deleteTodo
+  const updateTodo = (goalId: string, todoId: string, data: Partial<Todo>) => console.log(goalId, todoId, data);
+  const deleteTodo = (goalId: string, todoId: string) => console.log(goalId, todoId);
 
   const handleStatusChange = () => {
     updateTodo(goalId, todo.id, {
