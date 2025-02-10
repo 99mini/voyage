@@ -17,6 +17,7 @@
     "prod": "vite build && vite preview"
   },
   "dependencies": {
+    "@packages/api-client": "workspace:*",
     "@ffmpeg/core": "^0.10.0",
     "@ffmpeg/ffmpeg": "^0.10.0",
     "@radix-ui/react-dialog": "^1.1.4",
