@@ -81,24 +81,28 @@ provide serverless functions
 
 ### Workflow
 
-1. create a new base branch(`<app-name>/[dev-]release`)
-2. create a new [feature | bugfix] branch from the base branch
-3. merge the [feature | bugfix] branch to the base branch
-4. merge the base branch to the main branch
+1. create a new release branch(`<app-name>/[dev-]release`)
+2. create a new [feature | bugfix] branch from the release branch
+3. merge the [feature | bugfix] branch to the release branch
+4. merge the release branch to the main branch
 
-### base branch
+### release branch
 
 - `<app-name>/dev-release`: dev
 - `<app-name>/release`: production
 
 ### [feature | bugfix] branch
 
-- `<app-name>/dev-release/[feature | bugfix]/**`: dev
-- `<app-name>/release/[feature | bugfix]/**`: production
+- `<app-name>/[feature | bugfix]/**`: dev
+- `<app-name>/[feature | bugfix]/**`: production
 
 ### chore branch
 
 - `chore/**`: all packagse
+
+### docs branch
+
+- `docs/**`: all packagse
 
 # Author
 
