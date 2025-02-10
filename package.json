@@ -19,11 +19,10 @@
     "test": "pnpm -r run test",
     "deploy": "pnpm -r run deploy",
     "build:tool": "pnpm --filter tool run build",
-    "dev:packages": "pnpm --filter @packages/pb-api run dev",
-    "install:func": "pnpm --filter server-functions install",
+    "dev:api-client": "pnpm --filter api-client run dev",
+    "dev:pb-api": "pnpm --filter pb-api run dev",
     "build:func": "pnpm --filter server-functions run build",
     "deploy:func": "pnpm --filter server-functions run deploy",
-    "install:rest": "pnpm --filter server-rest install",
     "build:rest": "pnpm --filter server-rest run build",
     "deploy:rest": "pnpm --filter server-rest run deploy"
   },

@@ -17,6 +17,8 @@
       - [Functions API](#functions-api)
   - [Batch](#batch) `as soon as possible`
     - [Batch API](#batch-api)
+- [Contributing](#contributing)
+  - [Git Flow](#git-flow)
 - [Author](#author)
 
 # Apps
@@ -72,6 +74,31 @@ provide serverless functions
 #### Batch API
 
 1. provide batch api
+
+# Contributing
+
+## Git Flow
+
+### Workflow
+
+1. create a new base branch(`<app-name>/[dev-]release`)
+2. create a new [feature | bugfix] branch from the base branch
+3. merge the [feature | bugfix] branch to the base branch
+4. merge the base branch to the main branch
+
+### base branch
+
+- `<app-name>/dev-release`: dev
+- `<app-name>/release`: production
+
+### [feature | bugfix] branch
+
+- `<app-name>/dev-release/[feature | bugfix]/**`: dev
+- `<app-name>/release/[feature | bugfix]/**`: production
+
+### chore branch
+
+- `chore/**`: all packagse
 
 # Author
 
