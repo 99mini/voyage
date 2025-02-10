@@ -7,7 +7,7 @@ class ApiClient {
   public static instance: ApiClient;
 
   constructor(baseUrl?: string) {
-    this.baseUrl = baseUrl ?? env.BASE_URL ?? 'localhost:3000';
+    this.baseUrl = baseUrl ?? env.BASE_URL;
 
     if (!ApiClient.instance) {
       ApiClient.instance = this;
