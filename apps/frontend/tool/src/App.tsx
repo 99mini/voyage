@@ -13,7 +13,7 @@ const App = () => {
 
       /** health check */
       healthCheck('rest').then((res) => {
-        console.log(res);
+        console.debug(res);
       });
     }
   }, []);
