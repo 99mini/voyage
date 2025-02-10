@@ -28,17 +28,24 @@ const config: Config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'ko',
-    locales: ['ko', 'en'],
+    locales: ['ko'],
     localeConfigs: {
       ko: {
         label: '한국어',
         htmlLang: 'ko',
       },
-      en: {
-        label: 'English',
-        htmlLang: 'en',
-      },
     },
+    // locales: ['ko', 'en'],
+    // localeConfigs: {
+    //   ko: {
+    //     label: '한국어',
+    //     htmlLang: 'ko',
+    //   },
+    //   en: {
+    //     label: 'English',
+    //     htmlLang: 'en',
+    //   },
+    // },
   },
 
   presets: [
@@ -89,10 +96,11 @@ const config: Config = {
           label: 'Tutorial',
         },
         { to: '/blog', label: 'Blog', position: 'left' },
-        {
-          type: 'localeDropdown',
-          position: 'right',
-        },
+        // TODO: 국제화를 위해서는 서버를 같이 배포해야됨.
+        // {
+        //   type: 'localeDropdown',
+        //   position: 'right',
+        // },
         {
           href: 'https://github.com/99mini',
           label: 'GitHub',
