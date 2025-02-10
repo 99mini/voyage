@@ -34,7 +34,7 @@ jobs:
 
       - name: Build React app
         run: |
-          pnpm run build:tool
+          pnpm run build
 
       - name: Upload build to Droplet
         env:
