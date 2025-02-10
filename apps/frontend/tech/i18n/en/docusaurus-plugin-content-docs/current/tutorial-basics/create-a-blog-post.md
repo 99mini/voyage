@@ -16,7 +16,7 @@ slug: greetings
 title: Greetings!
 authors:
   - name: 99mini
-    title: Frontend Software Engineer
+    title: Co-creator of Docusaurus 1
     url: https://github.com/99mini
     image_url: https://github.com/99mini.png
 tags: [greetings]

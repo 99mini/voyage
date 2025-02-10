@@ -27,8 +27,25 @@ const config: Config = {
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: 'ko',
+    locales: ['ko'],
+    localeConfigs: {
+      ko: {
+        label: '한국어',
+        htmlLang: 'ko',
+      },
+    },
+    // locales: ['ko', 'en'],
+    // localeConfigs: {
+    //   ko: {
+    //     label: '한국어',
+    //     htmlLang: 'ko',
+    //   },
+    //   en: {
+    //     label: 'English',
+    //     htmlLang: 'en',
+    //   },
+    // },
   },
 
   presets: [
@@ -79,6 +96,11 @@ const config: Config = {
           label: 'Tutorial',
         },
         { to: '/blog', label: 'Blog', position: 'left' },
+        // TODO: 국제화를 위해서는 서버를 같이 배포해야됨.
+        // {
+        //   type: 'localeDropdown',
+        //   position: 'right',
+        // },
         {
           href: 'https://github.com/99mini',
           label: 'GitHub',
