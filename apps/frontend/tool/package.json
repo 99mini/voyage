@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "sh ./.scripts/build.sh",
     "lint": "eslint .",
     "preview": "vite preview",
     "prod": "vite build && vite preview"
