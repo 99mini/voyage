@@ -17,6 +17,10 @@
       - [Functions API](#functions-api)
   - [Batch](#batch) `as soon as possible`
     - [Batch API](#batch-api)
+- [Packages](#packages)
+  - [api-client](#api-client)
+  - [pb-api](#pb-api)
+  - [vds](#vds)
 - [Contributing](#contributing)
   - [Git Flow](#git-flow)
 - [Author](#author)
@@ -74,6 +78,20 @@ provide serverless functions
 #### Batch API
 
 1. provide batch api
+
+## Packages
+
+### api-client
+
+- github: https://github.com/99mini/voyage/tree/main/packages/api-client
+
+### pb-api
+
+- github: https://github.com/99mini/voyage/tree/main/packages/pb-api
+
+### vds
+
+- github: https://github.com/99mini/voyage/tree/main/packages/vds
 
 # Contributing
 

@@ -14,7 +14,7 @@
     "build": "sh ./.scripts/build.sh",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prod": "vite build && vite preview"
+    "prod": "pnpm run build && vite preview"
   },
   "dependencies": {
     "@packages/api-client": "workspace:*",
