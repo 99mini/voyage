@@ -1,0 +1,56 @@
+{
+  "name": "@packages/vds",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "pnpm rollup -c rollup.config.cjs --bundleConfigAsCjs",
+    "dev": "pnpm rollup -c rollup.config.cjs --bundleConfigAsCjs -w",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.1.1",
+    "@shadcn/ui": "^0.0.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.469.0",
+    "reset-css": "^5.0.2",
+    "tailwindcss": "^3.4.17",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.4",
+    "@rollup/plugin-alias": "^5.1.1",
+    "@storybook/addon-essentials": "^8.5.2",
+    "@storybook/addon-interactions": "^8.5.2",
+    "@storybook/blocks": "^8.5.2",
+    "@storybook/builder-vite": "^8.5.4",
+    "@storybook/react": "^8.5.2",
+    "@storybook/react-vite": "^8.5.2",
+    "@storybook/test": "^8.5.2",
+    "@types/react": "^18.3.18",
+    "@vitejs/plugin-react": "^4.3.4",
+    "storybook": "^8.5.2",
+    "vite": "^6.0.5",
+    "vitest": "^2.1.8"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.0.0",
+    "@emotion/styled": "^11.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
