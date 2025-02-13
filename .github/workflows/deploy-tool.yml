@@ -1,4 +1,4 @@
-name: Deploy React to DigitalOcean
+name: Deploy Tool App to DigitalOcean
 
 on:
   push:
