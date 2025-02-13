@@ -18,7 +18,7 @@ const FeatureList: FeatureItem[] = [
     title: '기술 블로그',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: <>기술 블로그</>,
-    to: '/docs',
+    to: '/blog',
   },
   {
     title: '웹 도구',
