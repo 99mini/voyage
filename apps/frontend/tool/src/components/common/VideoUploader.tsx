@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface VideoUploaderProps {
   file: File | null;
@@ -17,8 +17,15 @@ function VideoUploader({ file, onUpload }: VideoUploaderProps) {
 
   return (
     <div className="grid w-full max-w-sm items-center gap-1.5">
-      <Label htmlFor="video-file">{"비디오 파일을 업로드하세요."}</Label>
-      <Input id="video-file" type="file" accept="video/*" onChange={handleFileChange} name={file?.name} className="block w-full text-gray-700" />
+      <Label htmlFor="video-file">{'비디오 파일을 업로드하세요.'}</Label>
+      <Input
+        id="video-file"
+        type="file"
+        accept="video/*"
+        onChange={handleFileChange}
+        name={file?.name}
+        className="block w-full text-gray-700"
+      />
     </div>
   );
 }
