@@ -3,6 +3,11 @@
   permalink: /정보처리기사
   description: 정보처리기사 시험 대비
 
+sqld:
+  label: sqld
+  permalink: /sqld
+  description: sqld 시험 대비
+
 데이터베이스:
   label: 데이터베이스
   permalink: /데이터베이스
