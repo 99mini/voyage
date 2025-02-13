@@ -20,7 +20,7 @@
 - [Packages](#packages)
   - [api-client](#api-client)
   - [pb-api](#pb-api)
-  - [vds](#vds)
+  - [VDS (Voyage Design System)](#vds-voyage-design-system)
 - [Contributing](#contributing)
   - [Git Flow](#git-flow)
 - [Author](#author)
@@ -95,7 +95,7 @@ provide serverless functions
 - github: https://github.com/99mini/voyage/tree/main/packages/pb-api
 - tech stack: `typescript`, `pocketbase`
 
-### vds
+### VDS (Voyage Design System)
 
 - github: https://github.com/99mini/voyage/tree/main/packages/vds
 - tech stack: `typescript`, `storebook`, `shadcn/ui`, `tailwindcss`
