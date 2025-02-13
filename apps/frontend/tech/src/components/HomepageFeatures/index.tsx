@@ -17,8 +17,14 @@ const FeatureList: FeatureItem[] = [
   {
     title: '기술 블로그',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
-    description: <>기술 블로그</>,
+    description: <>javascript, typescript 기반 기술 블로그</>,
     to: '/blog',
+  },
+  {
+    title: '컴퓨터 과학',
+    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    description: <>정보처리기사, SQLD, 컴퓨터 과학 기초 학문 정리합니다.</>,
+    to: '/docs/intro',
   },
   {
     title: '웹 도구',

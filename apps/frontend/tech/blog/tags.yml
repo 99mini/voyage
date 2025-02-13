@@ -3,12 +3,22 @@
   permalink: /정보처리기사
   description: 정보처리기사 시험 대비
 
+sqld:
+  label: sqld
+  permalink: /sqld
+  description: sqld 시험 대비
+
 데이터베이스:
   label: 데이터베이스
   permalink: /데이터베이스
   description: 데이터베이스
 
-소프트웨어개발:
-  label: 소프트웨어개발
-  permalink: /소프트웨어개발
+소프트웨어공학:
+  label: 소프트웨어공학
+  permalink: /소프트웨어공학
   description: 소프트웨어 공학
+
+보안:
+  label: 보안
+  permalink: /보안
+  description: 보안

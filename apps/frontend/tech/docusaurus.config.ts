@@ -95,9 +95,9 @@ const config: Config = {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'computerScience',
           position: 'left',
-          label: 'Tutorial',
+          label: 'CS',
         },
         { to: '/blog', label: 'Blog', position: 'left' },
         // TODO: 국제화를 위해서는 서버를 같이 배포해야됨.
@@ -119,8 +119,25 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Tutorial',
+              label: 'computer science',
               to: '/docs/intro',
+            },
+            {
+              label: 'Blog',
+              to: '/blog',
+            },
+          ],
+        },
+        {
+          title: 'Community',
+          items: [
+            {
+              label: 'GitHub',
+              href: 'https://github.com/99mini',
+            },
+            {
+              label: 'mail',
+              to: 'mailto:0mini9939@gmail.com',
             },
           ],
         },
@@ -133,33 +150,12 @@ const config: Config = {
             },
           ],
         },
-        // {
-        //   title: 'Community',
-        //   items: [
-        //     {
-        //       label: 'Stack Overflow',
-        //       href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-        //     },
-        //     {
-        //       label: 'Discord',
-        //       href: 'https://discordapp.com/invite/docusaurus',
-        //     },
-        //     {
-        //       label: 'X',
-        //       href: 'https://x.com/docusaurus',
-        //     },
-        //   ],
-        // },
         {
-          title: 'More',
+          title: 'Etc',
           items: [
             {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/99mini',
+              label: 'sitemap',
+              href: 'https://tech.zerovoyage.com/sitemap.xml',
             },
           ],
         },
