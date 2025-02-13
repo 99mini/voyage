@@ -1,19 +1,14 @@
-facebook:
-  label: Facebook
-  permalink: /facebook
-  description: Facebook tag description
+정보처리기사:
+  label: 정보처리기사
+  permalink: /정보처리기사
+  description: 정보처리기사 시험 대비
 
-hello:
-  label: Hello
-  permalink: /hello
-  description: Hello tag description
+데이터베이스:
+  label: 데이터베이스
+  permalink: /데이터베이스
+  description: 데이터베이스
 
-docusaurus:
-  label: Docusaurus
-  permalink: /docusaurus
-  description: Docusaurus tag description
-
-hola:
-  label: Hola
-  permalink: /hola
-  description: Hola tag description
+소프트웨어개발:
+  label: 소프트웨어개발
+  permalink: /소프트웨어개발
+  description: 소프트웨어 공학
