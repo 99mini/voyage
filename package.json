@@ -18,6 +18,7 @@
     "format": "pnpm -r run format",
     "test": "pnpm -r run test",
     "deploy": "pnpm -r run deploy",
+    "build:tech": "pnpm --filter tech run build",
     "build:tool": "pnpm --filter tool run build",
     "dev:api-client": "pnpm --filter api-client run dev",
     "dev:pb-api": "pnpm --filter pb-api run dev",
