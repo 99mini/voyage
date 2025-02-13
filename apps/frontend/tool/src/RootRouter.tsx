@@ -1,14 +1,14 @@
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes } from 'react-router';
 
-import Footer from "@/components/common/Footer";
-import Header from "@/components/common/Header";
-import { Toaster } from "@/components/ui/toaster";
+import Footer from '@/components/common/Footer';
+import Header from '@/components/common/Header';
+import { Toaster } from '@/components/ui/toaster';
 
-import GifGenerator from "@/pages/GifGenerator";
-import Home from "@/pages/Home";
-import VerticalImageMerger from "@/pages/VerticalImageMerger";
+import GifGenerator from '@/pages/GifGenerator';
+import Home from '@/pages/Home';
+import VerticalImageMerger from '@/pages/VerticalImageMerger';
 
-import { ROUTE_PATH } from "@/constant";
+import { ROUTE_PATH } from '@/constant';
 
 function RootRouter() {
   return (
