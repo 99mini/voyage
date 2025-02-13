@@ -21,6 +21,12 @@ const FeatureList: FeatureItem[] = [
     to: '/blog',
   },
   {
+    title: '컴퓨터 과학',
+    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    description: <>컴퓨터 과학</>,
+    to: '/docs/intro',
+  },
+  {
     title: '웹 도구',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: <>웹에서 활용할 수 있는 도구 모음</>,

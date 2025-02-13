@@ -95,9 +95,9 @@ const config: Config = {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'computerScience',
           position: 'left',
-          label: 'Tutorial',
+          label: 'CS',
         },
         { to: '/blog', label: 'Blog', position: 'left' },
         // TODO: 국제화를 위해서는 서버를 같이 배포해야됨.
@@ -119,17 +119,25 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Tutorial',
+              label: 'computer science',
               to: '/docs/intro',
+            },
+            {
+              label: 'Blog',
+              to: '/blog',
             },
           ],
         },
         {
-          title: 'Production',
+          title: 'Community',
           items: [
             {
-              label: 'Tool',
-              href: 'https://tool.zerovoyage.com',
+              label: 'GitHub',
+              href: 'https://github.com/99mini',
+            },
+            {
+              label: 'mail',
+              to: 'mailto:0mini9939@gmail.com',
             },
           ],
         },
@@ -151,15 +159,11 @@ const config: Config = {
         //   ],
         // },
         {
-          title: 'More',
+          title: 'Production',
           items: [
             {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/99mini',
+              label: 'Tool',
+              href: 'https://tool.zerovoyage.com',
             },
           ],
         },
