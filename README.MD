@@ -33,6 +33,7 @@
 
 - production: https://tool.zerovoyage.com/
 - github: https://github.com/99mini/voyage/tree/main/apps/frontend/tool
+- tech stack: `typescript`, `reactjs`, `tailwindcss`, `shadcn/ui`
 
 #### Feature Tool
 
@@ -43,6 +44,7 @@
 
 - production: https://tech.zerovoyage.com
 - github: https://github.com/99mini/voyage/tree/main/apps/frontend/tech
+- tech stack: `typescript`, `docusaurus`
 
 #### Feature Tech
 
@@ -54,6 +56,7 @@
 
 - production: https://api.zerovoyage.com
 - github: https://github.com/99mini/voyage/tree/main/apps/server/rest
+- tech stack: `typescript`, `nestjs`
 
 #### Rest API
 
@@ -62,6 +65,7 @@
 ### Functions
 
 - github: https://github.com/99mini/voyage/tree/main/apps/server/functions
+- tech stack: `typescript`, `nodejs`
 
 #### Functions API
 
@@ -84,14 +88,17 @@ provide serverless functions
 ### api-client
 
 - github: https://github.com/99mini/voyage/tree/main/packages/api-client
+- tech stack: `typescript`, `fetch API`
 
 ### pb-api
 
 - github: https://github.com/99mini/voyage/tree/main/packages/pb-api
+- tech stack: `typescript`, `pocketbase`
 
 ### vds
 
 - github: https://github.com/99mini/voyage/tree/main/packages/vds
+- tech stack: `typescript`, `storebook`, `shadcn/ui`, `tailwindcss`
 
 # Contributing
 
@@ -108,19 +115,28 @@ provide serverless functions
 
 - `<app-name>/dev-release`: dev
 - `<app-name>/release`: production
+- example: `tool/release/0.2.0`
+- example: `vds/release/0.2.0`
 
 ### [feature | bugfix] branch
 
-- `<app-name>/[feature | bugfix]/**`: dev
-- `<app-name>/[feature | bugfix]/**`: production
+- `<app-name>/[feature | bugfix]/**`
+- example: `tool/feature/create-something`
+- example: `vds/bugfix/fix-something`
 
 ### chore branch
 
 - `chore/**`: all packagse
+- `<app-name>/chore/**`: specific app
+- example: `chore/update-root-dependencies`
+- example: `tool/chore/update-dependencies`
 
 ### docs branch
 
 - `docs/**`: all packagse
+- `<app-name>/docs/**`: specific app
+- example: `docs/update-root-readme`
+- example: `tool/docs/create-tool-readme`
 
 # Author
 
