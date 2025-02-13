@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Tech',
+  title: 'voyage tech blog',
   tagline: 'zero voyage 기술 블로그',
   favicon: 'img/favicon.ico',
 
@@ -50,7 +50,7 @@ const config: Config = {
 
   presets: [
     [
-      'classic',
+      '@docusaurus/preset-classic',
       {
         docs: {
           sidebarPath: './sidebars.ts',
@@ -74,6 +74,10 @@ const config: Config = {
         },
         theme: {
           customCss: './src/css/custom.css',
+        },
+        gtag: {
+          trackingID: 'GTM-T5H7BW9D',
+          anonymizeIP: true,
         },
       } satisfies Preset.Options,
     ],
