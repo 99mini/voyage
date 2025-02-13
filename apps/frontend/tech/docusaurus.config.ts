@@ -141,29 +141,21 @@ const config: Config = {
             },
           ],
         },
-        // {
-        //   title: 'Community',
-        //   items: [
-        //     {
-        //       label: 'Stack Overflow',
-        //       href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-        //     },
-        //     {
-        //       label: 'Discord',
-        //       href: 'https://discordapp.com/invite/docusaurus',
-        //     },
-        //     {
-        //       label: 'X',
-        //       href: 'https://x.com/docusaurus',
-        //     },
-        //   ],
-        // },
         {
           title: 'Production',
           items: [
             {
               label: 'Tool',
               href: 'https://tool.zerovoyage.com',
+            },
+          ],
+        },
+        {
+          title: 'Etc',
+          items: [
+            {
+              label: 'sitemap',
+              href: 'https://tech.zerovoyage.com/sitemap.xml',
             },
           ],
         },
