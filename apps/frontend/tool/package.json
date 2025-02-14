@@ -12,6 +12,7 @@
   "scripts": {
     "dev": "vite",
     "build": "sh ./.scripts/build.sh",
+    "deploy": "sh ./.scripts/deploy.sh",
     "lint": "eslint .",
     "preview": "vite preview",
     "prod": "pnpm run build && vite preview"
