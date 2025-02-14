@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 
 import { Button } from '@packages/vds';
-import { Label } from '@/components/ui/label';
+import { Label } from '@packages/vds';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 const alignOptions = ['left', 'center', 'right'] as const;

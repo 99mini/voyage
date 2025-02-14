@@ -19,6 +19,6 @@ export default [
       },
     ],
     plugins: [typescript({ tsconfig: 'tsconfig.json' }), json(), nodeResolve({ preferBuiltins: false }), commonjs()],
-    external: ['react', 'react-dom', '@emotion/react', '@emotion/styled'],
+    external: ['react', 'react-dom'],
   },
 ];

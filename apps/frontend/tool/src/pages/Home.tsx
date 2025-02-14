@@ -9,7 +9,7 @@ function Home() {
           const title = PAGE_TITLE[key as keyof typeof PAGE_TITLE];
           return (
             <li key={title} className="text-blue-400 underline hover:text-blue-600">
-              <Link to={path} about={'This is a link to ' + title}>
+              <Link to={path} about={'This is a link to ' + title} aria-description={'This is a link to ' + title}>
                 {title}
               </Link>
             </li>

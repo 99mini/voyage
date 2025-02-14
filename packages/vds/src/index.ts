@@ -1,4 +1,1 @@
-import { Button } from './components';
-import { reset } from './foundations';
-
-export { Button, reset };
+export * from './components';
