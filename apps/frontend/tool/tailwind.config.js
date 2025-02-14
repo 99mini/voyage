@@ -53,5 +53,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate'), require('@packages/vds')],
+  plugins: [require('tailwindcss-animate')],
 };
