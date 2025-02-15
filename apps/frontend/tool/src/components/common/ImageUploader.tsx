@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Label, Input } from '@packages/vds';
+import { Label, FileInput } from '@packages/vds';
 
 interface ImageUploaderProps {
   onUpload: (files: File[]) => void;
@@ -17,7 +17,7 @@ const ImageUploader = ({ onUpload }: ImageUploaderProps) => {
   return (
     <div className="grid w-full max-w-sm items-center gap-1.5">
       <Label htmlFor="image-file">{'이미지 파일을 업로드하세요.'}</Label>
-      <Input id="image-file" type="file" accept="image/*" multiple onChange={handleFileChange} />
+      <FileInput id="image-file" accept="image/*" multiple onChange={handleFileChange} />
     </div>
   );
 };

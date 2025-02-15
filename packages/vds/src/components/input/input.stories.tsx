@@ -1,16 +1,23 @@
 import type { Meta } from '@storybook/react';
 
-import Label from './input';
+import Input from './input';
 
-const meta: Meta<typeof Label> = {
-  title: 'Label',
-  component: Label,
+const meta: Meta<typeof Input> = {
+  title: 'Input',
+  component: Input,
   tags: ['autodocs'],
   argTypes: {
-    children: { control: 'text' },
+    type: {
+      control: {
+        type: 'select',
+        options: ['text', 'password', 'email', 'number', 'file'],
+      },
+    },
   },
-} satisfies Meta<typeof Label>;
+} satisfies Meta<typeof Input>;
 
-export const Default = ({ ...args }) => <Label {...args}>{args.children ?? 'Label'}</Label>;
+export const Default = ({ ...args }) => <Input {...args} />;
+
+export const File = ({ ...args }) => <Input {...args} type="file" />;
 
 export default meta;
