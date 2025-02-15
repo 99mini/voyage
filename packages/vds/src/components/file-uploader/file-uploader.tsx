@@ -6,6 +6,7 @@ import ImagePreviewGroup, { type ImagePreviewGroupProps } from '../image-preview
 
 export type FileUploaderProps = {
   files: File[];
+  maxFiles?: number;
   onUpload?: (file: File[]) => void;
   onRemove?: (file: File) => void;
   className?: string;
@@ -16,6 +17,7 @@ export type FileUploaderProps = {
 
 const FileUploader = ({
   files,
+  maxFiles = 10,
   onUpload,
   onRemove,
   className,
@@ -27,10 +29,19 @@ const FileUploader = ({
     if (!onUpload) {
       return;
     }
-    if (event.target.files) {
-      const newFiles = Array.from(event.target.files);
-      onUpload(newFiles);
+    if (!event.target.files) {
+      return;
     }
+
+    let newFiles: File[] = [];
+
+    if (files.length > 0) {
+      newFiles = [...files, ...Array.from(event.target.files)];
+    } else {
+      newFiles = Array.from(event.target.files);
+    }
+
+    onUpload(newFiles.slice(0, maxFiles));
   };
 
   const handleRemove = (file: File) => {
@@ -59,7 +70,7 @@ const FileUploader = ({
           className={cn('flex flex-1', ImagePreviewGroupProps?.className)}
           ImagePreviewerProps={{
             className: 'relative',
-            renderChildren: (index: number) => (
+            renderChildren: (index) => (
               <button
                 className="p-0 absolute top-2 right-2 w-4 h-4 flex items-center justify-center border border-gray-400 rounded bg-transparent"
                 onClick={() => handleRemove(files[index])}
@@ -70,16 +81,18 @@ const FileUploader = ({
           }}
           {...ImagePreviewGroupProps}
         >
-          <FileInput
-            className={cn('w-full h-full border-dashed', InputProps?.className)}
-            onChange={handleFileChange}
-            multiple
-            {...InputProps}
-          >
-            <span className="flex items-center justify-center w-full h-full text-gray-400 cursor-pointer">
-              클릭하여 파일 선택
-            </span>
-          </FileInput>
+          {files.length < maxFiles && (
+            <FileInput
+              className={cn('w-full h-full border-dashed', InputProps?.className)}
+              onChange={handleFileChange}
+              multiple
+              {...InputProps}
+            >
+              <span className="flex items-center justify-center w-full h-full text-gray-400 cursor-pointer">
+                클릭하여 파일 선택
+              </span>
+            </FileInput>
+          )}
         </ImagePreviewGroup>
       )}
     </div>
