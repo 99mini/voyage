@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Input } from '@/components/ui/input';
-import { Label } from '@packages/vds';
+import { Label, Input } from '@packages/vds';
 
 interface VideoUploaderProps {
   file: File | null;
