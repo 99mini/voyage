@@ -1,13 +1,12 @@
 import { useCallback, useState } from 'react';
 
 import DownloadButton from '@/components/common/DownloadButton';
-import ImagePreviewer from '@/components/common/ImagePreviewer';
 import PageTitle from '@/components/common/PageTitle';
 import VideoUploader from '@/components/common/VideoUploader';
 import VideoToGifControls from '@/components/gifGenerator/VideoToGifControls';
 
-import { Button } from '@packages/vds';
 import { useToast } from '@/hooks/use-toast';
+import { Button, ImagePreviewer } from '@packages/vds';
 
 function GifGenerator() {
   const [videoFile, setVideoFile] = useState<File | null>(null);

@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@packages/vds';
 import { Todo } from '@/lib/types/';
 import { TrashIcon } from 'lucide-react';
 import React from 'react';

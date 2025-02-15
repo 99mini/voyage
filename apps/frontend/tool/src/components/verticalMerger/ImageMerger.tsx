@@ -1,29 +1,39 @@
 import { useCallback, useRef, useState } from 'react';
 
-import { Button } from '@packages/vds';
-import { Label } from '@packages/vds';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Button, Label } from '@packages/vds';
+
+const loadImage = (src: string): Promise<HTMLImageElement> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+};
 
 const alignOptions = ['left', 'center', 'right'] as const;
 
 interface ImageMergerProps {
-  images: HTMLImageElement[];
+  files: File[];
   onMergeComplete: (dataUrl: string) => void;
   className?: string;
 }
 
-const ImageMerger = ({ images, onMergeComplete, className }: ImageMergerProps) => {
+const ImageMerger = ({ files, onMergeComplete, className }: ImageMergerProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [align, setAlign] = useState<(typeof alignOptions)[number]>('left');
 
-  const mergeImages = useCallback(() => {
-    if (!canvasRef.current || images.length === 0) return;
+  const mergeImages = useCallback(async () => {
+    if (!canvasRef.current || files.length === 0) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
+
     if (!ctx) return;
 
-    // Calculate canvas height
+    const images: HTMLImageElement[] = await Promise.all(files.map((file) => loadImage(URL.createObjectURL(file))));
+
     const totalHeight = images.reduce((sum, img) => sum + img.height, 0);
     const maxWidth = Math.max(...images.map((img) => img.width));
 
@@ -44,7 +54,7 @@ const ImageMerger = ({ images, onMergeComplete, className }: ImageMergerProps) =
 
     const dataUrl = canvas.toDataURL('image/png');
     onMergeComplete(dataUrl);
-  }, [align, images, onMergeComplete]);
+  }, [align, files, onMergeComplete]);
 
   return (
     <div className={className}>
