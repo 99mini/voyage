@@ -5,10 +5,11 @@ export type ImagePreviewerProps = {
   alt?: string;
   className?: string;
   style?: React.CSSProperties;
+  children?: React.ReactNode;
   ImageProps?: Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src' | 'alt'>;
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style' | 'children'>;
 
-const ImagePreviewer = ({ src, alt, className, style, ImageProps, ...props }: ImagePreviewerProps) => {
+const ImagePreviewer = ({ src, alt, className, style, ImageProps, children, ...props }: ImagePreviewerProps) => {
   return (
     <div
       className={`${cn('border border-gray-300 rounded-lg overflow-hidden w-36 h-36 flex items-center justify-center', className)}`}
@@ -21,6 +22,7 @@ const ImagePreviewer = ({ src, alt, className, style, ImageProps, ...props }: Im
         className={`${cn('max-w-full max-h-full object-contain', ImageProps?.className)}`}
         {...ImageProps}
       />
+      {children}
     </div>
   );
 };

@@ -18,6 +18,4 @@ const meta: Meta<typeof Input> = {
 
 export const Default = ({ ...args }) => <Input {...args} />;
 
-export const File = ({ ...args }) => <Input {...args} type="file" />;
-
 export default meta;

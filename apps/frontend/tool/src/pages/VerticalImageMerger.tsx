@@ -6,10 +6,10 @@ import PageTitle from '@/components/common/PageTitle';
 import ImageMerger from '@/components/verticalMerger/ImageMerger';
 import MergedImagePreviewModal from '@/components/verticalMerger/MergedImagePreviewModal';
 import { useToast } from '@/hooks/use-toast';
-import { Button, ImagePreviewGroup } from '@packages/vds';
+import { Button } from '@packages/vds';
 
 function VerticalImageMerger() {
-  const [uploadedImages, setUploadedImages] = useState<HTMLImageElement[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [mergedImage, setMergedImage] = useState<string>('');
 
   const [openModal, setOpenModal] = useState(false);
@@ -27,38 +27,22 @@ function VerticalImageMerger() {
     [toast],
   );
 
-  const handleImageUpload = (files: File[], callback: (val: HTMLImageElement[]) => void) => {
-    const imageElements: HTMLImageElement[] = [];
-
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.src = e.target?.result as string;
-        img.onload = () => {
-          imageElements.push(img);
-          if (imageElements.length === files.length) {
-            callback(imageElements);
-          }
-        };
-      };
-      reader.readAsDataURL(file);
-    });
-  };
-
   const handleReset = () => {
     setUploadedImages([]);
     setMergedImage('');
   };
 
+  const handleRemove = (file: File) => {
+    setUploadedImages(uploadedImages.filter((i) => i !== file));
+  };
+
   return (
     <div>
       <PageTitle>{'새로 이미지 병합기'}</PageTitle>
-      <ImageUploader onUpload={(files) => handleImageUpload(files, setUploadedImages)} />
-      <ImagePreviewGroup images={uploadedImages} className="py-4" />
+      <ImageUploader images={uploadedImages} onUpload={setUploadedImages} onRemove={handleRemove} />
       {uploadedImages.length > 0 && <Button onClick={handleReset}>{'초기화'}</Button>}
       {uploadedImages.length === 0 ? null : !mergedImage ? (
-        <ImageMerger className="text-center" images={uploadedImages} onMergeComplete={handleMergeComplete} />
+        <ImageMerger className="text-center" files={uploadedImages} onMergeComplete={handleMergeComplete} />
       ) : (
         <p className="text-center">{'이미지 병합이 완료되었습니다. '}</p>
       )}
