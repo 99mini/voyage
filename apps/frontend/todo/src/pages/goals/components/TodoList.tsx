@@ -1,5 +1,4 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button, Input } from '@packages/vds';
 import { Goal } from '@/lib/types/goal.type';
 import { PlusIcon } from 'lucide-react';
 import React from 'react';
