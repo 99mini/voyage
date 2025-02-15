@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "jsx": "react-jsx",
+    "declarationDir": "./dist",
     "outDir": "./dist",
     "baseUrl": "./",
     "rootDir": "./src",

@@ -15,8 +15,8 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "pnpm rollup -c rollup.config.cjs --bundleConfigAsCjs",
-    "dev": "pnpm rollup -c rollup.config.cjs --bundleConfigAsCjs -w",
+    "build": "rm -rf dist && pnpm rollup -c rollup.config.cjs --bundleConfigAsCjs",
+    "dev": "rm -rf dist && pnpm rollup -c rollup.config.cjs --bundleConfigAsCjs -w",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
