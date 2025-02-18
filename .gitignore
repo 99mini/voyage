@@ -12,6 +12,14 @@ dist
 dist-ssr
 *.local
 
+# cache
+*.cache
+
+# build
+build
+dist
+dist-ssr
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
