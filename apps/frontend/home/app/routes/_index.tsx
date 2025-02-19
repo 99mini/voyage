@@ -1,4 +1,5 @@
 import type { MetaFunction } from '@remix-run/node';
+import ProjectSection from '~/components/common/project-section';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Zero Voyage' }, { name: 'description', content: 'Welcome to Zero Voyage!' }];
@@ -6,11 +7,17 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="flex flex-col items-center gap-16">
-        <nav className="flex flex-col items-center justify-center gap-4 rounded-3xl border border-gray-200 p-6 dark:border-gray-700">
-          <p className="leading-6 text-gray-700 dark:text-gray-200">What&apos;s next?</p>
-        </nav>
+    <div className="h-screen w-screen">
+      <div className="h-full w-full">
+        <ProjectSection title="웹 도구" href="https://tool.zerovoyage.com/">
+          <div className="flex flex-col items-center gap-4">
+            <div>someting content...</div>
+            <div>someting content...</div>
+            <div>someting content...</div>
+            <div>someting content...</div>
+            <div>someting content...</div>
+          </div>
+        </ProjectSection>
       </div>
     </div>
   );
