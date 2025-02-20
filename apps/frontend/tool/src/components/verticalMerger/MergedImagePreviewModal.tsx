@@ -1,5 +1,4 @@
-import { Button } from '@packages/vds';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@packages/vds';
 
 interface MergedImagePreviewModalProps {
   isOpen: boolean;

@@ -4,16 +4,16 @@
   "rsc": false,
   "tsx": true,
   "tailwind": {
-    "config": "tailwind.config.js",
-    "css": "src/index.css",
-    "baseColor": "stone",
+    "config": "../../../packages/vds/tailwind.config.js",
+    "css": "../../../packages/vds/src/index.css",
+    "baseColor": "zinc",
     "cssVariables": true,
     "prefix": ""
   },
   "aliases": {
     "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
+    "utils": "@packages/vds/lib/utils",
+    "ui": "@packages/vds/components/ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
   },

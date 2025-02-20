@@ -5,8 +5,7 @@ import PageTitle from '@/components/common/PageTitle';
 import VideoUploader from '@/components/common/VideoUploader';
 import VideoToGifControls from '@/components/gifGenerator/VideoToGifControls';
 
-import { useToast } from '@/hooks/use-toast';
-import { Button, ImagePreviewer } from '@packages/vds';
+import { Button, ImagePreviewer, useToast } from '@packages/vds';
 
 function GifGenerator() {
   const [videoFile, setVideoFile] = useState<File | null>(null);

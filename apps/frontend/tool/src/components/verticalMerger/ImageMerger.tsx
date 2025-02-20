@@ -1,7 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Button, Label } from '@packages/vds';
+import { Button, Label, RadioGroup, RadioGroupItem } from '@packages/vds';
 
 const loadImage = (src: string): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {

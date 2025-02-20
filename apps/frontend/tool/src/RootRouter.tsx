@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 
 import Footer from '@/components/common/Footer';
 import Header from '@/components/common/Header';
-import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from '@packages/vds';
 
 import GifGenerator from '@/pages/GifGenerator';
 import Home from '@/pages/Home';

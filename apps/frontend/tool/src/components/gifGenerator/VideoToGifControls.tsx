@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { createFFmpeg, fetchFile, FFmpeg } from '@ffmpeg/ffmpeg';
 
 import { Button } from '@packages/vds';
-import { Progress } from '@/components/ui/progress';
+import { Progress } from '@packages/vds';
 
 interface VideoToGifControlsProps {
   videoFile: File | null;

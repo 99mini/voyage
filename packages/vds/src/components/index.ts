@@ -22,3 +22,5 @@ export type {
   InputProps,
   LabelProps,
 };
+
+export * from './ui';

@@ -5,8 +5,7 @@ import ImageUploader from '@/components/common/ImageUploader';
 import PageTitle from '@/components/common/PageTitle';
 import ImageMerger from '@/components/verticalMerger/ImageMerger';
 import MergedImagePreviewModal from '@/components/verticalMerger/MergedImagePreviewModal';
-import { useToast } from '@/hooks/use-toast';
-import { Button } from '@packages/vds';
+import { Button, useToast } from '@packages/vds';
 
 function VerticalImageMerger() {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
