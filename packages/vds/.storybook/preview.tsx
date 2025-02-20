@@ -4,11 +4,13 @@ import '../src/index.css';
 
 const preview: Preview = {
   decorators: [
-    (Story) => (
-      <>
-        <Story />
-      </>
-    ),
+    (Story) => {
+      return (
+        <>
+          <Story />
+        </>
+      );
+    },
   ],
   parameters: {
     controls: {

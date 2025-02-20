@@ -18,14 +18,15 @@
     "build": "rm -rf dist && pnpm rollup -c rollup.config.cjs --bundleConfigAsCjs",
     "dev": "rm -rf dist && pnpm rollup -c rollup.config.cjs --bundleConfigAsCjs -w",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "rm -rf storybook-static && storybook build",
+    "deploy:storybook": "sh ./.script/deploy-storybook.sh"
   },
   "dependencies": {
-    "@radix-ui/react-label": "^2.1.1",
-    "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.4",
+    "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-progress": "^1.1.1",
     "@radix-ui/react-radio-group": "^1.2.2",
+    "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-toast": "^1.2.4",
     "@shadcn/ui": "^0.0.4",
     "class-variance-authority": "^0.7.1",
