@@ -1,5 +1,6 @@
-import Input, { type InputProps } from '../input';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import Input, { type InputProps } from '../input';
 
 export type FileInputProps = {
   className?: string;
@@ -8,6 +9,16 @@ export type FileInputProps = {
 } & Omit<InputProps, 'type'>;
 
 const FileInput = ({ className, placeholderClassName, children, ...props }: FileInputProps) => {
+  const [files, setFiles] = useState<File[]>([]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) {
+      return;
+    }
+
+    setFiles(Array.from(event.target.files));
+  };
+
   return (
     <label
       // className based on Shadcn Input className
@@ -16,8 +27,34 @@ const FileInput = ({ className, placeholderClassName, children, ...props }: File
         className,
       )}
     >
-      <div className={cn('flex items-center w-full h-auto', placeholderClassName)}>{children ?? '파일 선택'}</div>
-      <Input type={'file'} className="hidden" {...props} />
+      <div className={cn('flex items-center w-full h-auto', placeholderClassName)}>
+        {files.length > 0 ? (
+          <div className="flex flex-col gap-2 w-full">
+            {files.map((file, index) => (
+              <div
+                key={`${file.name}-${file.lastModified}`}
+                className="flex flex-row gap-2 p-2 w-full hover:bg-gray-100"
+              >
+                <div>{index + 1}</div>
+                <div>{file.name}</div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          (children ?? '파일 선택')
+        )}
+      </div>
+      <Input
+        type={'file'}
+        className="hidden"
+        onChange={(e) => {
+          handleFileChange(e);
+          if (props.onChange) {
+            props.onChange(e);
+          }
+        }}
+        {...props}
+      />
     </label>
   );
 };

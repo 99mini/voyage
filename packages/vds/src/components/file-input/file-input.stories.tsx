@@ -10,6 +10,8 @@ const meta: Meta<typeof FileInput> = {
 
 export const Default = ({ ...args }) => <FileInput {...args} />;
 
+export const Multiple = ({ ...args }) => <FileInput {...args} multiple />;
+
 export const Placeholder = ({ ...args }) => <FileInput {...args}>클릭하여 파일 선택</FileInput>;
 
 export const PlaceholderWithReactNode = ({ ...args }) => (
