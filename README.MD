@@ -1,7 +1,7 @@
 # Zero Voyage
 
-@since 2025-02-03
-@author [99mini](https://github.com/99mini)
+- @since 2025-02-03
+- @author [99mini](https://github.com/99mini)
 
 > zero voyage is a collection of SaaS
 
@@ -9,6 +9,7 @@
 
 - [Apps](#apps)
   - [Frontend](#frontend)
+    - [Home](#home)
     - [Tool](#tool)
       - [Feature Tool](#feature-tool)
     - [Tech](#tech)
@@ -31,6 +32,12 @@
 # Apps
 
 ## Frontend
+
+### Home
+
+- production: https://zerovoyage.com/ (https://www.zerovoyage.com)
+- github: https://github.com/99mini/voyage/tree/main/apps/frontend/home
+- tech stack: `typescript`, `reactjs`, `tailwindcss`, `shadcn/ui`, `remix`
 
 ### Tool
 
