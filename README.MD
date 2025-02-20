@@ -1,7 +1,7 @@
 # Zero Voyage
 
 @since 2025-02-03
-@author 99mini
+@author [99mini](https://github.com/99mini)
 
 > zero voyage is a collection of SaaS
 
