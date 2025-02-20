@@ -14,7 +14,7 @@
 - packages 하위에 vds(Voyage Design System), utils.
 - 기술 스택
   - 공통: Node.js, TypeScript, pnpm, prettier, eslint, pocketbase.
-  - frontend: React(혹은 Next.js), Vite, Tailwind, Shadcn.
+  - frontend: React(혹은 Next.js, Remix.js), Vite, Tailwind, Shadcn.
   - server: Nestjs, Express.
 
 # 응답 규칙
