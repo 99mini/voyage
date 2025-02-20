@@ -4,12 +4,9 @@ import { Injectable } from '@nestjs/common';
 export class HealthService {
   check() {
     return {
-      status: 200,
-      data: {
-        ok: true,
-        timestamp: new Date().toISOString(),
-        service: 'rest-api',
-      },
+      ok: true,
+      timestamp: new Date().toISOString(),
+      service: 'rest-api',
     };
   }
 }
