@@ -1,12 +1,12 @@
 import React from 'react';
-import { Github, SquareArrowOutUpRight } from 'lucide-react';
+import { SquareArrowOutUpRight } from 'lucide-react';
 import { siteUrl } from '~/lib/constants';
 
 export default function Footer() {
   return (
     <footer className="bg-gray-800 text-white py-6">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-start md:gap-0">
           <div className="flex flex-col space-y-2">
             <h4 className="text-base font-bold">{'사이트 맵'}</h4>
             {siteMap.map((site) => (
@@ -31,7 +31,7 @@ export default function Footer() {
             ))}
           </div>
         </div>
-        <div className="flex flex-col space-y-2 items-center justify-center text-sm text-gray-400">
+        <div className="flex flex-col space-y-2 items-center justify-center text-sm text-gray-400 mt-6 md:mt-4">
           <p>{metadata.copyright}</p>
           <a href="https://github.com/99mini" className="flex items-center justify-center space-x-2">
             <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
