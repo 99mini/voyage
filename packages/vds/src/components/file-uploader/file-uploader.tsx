@@ -10,6 +10,7 @@ export type FileUploaderProps = {
   onUpload?: (file: File[]) => void;
   onRemove?: (file: File) => void;
   className?: string;
+  variant?: 'outline' | 'filled' | 'none';
   style?: React.CSSProperties;
   InputProps?: Omit<FileInputProps, 'children'>;
   ImagePreviewGroupProps?: Omit<ImagePreviewGroupProps, 'images'>;
@@ -21,6 +22,7 @@ const FileUploader = ({
   onUpload,
   onRemove,
   className,
+  variant = 'outline',
   style,
   InputProps,
   ImagePreviewGroupProps,
@@ -52,7 +54,16 @@ const FileUploader = ({
   };
 
   return (
-    <div className={cn('flex min-w-72 min-h-72', className)} style={style}>
+    <div
+      className={cn(
+        'flex min-w-72 min-h-72 p-4 box-content',
+        variant === 'none' && 'border-none shadow-none',
+        variant === 'outline' && 'border border-gray-300 rounded-lg',
+        variant === 'filled' && 'bg-gray-50 rounded-lg shadow-sm',
+        className,
+      )}
+      style={style}
+    >
       {files.length === 0 ? (
         <FileInput
           className="flex-1 h-auto border-none shadow-none"
@@ -72,7 +83,7 @@ const FileUploader = ({
             className: 'relative',
             renderChildren: (index) => (
               <button
-                className="p-0 absolute top-2 right-2 w-4 h-4 flex items-center justify-center border border-gray-400 rounded bg-transparent"
+                className="p-0 absolute top-2 right-2 w-4 h-4 flex items-center justify-center border border-gray-400 rounded bg-gray-100"
                 onClick={() => handleRemove(files[index])}
               >
                 <X className="w-auto h-auto" />

@@ -22,7 +22,7 @@ function VideoUploader({ file, onUpload }: VideoUploaderProps) {
         accept="video/*"
         onChange={handleFileChange}
         name={file?.name}
-        className="block w-full text-gray-700"
+        className="w-full text-gray-700"
       />
     </div>
   );
