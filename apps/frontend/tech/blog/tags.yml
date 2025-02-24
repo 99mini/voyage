@@ -32,3 +32,43 @@ http:
   label: HTTP
   permalink: /http
   description: HTTP
+
+typescript:
+  label: typescript
+  permalink: /typescript
+  description: typescript
+
+javascript:
+  label: javascript
+  permalink: /javascript
+  description: javascript
+
+react:
+  label: react
+  permalink: /react
+  description: react
+
+nextjs:
+  label: nextjs
+  permalink: /nextjs
+  description: nextjs
+
+css:
+  label: css
+  permalink: /css
+  description: css
+
+expressjs:
+  label: expressjs
+  permalink: /expressjs
+  description: expressjs
+
+nestjs:
+  label: nestjs
+  permalink: /nestjs
+  description: nestjs
+
+ui-ux:
+  label: ui-ux
+  permalink: /ui-ux
+  description: ui-ux
