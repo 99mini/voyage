@@ -1,0 +1,131 @@
+---
+sidebar_position: 1
+slug: rest-with-expressjs
+title: 'RestApi with Express.js - express 설치 및 실행'
+authors: [99mini]
+tags: [http, 네트워크, typescript]
+---
+
+expressjs를 활용한 restApi 실습: 개발 환경 설정
+
+<!-- truncate -->
+
+## 개발 환경 설정
+
+### express.js 및 의존성 설치
+
+사용할 라이브러리
+
+- express
+- typescript
+- ts-node
+- nodemon
+
+```bash
+mkdir rest-api-study
+cd rest-api-study
+npm init -y
+npm install express typescript ts-node nodemon
+```
+
+### tsconfig.json 설정
+
+```bash
+npx tsc --init
+```
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true
+  }
+}
+```
+
+### pakcage.json 수정
+
+```json
+{
+  "scripts": {
+    "start": "nodemon --exec ts-node src/index.ts"
+  }
+}
+```
+
+## 디렉토리 구조 설정
+
+```txt
+rest-api-study
+├── src
+│   ├── index.ts
+│   └── routes
+│       ├── index.ts
+│       └── users
+│           ├── index.ts
+│           ├── users.model.ts
+│           ├── users.controller.ts
+│           └── users.service.ts
+│       - posts
+│           ├── index.ts
+│           ├── posts.model.ts
+│           ├── posts.controller.ts
+│           └── posts.service.ts
+│
+├── package.json
+└── tsconfig.json
+```
+
+1. `src/index.ts`
+
+2. `src/routes/index.ts`
+
+3. `src/routes/<resource>/index.ts`
+
+4. `src/routes/<resource>/<resource>.model.ts`
+
+5. `src/routes/<resource>/<resource>.controller.ts`
+
+6. `src/routes/<resource>/<resource>.service.ts`
+
+### 보일러 플레이트
+
+```typescript title="src/index.ts"
+import express from 'express';
+import routes from './routes';
+
+const app = express();
+const port = 3000;
+
+app.use(routes);
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
+```
+
+```typescript title="src/routes/index.ts"
+import express from 'express';
+
+const router = express.Router();
+
+export default router;
+```
+
+```typescript title="src/routes/users/users.model.ts"
+const UserSchema = {
+  id: Number,
+  name: String,
+  email: String,
+};
+
+type User = InferType<typeof UserSchema>;
+
+export default User;
+```
