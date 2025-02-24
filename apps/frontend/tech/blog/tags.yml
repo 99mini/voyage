@@ -22,3 +22,13 @@ sqld:
   label: 보안
   permalink: /보안
   description: 보안
+
+네트워크:
+  label: 네트워크
+  permalink: /네트워크
+  description: 네트워크
+
+http:
+  label: HTTP
+  permalink: /http
+  description: HTTP
