@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, Inject } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Inject, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HealthService } from './health.service';
 
@@ -14,5 +14,14 @@ export class HealthController {
   })
   check() {
     return this.healthService.check();
+  }
+
+  @Post()
+  @ApiResponse({
+    status: 200,
+    description: 'Success',
+  })
+  postCheck(@Body() body: any) {
+    return this.healthService.postCheck(body);
   }
 }

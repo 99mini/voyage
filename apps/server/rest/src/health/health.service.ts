@@ -9,4 +9,13 @@ export class HealthService {
       service: 'rest-api',
     };
   }
+
+  postCheck(body: any) {
+    return {
+      ok: true,
+      timestamp: new Date().toISOString(),
+      service: 'rest-api',
+      body,
+    };
+  }
 }
