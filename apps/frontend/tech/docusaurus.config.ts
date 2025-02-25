@@ -147,8 +147,20 @@ const config: Config = {
           title: 'Production',
           items: [
             {
+              label: 'Zero Voyage',
+              href: 'https://zerovoyage.com',
+            },
+            {
+              label: 'Crypto Monitor',
+              href: 'https://coin.zerovoyage.com',
+            },
+            {
               label: 'Tool',
               href: 'https://tool.zerovoyage.com',
+            },
+            {
+              label: 'Design',
+              href: 'https://design.zerovoyage.com',
             },
           ],
         },
