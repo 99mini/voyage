@@ -3,6 +3,7 @@
 ## Home
 
 - [ ] remix 타입 에러 해결
+- [ ] favicon 변경
 
 ## Tool
 

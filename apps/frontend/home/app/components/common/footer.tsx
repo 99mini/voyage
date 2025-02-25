@@ -5,7 +5,7 @@ import { siteUrl } from '~/lib/constants';
 export default function Footer() {
   return (
     <footer className="bg-gray-800 text-white py-6">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-start md:gap-0">
           <div className="flex flex-col space-y-2">
             <h4 className="text-base font-bold">{'사이트 맵'}</h4>
