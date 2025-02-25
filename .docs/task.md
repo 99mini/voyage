@@ -4,6 +4,10 @@
 
 - [ ] remix 타입 에러 해결
 
+## Tool
+
+- [ ] file-uploader DND 구현
+
 # Server
 
 - [ ] 데이터베이스 관리
@@ -17,8 +21,4 @@
 ## VDS
 
 - [ ] tailwind plugin 구현
-- [ ] storybook build & deploy (https://design.zerovoyage.com)
-
-### Feature
-
-- [ ] file-uploader DND 구현
+- [x] storybook build & deploy (https://design.zerovoyage.com) (25-02-21)
