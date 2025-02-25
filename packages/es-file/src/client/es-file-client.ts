@@ -1,7 +1,7 @@
 import { createFFmpeg, FFmpeg, type CreateFFmpegOptions } from '@ffmpeg/ffmpeg';
 
-import { videoToGif } from '../service';
-import { VideoToGifOptions } from '@es-file/model/options';
+import { videoToGif } from '@es-file/service';
+import type { VideoToGifOptions } from '@es-file/model';
 
 class EsFileClient {
   private _ffmpeg: FFmpeg | undefined;
