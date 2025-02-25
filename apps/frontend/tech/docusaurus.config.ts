@@ -99,7 +99,7 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'computerScience',
           position: 'left',
-          label: 'CS',
+          label: 'Docs',
         },
         { to: '/blog', label: 'Blog', position: 'left' },
         // TODO: 국제화를 위해서는 서버를 같이 배포해야됨.
@@ -147,8 +147,20 @@ const config: Config = {
           title: 'Production',
           items: [
             {
+              label: 'Zero Voyage',
+              href: 'https://zerovoyage.com',
+            },
+            {
+              label: 'Crypto Monitor',
+              href: 'https://coin.zerovoyage.com',
+            },
+            {
               label: 'Tool',
               href: 'https://tool.zerovoyage.com',
+            },
+            {
+              label: 'Design',
+              href: 'https://design.zerovoyage.com',
             },
           ],
         },
