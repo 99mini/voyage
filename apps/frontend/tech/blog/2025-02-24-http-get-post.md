@@ -3,6 +3,7 @@ slug: http-get-post
 title: HTTP - GET vs POST
 authors: [99mini]
 tags: [http, 네트워크]
+date: 2025-02-24T12:31
 ---
 
 HTTP에서 GET, POST 방식의 차이
@@ -30,6 +31,7 @@ HTTP/1.1은 1997년에 도입된 HTTP의 첫 번째 표준 버전입니다. 주�
 - **호스트 헤더(Host Header)**: 동일한 IP 주소에서 여러 도메인을 호스팅할 수 있게 됩니다.
 
 하지만 HTTP/1.1에는 다음과 같은 한계가 있습니다:
+
 - Head of Line Blocking: 요청이 순차적으로 처리되어야 하는 문제
 - 헤더 중복: 매 요청마다 중복된 헤더 정보를 전송
 
@@ -59,11 +61,13 @@ REST(Representational State Transfer)는 웹 서비스를 위한 아키텍처 �
 멱등성이란 동일한 요청을 한 번 보내는 것과 여러 번 보내는 것이 같은 효과를 가지는 것을 의미합니다. 즉, 요청을 여러 번 수행해도 결과가 달라지지 않는 성질입니다.
 
 **GET 메서드와 멱등성**
+
 - GET은 멱등성을 가지는 대표적인 메서드입니다.
 - 같은 URL로 몇 번을 요청하더라도 동일한 응답을 받습니다.
 - 예시: `GET /api/users/123`을 여러 번 호출해도 항상 동일한 사용자 정보를 반환
 
 **POST 메서드와 멱등성**
+
 - POST는 멱등성을 가지지 않는 대표적인 메서드입니다.
 - 동일한 POST 요청을 여러 번 보내면 서버의 상태가 계속 변경될 수 있습니다.
 - 예시: `POST /api/orders`를 여러 번 호출하면 매번 새로운 주문이 생성됨
@@ -76,12 +80,14 @@ REST(Representational State Transfer)는 웹 서비스를 위한 아키텍처 �
 GET은 서버로부터 데이터를 **조회**하는 데 사용되는 메서드입니다.
 
 주요 특징:
+
 - **캐시 가능**: 응답을 캐시할 수 있어 성능 향상
 - **북마크 가능**: URL에 모든 파라미터가 포함되어 있어 저장/공유 용이
 - **데이터 제한**: URL 길이 제한으로 인한 데이터 크기 제약
 - **보안**: URL에 데이터가 노출되어 민감한 정보 전송에 부적합
 
 사용 예시:
+
 ```
 GET /api/users?id=123
 GET /api/products?category=electronics
@@ -92,12 +98,14 @@ GET /api/products?category=electronics
 POST는 서버에 데이터를 **제출**하여 새로운 리소스를 **생성**하는 데 사용되는 메서드입니다.
 
 주요 특징:
+
 - **데이터 전송**: 요청 본문(body)에 데이터를 포함하여 전송
 - **캐시 불가능**: 기본적으로 캐시되지 않음
 - **멱등성 없음**: 동일한 요청을 여러 번 보내면 여러 번의 작업이 수행됨
 - **보안**: URL에 데이터가 노출되지 않아 민감한 정보 전송에 적합
 
 사용 예시:
+
 ```
 POST /api/users
 Content-Type: application/json
@@ -113,8 +121,10 @@ Content-Type: application/json
 일반적으로 데이터 조회는 GET 메서드를 사용하는 것이 RESTful한 방식입니다. 하지만 다음과 같은 상황에서는 POST를 사용한 조회가 더 적절할 수 있습니다:
 
 1. **복잡한 검색 조건**
+
    - GET 요청의 URL 길이 제한(일반적으로 2048자)을 초과하는 경우
    - 계층적이거나 복잡한 검색 파라미터를 전송해야 하는 경우
+
    ```json
    POST /api/search
    {
@@ -131,6 +141,7 @@ Content-Type: application/json
    ```
 
 2. **보안 요구사항**
+
    - 민감한 검색 조건이 URL에 노출되지 않아야 하는 경우
    - 검색 조건에 인증 정보가 포함된 경우
 
@@ -159,6 +170,7 @@ Content-Type: application/json
 대안으로 다음과 같은 방법을 고려할 수 있습니다:
 
 1. **검색 ID 사용**
+
    ```
    POST /api/searches  # 검색 조건 저장
    GET /api/searches/{search-id}  # 저장된 검색 조건으로 조회

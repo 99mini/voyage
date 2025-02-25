@@ -99,7 +99,7 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'computerScience',
           position: 'left',
-          label: 'CS',
+          label: 'Docs',
         },
         { to: '/blog', label: 'Blog', position: 'left' },
         // TODO: 국제화를 위해서는 서버를 같이 배포해야됨.
