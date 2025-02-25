@@ -10,23 +10,7 @@ class EsFileClient {
     this._ffmpeg = createFFmpeg(options);
   }
 
-  get instance(): FFmpeg {
-    if (!this._ffmpeg) {
-      throw new Error('FFmpeg is not initialized');
-    }
-
-    return this._ffmpeg;
-  }
-
-  async load(): Promise<FFmpeg> {
-    if (!this._ffmpeg) {
-      throw new Error('FFmpeg is not initialized');
-    }
-
-    if (!this._ffmpeg.isLoaded()) {
-      await this._ffmpeg.load();
-    }
-
+  get instance(): FFmpeg | undefined {
     return this._ffmpeg;
   }
 

@@ -21,19 +21,36 @@ jest.mock('@ffmpeg/ffmpeg', () => ({
   fetchFile: jest.fn(() => Promise.resolve(new Uint8Array())),
 }));
 
-test('EsFileClient should be defined', () => {
-  expect(EsFileClient).toBeDefined();
+describe('EsFileClient', () => {
+  test('EsFileClient should be defined', () => {
+    expect(EsFileClient).toBeDefined();
+  });
+
+  test('instance should be defined', async () => {
+    const client = new EsFileClient();
+
+    expect(client.instance).toBeDefined();
+  });
+
+  test('instance should throw error if instance called after destroy', () => {
+    const client = new EsFileClient();
+    client.destroy();
+    expect(client.instance).toBeUndefined();
+  });
 });
 
-test('EsFileClient should load', async () => {
-  const client = new EsFileClient();
-  await client.load();
-  expect(client.instance).toBeDefined();
-});
+describe('video-to-gif', () => {
+  test('should return a blob', async () => {
+    const client = new EsFileClient();
 
-test('video to gif', async () => {
-  const client = new EsFileClient();
-  await client.load();
-  const blob = await client.convertGifToVideo(new File([], 'test.gif'));
-  expect(blob).toBeInstanceOf(Blob);
+    const blob = await client.convertGifToVideo(new File([], 'test.gif'));
+    expect(blob).toBeInstanceOf(Blob);
+  });
+
+  test('should throw error if convertGifToVideo called without initializing FFmpeg', () => {
+    const client = new EsFileClient();
+    client.destroy();
+
+    expect(client.convertGifToVideo(new File([], 'test.gif'))).rejects.toThrow('FFmpeg is not initialized');
+  });
 });
