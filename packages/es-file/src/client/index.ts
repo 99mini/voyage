@@ -1,1 +1,3 @@
-export { default as EsFileClient } from './es-file-client';
+import EsFileClient from './es-file-client';
+
+export default EsFileClient;

@@ -2,8 +2,9 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "strict": true,
-    "types": ["jest"],
+    "types": ["jest", "node"],
     "resolveJsonModule": true,
+    "jsx": "react-jsx",
     "rootDir": "./src",
     "outDir": "./dist",
     "baseUrl": "./",

@@ -14,6 +14,20 @@ class EsFileClient {
     return this._ffmpeg;
   }
 
+  async load(): Promise<void> {
+    if (this._ffmpeg && !this._ffmpeg.isLoaded()) {
+      await this._ffmpeg.load();
+    }
+  }
+
+  async isLoaded(): Promise<boolean> {
+    if (!this._ffmpeg) {
+      return false;
+    }
+
+    return this._ffmpeg.isLoaded();
+  }
+
   destroy(): void {
     if (this._ffmpeg) {
       this._ffmpeg.exit();
@@ -22,7 +36,7 @@ class EsFileClient {
     this._ffmpeg = undefined;
   }
 
-  async convertGifToVideo(file: File, options?: VideoToGifOptions): Promise<Blob> {
+  async convertVideoToGif(file: File, options?: VideoToGifOptions): Promise<Blob> {
     if (!this._ffmpeg) {
       throw new Error('FFmpeg is not initialized');
     }

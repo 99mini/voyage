@@ -1,5 +1,10 @@
-import { EsFileClient } from './client';
+import EsFileClient from './client';
+import { useEsFile } from './react';
+
 import type { VideoToGifOptions } from './model';
 
-export { EsFileClient };
+export default EsFileClient;
+
+export { useEsFile };
+
 export type { VideoToGifOptions };
