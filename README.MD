@@ -14,6 +14,7 @@
       - [Feature Tool](#feature-tool)
     - [Tech](#tech)
       - [Feature Tech](#feature-tech)
+    - [Admin](#admin)
   - [Server](#server)
     - [Rest](#rest)
       - [Rest API](#rest-api)
@@ -59,6 +60,11 @@
 #### Feature Tech
 
 1. docusaurus
+
+### Admin
+
+- github: https://github.com/99mini/voyage/tree/main/apps/frontend/admin
+- tech stack: `typescript`, `reactjs`
 
 ## Server
 
