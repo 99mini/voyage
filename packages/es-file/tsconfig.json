@@ -4,7 +4,6 @@
     "strict": true,
     "types": ["jest", "node"],
     "resolveJsonModule": true,
-    "jsx": "react-jsx",
     "rootDir": "./src",
     "outDir": "./dist",
     "baseUrl": "./",

@@ -3,4 +3,5 @@ export type VideoToGifOptions = {
   width?: number;
   height?: number;
   outputFilename?: string;
+  inputFilename?: string;
 };
