@@ -7,7 +7,7 @@ import GridItem from '../grid-item';
 
 const meta = {
   component: Grid,
-  title: 'molecular/Grid',
+  title: 'layout/Grid',
   tags: ['autodocs'],
 } satisfies Meta<typeof Grid>;
 

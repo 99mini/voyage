@@ -1,10 +1,7 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 
-import classNames from 'classnames';
-
 import GridContext, { type GirdContextType } from '../grid-context';
-
-import './grid-item.css';
+import { cn } from '@/lib';
 
 export type GridItemProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
@@ -20,7 +17,7 @@ export const GridItem = ({ ...props }: GridItemProps) => {
   const { irregular, notGuaranteeOrder } = context;
 
   if (!irregular) {
-    return <GirdItemRegular {...props} />;
+    return <GridItemRegular {...props} />;
   }
 
   if (notGuaranteeOrder) {
@@ -30,11 +27,11 @@ export const GridItem = ({ ...props }: GridItemProps) => {
   return <GridItemIrregular context={context} {...props} />;
 };
 
-const GirdItemRegular = ({ ...props }: GridItemProps) => {
+const GridItemRegular = ({ ...props }: GridItemProps) => {
   const { className, children, ...divProps } = props;
 
   return (
-    <div {...divProps} className={classNames('YnI-Grid-Item', 'YnI-Grid-Item-Regular', className)}>
+    <div {...divProps} className={cn('grid-item-base-styles', 'grid-item-regular', className)}>
       {children}
     </div>
   );
@@ -53,7 +50,6 @@ const GridItemIrregular = ({
   const ref = useRef<HTMLDivElement>(null);
 
   const [uuid] = useState(() => generateUUID());
-  console.log(generateUUID());
 
   const [irregularGridItemStyle, setIrregularGridItemStyle] = useState<{
     width: number;
@@ -101,7 +97,7 @@ const GridItemIrregular = ({
   return (
     <div
       {...divProps}
-      className={classNames('YnI-Grid-Item', 'YnI-Grid-Item-Irregular', className)}
+      className={cn('transition-transform duration-200', className)}
       style={{
         ...{
           top: 0,
@@ -193,7 +189,7 @@ const GridItemIrregularNotGuaranteeOrder = ({
   return (
     <div
       {...divProps}
-      className={classNames('YnI-Grid-Item', 'YnI-Grid-Item-Irregular', className)}
+      className={cn('transition-transform duration-200', className)}
       style={{
         ...{
           top: 0,

@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import classNames from 'classnames';
-
 import GridContext, { type GirdContextType, type GridItemMetaDataType } from '../grid-context';
 
 import './grid.css';
+import { cn } from '@/lib';
 
 export type GridProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> & GridPropsType;
 
@@ -73,7 +72,7 @@ export const Grid = ({
 
   return (
     <GridContext.Provider value={rootContext}>
-      <div className={classNames('YnI-Grid-Root')} ref={rootRef}>
+      <div className={cn('w-full')} ref={rootRef}>
         <div
           {...divProps}
           style={{
@@ -91,7 +90,7 @@ export const Grid = ({
             },
             ...style,
           }}
-          className={classNames('YnI-Grid', className)}
+          className={cn('data-[regular="false"]:relative data-[regular="true"]:grid', className)}
           data-regular={!irregular}
         >
           {children}
