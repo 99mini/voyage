@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import classNames from 'classnames';
 
-import { GirdContextType, GridContext, GridItemMetaDataType } from '../grid-context';
+import GridContext, { type GirdContextType, type GridItemMetaDataType } from '../grid-context';
 
 import './grid.css';
 
