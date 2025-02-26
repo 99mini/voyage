@@ -5,12 +5,37 @@ import { createFFmpeg, fetchFile, FFmpeg } from '@ffmpeg/ffmpeg';
 import { Button, Progress } from '@packages/vds';
 
 interface VideoToGifControlsProps {
-  videoFile: File | null;
-  onCompleted: (gifUrl: string) => void;
+  videoFileList: File[];
+  onCompleted: (gifUrlList: string[]) => void;
   className?: string;
 }
 
-const VideoToGifControls = ({ videoFile, onCompleted, className }: VideoToGifControlsProps) => {
+const convertVideoToGif = async (ffmpeg: FFmpeg, videoFile: File) => {
+  // Write the input file to FFmpeg's virtual file system
+  ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(videoFile));
+
+  // Run the FFmpeg command to convert the video to GIF
+  await ffmpeg.run(
+    '-i',
+    'input.mp4',
+    '-r',
+    '10', // Frame rate
+    '-vf',
+    'scale=320:-1', // Scale width to 320px while keeping aspect ratio
+    '-loop',
+    '0', // Infinite loop for GIF
+    'output.gif',
+  );
+
+  // Read the output file
+  const data = ffmpeg.FS('readFile', 'output.gif');
+  const gifBlob = new Blob([data.buffer], { type: 'image/gif' });
+  const gifUrl = URL.createObjectURL(gifBlob);
+
+  return gifUrl;
+};
+
+const VideoToGifControls = ({ videoFileList, onCompleted, className }: VideoToGifControlsProps) => {
   const [ffmpeg, setFFmpeg] = useState<FFmpeg | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -33,7 +58,7 @@ const VideoToGifControls = ({ videoFile, onCompleted, className }: VideoToGifCon
       return;
     }
 
-    if (!videoFile) {
+    if (!videoFileList.length) {
       alert('비디오 파일을 업로드해주세요.');
       return;
     }
@@ -45,38 +70,28 @@ const VideoToGifControls = ({ videoFile, onCompleted, className }: VideoToGifCon
         await ffmpeg.load();
       }
 
-      // Write the input file to FFmpeg's virtual file system
-      ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(videoFile));
+      // async await for convertVideoToGif
+      const gifUrlList: string[] = [];
+      videoFileList.forEach(async (file) => {
+        const gifUrl = await convertVideoToGif(ffmpeg, file);
+        gifUrlList.push(gifUrl);
+      });
 
-      // Run the FFmpeg command to convert the video to GIF
-      await ffmpeg.run(
-        '-i',
-        'input.mp4',
-        '-r',
-        '10', // Frame rate
-        '-vf',
-        'scale=320:-1', // Scale width to 320px while keeping aspect ratio
-        '-loop',
-        '0', // Infinite loop for GIF
-        'output.gif',
-      );
-
-      // Read the output file
-      const data = ffmpeg.FS('readFile', 'output.gif');
-      const gifBlob = new Blob([data.buffer], { type: 'image/gif' });
-      const gifUrl = URL.createObjectURL(gifBlob);
-
-      onCompleted(gifUrl);
+      onCompleted(gifUrlList);
+      setIsLoading(false);
     } catch (error) {
       console.error('Error while converting video to GIF:', error);
-    } finally {
       setIsLoading(false);
     }
   };
 
   return (
     <div className={className}>
-      <Button onClick={convertToGif} disabled={isLoading || !videoFile} className={`px-4 py-2 rounded text-white`}>
+      <Button
+        onClick={convertToGif}
+        disabled={isLoading || !videoFileList.length}
+        className={`px-4 py-2 rounded text-white`}
+      >
         {isLoading ? '변환 중...' : 'GIF로 변환'}
       </Button>
       {progress > 0 && progress < 100 && (

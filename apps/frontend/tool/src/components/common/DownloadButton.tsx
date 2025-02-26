@@ -2,16 +2,28 @@ import React from 'react';
 import { Button } from '@packages/vds';
 
 interface DownloadButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
-  imageUrl: string;
+  imageUrlList: string[];
   children?: React.ReactNode;
+  zip?: boolean;
+  outputFileName?: string;
+  /**
+   * @default: png
+   * @enum: png, jpg, jpeg, gif, mp4, avi, webm, mkv
+   */
+  extension?: string;
 }
 
-const DownloadButton = ({ imageUrl, children, ...props }: DownloadButtonProps) => {
+const DownloadButton = ({ imageUrlList, children, zip, extension, outputFileName, ...props }: DownloadButtonProps) => {
   const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = imageUrl;
-    link.download = 'merged-image.png';
-    link.click();
+    imageUrlList.forEach((imageUrl) => {
+      const link = document.createElement('a');
+      link.href = imageUrl;
+      link.download = `${outputFileName || 'untitled'}.${extension || 'png'}`;
+      link.click();
+    });
+    if (zip) {
+      // TODO: zip 파일 저장 로직 구현 필요
+    }
   };
 
   return (
