@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { createFFmpeg, fetchFile, FFmpeg } from '@ffmpeg/ffmpeg';
 
@@ -10,9 +10,17 @@ interface VideoToGifControlsProps {
   className?: string;
 }
 
-const convertVideoToGif = async (ffmpeg: FFmpeg, videoFile: File) => {
+const convertVideoToGif = async (
+  ffmpeg: FFmpeg,
+  videoFile: File,
+  progressCallback?: (progressParams: { ratio: number }) => void,
+) => {
   // Write the input file to FFmpeg's virtual file system
   ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(videoFile));
+
+  if (progressCallback) {
+    ffmpeg.setProgress(progressCallback);
+  }
 
   // Run the FFmpeg command to convert the video to GIF
   await ffmpeg.run(
@@ -35,25 +43,25 @@ const convertVideoToGif = async (ffmpeg: FFmpeg, videoFile: File) => {
   return gifUrl;
 };
 
-const VideoToGifControls = ({ videoFileList, onCompleted, className }: VideoToGifControlsProps) => {
+const VideoToGifController = ({ videoFileList, onCompleted, className }: VideoToGifControlsProps) => {
   const [ffmpeg, setFFmpeg] = useState<FFmpeg | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [progressList, setProgressList] = useState<Record<number, number>>({});
+
+  const progress = Math.min(
+    Object.values(progressList).reduce((prev, curr) => prev + curr, 0),
+    100,
+  );
 
   useEffect(() => {
     setFFmpeg(
       createFFmpeg({
         log: import.meta.env.DEV,
-        progress: ({ ratio }) => {
-          // ratio is a number between 0 and 1
-          // Multiply by 100 to get a percentage
-          setProgress(ratio * 100);
-        },
       }),
     );
   }, []);
 
-  const convertToGif = async () => {
+  const convertToGif = useCallback(async () => {
     if (!ffmpeg) {
       return;
     }
@@ -70,12 +78,16 @@ const VideoToGifControls = ({ videoFileList, onCompleted, className }: VideoToGi
         await ffmpeg.load();
       }
 
-      // async await for convertVideoToGif
       const gifUrlList: string[] = [];
-      videoFileList.forEach(async (file) => {
-        const gifUrl = await convertVideoToGif(ffmpeg, file);
+
+      for (const file of videoFileList) {
+        const gifUrl = await convertVideoToGif(ffmpeg, file, ({ ratio }) => {
+          setProgressList((prev) => {
+            return { ...prev, [file.name]: (Math.min(ratio, 1) * 100) / videoFileList.length };
+          });
+        });
         gifUrlList.push(gifUrl);
-      });
+      }
 
       onCompleted(gifUrlList);
       setIsLoading(false);
@@ -83,7 +95,7 @@ const VideoToGifControls = ({ videoFileList, onCompleted, className }: VideoToGi
       console.error('Error while converting video to GIF:', error);
       setIsLoading(false);
     }
-  };
+  }, [ffmpeg, onCompleted, videoFileList]);
 
   return (
     <div className={className}>
@@ -94,7 +106,7 @@ const VideoToGifControls = ({ videoFileList, onCompleted, className }: VideoToGi
       >
         {isLoading ? '변환 중...' : 'GIF로 변환'}
       </Button>
-      {progress > 0 && progress < 100 && (
+      {isLoading && progress > 0 && progress < 100 && (
         <div className="mt-4">
           <h2 className="text-lg font-semibold">{`비디오 전환 중...${Math.round(progress)} / 100`}</h2>
           <Progress value={progress} max={100} className="w-full" />
@@ -104,4 +116,4 @@ const VideoToGifControls = ({ videoFileList, onCompleted, className }: VideoToGi
   );
 };
 
-export default VideoToGifControls;
+export default VideoToGifController;

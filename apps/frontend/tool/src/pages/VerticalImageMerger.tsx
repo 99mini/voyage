@@ -44,11 +44,15 @@ function VerticalImageMerger() {
       {uploadedImages.length === 0 ? null : !mergedImage ? (
         <ImageMerger className="text-center" files={uploadedImages} onMergeComplete={handleMergeComplete} />
       ) : (
-        <p className="text-center">{'이미지 병합이 완료되었습니다. '}</p>
+        <p className="text-center">{'이미지 병합이 완료되었습니다.'}</p>
       )}
       <div className="flex flex-row justify-center space-x-4 my-4">
         {mergedImage && <Button onClick={() => setOpenModal(true)}>{'이미지 미리보기'}</Button>}
-        {mergedImage && <DownloadButton imageUrlList={[mergedImage]}>{'이미지 다운로드'}</DownloadButton>}
+        {mergedImage && (
+          <DownloadButton imageUrlList={[mergedImage]} extension="png">
+            {'이미지 다운로드'}
+          </DownloadButton>
+        )}
       </div>
       {openModal && (
         <MergedImagePreviewModal isOpen={openModal} onClose={() => setOpenModal(false)} mergedImageUrl={mergedImage} />

@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import DownloadButton from '@/components/common/DownloadButton';
 import PageTitle from '@/components/common/PageTitle';
 import VideoUploader from '@/components/common/VideoUploader';
-import VideoToGifControls from '@/components/gifGenerator/VideoToGifControls';
+import VideoToGifController from '@/components/gifGenerator/VideoToGifController';
 
 import { Button, ImagePreviewGroup, useToast } from '@packages/vds';
 
@@ -35,17 +35,21 @@ const GifGenerator = () => {
       <p className="text-sm text-gray-400 my-1">{' | 업로드한 파일은 서버로 전송되지 않습니다.'}</p>
       <VideoUploader onUpload={handleUpload} />
       {videoFileList.length > 0 && (
-        <VideoToGifControls className="text-center py-4" videoFileList={videoFileList} onCompleted={handleComplete} />
+        <VideoToGifController className="text-center py-4" videoFileList={videoFileList} onCompleted={handleComplete} />
       )}
-      {gifUrlList.length > 0 && <ImagePreviewGroup images={gifUrlList} />}
       {gifUrlList.length > 0 && (
-        <div className="flex flex-row gap-x-4 justify-center">
-          <DownloadButton imageUrlList={gifUrlList} extension="gif" zip>
-            {'GIF 다운로드'}
-          </DownloadButton>
-          <Button onClick={() => handleUpload([])} variant={'outline'} color="secondary">
-            {'초기화'}
-          </Button>
+        <div className="flex flex-col gap-4">
+          <div className="w-full p-4 border border-gray-200 rounded-md">
+            <ImagePreviewGroup images={gifUrlList} />
+          </div>
+          <div className="flex flex-row gap-x-4 justify-center">
+            <DownloadButton imageUrlList={gifUrlList} extension="gif" zip>
+              {'GIF 다운로드'}
+            </DownloadButton>
+            <Button onClick={() => handleUpload([])} variant={'outline'} color="secondary">
+              {'초기화'}
+            </Button>
+          </div>
         </div>
       )}
     </div>
