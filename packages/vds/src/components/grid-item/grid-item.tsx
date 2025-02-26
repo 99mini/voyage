@@ -31,7 +31,7 @@ const GridItemRegular = ({ ...props }: GridItemProps) => {
   const { className, children, ...divProps } = props;
 
   return (
-    <div {...divProps} className={cn('grid-item-base-styles', 'grid-item-regular', className)}>
+    <div {...divProps} className={cn('transition-transform duration-200', className)}>
       {children}
     </div>
   );
@@ -97,7 +97,7 @@ const GridItemIrregular = ({
   return (
     <div
       {...divProps}
-      className={cn('transition-transform duration-200', className)}
+      className={cn('absolute transition-transform duration-200', className)}
       style={{
         ...{
           top: 0,
@@ -189,7 +189,7 @@ const GridItemIrregularNotGuaranteeOrder = ({
   return (
     <div
       {...divProps}
-      className={cn('transition-transform duration-200', className)}
+      className={cn('absolute transition-transform duration-200', className)}
       style={{
         ...{
           top: 0,
