@@ -35,3 +35,6 @@ storybook-static
 
 # tsconfig
 tsconfig.*.tsbuildinfo
+
+# test
+coverage

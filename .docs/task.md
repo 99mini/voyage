@@ -23,3 +23,7 @@
 
 - [ ] tailwind plugin 구현
 - [x] storybook build & deploy (https://design.zerovoyage.com) (25-02-21)
+
+# ETC
+
+- Web Worker를 이용한 데이터 처리 구현
