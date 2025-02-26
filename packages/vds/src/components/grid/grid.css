@@ -1,0 +1,13 @@
+.YnI-Grid-Root {
+  width: 100%;
+
+  .YnI-Grid {
+    &[data-regular="false"] {
+      position: relative;
+    }
+
+    &[data-regular="true"] {
+      display: grid;
+    }
+  }
+}
