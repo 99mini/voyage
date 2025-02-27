@@ -3,7 +3,7 @@ import type { Meta } from '@storybook/react';
 import ImagePreviewGroup, { type ImagePreviewGroupProps } from '.';
 
 const meta: Meta<typeof ImagePreviewGroup> = {
-  title: 'ImagePreviewGroup',
+  title: 'layout/ImagePreviewGroup',
   component: ImagePreviewGroup,
   tags: ['autodocs'],
   args: {

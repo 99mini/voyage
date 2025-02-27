@@ -4,7 +4,7 @@ import FileUploader from './file-uploader';
 import { useEffect, useState } from 'react';
 
 const meta: Meta<typeof FileUploader> = {
-  title: 'FileUploader',
+  title: 'input/FileUploader',
   component: FileUploader,
   tags: ['autodocs'],
   argTypes: {},

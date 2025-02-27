@@ -3,7 +3,7 @@ import type { Meta } from '@storybook/react';
 import ImagePreviewer, { type ImagePreviewerProps } from '.';
 
 const meta: Meta<typeof ImagePreviewer> = {
-  title: 'ImagePreviewer',
+  title: 'layout/ImagePreviewer',
   component: ImagePreviewer,
   tags: ['autodocs'],
   args: {
