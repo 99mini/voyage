@@ -1,6 +1,7 @@
-# 트렌드 분석기 PRD (Product Requirements Document)
+# 트렌드 분석기 PRD
 
 > 작성일: 2025년 02월 20일
+> 최종수정일: 2025년 02월 20일
 
 ## 1. 개요
 
