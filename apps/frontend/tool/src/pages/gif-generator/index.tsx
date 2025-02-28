@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
 
+import { Button, ImagePreviewGroup, useToast } from '@packages/vds';
+
 import DownloadButton from '@/components/common/DownloadButton';
 import PageTitle from '@/components/common/PageTitle';
-import VideoUploader from '@/components/common/VideoUploader';
-import VideoToGifController from '@/components/gifGenerator/VideoToGifController';
+import VideoUploader from '@/components/input/VideoUploader';
 
-import { Button, ImagePreviewGroup, useToast } from '@packages/vds';
+import VideoToGifController from './components/VideoToGifController';
 
 const GifGenerator = () => {
   const [videoFileList, setVideoFileList] = useState<File[]>([]);

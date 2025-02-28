@@ -4,9 +4,9 @@ import Footer from '@/components/common/Footer';
 import Header from '@/components/common/Header';
 import { Toaster } from '@packages/vds';
 
-import GifGenerator from '@/pages/GifGenerator';
-import Home from '@/pages/Home';
-import VerticalImageMerger from '@/pages/VerticalImageMerger';
+import Home from '@/pages';
+import GifGenerator from '@/pages/gif-generator';
+import VerticalImageMerger from '@/pages/vertical-image-merger';
 
 import { ROUTE_PATH } from '@/constant';
 
