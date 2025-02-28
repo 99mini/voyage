@@ -1,4 +1,4 @@
-import { PAGE_TITLE, ROUTE_PATH } from '@/constant';
+import { PAGE_TITLE, ROUTE_PATH } from '@/lib/constant';
 import { Link } from 'react-router';
 
 function Home() {

@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from 'react-router';
 
-import { ROUTE_PATH, PAGE_TITLE } from '@/constant';
+import { ROUTE_PATH, PAGE_TITLE } from '@/lib/constant';
 import { useMemo } from 'react';
 
 const LinkItem = ({ to, children, isActive }: { to: string; children: React.ReactNode; isActive: boolean }) => {
