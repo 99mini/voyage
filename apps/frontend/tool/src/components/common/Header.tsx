@@ -1,15 +1,26 @@
+import { useMemo } from 'react';
 import { NavLink, useLocation } from 'react-router';
 
-import { ROUTE_PATH, PAGE_TITLE } from '@/lib/constant';
-import { useMemo } from 'react';
+import {
+  cn,
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from '@packages/vds';
+
+import { PAGE_TITLE, ROUTE_PATH } from '@/lib/constant';
 
 const LinkItem = ({ to, children, isActive }: { to: string; children: React.ReactNode; isActive: boolean }) => {
   return (
-    <li>
-      <NavLink to={to} className={isActive ? 'text-blue-400 underline' : 'text-gray-300 hover:text-white'}>
+    <NavLink to={to} className={cn(isActive ? 'text-blue-400 underline ' : 'text-gray-300')}>
+      <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), isActive ? 'hover:text-blue-700' : '')}>
         {children}
-      </NavLink>
-    </li>
+      </NavigationMenuLink>
+    </NavLink>
   );
 };
 
@@ -20,22 +31,31 @@ function Header() {
 
   return (
     <header className="bg-gray-800 text-white p-4 sticky top-0 z-10">
-      <nav className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-xl font-bold">
           <a href="/">{PAGE_TITLE.ROOT}</a>
         </h1>
-        <ul className="flex gap-4">
-          {Object.entries(ROUTE_PATH)
-            .slice(1)
-            .map(([key, value]) => {
-              return (
-                <LinkItem key={value} to={value} isActive={value.slice(1) === path}>
-                  {PAGE_TITLE[key as keyof typeof PAGE_TITLE]}
-                </LinkItem>
-              );
-            })}
-        </ul>
-      </nav>
+        <NavigationMenu orientation="vertical">
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger className="text-black">웹 툴</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="flex flex-col gap-3 p-4">
+                  {Object.entries(ROUTE_PATH)
+                    .slice(1)
+                    .map(([key, value]) => {
+                      return (
+                        <LinkItem key={value} to={value} isActive={value.slice(1) === path}>
+                          {PAGE_TITLE[key as keyof typeof PAGE_TITLE]}
+                        </LinkItem>
+                      );
+                    })}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+      </div>
     </header>
   );
 }
