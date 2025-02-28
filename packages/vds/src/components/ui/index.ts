@@ -3,3 +3,4 @@ export * from './progress';
 export * from './radio-group';
 export * from './toast';
 export * from './toaster';
+export * from './navigation-menu';
