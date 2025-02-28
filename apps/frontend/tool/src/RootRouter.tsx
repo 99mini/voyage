@@ -8,7 +8,7 @@ import Home from '@/pages';
 import GifGenerator from '@/pages/gif-generator';
 import VerticalImageMerger from '@/pages/vertical-image-merger';
 
-import { ROUTE_PATH } from '@/constant';
+import { ROUTE_PATH } from '@/lib/constant';
 
 function RootRouter() {
   return (
