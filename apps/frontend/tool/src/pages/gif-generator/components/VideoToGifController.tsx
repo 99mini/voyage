@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { createFFmpeg, fetchFile, FFmpeg } from '@ffmpeg/ffmpeg';
-
 import { Button, Progress } from '@packages/vds';
+
+import { createFFmpeg, fetchFile, FFmpeg } from '@ffmpeg/ffmpeg';
 
 interface VideoToGifControlsProps {
   videoFileList: File[];

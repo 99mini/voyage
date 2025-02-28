@@ -1,11 +1,13 @@
 import { useCallback, useState } from 'react';
 
-import DownloadButton from '@/components/common/DownloadButton';
-import ImageUploader from '@/components/common/ImageUploader';
-import PageTitle from '@/components/common/PageTitle';
-import ImageMerger from '@/components/verticalMerger/ImageMerger';
-import MergedImagePreviewModal from '@/components/verticalMerger/MergedImagePreviewModal';
 import { Button, useToast } from '@packages/vds';
+
+import DownloadButton from '@/components/common/DownloadButton';
+import ImageUploader from '@/components/input/ImageUploader';
+import PageTitle from '@/components/common/PageTitle';
+
+import ImageMerger from './components/ImageMerger';
+import MergedImagePreviewModal from './components/MergedImagePreviewModal';
 
 function VerticalImageMerger() {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
