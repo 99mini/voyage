@@ -1,4 +1,4 @@
-import RootRouter from './RootRouter';
+import RootRouter from './root-router';
 
 import './index.css';
 

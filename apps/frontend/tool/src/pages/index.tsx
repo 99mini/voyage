@@ -1,9 +1,12 @@
-import { PAGE_TITLE, ROUTE_PATH } from '@/lib/constant';
 import { Link } from 'react-router';
+
+import RootLayout from '@/components/layout/root-layout';
+
+import { PAGE_TITLE, ROUTE_PATH } from '@/lib/constant';
 
 function Home() {
   return (
-    <div className="container mx-auto">
+    <RootLayout title={PAGE_TITLE.ROOT}>
       <ul className="space-y-2">
         {Object.entries(ROUTE_PATH).map(([key, path]) => {
           const title = PAGE_TITLE[key as keyof typeof PAGE_TITLE];
@@ -16,7 +19,7 @@ function Home() {
           );
         })}
       </ul>
-    </div>
+    </RootLayout>
   );
 }
 

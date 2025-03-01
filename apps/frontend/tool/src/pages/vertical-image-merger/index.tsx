@@ -2,12 +2,15 @@ import { useCallback, useState } from 'react';
 
 import { Button, useToast } from '@packages/vds';
 
-import DownloadButton from '@/components/common/DownloadButton';
-import ImageUploader from '@/components/input/ImageUploader';
-import PageTitle from '@/components/common/PageTitle';
+import Description from '@/components/common/description';
+import DownloadButton from '@/components/common/download-button';
+import ImageUploader from '@/components/input/image-uploader';
+import RootLayout from '@/components/layout/root-layout';
 
-import ImageMerger from './components/ImageMerger';
-import MergedImagePreviewModal from './components/MergedImagePreviewModal';
+import ImageMerger from './components/image-merger';
+import MergedImagePreviewModal from './components/merged-image-preview-modal';
+
+import { PAGE_TITLE } from '@/lib/constant';
 
 function VerticalImageMerger() {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
@@ -38,9 +41,8 @@ function VerticalImageMerger() {
   };
 
   return (
-    <div>
-      <PageTitle>{'새로 이미지 병합기'}</PageTitle>
-      <p className="text-sm text-gray-400 my-1">{' | 업로드한 파일은 서버로 전송되지 않습니다.'}</p>
+    <RootLayout title={PAGE_TITLE.VERTICAL_IMAGE_MERGER}>
+      <Description>{' | 업로드한 파일은 서버로 전송되지 않습니다.'}</Description>
       <ImageUploader images={uploadedImages} onUpload={setUploadedImages} onRemove={handleRemove} />
       {uploadedImages.length > 0 && <Button onClick={handleReset}>{'초기화'}</Button>}
       {uploadedImages.length === 0 ? null : !mergedImage ? (
@@ -59,7 +61,7 @@ function VerticalImageMerger() {
       {openModal && (
         <MergedImagePreviewModal isOpen={openModal} onClose={() => setOpenModal(false)} mergedImageUrl={mergedImage} />
       )}
-    </div>
+    </RootLayout>
   );
 }
 

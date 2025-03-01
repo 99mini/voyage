@@ -1,8 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 
-import Footer from '@/components/common/Footer';
-import Header from '@/components/common/Header';
 import { Toaster } from '@packages/vds';
+
+import Footer from '@/components/common/footer';
+import Header from '@/components/common/header';
 
 import Home from '@/pages';
 import GifGenerator from '@/pages/gif-generator';
@@ -16,7 +17,7 @@ function RootRouter() {
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
         <Header />
-        <main className="container mx-auto p-4 flex-grow">
+        <main className="container mx-auto py-4 flex-grow">
           <Routes>
             <Route path={ROUTE_PATH.ROOT} element={<Home />} />
             <Route path={ROUTE_PATH.VERTICAL_IMAGE_MERGER} element={<VerticalImageMerger />} />
