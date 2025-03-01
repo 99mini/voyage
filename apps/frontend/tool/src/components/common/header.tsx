@@ -16,11 +16,13 @@ import { PAGE_TITLE, ROUTE_PATH } from '@/lib/constant';
 
 const LinkItem = ({ to, children, isActive }: { to: string; children: React.ReactNode; isActive: boolean }) => {
   return (
-    <NavLink to={to} className={cn(isActive ? 'text-blue-400 underline ' : 'text-gray-300')}>
-      <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), isActive ? 'hover:text-blue-700' : '')}>
-        {children}
+    <li>
+      <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), isActive ? 'hover:text-blue-700' : '')}>
+        <NavLink to={to} className={cn(isActive ? 'text-blue-400 underline ' : 'text-gray-300')}>
+          {children}
+        </NavLink>
       </NavigationMenuLink>
-    </NavLink>
+    </li>
   );
 };
 
