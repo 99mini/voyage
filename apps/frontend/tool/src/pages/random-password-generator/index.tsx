@@ -1,21 +1,14 @@
-import { useState, useEffect, useCallback } from 'react';
+import { Check, Copy } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-  Button,
-  Slider,
-  Checkbox,
-  Label,
-  Input,
-  useToast,
-} from '@packages/vds';
+import { Button, Input, Label, Slider, useToast } from '@packages/vds';
 
-import { Copy, Check } from 'lucide-react';
+import Description from '@/components/common/description';
+import RootLayout from '@/components/layout/root-layout';
+
+import OptionCheckbox from './components/option-checkbox';
+
+import { PAGE_TITLE } from '@/lib/constant';
 
 const RandomPasswordGenerator = () => {
   const [password, setPassword] = useState<string>('');
@@ -71,13 +64,10 @@ const RandomPasswordGenerator = () => {
   }, [generatePassword]);
 
   return (
-    <div className="container mx-auto py-8">
-      <Card className="w-full max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle>랜덤 비밀번호 생성기</CardTitle>
-          <CardDescription>비밀번호 길이와 포함할 문자 유형을 선택하세요</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
+    <RootLayout title={PAGE_TITLE.RANDOM_PASSWORD_GENERATOR}>
+      <Description>{'비밀번호 길이와 포함할 문자 유형을 선택하세요'}</Description>
+      <div className="w-full max-w-2xl mx-auto space-y-6 py-4">
+        <div className="space-y-6">
           <div className="flex items-center space-x-4">
             <Input value={password} readOnly className="flex-1 font-mono text-lg" />
             <Button
@@ -104,49 +94,40 @@ const RandomPasswordGenerator = () => {
               onValueChange={(value) => setPasswordLength(value[0])}
             />
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="uppercase"
-                checked={includeUppercase}
-                onCheckedChange={(checked) => setIncludeUppercase(checked as boolean)}
-              />
-              <Label htmlFor="uppercase">영문 대문자 포함</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="lowercase"
-                checked={includeLowercase}
-                onCheckedChange={(checked) => setIncludeLowercase(checked as boolean)}
-              />
-              <Label htmlFor="lowercase">영문 소문자 포함</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="numbers"
-                checked={includeNumbers}
-                onCheckedChange={(checked) => setIncludeNumbers(checked as boolean)}
-              />
-              <Label htmlFor="numbers">숫자 포함</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="specialChars"
-                checked={includeSpecialChars}
-                onCheckedChange={(checked) => setIncludeSpecialChars(checked as boolean)}
-              />
-              <Label htmlFor="specialChars">특수문자 포함</Label>
-            </div>
+            <OptionCheckbox
+              id="uppercase"
+              label="영문 대문자 포함"
+              checked={includeUppercase}
+              onCheckedChange={(checked) => setIncludeUppercase(checked as boolean)}
+            />
+            <OptionCheckbox
+              id="lowercase"
+              label="영문 소문자 포함"
+              checked={includeLowercase}
+              onCheckedChange={(checked) => setIncludeLowercase(checked as boolean)}
+            />
+            <OptionCheckbox
+              id="numbers"
+              label="숫자 포함"
+              checked={includeNumbers}
+              onCheckedChange={(checked) => setIncludeNumbers(checked as boolean)}
+            />
+            <OptionCheckbox
+              id="specialChars"
+              label="특수문자 포함"
+              checked={includeSpecialChars}
+              onCheckedChange={(checked) => setIncludeSpecialChars(checked as boolean)}
+            />
           </div>
-        </CardContent>
-        <CardFooter>
+        </div>
+        <div>
           <Button onClick={generatePassword} className="w-full">
             새로운 비밀번호 생성
           </Button>
-        </CardFooter>
-      </Card>
-    </div>
+        </div>
+      </div>
+    </RootLayout>
   );
 };
 

@@ -2,11 +2,14 @@ import { useCallback, useState } from 'react';
 
 import { Button, ImagePreviewGroup, useToast } from '@packages/vds';
 
-import DownloadButton from '@/components/common/DownloadButton';
-import PageTitle from '@/components/common/PageTitle';
-import VideoUploader from '@/components/input/VideoUploader';
+import Description from '@/components/common/description';
+import DownloadButton from '@/components/common/download-button';
+import VideoUploader from '@/components/input/video-uploader';
+import RootLayout from '@/components/layout/root-layout';
 
-import VideoToGifController from './components/VideoToGifController';
+import VideoToGifController from './components/video-to-gif-controller';
+
+import { PAGE_TITLE } from '@/lib/constant';
 
 const GifGenerator = () => {
   const [videoFileList, setVideoFileList] = useState<File[]>([]);
@@ -39,9 +42,8 @@ const GifGenerator = () => {
   };
 
   return (
-    <div>
-      <PageTitle>{'GIF 생성기'}</PageTitle>
-      <p className="text-sm text-gray-400 my-1">{' | 업로드한 파일은 서버로 전송되지 않습니다.'}</p>
+    <RootLayout title={PAGE_TITLE.GIF_GENERATOR}>
+      <Description>{' | 업로드한 파일은 서버로 전송되지 않습니다.'}</Description>
       <VideoUploader onUpload={handleUpload} onRemove={handleRemove} onReset={handleReset} />
       {videoFileList.length > 0 && (
         <VideoToGifController className="text-center py-4" videoFileList={videoFileList} onCompleted={handleComplete} />
@@ -61,7 +63,7 @@ const GifGenerator = () => {
           </div>
         </div>
       )}
-    </div>
+    </RootLayout>
   );
 };
 
