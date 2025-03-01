@@ -14,7 +14,7 @@ const ImageUploader = ({ images, onUpload, onRemove }: ImageUploaderProps) => {
         files={images}
         onUpload={onUpload}
         onRemove={onRemove}
-        className="w-full border border-gray-200 rounded-md p-2"
+        className="w-auto border border-gray-200 rounded-md p-2"
         InputProps={{ accept: 'image/*', id: 'image-file' }}
       />
     </div>
