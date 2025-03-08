@@ -6,7 +6,7 @@
     "module": "ESNext",
     "baseUrl": ".",
     "paths": {
-      "@rest/common/*": ["./src/common/*"]
+      "@rest/*": ["./src/*"]
     }
   },
   "include": ["./src/**/*"],

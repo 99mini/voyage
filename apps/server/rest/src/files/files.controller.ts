@@ -7,12 +7,15 @@ import {
   Post,
   Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import * as multer from 'multer';
+
+import { ApiKeyGuard } from '@rest/guards/api-key.guard';
 
 import { FilesService } from './files.service';
 
@@ -24,6 +27,7 @@ export class FilesController {
   private readonly volumePath = 'test';
 
   @Post()
+  @UseGuards(ApiKeyGuard)
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@Res() res: Response, @UploadedFile() file: Express.Multer.File) {
     if (!file) {

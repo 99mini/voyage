@@ -18,6 +18,8 @@ await esbuild.build({
     'process.env.DO_API_KEY': `"${process.env.DO_API_KEY}"`,
     'process.env.DO_FUNCTIONS_API_KEY': `"${process.env.DO_FUNCTIONS_API_KEY}"`,
     'process.env.DO_FUNCTIONS_API_ENDPOINT': `"${process.env.DO_FUNCTIONS_API_ENDPOINT}"`,
+    'process.env.NODE_ENV': `"${process.env.NODE_ENV}"`,
+    'process.env.API_KEY': `"${process.env.API_KEY}"`,
   },
   external: [
     // Node.js 내장 모듈
