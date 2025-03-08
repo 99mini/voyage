@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common';
-
-import { CommonModule } from '@rest/common/common.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 import { FilesController } from './files.controller';
 import { FilesService } from './files.service';
 
 @Module({
-  imports: [CommonModule],
+  imports: [
+    MulterModule.register({
+      dest: process.env.NODE_ENV === 'production' ? './.temp/uploads' : './test/temp',
+    }),
+  ],
   controllers: [FilesController],
   providers: [FilesService],
 })

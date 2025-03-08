@@ -7,6 +7,7 @@ export class HealthService {
       ok: true,
       timestamp: new Date().toISOString(),
       service: 'rest-api',
+      env: process.env.NODE_ENV,
     };
   }
 

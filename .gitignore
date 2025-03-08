@@ -19,6 +19,9 @@ dist
 dist-ssr
 storybook-static
 
+# temp
+.temp
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -32,6 +35,8 @@ storybook-static
 
 # env
 .env
+.env.production
+.env.development
 
 # tsconfig
 tsconfig.*.tsbuildinfo

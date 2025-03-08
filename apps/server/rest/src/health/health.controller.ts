@@ -1,5 +1,7 @@
-import { Body, Controller, Get, HttpCode, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Inject, Post, Res } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
+
 import { HealthService } from './health.service';
 
 @ApiTags('Health')
@@ -12,8 +14,12 @@ export class HealthController {
     status: 200,
     description: 'Success',
   })
-  check() {
-    return this.healthService.check();
+  check(@Res() res: Response) {
+    return res.status(HttpStatus.OK).json({
+      status: 200,
+      message: 'success',
+      data: this.healthService.check(),
+    });
   }
 
   @Post()
@@ -21,7 +27,11 @@ export class HealthController {
     status: 200,
     description: 'Success',
   })
-  postCheck(@Body() body: any) {
-    return this.healthService.postCheck(body);
+  postCheck(@Res() res: Response, @Body() body: any) {
+    return res.status(HttpStatus.OK).json({
+      status: HttpStatus.OK,
+      message: 'success',
+      data: this.healthService.postCheck(body),
+    });
   }
 }

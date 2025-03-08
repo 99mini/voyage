@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-console.log('🔨 Building with esbuild...');
+console.log(`🔨 Building with esbuild...: ${process.env.NODE_ENV}`);
 
 await esbuild.build({
   entryPoints: ['src/main.ts'],
