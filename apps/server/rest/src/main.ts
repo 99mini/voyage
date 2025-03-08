@@ -12,6 +12,7 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // TODO: swagger production 환경에서 적용
   // 스웨거 설정
   const config = new DocumentBuilder()
     .setTitle('zerovoyage API')
