@@ -38,3 +38,7 @@ tsconfig.*.tsbuildinfo
 
 # test
 coverage
+
+# ssh
+.ssh
+.*-ssh-key
