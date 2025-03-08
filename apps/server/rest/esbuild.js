@@ -55,6 +55,8 @@ await esbuild.build({
     '@nestjs/platform-socket.io',
     'class-transformer',
     'class-validator',
+    // Swagger
+    '@nestjs/swagger',
   ],
 });
 

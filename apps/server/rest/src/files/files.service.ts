@@ -26,6 +26,9 @@ export class FilesService {
     // 임시 폴더에서 파일 이동
     await fs.copyFile(join(tempDir, file.originalname), targetPath);
 
+    // 임시 폴더에 저장된 파일 삭제
+    await fs.rm(tempDir, { recursive: true });
+
     // 환경에 따라 다른 경로 반환
     return `${this.basePath}/${path}/${file.originalname}`;
   }
