@@ -9,7 +9,7 @@ sidebar_position: 1
 ## 자격증 공부
 
 1. [정보처리가사](/docs/category/정보처리기사)
-2. [SQLD(To be continued)](/docs/category/sqld)
+2. [SQLD](/docs/category/sqld)
 
 ## 컴퓨터 과학
 
