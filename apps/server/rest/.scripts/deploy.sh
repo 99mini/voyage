@@ -24,10 +24,11 @@ rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./ecosystem.config.js r
 echo "✅ Deploy completed"
 
 # 3. restart pm2
-echo "🔄 Restarting PM2 process..."
+echo "🚀 Restarting PM2 process..."
 
 ssh $REMOTE_USER@$PUBLIC_IP << EOF
   cd $REMOTE_DIR
+  mkdir -p logs
 
   if pm2 list | grep -q "$APP_NAME"; then
     pm2 restart ecosystem.config.js --env production
