@@ -1,11 +1,11 @@
 import { HttpModule } from '@nestjs/axios';
 import { Global, Module } from '@nestjs/common';
-import { ServerlessProxyService } from './services/serverless-proxy.service';
+import { ServerlessProxyService, ApproachStaticService } from './services';
 
 @Global()
 @Module({
   imports: [HttpModule],
-  providers: [ServerlessProxyService],
-  exports: [ServerlessProxyService],
+  providers: [ServerlessProxyService, ApproachStaticService],
+  exports: [ServerlessProxyService, ApproachStaticService],
 })
 export class CommonModule {}
