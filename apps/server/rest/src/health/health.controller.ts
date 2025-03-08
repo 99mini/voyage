@@ -52,7 +52,7 @@ export class HealthController {
     schema: {
       type: 'object',
       properties: {
-        test: { type: 'string', example: 'test' },
+        testKey: { type: 'string', example: 'testValue' },
       },
     },
   })
@@ -70,7 +70,7 @@ export class HealthController {
             timestamp: { type: 'string', example: '2025-03-09T03:05:26+09:00' },
             service: { type: 'string', example: 'rest-api' },
             env: { type: 'string', example: 'development' },
-            body: { type: 'object', example: { test: 'test' } },
+            body: { type: 'object', example: { testKey: 'testValue' } },
           },
         },
       },
