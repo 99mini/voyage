@@ -34,7 +34,8 @@ export type FileInputProps = {
   onRemove?: (file: File) => void;
   onReset?: () => void;
   onClickReset?: React.MouseEventHandler;
-} & Omit<InputProps, 'type' | 'onChange'>;
+  readOnly?: boolean;
+} & Omit<InputProps, 'type' | 'onChange' | 'readOnly'>;
 
 const FileInput = ({
   className,
@@ -44,6 +45,7 @@ const FileInput = ({
   onRemove,
   onReset,
   onClickReset,
+  readOnly,
   ...props
 }: FileInputProps) => {
   const [files, setFiles] = useState<File[]>([]);
@@ -51,6 +53,9 @@ const FileInput = ({
   const inputId = useId();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (readOnly) {
+      return;
+    }
     if (!event.target.files?.length) {
       return;
     }
@@ -59,6 +64,9 @@ const FileInput = ({
   };
 
   const handleAppendFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (readOnly) {
+      return;
+    }
     if (!event.target.files?.length) {
       return;
     }

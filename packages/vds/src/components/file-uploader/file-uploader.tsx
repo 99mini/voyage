@@ -97,10 +97,11 @@ const FileUploader = ({
               className={cn('w-full h-full border-dashed', InputProps?.className)}
               onChange={handleFileChange}
               multiple
+              readOnly
               {...InputProps}
             >
               <span className="flex items-center justify-center w-full h-full text-gray-400 cursor-pointer">
-                클릭하여 파일 선택
+                클릭하여 추가 파일 선택
               </span>
             </FileInput>
           )}
