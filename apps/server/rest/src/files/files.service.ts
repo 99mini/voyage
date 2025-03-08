@@ -24,7 +24,7 @@ export class FilesService {
     await fs.rename(file.path, join(tempDir, file.originalname));
 
     // 임시 폴더에서 파일 이동
-    await fs.rename(join(tempDir, file.originalname), targetPath);
+    await fs.copyFile(join(tempDir, file.originalname), targetPath);
 
     // 환경에 따라 다른 경로 반환
     return `${this.basePath}/${path}/${file.originalname}`;
