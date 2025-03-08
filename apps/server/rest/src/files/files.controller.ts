@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Delete,
   Get,
@@ -15,18 +14,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiConsumes,
-  ApiOkResponse,
-  ApiBearerAuth,
-  ApiHeader,
-  ApiBody,
-  ApiQuery,
-} from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiHeader, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import * as multer from 'multer';
 
 import { ApiKeyGuard } from '@rest/guards/api-key.guard';
 
@@ -44,8 +33,6 @@ import { FilesService } from './files.service';
 export class FilesController {
   constructor(@Inject(FilesService) private readonly filesService: FilesService) {}
 
-  private readonly volumePath = 'test';
-
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({
@@ -53,6 +40,12 @@ export class FilesController {
     description: '파일을 서버에 업로드합니다. API 키 인증이 필요합니다.',
   })
   @ApiConsumes('multipart/form-data')
+  @ApiQuery({
+    name: 'path',
+    description: '파일 경로',
+    example: 'test',
+    required: false,
+  })
   @ApiBody({
     description: '업로드할 파일',
     schema: {
@@ -83,12 +76,10 @@ export class FilesController {
       },
     },
   })
-  async uploadFile(@Res() res: Response, @UploadedFile() file: Express.Multer.File) {
+  async uploadFile(@Res() res: Response, @UploadedFile() file: Express.Multer.File, @Query('path') path: string) {
     if (!file) {
       throw new HttpException('파일이 없습니다.', HttpStatus.BAD_REQUEST);
     }
-
-    const path = this.volumePath;
 
     const filePath = await this.filesService.saveFile(file, path);
     // 환경에 따라 다른 URL 반환
@@ -135,13 +126,17 @@ export class FilesController {
       },
     },
   })
-  async listFiles(@Res() res: Response, @Query('path') path: string) {
-    const files = await this.filesService.readList(path);
-    return res.status(HttpStatus.OK).json({
-      status: HttpStatus.OK,
-      message: 'success',
-      data: files,
-    });
+  async listFiles(@Res() res: Response, @Query('path') path?: string) {
+    try {
+      const files = await this.filesService.readList(path);
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: files,
+      });
+    } catch (error) {
+      throw new HttpException(`파일 목록을 찾일 수 없습니다: '/${path}'`, HttpStatus.NOT_FOUND);
+    }
   }
 
   @Delete()
@@ -196,14 +191,19 @@ export class FilesController {
     },
   })
   async deleteFile(@Res() res: Response, @Query('path') path: string, @Query('filename') filename: string) {
-    await this.filesService.deleteFile(path, filename);
-    return res.status(HttpStatus.OK).json({
-      status: HttpStatus.OK,
-      message: 'success',
-      data: {
-        path,
-        filename,
-      },
-    });
+    try {
+      await this.filesService.deleteFile(path, filename);
+
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: {
+          path,
+          filename,
+        },
+      });
+    } catch (error) {
+      throw new HttpException(`파일 경로를 찾을 수 없습니다: '/${path}/${filename}'`, HttpStatus.NOT_FOUND);
+    }
   }
 }

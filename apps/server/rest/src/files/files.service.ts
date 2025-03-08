@@ -33,15 +33,11 @@ export class FilesService {
     return `${this.basePath}/${path}/${file.originalname}`;
   }
 
-  async readList(path: string): Promise<string[]> {
-    return fs.readdir(join(this.basePath, path));
+  async readList(path?: string): Promise<string[]> {
+    return fs.readdir(join(this.basePath, path ?? ''));
   }
 
   async deleteFile(path: string, filename: string) {
-    try {
-      await fs.unlink(join(this.basePath, path, filename));
-    } catch (error) {
-      throw new Error(`파일이 없습니다. : ${path}/${filename}`);
-    }
+    await fs.unlink(join(this.basePath, path, filename));
   }
 }
