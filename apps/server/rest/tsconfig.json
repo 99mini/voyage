@@ -1,12 +1,13 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "strictPropertyInitialization": false,
     "rootDir": "./src",
     "outDir": "./dist",
     "module": "ESNext",
     "baseUrl": ".",
     "paths": {
-      "@rest/common/*": ["./src/common/*"]
+      "@server-rest/*": ["./src/*"]
     }
   },
   "include": ["./src/**/*"],
