@@ -121,8 +121,19 @@ export class FilesController {
         data: {
           type: 'array',
           items: {
-            type: 'string',
-            example: 'example.jpg',
+            type: 'object',
+            properties: {
+              name: { type: 'string', example: 'example.jpg' },
+              parentPath: { type: 'string', example: 'test' },
+              path: { type: 'string', example: 'test/example.jpg' },
+              isFile: { type: 'boolean', example: true },
+              isDirectory: { type: 'boolean', example: false },
+              isBlockDevice: { type: 'boolean', example: false },
+              isCharacterDevice: { type: 'boolean', example: false },
+              isSymbolicLink: { type: 'boolean', example: false },
+              isFIFO: { type: 'boolean', example: false },
+              isSocket: { type: 'boolean', example: false },
+            },
           },
         },
       },

@@ -64,9 +64,36 @@ export class FilesService {
     return `${this.basePath}/${path}/${file.originalname}`;
   }
 
-  async readList(path?: string): Promise<string[]> {
+  async readList(path?: string): Promise<
+    {
+      name: string;
+      parentPath: string;
+      path: string;
+      isFile: boolean;
+      isDirectory: boolean;
+      isBlockDevice: boolean;
+      isCharacterDevice: boolean;
+      isSymbolicLink: boolean;
+      isFIFO: boolean;
+      isSocket: boolean;
+    }[]
+  > {
     try {
-      return fs.readdir(join(this.basePath, path ?? ''));
+      const direntList = await fs.readdir(join(this.basePath, path ?? ''), {
+        withFileTypes: true,
+      });
+      return direntList.map((dirent) => ({
+        name: dirent.name,
+        parentPath: path ?? '',
+        path: join(path ?? '', dirent.name),
+        isFile: dirent.isFile(),
+        isDirectory: dirent.isDirectory(),
+        isSymbolicLink: dirent.isSymbolicLink(),
+        isBlockDevice: dirent.isBlockDevice(),
+        isCharacterDevice: dirent.isCharacterDevice(),
+        isFIFO: dirent.isFIFO(),
+        isSocket: dirent.isSocket(),
+      }));
     } catch (error) {
       Logger.error(error);
       throw new HttpException('Failed to retrieve file list', HttpStatus.INTERNAL_SERVER_ERROR);
