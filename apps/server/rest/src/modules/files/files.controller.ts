@@ -54,8 +54,7 @@ export class FilesController {
         path: {
           type: 'string',
           description: 'File path',
-          example: 'test',
-          required: ['path'],
+          example: 'path/to',
         },
       },
     },
@@ -70,8 +69,8 @@ export class FilesController {
         data: {
           type: 'object',
           properties: {
-            filePath: { type: 'string', example: './test/uploads/test/example.jpg' },
-            publicUrl: { type: 'string', example: 'http://localhost:3000/test/uploads/test/example.jpg' },
+            filePath: { type: 'string', example: './test/uploads/path/to/example.jpg' },
+            publicUrl: { type: 'string', example: 'http://localhost:3000/test/uploads/path/to/example.jpg' },
           },
         },
       },
