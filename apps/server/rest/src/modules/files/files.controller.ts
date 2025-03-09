@@ -6,6 +6,7 @@ import {
   HttpException,
   HttpStatus,
   Inject,
+  Patch,
   Post,
   Query,
   Res,
@@ -16,9 +17,12 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiHeader, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import * as multer from 'multer';
 
 import { ApiKeyGuard } from '@server-rest/auth/guards/api-key.guard';
+
+import { RenameFileDto } from './dto';
+
+import { NewFileEntity, ReadFileEntity, UpdateFileEntity } from './entities';
 
 import { FilesService } from './files.service';
 
@@ -76,7 +80,17 @@ export class FilesController {
       },
     },
   })
-  async uploadFile(@Res() res: Response, @UploadedFile() file: Express.Multer.File, @Body() body: { path: string }) {
+  async uploadFile(
+    @Res() res: Response,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: { path: string },
+  ): Promise<
+    Response<{
+      status: number;
+      message: string;
+      data: NewFileEntity;
+    }>
+  > {
     if (!file) {
       throw new HttpException('File is required', HttpStatus.BAD_REQUEST);
     }
@@ -139,7 +153,16 @@ export class FilesController {
       },
     },
   })
-  async listFiles(@Res() res: Response, @Query('path') path?: string) {
+  async listFiles(
+    @Res() res: Response,
+    @Query('path') path?: string,
+  ): Promise<
+    Response<{
+      status: number;
+      message: string;
+      data: ReadFileEntity[];
+    }>
+  > {
     const files = await this.filesService.readList(path);
     return res.status(HttpStatus.OK).json({
       status: HttpStatus.OK,
@@ -148,6 +171,94 @@ export class FilesController {
     });
   }
 
+  @Patch()
+  @ApiOperation({
+    summary: 'Rename file',
+    description: 'Renames a file.',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        filename: { type: 'string', example: 'old-example.jpg' },
+        newFilename: { type: 'string', example: 'new-example.jpg' },
+        path: { type: 'string', example: 'path/old' },
+        newPath: { type: 'string', example: 'path/new' },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: 'File renamed successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        status: { type: 'number', example: HttpStatus.OK },
+        message: { type: 'string', example: 'success' },
+        data: {
+          type: 'object',
+          properties: {
+            path: { type: 'string', example: './test/uploads/path/new' },
+            filename: { type: 'string', example: 'new-example.jpg' },
+          },
+        },
+      },
+    },
+  })
+  async renameFile(
+    @Res() res: Response,
+    @Body() body: RenameFileDto,
+  ): Promise<
+    Response<{
+      status: number;
+      message: string;
+      data: UpdateFileEntity;
+    }>
+  > {
+    const { path, newPath, filename, newFilename } = body;
+
+    if (!newPath && !newFilename) {
+      throw new HttpException('Either newPath or newFilename is required', HttpStatus.BAD_REQUEST);
+    }
+
+    if (newPath && newFilename) {
+      throw new HttpException(
+        'Both newPath and newFilename are provided. Please provide only one of them.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    /** move file */
+    if (newPath) {
+      await this.filesService.moveFile({ path, newPath, filename });
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: {
+          path,
+          filename: newFilename,
+        },
+      });
+    }
+
+    /** rename file */
+    if (newFilename) {
+      await this.filesService.renameFile({ path, filename, newFilename });
+      return res.status(HttpStatus.OK).json({
+        status: HttpStatus.OK,
+        message: 'success',
+        data: {
+          path,
+          filename: newFilename,
+        },
+      });
+    }
+
+    /** not reachabele */
+    return res.status(HttpStatus.NOT_IMPLEMENTED).json({
+      status: HttpStatus.NOT_IMPLEMENTED,
+      message: 'Not implemented',
+    });
+  }
   @Delete()
   @ApiOperation({
     summary: 'Delete file',
@@ -182,24 +293,17 @@ export class FilesController {
       },
     },
   })
-  @ApiOkResponse({
-    description: 'File deleted successfully',
-    schema: {
-      type: 'object',
-      properties: {
-        status: { type: 'number', example: 200 },
-        message: { type: 'string', example: 'success' },
-        data: {
-          type: 'object',
-          properties: {
-            path: { type: 'string', example: './test/uploads/test' },
-            filename: { type: 'string', example: 'example.jpg' },
-          },
-        },
-      },
-    },
-  })
-  async deleteFile(@Res() res: Response, @Query('path') path: string, @Query('filename') filename: string) {
+  async deleteFile(
+    @Res() res: Response,
+    @Query('path') path: string,
+    @Query('filename') filename: string,
+  ): Promise<
+    Response<{
+      status: number;
+      message: string;
+      data: UpdateFileEntity;
+    }>
+  > {
     await this.filesService.deleteFile(path, filename);
 
     return res.status(HttpStatus.OK).json({

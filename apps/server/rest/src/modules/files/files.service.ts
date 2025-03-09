@@ -4,6 +4,9 @@ import * as multer from 'multer';
 import { join } from 'path';
 import { promises as fs, RmOptions } from 'fs';
 
+import { ReadFileEntity } from './entities';
+import { RenameFileDto } from './dto';
+
 @Injectable()
 export class FilesService {
   private readonly basePath =
@@ -12,6 +15,15 @@ export class FilesService {
       : './test/uploads'; // 로컬 개발 환경
 
   private readonly tempBasePath = process.env.NODE_ENV === 'production' ? './.temp/uploads' : './test/temp';
+
+  private async _isExistDir(path: string) {
+    try {
+      await fs.access(path);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 
   private async _createDir(path: string) {
     try {
@@ -64,20 +76,7 @@ export class FilesService {
     return `${this.basePath}/${path}/${file.originalname}`;
   }
 
-  async readList(path?: string): Promise<
-    {
-      name: string;
-      parentPath: string;
-      path: string;
-      isFile: boolean;
-      isDirectory: boolean;
-      isBlockDevice: boolean;
-      isCharacterDevice: boolean;
-      isSymbolicLink: boolean;
-      isFIFO: boolean;
-      isSocket: boolean;
-    }[]
-  > {
+  async readList(path?: string): Promise<ReadFileEntity[]> {
     try {
       const direntList = await fs.readdir(join(this.basePath, path ?? ''), {
         withFileTypes: true,
@@ -98,6 +97,36 @@ export class FilesService {
       Logger.error(error);
       throw new HttpException('Failed to retrieve file list', HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  async renameFile(dto: Required<Pick<RenameFileDto, 'path' | 'filename' | 'newFilename'>>) {
+    const { path, filename, newFilename } = dto;
+
+    const isExistPath = await this._isExistDir(join(this.basePath, path));
+
+    if (!isExistPath) {
+      throw new HttpException('Path not found', HttpStatus.BAD_REQUEST);
+    }
+
+    const oldPath = join(this.basePath, path, filename);
+    const newPath = join(this.basePath, path, newFilename);
+
+    await fs.rename(oldPath, newPath);
+  }
+
+  async moveFile(dto: Required<Pick<RenameFileDto, 'path' | 'filename' | 'newPath'>>) {
+    const { path, filename, newPath: targetPath } = dto;
+
+    const isExistPath = await this._isExistDir(join(this.basePath, targetPath));
+
+    if (!isExistPath) {
+      throw new HttpException('Path not found', HttpStatus.BAD_REQUEST);
+    }
+
+    const oldPath = join(this.basePath, path, filename);
+    const newPath = join(this.basePath, targetPath, filename);
+
+    await fs.rename(oldPath, newPath);
   }
 
   async deleteFile(path: string, filename: string) {
