@@ -117,9 +117,15 @@ export class FilesService {
   async moveFile(dto: Required<Pick<RenameFileDto, 'path' | 'filename' | 'newPath'>>) {
     const { path, filename, newPath: targetPath } = dto;
 
-    const isExistPath = await this._isExistDir(join(this.basePath, targetPath));
+    const isExistFile = await this._isExistDir(join(this.basePath, path, filename));
 
-    if (!isExistPath) {
+    if (!isExistFile) {
+      throw new HttpException('File not found', HttpStatus.BAD_REQUEST);
+    }
+
+    const isExistDest = await this._isExistDir(join(this.basePath, targetPath));
+
+    if (!isExistDest) {
       throw new HttpException('Path not found', HttpStatus.BAD_REQUEST);
     }
 
