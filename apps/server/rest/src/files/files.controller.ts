@@ -27,7 +27,7 @@ import { FilesService } from './files.service';
 @UseGuards(ApiKeyGuard)
 @ApiHeader({
   name: 'x-api-key',
-  description: 'API 키',
+  description: 'API key',
   required: true,
   schema: { type: 'string' },
 })
@@ -37,23 +37,23 @@ export class FilesController {
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({
-    summary: '파일 업로드',
-    description: '파일을 서버에 업로드합니다. API 키 인증이 필요합니다.',
+    summary: 'Upload file',
+    description: 'Uploads a file to the server. API key authentication is required.',
   })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: '업로드할 파일',
+    description: 'File to upload',
     schema: {
       type: 'object',
       properties: {
         file: {
           type: 'string',
           format: 'binary',
-          description: '업로드할 파일',
+          description: 'File to upload',
         },
         path: {
           type: 'string',
-          description: '파일 경로',
+          description: 'File path',
           example: 'test',
           required: ['path'],
         },
@@ -61,7 +61,7 @@ export class FilesController {
     },
   })
   @ApiOkResponse({
-    description: '파일 업로드 성공',
+    description: 'File uploaded successfully',
     schema: {
       type: 'object',
       properties: {
@@ -79,7 +79,7 @@ export class FilesController {
   })
   async uploadFile(@Res() res: Response, @UploadedFile() file: Express.Multer.File, @Body() body: { path: string }) {
     if (!file) {
-      throw new HttpException('file is empty', HttpStatus.BAD_REQUEST);
+      throw new HttpException('File is required', HttpStatus.BAD_REQUEST);
     }
 
     const { path } = body;
@@ -103,17 +103,17 @@ export class FilesController {
 
   @Get()
   @ApiOperation({
-    summary: '파일 리스트 발급',
-    description: '파일 리스트를 발급합니다.',
+    summary: 'Get file list',
+    description: 'Returns a list of files.',
   })
   @ApiQuery({
     name: 'path',
-    description: '파일 경로',
+    description: 'File path',
     example: 'test',
     required: false,
   })
   @ApiOkResponse({
-    description: '파일 리스트 발급 성공',
+    description: 'File list retrieved successfully',
     schema: {
       type: 'object',
       properties: {
@@ -140,23 +140,23 @@ export class FilesController {
 
   @Delete()
   @ApiOperation({
-    summary: '파일 삭제',
-    description: '파일을 삭제합니다.',
+    summary: 'Delete file',
+    description: 'Deletes a file.',
   })
   @ApiQuery({
     name: 'path',
-    description: '파일 경로',
+    description: 'File path',
     example: 'test',
     required: false,
   })
   @ApiQuery({
     name: 'filename',
-    description: '파일 이름',
+    description: 'File name',
     example: 'example.jpg',
     required: false,
   })
   @ApiOkResponse({
-    description: '파일 삭제 성공',
+    description: 'File deleted successfully',
     schema: {
       type: 'object',
       properties: {
@@ -173,7 +173,7 @@ export class FilesController {
     },
   })
   @ApiOkResponse({
-    description: '파일 삭제 성공',
+    description: 'File deleted successfully',
     schema: {
       type: 'object',
       properties: {

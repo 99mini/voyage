@@ -17,7 +17,7 @@ export class FilesService {
       await fs.mkdir(path, { recursive: true });
     } catch (error) {
       Logger.error(error);
-      throw new HttpException(`Failed to create directory: '${path}'`, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException('Failed to create directory', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -26,7 +26,7 @@ export class FilesService {
       await fs.copyFile(source, target);
     } catch (error) {
       Logger.error(error);
-      throw new HttpException(`Failed to copy file: '${source}' to '${target}'`, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException('Failed to copy file', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -35,7 +35,7 @@ export class FilesService {
       await fs.rm(path, options);
     } catch (error) {
       Logger.error(error);
-      throw new HttpException(`Failed to delete file: '${path}'`, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException('Failed to delete file', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -67,7 +67,7 @@ export class FilesService {
       return fs.readdir(join(this.basePath, path ?? ''));
     } catch (error) {
       Logger.error(error);
-      throw new HttpException(`Failed to read list: '/${path ?? ''}'`, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException('Failed to retrieve file list', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

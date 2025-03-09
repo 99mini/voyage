@@ -11,11 +11,11 @@ export class HealthController {
 
   @Get()
   @ApiOperation({
-    summary: '서버 상태 확인',
-    description: '서버의 현재 상태를 확인합니다. 서버가 정상적으로 동작 중인지 확인하는 데 사용됩니다.',
+    summary: 'Check server status',
+    description: 'Check the current status of the server. Used to verify if the server is functioning properly.',
   })
   @ApiOkResponse({
-    description: '서버가 정상적으로 동작 중입니다.',
+    description: 'Server is functioning properly',
     schema: {
       type: 'object',
       properties: {
@@ -43,21 +43,21 @@ export class HealthController {
 
   @Post()
   @ApiOperation({
-    summary: '서버 상태 확인 (POST)',
+    summary: 'Check server status (POST)',
     description:
-      'POST 요청을 통해 서버의 현재 상태를 확인합니다. 추가 데이터를 전송하여 서버 상태를 확인할 수 있습니다.',
+      'Check the current status of the server via POST request. Additional data can be sent to check server status.',
   })
   @ApiBody({
-    description: '요청 바디',
+    description: 'Request body',
     schema: {
       type: 'object',
       properties: {
-        testKey: { type: 'string', example: 'testValue' },
+        'test-key': { type: 'string', example: 'test-value' },
       },
     },
   })
   @ApiOkResponse({
-    description: '서버가 정상적으로 동작 중입니다.',
+    description: 'Server is functioning properly',
     schema: {
       type: 'object',
       properties: {
@@ -70,7 +70,7 @@ export class HealthController {
             timestamp: { type: 'string', example: '2025-03-09T03:05:26+09:00' },
             service: { type: 'string', example: 'rest-api' },
             env: { type: 'string', example: 'development' },
-            body: { type: 'object', example: { testKey: 'testValue' } },
+            body: { type: 'object', example: { 'test-key': 'test-value' } },
           },
         },
       },
@@ -80,7 +80,7 @@ export class HealthController {
     return res.status(HttpStatus.OK).json({
       status: HttpStatus.OK,
       message: 'success',
-      data: this.healthService.postCheck(body),
+      data: { ...this.healthService.postCheck(body) },
     });
   }
 }
