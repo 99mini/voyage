@@ -53,6 +53,7 @@ export class FilesService {
 
     /** 통신된 경로로 파일 저장 */
     try {
+      await this._createDir(targetDir);
       await this._copyFile(join(tempDir, file.originalname), targetPath);
     } finally {
       /** 임시 폴더에서 파일 삭제 */

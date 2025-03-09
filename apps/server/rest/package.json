@@ -8,6 +8,7 @@
     "dev": "NODE_ENV=development tsx watch src/main.ts",
     "prebuild": "rm -rf dist && mkdir -p logs",
     "build": "export NODE_ENV=production && node esbuild.js",
+    "start:dev": "NODE_ENV=production node dist/main.cjs",
     "start": "pm2 start ecosystem.config.js --env production",
     "restart": "pm2 restart ecosystem.config.js --env production",
     "pm2:list": "pm2 list",
