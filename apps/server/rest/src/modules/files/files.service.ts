@@ -1,7 +1,8 @@
-import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import * as multer from 'multer';
+
 import { join } from 'path';
 import { promises as fs, RmOptions } from 'fs';
-import * as multer from 'multer';
 
 @Injectable()
 export class FilesService {

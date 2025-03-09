@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { ServerlessProxyService } from '@rest/common/services/serverless-proxy.service';
+import { ServerlessProxyService } from '@server-rest/common/services/serverless-proxy.service';
 
 @Injectable()
 export class WebhooksHealthService {

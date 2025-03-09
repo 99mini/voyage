@@ -6,7 +6,6 @@ import {
   HttpException,
   HttpStatus,
   Inject,
-  Param,
   Post,
   Query,
   Res,
@@ -17,8 +16,9 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiHeader, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
+import * as multer from 'multer';
 
-import { ApiKeyGuard } from '@rest/guards/api-key.guard';
+import { ApiKeyGuard } from '@server-rest/auth/guards/api-key.guard';
 
 import { FilesService } from './files.service';
 
