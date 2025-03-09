@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -40,12 +41,6 @@ export class FilesController {
     description: '파일을 서버에 업로드합니다. API 키 인증이 필요합니다.',
   })
   @ApiConsumes('multipart/form-data')
-  @ApiQuery({
-    name: 'path',
-    description: '파일 경로',
-    example: 'test',
-    required: false,
-  })
   @ApiBody({
     description: '업로드할 파일',
     schema: {
@@ -56,6 +51,12 @@ export class FilesController {
           format: 'binary',
           description: '업로드할 파일',
         },
+        path: {
+          type: 'string',
+          description: '파일 경로',
+          example: 'test',
+          required: ['path'],
+        },
       },
     },
   })
@@ -64,7 +65,7 @@ export class FilesController {
     schema: {
       type: 'object',
       properties: {
-        status: { type: 'number', example: 200 },
+        status: { type: 'number', example: HttpStatus.CREATED },
         message: { type: 'string', example: 'success' },
         data: {
           type: 'object',
@@ -76,10 +77,12 @@ export class FilesController {
       },
     },
   })
-  async uploadFile(@Res() res: Response, @UploadedFile() file: Express.Multer.File, @Query('path') path: string) {
+  async uploadFile(@Res() res: Response, @UploadedFile() file: Express.Multer.File, @Body() body: { path: string }) {
     if (!file) {
-      throw new HttpException('파일이 없습니다.', HttpStatus.BAD_REQUEST);
+      throw new HttpException('file is empty', HttpStatus.BAD_REQUEST);
     }
+
+    const { path } = body;
 
     const filePath = await this.filesService.saveFile(file, path);
     // 환경에 따라 다른 URL 반환
@@ -88,8 +91,8 @@ export class FilesController {
         ? `https://static.zerovoyage.com/${path}/${file.originalname}`
         : `http://localhost:3000/test/uploads/${path}/${file.originalname}`;
 
-    return res.status(HttpStatus.OK).json({
-      status: HttpStatus.OK,
+    return res.status(HttpStatus.CREATED).json({
+      status: HttpStatus.CREATED,
       message: 'success',
       data: {
         filePath,
@@ -114,7 +117,7 @@ export class FilesController {
     schema: {
       type: 'object',
       properties: {
-        status: { type: 'number', example: 200 },
+        status: { type: 'number', example: HttpStatus.OK },
         message: { type: 'string', example: 'success' },
         data: {
           type: 'array',
@@ -127,16 +130,12 @@ export class FilesController {
     },
   })
   async listFiles(@Res() res: Response, @Query('path') path?: string) {
-    try {
-      const files = await this.filesService.readList(path);
-      return res.status(HttpStatus.OK).json({
-        status: HttpStatus.OK,
-        message: 'success',
-        data: files,
-      });
-    } catch (error) {
-      throw new HttpException(`파일 목록을 찾일 수 없습니다: '/${path}'`, HttpStatus.NOT_FOUND);
-    }
+    const files = await this.filesService.readList(path);
+    return res.status(HttpStatus.OK).json({
+      status: HttpStatus.OK,
+      message: 'success',
+      data: files,
+    });
   }
 
   @Delete()
@@ -161,7 +160,7 @@ export class FilesController {
     schema: {
       type: 'object',
       properties: {
-        status: { type: 'number', example: 200 },
+        status: { type: 'number', example: HttpStatus.OK },
         message: { type: 'string', example: 'success' },
         data: {
           type: 'object',
@@ -191,19 +190,15 @@ export class FilesController {
     },
   })
   async deleteFile(@Res() res: Response, @Query('path') path: string, @Query('filename') filename: string) {
-    try {
-      await this.filesService.deleteFile(path, filename);
+    await this.filesService.deleteFile(path, filename);
 
-      return res.status(HttpStatus.OK).json({
-        status: HttpStatus.OK,
-        message: 'success',
-        data: {
-          path,
-          filename,
-        },
-      });
-    } catch (error) {
-      throw new HttpException(`파일 경로를 찾을 수 없습니다: '/${path}/${filename}'`, HttpStatus.NOT_FOUND);
-    }
+    return res.status(HttpStatus.OK).json({
+      status: HttpStatus.OK,
+      message: 'success',
+      data: {
+        path,
+        filename,
+      },
+    });
   }
 }

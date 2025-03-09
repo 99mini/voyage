@@ -35,7 +35,7 @@ export class HealthController {
   })
   check(@Res() res: Response) {
     return res.status(HttpStatus.OK).json({
-      status: 200,
+      status: HttpStatus.OK,
       message: 'success',
       data: this.healthService.check(),
     });
