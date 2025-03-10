@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import * as multer from 'multer';
 
 import { join } from 'path';
-import { promises as fs, RmOptions } from 'fs';
+import { promises as fs, PathLike, RmOptions } from 'fs';
 
 import { ReadFileEntity } from './entities';
 import { RenameFileDto } from './dto';
@@ -32,9 +32,9 @@ export class FilesService {
     }
   }
 
-  private async _copyFile(source: string, target: string) {
+  private async _copyFile(src: PathLike, dest: PathLike) {
     try {
-      await fs.copyFile(source, target);
+      await fs.copyFile(src, dest);
     } catch (error) {
       Logger.error(error);
       throw new HttpException('Failed to copy file', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -50,9 +50,15 @@ export class FilesService {
     }
   }
 
-  async saveFile(file: Express.Multer.File, path: string): Promise<string> {
+  async uploadFile(file: Express.Multer.File, path: string): Promise<string> {
     const targetDir = join(this.basePath, path);
     const targetPath = join(targetDir, file.originalname);
+
+    const isExistPath = await this._isExistDir(targetPath);
+
+    if (isExistPath) {
+      throw new HttpException('File is exist', HttpStatus.BAD_REQUEST);
+    }
 
     /** 파일 저장 경로 생성 */
     await this._createDir(targetDir);

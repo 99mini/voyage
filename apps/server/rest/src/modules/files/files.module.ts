@@ -7,7 +7,7 @@ import { FilesService } from './files.service';
 @Module({
   imports: [
     MulterModule.register({
-      dest: process.env.NODE_ENV === 'production' ? './.temp/uploads' : './test/temp',
+      dest: process.env.NODE_ENV === 'production' ? './.temp/uploads' : './test/.temp',
     }),
   ],
   controllers: [FilesController],

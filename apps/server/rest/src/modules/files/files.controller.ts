@@ -97,7 +97,7 @@ export class FilesController {
 
     const { path } = body;
 
-    const filePath = await this.filesService.saveFile(file, path);
+    const filePath = await this.filesService.uploadFile(file, path);
     // 환경에 따라 다른 URL 반환
     const publicUrl =
       process.env.NODE_ENV === 'production'
