@@ -14,11 +14,9 @@ export class FilesService {
       ? '/mnt/volume_sgp1_01/static' // 실제 서버 환경
       : './test/uploads'; // 로컬 개발 환경
 
-  private readonly tempBasePath = process.env.NODE_ENV === 'production' ? './.temp/uploads' : './test/temp';
-
   private async _isExistDir(path: string) {
     try {
-      await fs.access(path);
+      await fs.access(path, fs.constants.X_OK | fs.constants.R_OK);
       return true;
     } catch (error) {
       return false;
@@ -53,34 +51,31 @@ export class FilesService {
   }
 
   async saveFile(file: Express.Multer.File, path: string): Promise<string> {
-    const tempDir = join(this.tempBasePath, path);
     const targetDir = join(this.basePath, path);
     const targetPath = join(targetDir, file.originalname);
 
-    /** 임시 폴더 생성 */
-    await this._createDir(tempDir);
+    /** 파일 저장 경로 생성 */
+    await this._createDir(targetDir);
 
-    /** 임시 폴더로 파일 저장 */
-    await this._copyFile(file.path, join(tempDir, file.originalname));
-
-    /** 통신된 경로로 파일 저장 */
-    try {
-      await this._createDir(targetDir);
-      await this._copyFile(join(tempDir, file.originalname), targetPath);
-    } finally {
-      /** 임시 폴더에서 파일 삭제 */
-      await this._deleteFile(join(tempDir, file.originalname), { recursive: true });
-    }
+    /** 파일 저장 */
+    await this._copyFile(file.path, targetPath);
 
     // 환경에 따라 다른 경로 반환
     return `${this.basePath}/${path}/${file.originalname}`;
   }
 
   async readList(path?: string): Promise<ReadFileEntity[]> {
+    const isExistPath = await this._isExistDir(join(this.basePath, path ?? ''));
+
+    if (!isExistPath) {
+      throw new HttpException('Path not found', HttpStatus.BAD_REQUEST);
+    }
+
     try {
       const direntList = await fs.readdir(join(this.basePath, path ?? ''), {
         withFileTypes: true,
       });
+
       return direntList.map((dirent) => ({
         name: dirent.name,
         parentPath: path ?? '',
