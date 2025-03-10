@@ -173,8 +173,8 @@ export class FilesController {
 
   @Patch()
   @ApiOperation({
-    summary: 'Rename file',
-    description: 'Renames a file.',
+    summary: 'Update file',
+    description: 'Rename or move a file.',
   })
   @ApiBody({
     schema: {

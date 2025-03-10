@@ -4,7 +4,7 @@ import { Response } from 'express';
 
 import { WebhooksHealthService } from './health.service';
 
-@ApiTags('Webhooks Health')
+@ApiTags('Webhooks')
 @Controller('v1/webhooks')
 export class WebhooksHealthController {
   constructor(@Inject(WebhooksHealthService) private readonly webhooksHealthService: WebhooksHealthService) {}

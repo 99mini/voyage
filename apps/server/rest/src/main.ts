@@ -18,8 +18,6 @@ async function bootstrap() {
     .setTitle('zerovoyage API')
     .setDescription('The zerovoyage API')
     .setVersion('1.0')
-    .addTag('tool')
-    .addTag('Functions')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
