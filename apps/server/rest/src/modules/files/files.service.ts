@@ -16,7 +16,7 @@ export class FilesService {
 
   private async _isExistDir(path: string) {
     try {
-      await fs.access(path, fs.constants.X_OK | fs.constants.R_OK);
+      await fs.access(path);
       return true;
     } catch (error) {
       return false;
