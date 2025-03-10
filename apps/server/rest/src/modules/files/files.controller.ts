@@ -234,8 +234,8 @@ export class FilesController {
         status: HttpStatus.OK,
         message: 'success',
         data: {
-          path,
-          filename: newFilename,
+          path: newPath,
+          filename,
         },
       });
     }
