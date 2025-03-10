@@ -136,8 +136,8 @@ export class FilesService {
     await fs.rename(oldPath, newPath);
   }
 
-  async deleteFile(path: string, filename: string) {
-    const targetPath = join(this.basePath, path, filename);
-    await this._deleteFile(targetPath);
+  async deleteFile(path: string) {
+    const targetPath = join(this.basePath, path);
+    await this._deleteFile(targetPath, { recursive: true });
   }
 }

@@ -22,7 +22,7 @@ import { ApiKeyGuard } from '@server-rest/auth/guards/api-key.guard';
 
 import { RenameFileDto } from './dto';
 
-import { NewFileEntity, ReadFileEntity, UpdateFileEntity } from './entities';
+import { NewFileEntity, ReadFileEntity, UpdateFileEntity, DeleteFileEntity } from './entities';
 
 import { FilesService } from './files.service';
 
@@ -261,20 +261,15 @@ export class FilesController {
   }
   @Delete()
   @ApiOperation({
-    summary: 'Delete file',
-    description: 'Deletes a file.',
+    summary: 'Delete file or directory',
+    description:
+      'Deletes a file or directory. If path is directory, the directory is deleted (recursively). Else If path is file, the file is deleted.',
   })
   @ApiQuery({
     name: 'path',
-    description: 'File path',
-    example: 'test',
-    required: false,
-  })
-  @ApiQuery({
-    name: 'filename',
-    description: 'File name',
-    example: 'example.jpg',
-    required: false,
+    description: 'File path or Directory path',
+    example: 'path/to/file.jpg',
+    required: true,
   })
   @ApiOkResponse({
     description: 'File deleted successfully',
@@ -287,7 +282,6 @@ export class FilesController {
           type: 'object',
           properties: {
             path: { type: 'string', example: './test/uploads/test' },
-            filename: { type: 'string', example: 'example.jpg' },
           },
         },
       },
@@ -296,22 +290,24 @@ export class FilesController {
   async deleteFile(
     @Res() res: Response,
     @Query('path') path: string,
-    @Query('filename') filename: string,
   ): Promise<
     Response<{
       status: number;
       message: string;
-      data: UpdateFileEntity;
+      data: DeleteFileEntity;
     }>
   > {
-    await this.filesService.deleteFile(path, filename);
+    if (!path) {
+      throw new HttpException('Path must be specified', HttpStatus.BAD_REQUEST);
+    }
+
+    await this.filesService.deleteFile(path);
 
     return res.status(HttpStatus.OK).json({
       status: HttpStatus.OK,
       message: 'success',
       data: {
         path,
-        filename,
       },
     });
   }
