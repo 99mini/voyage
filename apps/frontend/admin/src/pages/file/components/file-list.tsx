@@ -5,7 +5,7 @@ import { ChevronLeft, Eye, EyeOff } from 'lucide-react';
 
 import { Input } from '@packages/vds';
 
-import { Table } from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 
 import FileTableBody from './table/body';
 import FileTableHeader from './table/header';
@@ -191,12 +191,22 @@ const FileList = ({ path }: FileListProps) => {
             onSort={handleSort}
             showAllColumns={showAllColumns}
           />
-          <FileTableBody
-            files={searchFiles}
-            sortField={sortField}
-            sortDirection={sortDirection}
-            showAllColumns={showAllColumns}
-          />
+          <TableBody>
+            <FileTableBody
+              files={searchFiles}
+              sortField={sortField}
+              sortDirection={sortDirection}
+              showAllColumns={showAllColumns}
+            />
+            <TableRow className="hover:bg-transparent">
+              <TableCell
+                colSpan={8}
+                style={{
+                  height: `${Math.max(12 - searchFiles.length, 1) * 32}px`,
+                }}
+              ></TableCell>
+            </TableRow>
+          </TableBody>
         </Table>
       ) : isLoading ? (
         <Table></Table>

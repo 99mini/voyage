@@ -23,7 +23,7 @@ export type ProtectedPathKey = keyof typeof PROTECTED_PATH;
 export type ProtectedPath = (typeof PROTECTED_PATH)[ProtectedPathKey];
 
 export const PROTECTED_PAGE_TITLE: Record<ProtectedPathKey, string> = {
-  DASHBOARD: '대쉬보드',
+  DASHBOARD: '대시보드',
   FILE: '파일 관리',
 } as const;
 

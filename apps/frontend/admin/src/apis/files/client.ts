@@ -16,7 +16,8 @@ const endpoint = 'files';
 
 export const readFiles = async (req: ReadFilesRequest = {}) => {
   try {
-    const response = await apiClient.get<FetchResponse<ReadFilesResponse[]>>(`${endpoint}`, req, {
+    const query = req.path ? { path: req.path } : undefined;
+    const response = await apiClient.get<FetchResponse<ReadFilesResponse[]>>(`${endpoint}`, query, {
       headers: {
         'x-api-key': import.meta.env.VITE_VOYAGE_API_KEY ?? '',
       },

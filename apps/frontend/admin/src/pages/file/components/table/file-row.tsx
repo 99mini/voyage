@@ -38,7 +38,7 @@ const FileRow = ({ file, showAllColumns = false }: FileRowProps) => {
   };
 
   return (
-    <TableRow key={`file-${file.name}`}>
+    <TableRow key={`file-${file.name}`} className="h-[42px]">
       <TableCell>
         <File {...file} />
       </TableCell>

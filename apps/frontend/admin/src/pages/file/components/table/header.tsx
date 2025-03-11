@@ -15,7 +15,7 @@ interface TableHeaderProps {
 const FileTableHeader = ({ sortField, sortDirection, onSort, showAllColumns }: TableHeaderProps) => {
   return (
     <TableHeader>
-      <TableRow>
+      <TableRow className="h-[42px]">
         <TableHead className="w-[40%] cursor-pointer hover:bg-gray-50" onClick={() => onSort('name')}>
           <div className="flex items-center">
             이름

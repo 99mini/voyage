@@ -25,7 +25,7 @@ const FolderRow = ({ folder, showAllColumns = false }: FolderRowProps) => {
   };
 
   return (
-    <TableRow key={`folder-${folder.name}`}>
+    <TableRow key={`folder-${folder.name}`} className="h-[42px]">
       <TableCell>
         <Folder {...folder} />
       </TableCell>
