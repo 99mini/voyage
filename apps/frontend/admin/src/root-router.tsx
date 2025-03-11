@@ -7,7 +7,7 @@ import Header from '@/components/common/header';
 
 import Home from '@/pages';
 
-import { ROUTE_PATH } from '@/lib/constant';
+import { ROUTE_PATH } from '@/lib/route-constants';
 
 function RootRouter() {
   return (

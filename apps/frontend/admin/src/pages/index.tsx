@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 
 import RootLayout from '@/components/layout/root-layout';
 
-import { PAGE_TITLE, ROUTE_PATH } from '@/lib/constant';
+import { PAGE_TITLE, ROUTE_PATH } from '@/lib/route-constants';
 
 function Home() {
   return (
