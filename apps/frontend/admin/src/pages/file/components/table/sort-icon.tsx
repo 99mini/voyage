@@ -1,7 +1,7 @@
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-react';
 
-type SortField = 'name' | 'type' | 'path';
-type SortDirection = 'asc' | 'desc';
+export type SortDirection = 'asc' | 'desc';
+export type SortField = 'name' | 'type' | 'path' | 'size' | 'createdAt' | 'updatedAt';
 
 interface SortIconProps {
   currentSortField: SortField;
@@ -10,19 +10,20 @@ interface SortIconProps {
 }
 
 /**
- * 정렬 상태에 따라 적절한 아이콘을 표시하는 컴포넌트
+ * 정렬 아이콘 컴포넌트
  */
 const SortIcon = ({ currentSortField, field, direction }: SortIconProps) => {
-  // 현재 정렬 필드가 아니면 아이콘을 표시하지 않음
-  if (field !== currentSortField) return null;
+  // 현재 정렬 중인 필드가 아니면 아이콘을 표시하지 않음
+  if (currentSortField !== field) {
+    return null;
+  }
 
-  // 정렬 방향에 따라 적절한 아이콘 표시
+  // 정렬 방향에 따라 다른 아이콘 표시
   return direction === 'asc' ? (
-    <ChevronUp className="h-4 w-4 ml-1" />
+    <ArrowUpNarrowWide className="ml-1 h-4 w-4" />
   ) : (
-    <ChevronDown className="h-4 w-4 ml-1" />
+    <ArrowDownNarrowWide className="ml-1 h-4 w-4" />
   );
 };
 
 export default SortIcon;
-export type { SortField, SortDirection };

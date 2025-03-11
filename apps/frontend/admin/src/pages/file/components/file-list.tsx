@@ -26,6 +26,8 @@ const FileList = ({ path }: FileListProps) => {
   // 정렬 상태 관리
   const [sortField, setSortField] = useState<SortField>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  // 모든 컬럼 표시 여부 상태
+  const [showAllColumns, setShowAllColumns] = useState(false);
 
   // 정렬 핸들러
   const handleSort = (field: SortField) => {
@@ -37,6 +39,11 @@ const FileList = ({ path }: FileListProps) => {
       setSortField(field);
       setSortDirection('asc');
     }
+  };
+
+  // 컬럼 표시 토글 핸들러
+  const handleToggleColumns = (show: boolean) => {
+    setShowAllColumns(show);
   };
 
   // 상위 디렉토리 경로 계산
@@ -59,46 +66,56 @@ const FileList = ({ path }: FileListProps) => {
 
   const parentPath = getParentPath();
 
-  // 파일과 폴더를 분리하고 정렬
+  // 데이터 정렬
   const sortedData = useMemo(() => {
     if (!data) return { folders: [], files: [] };
 
     // 폴더와 파일 분리
-    const folders: ReadFilesResponse[] = [];
-    const files: ReadFilesResponse[] = [];
-
-    data.forEach((item) => {
-      if (item.isDirectory) {
-        folders.push(item);
-      } else {
-        files.push(item);
-      }
-    });
+    const folders = data.filter((item) => item.isDirectory);
+    const files = data.filter((item) => !item.isDirectory);
 
     // 정렬 함수
-    const sortItems = (a: ReadFilesResponse, b: ReadFilesResponse) => {
-      let comparison = 0;
+    const sortItems = (items: ReadFilesResponse[]) => {
+      return [...items].sort((a, b) => {
+        let compareResult = 0;
 
-      if (sortField === 'name') {
-        comparison = a.name.localeCompare(b.name);
-      } else if (sortField === 'path') {
-        comparison = a.path.localeCompare(b.path);
-      } else if (sortField === 'type') {
-        // 파일 확장자로 정렬
-        const extA = a.name.split('.').pop() || '';
-        const extB = b.name.split('.').pop() || '';
-        comparison = extA.localeCompare(extB);
-      }
+        // 정렬 필드에 따라 비교
+        switch (sortField) {
+          case 'name':
+            compareResult = a.name.localeCompare(b.name);
+            break;
+          case 'path':
+            compareResult = a.path.localeCompare(b.path);
+            break;
+          case 'type':
+            // 타입은 폴더와 파일 분리 후 정렬하므로 여기서는 처리하지 않음
+            compareResult = 0;
+            break;
+          case 'size':
+            // 크기 비교 (폴더는 크기가 없으므로 0으로 처리)
+            compareResult = (a.size || 0) - (b.size || 0);
+            break;
+          case 'createdAt':
+            // 생성일 비교
+            compareResult = a.birthtimeMs - b.birthtimeMs;
+            break;
+          case 'updatedAt':
+            // 수정일 비교
+            compareResult = a.mtimeMs - b.mtimeMs;
+            break;
+          default:
+            compareResult = 0;
+        }
 
-      // 정렬 방향에 따라 결과 반전
-      return sortDirection === 'asc' ? comparison : -comparison;
+        // 정렬 방향에 따라 결과 반전
+        return sortDirection === 'asc' ? compareResult : -compareResult;
+      });
     };
 
-    // 각각 정렬
-    folders.sort(sortItems);
-    files.sort(sortItems);
-
-    return { folders, files };
+    return {
+      folders: sortItems(folders),
+      files: sortItems(files),
+    };
   }, [data, sortField, sortDirection]);
 
   if (error) {
@@ -126,12 +143,19 @@ const FileList = ({ path }: FileListProps) => {
 
       {data?.length ? (
         <Table>
-          <FileTableHeader sortField={sortField} sortDirection={sortDirection} onSort={handleSort} />
+          <FileTableHeader
+            sortField={sortField}
+            sortDirection={sortDirection}
+            onSort={handleSort}
+            showAllColumns={showAllColumns}
+            onToggleColumns={handleToggleColumns}
+          />
           <FileTableBody
             folders={sortedData.folders}
             files={sortedData.files}
             sortField={sortField}
             sortDirection={sortDirection}
+            showAllColumns={showAllColumns}
           />
         </Table>
       ) : isLoading ? (

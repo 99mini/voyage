@@ -1,56 +1,82 @@
 /**
- * TODO: 파일 확장자 자세히 작성
- * @param ext
- * @returns
+ * 파일 확장자에 따른 파일 타입을 반환합니다.
+ * @param ext 파일 확장자 (확장자가 없는 경우 undefined)
+ * @returns 파일 타입 문자열
  */
-export const filetypeFor = (ext?: string) => {
-  const lowerCaseExt = ext?.toLowerCase() ?? '';
-  switch (lowerCaseExt) {
-    case 'png':
-    case 'jpg':
-    case 'jpeg':
-    case 'gif':
-    case 'bmp':
-    case 'webp':
-      return `${lowerCaseExt.toUpperCase()} 이미지`;
-    case 'mp4':
-    case 'ts':
-    case 'mpeg':
-    case 'avi':
-    case 'mov':
-      return `${lowerCaseExt.toUpperCase()} 동영상`;
-    case 'html':
-    case 'svg':
-    case 'pdf':
-    case 'json':
-    case 'csv':
-    case 'tsv':
-      return `${lowerCaseExt.toUpperCase()} 문서`;
-    case 'zip':
-    case 'egg':
-    case 'arj':
-    case 'cab':
-    case '7z':
-    case 'tar':
-    case 'gz':
-    case 'bz2':
-    case 'apk':
-      return `${lowerCaseExt.toUpperCase()} 아카이브`;
-    case 'doc':
-      return 'Microsoft Word document (.doc)';
-    case 'docx':
-      return 'Microsoft Word document (.docx)';
-    case 'xlsx':
-      return 'Microsoft Excel document (.xlsx)';
-    case 'xls':
-      return 'Microsoft Excel document (.xls)';
-    case 'ppt':
-      return 'Microsoft PowerPoint document (.ppt)';
-    case 'pptx':
-      return 'Microsoft PowerPoint document (.pptx)';
-    case 'txt':
-      return '일반 텍스트 문서';
-    default:
-      return 'file';
+export const filetypeFor = (ext?: string): string => {
+  if (!ext) return '파일';
+
+  const lowerExt = ext.toLowerCase();
+
+  // 이미지 파일
+  if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp'].includes(lowerExt)) {
+    return `${ext.toUpperCase()} 이미지`;
   }
+
+  // 문서 파일
+  if (['doc', 'docx', 'pdf', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'rtf', 'md'].includes(lowerExt)) {
+    return `${ext.toUpperCase()} 문서`;
+  }
+
+  // 비디오 파일
+  if (['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv'].includes(lowerExt)) {
+    return `${ext.toUpperCase()} 비디오`;
+  }
+
+  // 오디오 파일
+  if (['mp3', 'wav', 'ogg', 'flac', 'aac', 'm4a'].includes(lowerExt)) {
+    return `${ext.toUpperCase()} 오디오`;
+  }
+
+  // 압축 파일
+  if (['zip', 'rar', '7z', 'tar', 'gz', 'bz2'].includes(lowerExt)) {
+    return `${ext.toUpperCase()} 아카이브`;
+  }
+
+  // 코드 파일
+  if (
+    [
+      'js',
+      'ts',
+      'jsx',
+      'tsx',
+      'html',
+      'css',
+      'scss',
+      'json',
+      'xml',
+      'yaml',
+      'yml',
+      'py',
+      'java',
+      'c',
+      'cpp',
+      'cs',
+      'go',
+      'php',
+      'rb',
+    ].includes(lowerExt)
+  ) {
+    return `${ext.toUpperCase()} 문서`;
+  }
+
+  // 기타 파일
+  return '파일';
+};
+
+/**
+ * 파일 크기를 사람이 읽기 쉬운 형태로 변환합니다.
+ * @param bytes 파일 크기 (바이트)
+ * @returns 포맷팅된 파일 크기 문자열
+ */
+export const formatFileSize = (bytes: number | null): string => {
+  if (bytes === null || bytes === undefined) return '-';
+
+  if (bytes === 0) return '0 Bytes';
+
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 };

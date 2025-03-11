@@ -1,20 +1,41 @@
-import { useToast } from '@packages/vds';
-
 import { Copy } from 'lucide-react';
 
-import { ReadFilesResponse } from '@/apis/files';
+import { useToast } from '@packages/vds';
 
-import { TableRow, TableCell } from '@/components/ui/table';
+import { TableCell, TableRow } from '@/components/ui/table';
+
 import File from '../item/file';
+
+import { ReadFilesResponse } from '@/apis/files/model';
 
 import { STATIC_PATH } from '@/lib/constants/static.constant';
 import { copyToClipboard } from '@/lib/utils/clipboard';
-import { filetypeFor } from '@/lib/utils/file';
+import { filetypeFor, formatFileSize } from '@/lib/utils/file';
 
-const FileRow = ({ file }: { file: ReadFilesResponse }) => {
+interface FileRowProps {
+  file: ReadFilesResponse;
+  showAllColumns?: boolean;
+}
+
+/**
+ * 파일 행 컴포넌트
+ */
+const FileRow = ({ file, showAllColumns = false }: FileRowProps) => {
   const { toast } = useToast();
 
   const ext = file.name.split('.').pop();
+
+  // 날짜 포맷팅 함수
+  const formatDate = (timestamp: number) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
 
   return (
     <TableRow key={`file-${file.name}`}>
@@ -26,6 +47,19 @@ const FileRow = ({ file }: { file: ReadFilesResponse }) => {
           {filetypeFor(ext)}
         </span>
       </TableCell>
+      {showAllColumns && (
+        <>
+          <TableCell className="text-xs text-gray-500 w-max">
+            <div className="truncate">{formatFileSize(file.size)}</div>
+          </TableCell>
+          <TableCell className="text-xs text-gray-500 w-max">
+            <div className="truncate">{formatDate(file.birthtimeMs)}</div>
+          </TableCell>
+          <TableCell className="text-xs text-gray-500 w-max">
+            <div className="truncate">{formatDate(file.mtimeMs)}</div>
+          </TableCell>
+        </>
+      )}
       <TableCell className="text-xs text-gray-500">
         <div className="w-full inline-flex items-center justify-between">
           <div className="truncate">{`${STATIC_PATH}/${file.path}`}</div>
