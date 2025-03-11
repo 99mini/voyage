@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router';
 
-import { ChevronLeft, ChevronDown, ChevronUp, ExternalLinkIcon } from 'lucide-react';
+import { ChevronLeft, ChevronDown, ChevronUp, Copy } from 'lucide-react';
+
+import { useToast } from '@packages/vds';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
@@ -12,7 +14,9 @@ import { PROTECTED_PATH } from '@/lib/constants/route.constant';
 
 import File from './file';
 import Folder from './folder';
+
 import { STATIC_PATH } from '@/lib/constants/static.constant';
+import { copyToClipboard } from '@/lib/utils/clipboard';
 
 type FileListProps = {
   path?: string;
@@ -22,6 +26,8 @@ type SortField = 'name' | 'type' | 'path';
 type SortDirection = 'asc' | 'desc';
 
 const FileList = ({ path }: FileListProps) => {
+  const { toast } = useToast();
+
   const { data, isLoading, error } = useFilesQuery({
     path,
   });
@@ -177,7 +183,7 @@ const FileList = ({ path }: FileListProps) => {
                           <Folder {...folder} />
                         </TableCell>
                         <TableCell>
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                             폴더
                           </span>
                         </TableCell>
@@ -192,11 +198,32 @@ const FileList = ({ path }: FileListProps) => {
                           <File {...file} />
                         </TableCell>
                         <TableCell>
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                          <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                             파일
                           </span>
                         </TableCell>
-                        <TableCell className="text-xs text-gray-500">{file.path}</TableCell>
+                        <TableCell className="text-xs text-gray-500">
+                          <div className="w-full inline-flex items-center justify-between">
+                            <div className="truncate">{`${STATIC_PATH}/${file.path}`}</div>
+                            <Copy
+                              className="inline w-6 h-6 p-1 text-gray-500 cursor-pointer hover:text-gray-700 hover:bg-gray-200 rounded-md"
+                              onClick={() =>
+                                copyToClipboard(`${STATIC_PATH}/${file.path}`, {
+                                  onSuccess: () =>
+                                    toast({
+                                      description: '클립보드에 복사했어요.',
+                                      duration: 3000,
+                                    }),
+                                  onError: () =>
+                                    toast({
+                                      description: '클립보드에 복사하지 못습니다.',
+                                      duration: 3000,
+                                    }),
+                                })
+                              }
+                            />
+                          </div>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </>
@@ -210,7 +237,7 @@ const FileList = ({ path }: FileListProps) => {
                           <File {...file} />
                         </TableCell>
                         <TableCell>
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                          <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                             파일
                           </span>
                         </TableCell>
@@ -225,7 +252,7 @@ const FileList = ({ path }: FileListProps) => {
                           <Folder {...folder} />
                         </TableCell>
                         <TableCell>
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                             폴더
                           </span>
                         </TableCell>
@@ -245,7 +272,7 @@ const FileList = ({ path }: FileListProps) => {
                       <Folder {...folder} />
                     </TableCell>
                     <TableCell>
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                         폴더
                       </span>
                     </TableCell>
@@ -260,20 +287,31 @@ const FileList = ({ path }: FileListProps) => {
                       <File {...file} />
                     </TableCell>
                     <TableCell>
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                      <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                         파일
                       </span>
                     </TableCell>
                     <TableCell className="text-xs text-gray-500">
-                      <a
-                        href={`${STATIC_PATH}/${file.path}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1 hover:underline"
-                      >
-                        {file.path}
-                        <ExternalLinkIcon className="inline w-4 h-4" />
-                      </a>
+                      <div className="w-full inline-flex items-center justify-between">
+                        <div className="truncate">{`${STATIC_PATH}/${file.path}`}</div>
+                        <Copy
+                          className="inline w-6 h-6 p-1 text-gray-500 cursor-pointer hover:text-gray-700 hover:bg-gray-200 rounded-md"
+                          onClick={() =>
+                            copyToClipboard(`${STATIC_PATH}/${file.path}`, {
+                              onSuccess: () =>
+                                toast({
+                                  description: '클립보드에 복사했어요.',
+                                  duration: 3000,
+                                }),
+                              onError: () =>
+                                toast({
+                                  description: '클립보드에 복사하지 못습니다.',
+                                  duration: 3000,
+                                }),
+                            })
+                          }
+                        />
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
