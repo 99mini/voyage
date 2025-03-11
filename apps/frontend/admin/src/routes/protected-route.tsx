@@ -2,7 +2,7 @@ import { Navigate, Outlet } from 'react-router';
 
 import { useAuth } from '@/contexts/auth/auth-context';
 
-import { PUBLIC_PATH } from '@/lib/route-constants';
+import { PUBLIC_PATH } from '@/lib/constants/route.constant';
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useAuth();

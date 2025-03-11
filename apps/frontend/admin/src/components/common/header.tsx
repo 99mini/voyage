@@ -14,7 +14,7 @@ import {
 
 import { useAuth } from '@/contexts/auth/auth-context';
 
-import { PUBLIC_PAGE_TITLE, PROTECTED_PAGE_TITLE, PUBLIC_PATH, PROTECTED_PATH } from '@/lib/route-constants';
+import { PUBLIC_PAGE_TITLE, PROTECTED_PAGE_TITLE, PUBLIC_PATH, PROTECTED_PATH } from '@/lib/constants/route.constant';
 
 const LinkItem = ({ to, children, isActive }: { to: string; children: React.ReactNode; isActive: boolean }) => {
   return (

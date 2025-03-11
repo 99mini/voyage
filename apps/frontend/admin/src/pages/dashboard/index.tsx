@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/auth/auth-context';
 
 import HealthCheck from './components/health';
 
-import { PUBLIC_PATH } from '@/lib/route-constants';
+import { PUBLIC_PATH } from '@/lib/constants/route.constant';
 
 const Dashboard = () => {
   const { logout } = useAuth();

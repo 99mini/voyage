@@ -10,9 +10,9 @@ import Home from '@/pages';
 import Login from '@/pages/login';
 
 import Dashboard from '@/pages/dashboard';
-import File from '@/pages/file';
+import FilePage from '@/pages/file';
 
-import { PROTECTED_PATH, PUBLIC_PATH } from '@/lib/route-constants';
+import { PROTECTED_PATH, PUBLIC_PATH } from '@/lib/constants/route.constant';
 
 function RootRouter() {
   return (
@@ -28,7 +28,7 @@ function RootRouter() {
             {/* 보호된 라우트 */}
             <Route element={<ProtectedRoute />}>
               <Route path={PROTECTED_PATH.DASHBOARD} element={<Dashboard />} />
-              <Route path={PROTECTED_PATH.FILE} element={<File />} />
+              <Route path={`${PROTECTED_PATH.FILE}/*`} element={<FilePage />} />
             </Route>
           </Routes>
           <Toaster />
