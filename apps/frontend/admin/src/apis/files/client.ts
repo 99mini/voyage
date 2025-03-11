@@ -45,7 +45,7 @@ export const uploadFile = async (req: UploadFilesRequest) => {
 
     formData.append('path', path);
 
-    const response = await apiClient.post<FetchResponse<UploadFilesResponse>, FormData>(`${endpoint}`, formData, {
+    const response = await apiClient.post<FetchResponse<UploadFilesResponse>>(`${endpoint}`, formData, {
       headers: {
         'x-api-key': import.meta.env.VITE_VOYAGE_API_KEY ?? '',
         'Content-Type': 'multipart/form-data',
@@ -65,7 +65,7 @@ export const uploadFile = async (req: UploadFilesRequest) => {
 
 export const updateFile = async (req: UpdateFilesRequest) => {
   try {
-    const response = await apiClient.put<FetchResponse<UpdateFilesResponse>>(`${endpoint}`, req, {
+    const response = await apiClient.put<FetchResponse<UpdateFilesResponse>>(`${endpoint}`, JSON.stringify(req), {
       headers: {
         'x-api-key': import.meta.env.VITE_VOYAGE_API_KEY ?? '',
       },
@@ -103,7 +103,7 @@ export const deleteFile = async (req: DeleteFilesRequest) => {
 
 export const createDirectory = async (req: CreateDirectoryRequest) => {
   try {
-    const response = await apiClient.post<FetchResponse<CreateDirectoryResponse>, string>(
+    const response = await apiClient.post<FetchResponse<CreateDirectoryResponse>>(
       `${endpoint}/directory`,
       JSON.stringify(req),
       {

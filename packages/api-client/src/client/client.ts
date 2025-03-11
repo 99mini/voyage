@@ -55,9 +55,9 @@ class ApiClient {
     }
   }
 
-  public async post<T, D extends BodyInit>(
+  public async post<T>(
     url: string,
-    data?: D,
+    data?: BodyInit | null | undefined,
     init?: Omit<RequestInit, 'method' | 'body'>,
   ): Promise<T | null> {
     try {
@@ -103,9 +103,9 @@ class ApiClient {
     }
   }
 
-  public async patch<T, D = unknown>(
+  public async patch<T>(
     url: string,
-    data?: D,
+    data?: BodyInit | null | undefined,
     init?: Omit<RequestInit, 'method' | 'body'>,
   ): Promise<T | null> {
     try {
@@ -130,9 +130,9 @@ class ApiClient {
     }
   }
 
-  public async put<T, D = unknown>(
+  public async put<T>(
     url: string,
-    data?: D,
+    data?: BodyInit | null | undefined,
     init?: Omit<RequestInit, 'method' | 'body'>,
   ): Promise<T | null> {
     try {
