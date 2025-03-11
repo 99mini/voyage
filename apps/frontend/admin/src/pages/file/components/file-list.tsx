@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router';
 
-import { ChevronDown, ChevronLeft, ChevronUp } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Table } from '@/components/ui/table';
 
-import FileRow from './table/file-row';
-import FolderRow from './table/folder-row';
+import FileTableBody from './table/body';
+import FileTableHeader from './table/header';
+import { SortDirection, SortField } from './table/sort-icon';
 
 import { useFilesQuery } from '@/apis/files';
 import { ReadFilesResponse } from '@/apis/files/model';
@@ -16,9 +17,6 @@ import { PROTECTED_PATH } from '@/lib/constants/route.constant';
 type FileListProps = {
   path?: string;
 };
-
-type SortField = 'name' | 'type' | 'path';
-type SortDirection = 'asc' | 'desc';
 
 const FileList = ({ path }: FileListProps) => {
   const { data, isLoading, error } = useFilesQuery({
@@ -39,13 +37,6 @@ const FileList = ({ path }: FileListProps) => {
       setSortField(field);
       setSortDirection('asc');
     }
-  };
-
-  // 정렬 아이콘 렌더링
-  const renderSortIcon = (field: SortField) => {
-    if (field !== sortField) return null;
-
-    return sortDirection === 'asc' ? <ChevronUp className="h-4 w-4 ml-1" /> : <ChevronDown className="h-4 w-4 ml-1" />;
   };
 
   // 상위 디렉토리 경로 계산
@@ -110,76 +101,6 @@ const FileList = ({ path }: FileListProps) => {
     return { folders, files };
   }, [data, sortField, sortDirection]);
 
-  // 테이블 헤더 렌더링
-  const renderTableHeader = () => (
-    <TableHeader>
-      <TableRow>
-        <TableHead className="w-[60%] cursor-pointer hover:bg-gray-50" onClick={() => handleSort('name')}>
-          <div className="flex items-center">
-            이름
-            {renderSortIcon('name')}
-          </div>
-        </TableHead>
-        <TableHead className="cursor-pointer hover:bg-gray-50" onClick={() => handleSort('type')}>
-          <div className="flex items-center">
-            유형
-            {renderSortIcon('type')}
-          </div>
-        </TableHead>
-        <TableHead className="cursor-pointer hover:bg-gray-50" onClick={() => handleSort('path')}>
-          <div className="flex items-center">
-            경로
-            {renderSortIcon('path')}
-          </div>
-        </TableHead>
-      </TableRow>
-    </TableHeader>
-  );
-
-  // 파일 목록 렌더링
-  const renderFileList = () => {
-    // 타입으로 정렬할 때는 정렬 방향에 따라 폴더/파일 순서 결정
-    if (sortField !== 'type') {
-      // 다른 필드로 정렬할 때는 항상 폴더 먼저
-      return (
-        <>
-          {sortedData.folders.map((folder) => (
-            <FolderRow key={`folder-${folder.name}`} folder={folder} />
-          ))}
-          {sortedData.files.map((file) => (
-            <FileRow key={`file-${file.name}`} file={file} />
-          ))}
-        </>
-      );
-    }
-
-    if (sortDirection === 'asc') {
-      // 오름차순: 폴더 먼저
-      return (
-        <>
-          {sortedData.folders.map((folder) => (
-            <FolderRow key={`folder-${folder.name}`} folder={folder} />
-          ))}
-          {sortedData.files.map((file) => (
-            <FileRow key={`file-${file.name}`} file={file} />
-          ))}
-        </>
-      );
-    } else {
-      // 내림차순: 파일 먼저
-      return (
-        <>
-          {sortedData.files.map((file) => (
-            <FileRow key={`file-${file.name}`} file={file} />
-          ))}
-          {sortedData.folders.map((folder) => (
-            <FolderRow key={`folder-${folder.name}`} folder={folder} />
-          ))}
-        </>
-      );
-    }
-  };
-
   if (isLoading) {
     return <div className="p-4 text-center">파일 목록을 불러오는 중...</div>;
   }
@@ -210,8 +131,13 @@ const FileList = ({ path }: FileListProps) => {
 
       {data?.length ? (
         <Table>
-          {renderTableHeader()}
-          <TableBody>{renderFileList()}</TableBody>
+          <FileTableHeader sortField={sortField} sortDirection={sortDirection} onSort={handleSort} />
+          <FileTableBody
+            folders={sortedData.folders}
+            files={sortedData.files}
+            sortField={sortField}
+            sortDirection={sortDirection}
+          />
         </Table>
       ) : (
         <div className="p-8 text-center text-gray-500">이 디렉토리에 파일이 없습니다.</div>
