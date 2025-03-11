@@ -1,10 +1,14 @@
-import { Button, Grid, GridItem } from '@packages/vds';
-import { useAuth } from '@/contexts/auth/auth-context';
-import { PUBLIC_PATH } from '@/lib/route-constants';
 import { useNavigate } from 'react-router';
+
+import { Button, Grid, GridItem } from '@packages/vds';
+
+import { useAuth } from '@/contexts/auth/auth-context';
+
 import HealthCheck from './components/health';
 
-export default function Dashboard() {
+import { PUBLIC_PATH } from '@/lib/route-constants';
+
+const Dashboard = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -46,4 +50,6 @@ export default function Dashboard() {
       </Grid>
     </div>
   );
-}
+};
+
+export default Dashboard;

@@ -16,6 +16,7 @@ export const PUBLIC_PAGE_TITLE: Record<PublicPathKey, string> = {
 // MARK: protected path
 export const PROTECTED_PATH = {
   DASHBOARD: '/dashboard',
+  FILE: '/file',
 } as const;
 
 export type ProtectedPathKey = keyof typeof PROTECTED_PATH;
@@ -23,6 +24,7 @@ export type ProtectedPath = (typeof PROTECTED_PATH)[ProtectedPathKey];
 
 export const PROTECTED_PAGE_TITLE: Record<ProtectedPathKey, string> = {
   DASHBOARD: '대쉬보드',
+  FILE: '파일 관리',
 } as const;
 
 // MARK: route path
