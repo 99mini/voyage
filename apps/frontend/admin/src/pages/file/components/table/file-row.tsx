@@ -9,9 +9,12 @@ import File from '../item/file';
 
 import { STATIC_PATH } from '@/lib/constants/static.constant';
 import { copyToClipboard } from '@/lib/utils/clipboard';
+import { filetypeFor } from '@/lib/utils/string';
 
 const FileRow = ({ file }: { file: ReadFilesResponse }) => {
   const { toast } = useToast();
+
+  const ext = file.name.split('.').pop();
 
   return (
     <TableRow key={`file-${file.name}`}>
@@ -19,8 +22,8 @@ const FileRow = ({ file }: { file: ReadFilesResponse }) => {
         <File {...file} />
       </TableCell>
       <TableCell>
-        <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-          파일
+        <span className="inline-flex items-center justify-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+          {filetypeFor(ext)}
         </span>
       </TableCell>
       <TableCell className="text-xs text-gray-500">

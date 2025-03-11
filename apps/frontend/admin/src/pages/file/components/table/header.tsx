@@ -23,7 +23,7 @@ const FileTableHeader = ({ sortField, sortDirection, onSort }: TableHeaderProps)
         </TableHead>
         <TableHead className="cursor-pointer hover:bg-gray-50" onClick={() => onSort('type')}>
           <div className="flex items-center">
-            유형
+            종류
             <SortIcon currentSortField={sortField} field="type" direction={sortDirection} />
           </div>
         </TableHead>
