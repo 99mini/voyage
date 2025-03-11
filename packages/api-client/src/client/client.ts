@@ -39,7 +39,7 @@ class ApiClient {
   ): Promise<T | null> {
     try {
       const q = new URLSearchParams(query);
-      const uri = `${this.baseUrl}/${url}${q ? `?${q.toString()}` : ''}`;
+      const uri = `${this.baseUrl}/${url}${q.size ? `?${q.toString()}` : ''}`;
 
       const res = await fetch(uri, {
         method: 'GET',
