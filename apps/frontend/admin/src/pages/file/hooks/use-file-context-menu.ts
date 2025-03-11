@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { NavigateOptions, useNavigate } from 'react-router';
 
 const useFileContextMenu = () => {
   const navigate = useNavigate();
@@ -8,7 +8,16 @@ const useFileContextMenu = () => {
 
   const onOpenChange = (open: boolean) => setSelected(open);
 
-  const onLinkClick = (path: string) => navigate(path);
+  const onLinkClick = (
+    path: string,
+    options?: NavigateOptions & { target?: '_self' | '_blank' | '_parent' | '_top'; features?: string },
+  ) => {
+    if (options && options?.target) {
+      window.open(path, options.target, options.features);
+      return;
+    }
+    navigate(path, options);
+  };
 
   const onCopyClick = () => {};
 
