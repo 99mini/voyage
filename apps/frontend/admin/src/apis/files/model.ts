@@ -13,4 +13,9 @@ export type ReadFilesResponse = {
   isSymbolicLink: boolean;
   isFIFO: boolean;
   isSocket: boolean;
+  birthtimeMs: number;
+  ctimeMs: number;
+  mtimeMs: number;
+  size: number | null;
+  mode: number;
 };

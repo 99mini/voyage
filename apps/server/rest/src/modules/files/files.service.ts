@@ -16,6 +16,15 @@ export class FilesService {
       ? '/mnt/volume_sgp1_01/static' // 실제 서버 환경
       : './test/uploads'; // 로컬 개발 환경
 
+  private async _stat(path: string) {
+    try {
+      return await fs.stat(path);
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException('Failed to retrieve file stat', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   private async _isExistDir(path: string) {
     try {
       await fs.access(path);
@@ -92,7 +101,11 @@ export class FilesService {
         withFileTypes: true,
       });
 
-      return direntList.map((dirent) => ({
+      const statList = await Promise.all(
+        direntList.map((dirent) => this._stat(join(this.basePath, path ?? '', dirent.name))),
+      );
+
+      return direntList.map((dirent, index) => ({
         name: dirent.name,
         parentPath: path ?? '',
         path: join(path ?? '', dirent.name),
@@ -103,6 +116,11 @@ export class FilesService {
         isCharacterDevice: dirent.isCharacterDevice(),
         isFIFO: dirent.isFIFO(),
         isSocket: dirent.isSocket(),
+        birthtimeMs: statList[index].birthtimeMs,
+        ctimeMs: statList[index].ctimeMs,
+        mtimeMs: statList[index].mtimeMs,
+        size: statList[index].size,
+        mode: statList[index].mode,
       }));
     } catch (error) {
       Logger.error(error);

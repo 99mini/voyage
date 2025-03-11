@@ -9,4 +9,10 @@ export class ReadFileEntity {
   isSymbolicLink: boolean;
   isFIFO: boolean;
   isSocket: boolean;
+  birthtimeMs: number;
+  ctimeMs: number;
+  mtimeMs: number;
+  /** byte */
+  size: number | null;
+  mode: number;
 }
