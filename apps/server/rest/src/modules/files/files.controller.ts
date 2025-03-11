@@ -114,6 +114,60 @@ export class FilesController {
     });
   }
 
+  @Post('/directory')
+  @ApiOperation({
+    summary: 'Create directory',
+    description: 'Creates a directory.',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        path: { type: 'string', example: 'path-to' },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: 'Directory created successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        status: { type: 'number', example: HttpStatus.CREATED },
+        message: { type: 'string', example: 'success' },
+        data: {
+          type: 'object',
+          properties: {
+            path: { type: 'string', example: 'path-to' },
+          },
+        },
+      },
+    },
+  })
+  async createDirectory(
+    @Res() res: Response,
+    @Body() body: { path: string },
+  ): Promise<
+    Response<{
+      status: number;
+      message: string;
+      data: { path: string };
+    }>
+  > {
+    const { path } = body;
+
+    console.log(`[LOG] Creating directory: ${path}`);
+
+    await this.filesService.createDirectory(path);
+
+    return res.status(HttpStatus.CREATED).json({
+      status: HttpStatus.CREATED,
+      message: 'success',
+      data: {
+        path,
+      },
+    });
+  }
+
   @Get()
   @ApiOperation({
     summary: 'Get file list',

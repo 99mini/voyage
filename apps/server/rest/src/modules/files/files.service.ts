@@ -61,6 +61,19 @@ export class FilesService {
     }
   }
 
+  async createDirectory(path: string) {
+    if (isRelativePath(path)) {
+      throw new HttpException('Path includes relative path', HttpStatus.BAD_REQUEST);
+    }
+
+    try {
+      await fs.mkdir(join(this.basePath, path));
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException('Failed to create directory', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   async uploadFile(file: Express.Multer.File, path: string): Promise<string> {
     if (isRelativePath(path) || isRelativePath(file.originalname)) {
       throw new HttpException('Path includes relative path', HttpStatus.BAD_REQUEST);

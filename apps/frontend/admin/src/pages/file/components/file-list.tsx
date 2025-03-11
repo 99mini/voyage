@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router';
 
-import { ChevronLeft, Eye, EyeOff } from 'lucide-react';
+import { ChevronLeft, Eye, EyeOff, FilePlus, FolderIcon, FolderPlus } from 'lucide-react';
 
 import { Input } from '@packages/vds';
 
@@ -11,9 +11,10 @@ import FileTableBody from './table/body';
 import FileTableHeader from './table/header';
 import { SortDirection, SortField } from './table/sort-icon';
 
+import useCreateFolder from '../hooks/use-create-folder';
 import useDebounce from '@/hooks/use-debounce';
 
-import { useFilesQuery } from '@/apis/files';
+import { useFilesQuery, useUploadFileMutation } from '@/apis/files';
 import { ReadFilesResponse } from '@/apis/files/model';
 
 import { PROTECTED_PATH } from '@/lib/constants/route.constant';
@@ -37,13 +38,30 @@ const FileList = ({ path }: FileListProps) => {
   // 검색 상태
   const [search, setSearch] = useState('');
 
+  // MARK: 폴더 생성 로직
+  const {
+    directoryRef,
+    directoryName,
+    onChangeDirectoryName,
+    isPendingCreateDirectory,
+    onPendingCreateDirectory,
+    onCreateDirectory,
+    onBlurDirectoryName,
+  } = useCreateFolder();
+
+  // <--폴더 생성 로직 끝
+
+  // const { mutate: uploadFile } = useUploadFileMutation();
+
+  /** Show All/Hide Columns Toggle */
   const handleShowColumnsToggle = () => setShowAllColumns((prev) => !prev);
 
+  /** Search Change */
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
-  // 정렬 핸들러
+  /** Sort */
   const handleSort = (field: SortField) => {
     if (field === sortField) {
       // 같은 필드를 클릭하면 방향만 전환
@@ -55,7 +73,7 @@ const FileList = ({ path }: FileListProps) => {
     }
   };
 
-  // 상위 디렉토리 경로 계산
+  /** 상위 디렉토리 경로 계산 */
   const getParentPath = () => {
     if (!path || path === '/') return null;
 
@@ -75,7 +93,7 @@ const FileList = ({ path }: FileListProps) => {
 
   const parentPath = getParentPath();
 
-  // 데이터 정렬
+  /** 데이터 정렬 */
   const sortedData = useMemo(() => {
     if (!data) return [];
 
@@ -166,21 +184,38 @@ const FileList = ({ path }: FileListProps) => {
           </Link>
         )}
       </div>
-      <div className="p-4 border-b flex items-center justify-between">
-        <Input
-          placeholder="파일명, 확장자, 경로로 찾기"
-          className="w-32 text-xs sm:w-96"
-          value={search}
-          onChange={handleSearchChange}
-        />
-        <button
-          onClick={handleShowColumnsToggle}
-          className="p-1 rounded-md hover:bg-gray-100 flex items-center gap-1"
-          title={showAllColumns ? '열 숨기기' : '모든 열 보기'}
-        >
-          <div className="text-xs text-gray-500">{showAllColumns ? '열 숨기기' : '모든 열 보기'}</div>
-          {showAllColumns ? <Eye className="h-4 w-4 text-gray-500" /> : <EyeOff className="h-4 w-4 text-gray-500" />}
-        </button>
+
+      <div className="p-4 border-b flex items-end justify-between h-20">
+        <div className="h-10">
+          <Input
+            placeholder="파일명, 확장자, 경로로 찾기"
+            className="w-32 h-10 text-xs sm:w-96"
+            value={search}
+            onChange={handleSearchChange}
+          />
+        </div>
+        <div className="flex items-end gap-4">
+          {/* Upload Folder */}
+          <button className="p-1 rounded-md border border-blue-500 hover:bg-gray-100 flex items-center gap-2">
+            <FilePlus className="h-5 w-5 text-blue-500" />
+          </button>
+          {/* Create Folder */}
+          <button
+            className="p-1 rounded-md border border-blue-500 hover:bg-gray-100 flex items-center gap-2"
+            onClick={onPendingCreateDirectory}
+          >
+            <FolderPlus className="h-5 w-5 text-blue-500" />
+          </button>
+          {/* Show All Columns */}
+          <button
+            onClick={handleShowColumnsToggle}
+            className="p-1 rounded-md border border-blue-500 hover:bg-gray-100 flex items-center gap-2"
+            title={showAllColumns ? '열 숨기기' : '모든 열 보기'}
+          >
+            <div className="text-sm text-gray-500">{showAllColumns ? '열 숨기기' : '모든 열 보기'}</div>
+            {showAllColumns ? <Eye className="h-4 w-4 text-gray-500" /> : <EyeOff className="h-4 w-4 text-gray-500" />}
+          </button>
+        </div>
       </div>
 
       {data?.length ? (
@@ -198,6 +233,27 @@ const FileList = ({ path }: FileListProps) => {
               sortDirection={sortDirection}
               showAllColumns={showAllColumns}
             />
+            {isPendingCreateDirectory && (
+              <TableRow className="hover:bg-blue-50 bg-blue-50">
+                <TableCell colSpan={1} className="flex items-center gap-2 h-[42px]">
+                  <FolderIcon className="h-5 w-5 text-yellow-500" fill={'currentColor'} />
+                  <Input
+                    ref={directoryRef}
+                    onBlur={onBlurDirectoryName}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        onCreateDirectory(directoryName);
+                      }
+                    }}
+                    onChange={(e) => onChangeDirectoryName(e.target.value)}
+                    className="h-8 text-xs shadow-none bg-white"
+                    value={directoryName}
+                    placeholder=""
+                  />
+                </TableCell>
+                <TableCell colSpan={7}></TableCell>
+              </TableRow>
+            )}
             <TableRow className="hover:bg-transparent">
               <TableCell
                 colSpan={8}

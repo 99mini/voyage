@@ -37,6 +37,14 @@ export type UploadFilesRequest = {
   file: FormData;
 };
 
+export type CreateDirectoryRequest = {
+  path: string;
+};
+
+export type CreateDirectoryResponse = {
+  path: string;
+};
+
 export type UploadFilesResponse = {
   filePath: string;
   publicUrl: string;
