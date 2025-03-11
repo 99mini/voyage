@@ -1,9 +1,9 @@
-name: Deploy Tool App to DigitalOcean
+name: Deploy Admin App to DigitalOcean
 
 on:
   push:
     branches:
-      - tool/release/**
+      - admin/release/**
 
 jobs:
   deploy:
@@ -34,7 +34,7 @@ jobs:
 
       - name: Build React app
         run: |
-          pnpm run build:tool
+          pnpm run build:admin
 
       - name: Upload build to Droplet
         env:
@@ -43,4 +43,4 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          pnpm run deploy:tool
+          pnpm run deploy:admin
