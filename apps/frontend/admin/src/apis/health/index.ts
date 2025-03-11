@@ -1,2 +1,2 @@
-export { healthCheck } from './health';
-export type { Health } from './heath.modal';
+export * from './model';
+export * from './query';

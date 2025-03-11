@@ -1,5 +1,5 @@
 import { Button } from '@packages/vds';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/auth/auth-context';
 import { PUBLIC_PATH } from '@/lib/route-constants';
 import { useNavigate } from 'react-router';
 

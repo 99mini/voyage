@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router';
 
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/auth/auth-context';
 
 import { PUBLIC_PATH } from '@/lib/route-constants';
 

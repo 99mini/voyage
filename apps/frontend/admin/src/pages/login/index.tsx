@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Button, Input, Card, CardHeader, CardTitle, CardContent, CardFooter } from '@packages/vds';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/auth/auth-context';
 import { PROTECTED_PATH } from '@/lib/route-constants';
 
 export default function Login() {
