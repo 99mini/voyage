@@ -1,10 +1,10 @@
 import { FetchResponse } from '../_model';
 import apiClient from '../_client';
 
-import { HealthResponse } from './model';
+import { HealthRequest, HealthResponse } from './model';
 
-export async function healthCheck(type: 'rest' | 'webhooks' = 'rest'): Promise<HealthResponse | null> {
-  const endpoint = type === 'rest' ? 'health' : `webhooks/health`;
+export async function healthCheck(data: HealthRequest = { type: 'rest' }): Promise<HealthResponse | null> {
+  const endpoint = data.type === 'rest' ? 'health' : `webhooks/health`;
   try {
     const response = await apiClient.get<FetchResponse<HealthResponse>>(`${endpoint}`);
 

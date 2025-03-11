@@ -3,3 +3,7 @@ export interface HealthResponse {
   timestamp: string;
   service: 'rest-api' | 'functions';
 }
+
+export type HealthRequest = {
+  type: 'rest' | 'webhooks';
+};
