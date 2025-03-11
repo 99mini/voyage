@@ -5,17 +5,17 @@ import { ChevronLeft, Eye, EyeOff, FilePlus, FolderIcon, FolderPlus } from 'luci
 
 import { Input } from '@packages/vds';
 
+import { useFilesQuery } from '@/apis/files';
+import { ReadFilesResponse } from '@/apis/files/model';
+
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 
 import FileTableBody from './table/body';
 import FileTableHeader from './table/header';
 import { SortDirection, SortField } from './table/sort-icon';
 
-import useCreateFolder from '../hooks/use-create-folder';
 import useDebounce from '@/hooks/use-debounce';
-
-import { useFilesQuery, useUploadFileMutation } from '@/apis/files';
-import { ReadFilesResponse } from '@/apis/files/model';
+import useCreateFolder from '../hooks/use-create-folder';
 
 import { PROTECTED_PATH } from '@/lib/constants/route.constant';
 import { filetypeFor } from '@/lib/utils/file';
@@ -185,16 +185,16 @@ const FileList = ({ path }: FileListProps) => {
         )}
       </div>
 
-      <div className="p-4 border-b flex items-end justify-between h-20">
+      <div className="h-32 sm:h-20 p-4 border-b flex flex-col sm:flex-row items-end justify-between">
         <div className="h-10">
           <Input
             placeholder="파일명, 확장자, 경로로 찾기"
-            className="w-32 h-10 text-xs sm:w-96"
+            className="w-64 h-10 text-xs sm:w-96"
             value={search}
             onChange={handleSearchChange}
           />
         </div>
-        <div className="flex items-end gap-4">
+        <div className="flex items-end gap-2">
           {/* Upload Folder */}
           <button className="p-1 rounded-md border border-blue-500 hover:bg-gray-100 flex items-center gap-2">
             <FilePlus className="h-5 w-5 text-blue-500" />

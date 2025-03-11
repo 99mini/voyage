@@ -54,7 +54,7 @@ const FileRow = ({ file, showAllColumns = false }: FileRowProps) => {
   return (
     <FileContextMenu.Root onOpenChange={onOpenChange}>
       <FileContextMenu.Trigger className="cursor-pointer">
-        <TableRow key={`file-${file.name}`} className={cn(`h-[42px]`, selected && 'bg-blue-100')}>
+        <TableRow key={`file-${file.name}`} className={cn(`h-[42px]`, selected && 'bg-blue-50')}>
           <TableCell>
             <File {...file} />
           </TableCell>

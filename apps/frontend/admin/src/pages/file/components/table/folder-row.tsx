@@ -40,7 +40,7 @@ const FolderRow = ({ folder, showAllColumns = false }: FolderRowProps) => {
   return (
     <FileContextMenu.Root onOpenChange={onOpenChange}>
       <FileContextMenu.Trigger className="cursor-pointer">
-        <TableRow key={`folder-${folder.name}`} className={cn(`h-[42px]`, selected && 'bg-blue-100')}>
+        <TableRow key={`folder-${folder.name}`} className={cn(`h-[42px]`, selected && 'bg-blue-50')}>
           <TableCell>
             <Folder {...folder} />
           </TableCell>
