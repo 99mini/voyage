@@ -82,9 +82,16 @@ class ApiClient {
     }
   }
 
-  public async delete<T>(url: string, init?: Omit<RequestInit, 'method'>): Promise<T | null> {
+  public async delete<T>(
+    url: string,
+    query?: string[][] | Record<string, string> | string | URLSearchParams,
+    init?: Omit<RequestInit, 'method'>,
+  ): Promise<T | null> {
     try {
-      const res = await fetch(`${this.baseUrl}/${url}`, {
+      const q = new URLSearchParams(query);
+      const uri = `${this.baseUrl}/${url}${q.size ? `?${q.toString()}` : ''}`;
+
+      const res = await fetch(uri, {
         method: 'DELETE',
         ...init,
       });

@@ -1,7 +1,7 @@
-import { useQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 
-import { readFiles } from './client';
-import { ReadFilesRequest } from './model';
+import { deleteFile, readFiles, updateFile, uploadFile } from './client';
+import { DeleteFilesRequest, ReadFilesRequest, UpdateFilesRequest, UploadFilesRequest } from './model';
 
 export const useFilesQuery = (data: ReadFilesRequest) =>
   useQuery({
@@ -9,4 +9,22 @@ export const useFilesQuery = (data: ReadFilesRequest) =>
     queryFn: () => readFiles(data),
     staleTime: 1000 * 60,
     cacheTime: 1000 * 60 * 5,
+  });
+
+export const useDeleteFileMutation = () =>
+  useMutation({
+    mutationKey: 'delete-file',
+    mutationFn: (data: DeleteFilesRequest) => deleteFile(data),
+  });
+
+export const useUpdateFileMutation = () =>
+  useMutation({
+    mutationKey: 'update-file',
+    mutationFn: (data: UpdateFilesRequest) => updateFile(data),
+  });
+
+export const useUploadFileMutation = () =>
+  useMutation({
+    mutationKey: 'upload-file',
+    mutationFn: (data: UploadFilesRequest) => uploadFile(data),
   });
