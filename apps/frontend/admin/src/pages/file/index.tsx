@@ -1,5 +1,11 @@
+import FileList from './components/file-list';
+
 const FilePage = () => {
-  return <div>FilePage</div>;
+  return (
+    <div>
+      <FileList />
+    </div>
+  );
 };
 
 export default FilePage;
