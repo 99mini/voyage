@@ -14,7 +14,7 @@ const HealthCheck = () => {
   return (
     <div className="space-y-4">
       <details open>
-        <summary>REST API 상태</summary>
+        <summary className="mb-2">REST API 상태</summary>
         <ApiCondition
           endpoint="/v1/health"
           status={restHealthData?.ok ? 'success' : 'failure'}
@@ -23,7 +23,7 @@ const HealthCheck = () => {
       </details>
 
       <details open>
-        <summary>Webhook API 상태</summary>
+        <summary className="mb-2">Webhook API 상태</summary>
         <ApiCondition
           endpoint="/v1/webhooks/health"
           status={webhooksHealthData?.ok ? 'success' : 'failure'}
