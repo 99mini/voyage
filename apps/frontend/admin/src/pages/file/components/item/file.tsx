@@ -12,7 +12,7 @@ const File = ({ name, isDirectory, className }: FileProps) => {
   if (isDirectory) return null;
 
   return (
-    <div className={cn('flex items-center gap-2 w-max', className)}>
+    <div className={cn('flex items-center gap-2 w-max h-[24px]', className)}>
       <FileIcon className="h-5 w-5 text-blue-500" />
       <span className="font-medium">{name}</span>
     </div>
