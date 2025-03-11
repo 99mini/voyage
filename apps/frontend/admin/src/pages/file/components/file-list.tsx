@@ -13,6 +13,7 @@ import { useFilesQuery } from '@/apis/files';
 import { ReadFilesResponse } from '@/apis/files/model';
 
 import { PROTECTED_PATH } from '@/lib/constants/route.constant';
+import { filetypeFor } from '@/lib/utils/file';
 
 type FileListProps = {
   path?: string;
@@ -68,7 +69,7 @@ const FileList = ({ path }: FileListProps) => {
 
   // 데이터 정렬
   const sortedData = useMemo(() => {
-    if (!data) return { folders: [], files: [] };
+    if (!data) return [];
 
     // 폴더와 파일 분리
     const folders = data.filter((item) => item.isDirectory);
@@ -88,8 +89,14 @@ const FileList = ({ path }: FileListProps) => {
             compareResult = a.path.localeCompare(b.path);
             break;
           case 'type':
-            // 타입은 폴더와 파일 분리 후 정렬하므로 여기서는 처리하지 않음
-            compareResult = 0;
+            compareResult =
+              a.isDirectory && b.isDirectory
+                ? 1
+                : a.isDirectory
+                  ? -1
+                  : b.isDirectory
+                    ? 1
+                    : filetypeFor(a.name.split('.').pop()).localeCompare(filetypeFor(b.name.split('.').pop()));
             break;
           case 'size':
             // 크기 비교 (폴더는 크기가 없으므로 0으로 처리)
@@ -112,10 +119,9 @@ const FileList = ({ path }: FileListProps) => {
       });
     };
 
-    return {
-      folders: sortItems(folders),
-      files: sortItems(files),
-    };
+    const sortedMixes = sortItems([...folders, ...files]);
+
+    return sortedMixes;
   }, [data, sortField, sortDirection]);
 
   if (error) {
@@ -151,8 +157,7 @@ const FileList = ({ path }: FileListProps) => {
             onToggleColumns={handleToggleColumns}
           />
           <FileTableBody
-            folders={sortedData.folders}
-            files={sortedData.files}
+            files={sortedData}
             sortField={sortField}
             sortDirection={sortDirection}
             showAllColumns={showAllColumns}
