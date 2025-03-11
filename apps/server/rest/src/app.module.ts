@@ -5,6 +5,7 @@ import { CommonModule } from './common/common.module';
 
 import { WebhooksModule } from './webhooks/webhooks.module';
 
+import { AuthModule } from './modules/auth/auth.module';
 import { FilesModule } from './modules/files/files.module';
 import { HealthModule } from './modules/health/health.module';
 
@@ -15,6 +16,7 @@ import { HealthModule } from './modules/health/health.module';
       envFilePath: process.env.NODE_ENV === 'production' ? '.env.production' : '.env',
     }),
     CommonModule,
+    AuthModule,
     HealthModule,
     FilesModule,
     WebhooksModule,
