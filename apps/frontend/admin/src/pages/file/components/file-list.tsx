@@ -25,9 +25,64 @@ type FileListProps = {
 type SortField = 'name' | 'type' | 'path';
 type SortDirection = 'asc' | 'desc';
 
-const FileList = ({ path }: FileListProps) => {
+// 파일 행 컴포넌트
+const FileRow = ({ file }: { file: ReadFilesResponse }) => {
   const { toast } = useToast();
 
+  return (
+    <TableRow key={`file-${file.name}`}>
+      <TableCell>
+        <File {...file} />
+      </TableCell>
+      <TableCell>
+        <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+          파일
+        </span>
+      </TableCell>
+      <TableCell className="text-xs text-gray-500">
+        <div className="w-full inline-flex items-center justify-between">
+          <div className="truncate">{`${STATIC_PATH}/${file.path}`}</div>
+          <Copy
+            className="inline w-6 h-6 p-1 text-gray-500 cursor-pointer hover:text-gray-700 hover:bg-gray-200 rounded-md"
+            onClick={() =>
+              copyToClipboard(`${STATIC_PATH}/${file.path}`, {
+                onSuccess: () =>
+                  toast({
+                    description: '클립보드에 복사했어요.',
+                    duration: 3000,
+                  }),
+                onError: () =>
+                  toast({
+                    description: '클립보드에 복사하지 못합니다.',
+                    duration: 3000,
+                  }),
+              })
+            }
+          />
+        </div>
+      </TableCell>
+    </TableRow>
+  );
+};
+
+// 폴더 행 컴포넌트
+const FolderRow = ({ folder }: { folder: ReadFilesResponse }) => {
+  return (
+    <TableRow key={`folder-${folder.name}`}>
+      <TableCell>
+        <Folder {...folder} />
+      </TableCell>
+      <TableCell>
+        <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+          폴더
+        </span>
+      </TableCell>
+      <TableCell className="text-xs text-gray-500">{folder.path}</TableCell>
+    </TableRow>
+  );
+};
+
+const FileList = ({ path }: FileListProps) => {
   const { data, isLoading, error } = useFilesQuery({
     path,
   });
@@ -117,6 +172,76 @@ const FileList = ({ path }: FileListProps) => {
     return { folders, files };
   }, [data, sortField, sortDirection]);
 
+  // 테이블 헤더 렌더링
+  const renderTableHeader = () => (
+    <TableHeader>
+      <TableRow>
+        <TableHead className="w-[60%] cursor-pointer hover:bg-gray-50" onClick={() => handleSort('name')}>
+          <div className="flex items-center">
+            이름
+            {renderSortIcon('name')}
+          </div>
+        </TableHead>
+        <TableHead className="cursor-pointer hover:bg-gray-50" onClick={() => handleSort('type')}>
+          <div className="flex items-center">
+            유형
+            {renderSortIcon('type')}
+          </div>
+        </TableHead>
+        <TableHead className="cursor-pointer hover:bg-gray-50" onClick={() => handleSort('path')}>
+          <div className="flex items-center">
+            경로
+            {renderSortIcon('path')}
+          </div>
+        </TableHead>
+      </TableRow>
+    </TableHeader>
+  );
+
+  // 파일 목록 렌더링
+  const renderFileList = () => {
+    // 타입으로 정렬할 때는 정렬 방향에 따라 폴더/파일 순서 결정
+    if (sortField === 'type') {
+      if (sortDirection === 'asc') {
+        // 오름차순: 폴더 먼저
+        return (
+          <>
+            {sortedData.folders.map((folder) => (
+              <FolderRow key={`folder-${folder.name}`} folder={folder} />
+            ))}
+            {sortedData.files.map((file) => (
+              <FileRow key={`file-${file.name}`} file={file} />
+            ))}
+          </>
+        );
+      } else {
+        // 내림차순: 파일 먼저
+        return (
+          <>
+            {sortedData.files.map((file) => (
+              <FileRow key={`file-${file.name}`} file={file} />
+            ))}
+            {sortedData.folders.map((folder) => (
+              <FolderRow key={`folder-${folder.name}`} folder={folder} />
+            ))}
+          </>
+        );
+      }
+    }
+
+    // 다른 필드로 정렬할 때는 항상 폴더 먼저
+    return (
+      <>
+        {sortedData.folders.map((folder) => (
+          <FolderRow key={`folder-${folder.name}`} folder={folder} />
+        ))}
+        {sortedData.files.map((file) => (
+          <FileRow key={`file-${file.name}`} file={file} />
+        ))}
+      </>
+    );
+  };
+
   if (isLoading) {
     return <div className="p-4 text-center">파일 목록을 불러오는 중...</div>;
   }
@@ -147,177 +272,8 @@ const FileList = ({ path }: FileListProps) => {
 
       {data?.length ? (
         <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[60%] cursor-pointer hover:bg-gray-50" onClick={() => handleSort('name')}>
-                <div className="flex items-center">
-                  이름
-                  {renderSortIcon('name')}
-                </div>
-              </TableHead>
-              <TableHead className="cursor-pointer hover:bg-gray-50" onClick={() => handleSort('type')}>
-                <div className="flex items-center">
-                  유형
-                  {renderSortIcon('type')}
-                </div>
-              </TableHead>
-              <TableHead className="cursor-pointer hover:bg-gray-50" onClick={() => handleSort('path')}>
-                <div className="flex items-center">
-                  경로
-                  {renderSortIcon('path')}
-                </div>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {sortField === 'type' ? (
-              // 타입으로 정렬할 때는 정렬 방향에 따라 폴더/파일 순서 결정
-              <>
-                {sortDirection === 'asc' ? (
-                  // 오름차순: 폴더 먼저
-                  <>
-                    {/* 폴더 먼저 표시 */}
-                    {sortedData.folders.map((folder) => (
-                      <TableRow key={`folder-${folder.name}`}>
-                        <TableCell>
-                          <Folder {...folder} />
-                        </TableCell>
-                        <TableCell>
-                          <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                            폴더
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-xs text-gray-500">{folder.path}</TableCell>
-                      </TableRow>
-                    ))}
-
-                    {/* 그 다음 파일 표시 */}
-                    {sortedData.files.map((file) => (
-                      <TableRow key={`file-${file.name}`}>
-                        <TableCell>
-                          <File {...file} />
-                        </TableCell>
-                        <TableCell>
-                          <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                            파일
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-xs text-gray-500">
-                          <div className="w-full inline-flex items-center justify-between">
-                            <div className="truncate">{`${STATIC_PATH}/${file.path}`}</div>
-                            <Copy
-                              className="inline w-6 h-6 p-1 text-gray-500 cursor-pointer hover:text-gray-700 hover:bg-gray-200 rounded-md"
-                              onClick={() =>
-                                copyToClipboard(`${STATIC_PATH}/${file.path}`, {
-                                  onSuccess: () =>
-                                    toast({
-                                      description: '클립보드에 복사했어요.',
-                                      duration: 3000,
-                                    }),
-                                  onError: () =>
-                                    toast({
-                                      description: '클립보드에 복사하지 못습니다.',
-                                      duration: 3000,
-                                    }),
-                                })
-                              }
-                            />
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </>
-                ) : (
-                  // 내림차순: 파일 먼저
-                  <>
-                    {/* 파일 먼저 표시 */}
-                    {sortedData.files.map((file) => (
-                      <TableRow key={`file-${file.name}`}>
-                        <TableCell>
-                          <File {...file} />
-                        </TableCell>
-                        <TableCell>
-                          <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                            파일
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-xs text-gray-500">{file.path}</TableCell>
-                      </TableRow>
-                    ))}
-
-                    {/* 그 다음 폴더 표시 */}
-                    {sortedData.folders.map((folder) => (
-                      <TableRow key={`folder-${folder.name}`}>
-                        <TableCell>
-                          <Folder {...folder} />
-                        </TableCell>
-                        <TableCell>
-                          <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                            폴더
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-xs text-gray-500">{folder.path}</TableCell>
-                      </TableRow>
-                    ))}
-                  </>
-                )}
-              </>
-            ) : (
-              // 다른 필드로 정렬할 때는 항상 폴더 먼저
-              <>
-                {/* 폴더 먼저 표시 */}
-                {sortedData.folders.map((folder) => (
-                  <TableRow key={`folder-${folder.name}`}>
-                    <TableCell>
-                      <Folder {...folder} />
-                    </TableCell>
-                    <TableCell>
-                      <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        폴더
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-xs text-gray-500">{folder.path}</TableCell>
-                  </TableRow>
-                ))}
-
-                {/* 그 다음 파일 표시 */}
-                {sortedData.files.map((file) => (
-                  <TableRow key={`file-${file.name}`}>
-                    <TableCell>
-                      <File {...file} />
-                    </TableCell>
-                    <TableCell>
-                      <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                        파일
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-xs text-gray-500">
-                      <div className="w-full inline-flex items-center justify-between">
-                        <div className="truncate">{`${STATIC_PATH}/${file.path}`}</div>
-                        <Copy
-                          className="inline w-6 h-6 p-1 text-gray-500 cursor-pointer hover:text-gray-700 hover:bg-gray-200 rounded-md"
-                          onClick={() =>
-                            copyToClipboard(`${STATIC_PATH}/${file.path}`, {
-                              onSuccess: () =>
-                                toast({
-                                  description: '클립보드에 복사했어요.',
-                                  duration: 3000,
-                                }),
-                              onError: () =>
-                                toast({
-                                  description: '클립보드에 복사하지 못습니다.',
-                                  duration: 3000,
-                                }),
-                            })
-                          }
-                        />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </>
-            )}
-          </TableBody>
+          {renderTableHeader()}
+          <TableBody>{renderFileList()}</TableBody>
         </Table>
       ) : (
         <div className="p-8 text-center text-gray-500">이 디렉토리에 파일이 없습니다.</div>
