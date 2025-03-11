@@ -1,4 +1,8 @@
-export class ReadFileEntity {
+export type ReadFilesRequest = {
+  path?: string;
+};
+
+export type ReadFilesResponse = {
   name: string;
   parentPath: string;
   path: string;
@@ -12,7 +16,6 @@ export class ReadFileEntity {
   birthtimeMs: number;
   ctimeMs: number;
   mtimeMs: number;
-  /** byte */
   size: number | null;
   mode: number;
-}
+};

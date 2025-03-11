@@ -1,11 +1,13 @@
 import { useQuery } from 'react-query';
 
 import { healthCheck } from './client';
+import { HealthRequest } from './model';
 
-export type { HealthResponse as HealthEntity } from './model';
+export type { HealthResponse, HealthRequest } from './model';
 
-export const useHealthQuery = () =>
+export const useHealthQuery = (data: HealthRequest = { type: 'rest' }) =>
   useQuery({
-    queryKey: ['health'],
-    queryFn: () => healthCheck(),
+    queryKey: ['health', data.type],
+    queryFn: () => healthCheck(data),
+    staleTime: 1000 * 60,
   });

@@ -5,7 +5,7 @@ import { Button, Input, Card, CardHeader, CardTitle, CardContent, CardFooter } f
 
 import { useAuth } from '@/contexts/auth/auth-context';
 
-import { PROTECTED_PATH } from '@/lib/route-constants';
+import { PROTECTED_PATH } from '@/lib/constants/route.constant';
 
 export default function Login() {
   const [username, setUsername] = useState('');
