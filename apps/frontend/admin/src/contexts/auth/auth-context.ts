@@ -1,9 +1,16 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import { LoginRequest, LoginResponse, useLoginMutation } from '@/apis/auth';
+import { MutateOptions } from 'react-query';
+
 interface AuthState {
   isAuthenticated: boolean;
-  login: (token: string) => void;
+  accessToken: string | undefined;
+  refreshToken: string | undefined;
+  accessTokenExpiresAt: Date | undefined;
+  refreshTokenExpiresAt: Date | undefined;
+  login: ({ accessToken, refreshToken, accessTokenExpiresAt, refreshTokenExpiresAt }: LoginResponse) => void;
   logout: () => void;
 }
 
@@ -12,11 +19,21 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       isAuthenticated: false,
-      login: (token: string) => {
-        set({ isAuthenticated: true });
+      accessToken: undefined,
+      refreshToken: undefined,
+      accessTokenExpiresAt: undefined,
+      refreshTokenExpiresAt: undefined,
+      login: ({ accessToken, refreshToken, accessTokenExpiresAt, refreshTokenExpiresAt }: LoginResponse) => {
+        set({ isAuthenticated: true, accessToken, refreshToken, accessTokenExpiresAt, refreshTokenExpiresAt });
       },
       logout: () => {
-        set({ isAuthenticated: false });
+        set({
+          isAuthenticated: false,
+          accessToken: undefined,
+          refreshToken: undefined,
+          accessTokenExpiresAt: undefined,
+          refreshTokenExpiresAt: undefined,
+        });
       },
     }),
     {
@@ -28,5 +45,33 @@ export const useAuthStore = create<AuthState>()(
 
 // 편의를 위한 훅 (기존 코드와의 호환성 유지)
 export function useAuth() {
-  return useAuthStore();
+  const { isAuthenticated, login: loginStore, logout: logoutStore } = useAuthStore();
+  const { mutate: loginMutate } = useLoginMutation();
+
+  const login = async (
+    data: LoginRequest,
+    options?: MutateOptions<LoginResponse | null, unknown, LoginRequest, unknown>,
+  ) => {
+    const { onSuccess, ...restOptions } = options ?? {};
+
+    loginMutate(data, {
+      onSuccess: (data, variables, context) => {
+        if (data) {
+          loginStore(data);
+        }
+        onSuccess?.(data, variables, context);
+      },
+      ...restOptions,
+    });
+  };
+
+  const logout = async () => {
+    logoutStore();
+  };
+
+  return {
+    isAuthenticated,
+    login,
+    logout,
+  };
 }
