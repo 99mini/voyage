@@ -1,8 +1,11 @@
 import { useCallback, useState } from 'react';
+import { useQueryClient } from 'react-query';
 
 import { useCreateDirectoryMutation } from '@/apis/files';
 
 const useCreateFolder = () => {
+  const queryClient = useQueryClient();
+
   const { mutate: createDirectory } = useCreateDirectoryMutation();
 
   const directoryRef = (ref: HTMLInputElement | null) => {
@@ -29,6 +32,7 @@ const useCreateFolder = () => {
           onSuccess: () => {
             setIsPendingCreateDirectory(false);
             setDirectoryName('무제');
+            queryClient.invalidateQueries({ queryKey: ['files'] });
           },
           onError: () => {
             setIsPendingCreateDirectory(false);
@@ -37,7 +41,7 @@ const useCreateFolder = () => {
         },
       );
     },
-    [createDirectory],
+    [createDirectory, queryClient],
   );
 
   const onBlurDirectoryName = useCallback(() => {

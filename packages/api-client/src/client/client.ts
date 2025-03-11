@@ -55,21 +55,19 @@ class ApiClient {
     }
   }
 
-  public async post<T, D = unknown>(
+  public async post<T, D extends BodyInit>(
     url: string,
     data?: D,
     init?: Omit<RequestInit, 'method' | 'body'>,
   ): Promise<T | null> {
     try {
-      const body = data ? JSON.stringify(data) : undefined;
-
       const res = await fetch(`${this.baseUrl}/${url}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           ...init?.headers,
         },
-        body,
+        body: data,
         ...init,
       });
       if (!res.ok) {

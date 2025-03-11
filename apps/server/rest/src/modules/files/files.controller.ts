@@ -155,8 +155,6 @@ export class FilesController {
   > {
     const { path } = body;
 
-    console.log(`[LOG] Creating directory: ${path}`);
-
     await this.filesService.createDirectory(path);
 
     return res.status(HttpStatus.CREATED).json({

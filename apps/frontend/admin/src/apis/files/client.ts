@@ -36,11 +36,19 @@ export const readFiles = async (req: ReadFilesRequest = {}) => {
   }
 };
 
+// TODO: form data 형식 맞추기
 export const uploadFile = async (req: UploadFilesRequest) => {
   try {
-    const response = await apiClient.post<FetchResponse<UploadFilesResponse>>(`${endpoint}`, req, {
+    const formData = new FormData();
+
+    const { path } = req;
+
+    formData.append('path', path);
+
+    const response = await apiClient.post<FetchResponse<UploadFilesResponse>, FormData>(`${endpoint}`, formData, {
       headers: {
         'x-api-key': import.meta.env.VITE_VOYAGE_API_KEY ?? '',
+        'Content-Type': 'multipart/form-data',
       },
     });
 
@@ -95,11 +103,16 @@ export const deleteFile = async (req: DeleteFilesRequest) => {
 
 export const createDirectory = async (req: CreateDirectoryRequest) => {
   try {
-    const response = await apiClient.post<FetchResponse<CreateDirectoryResponse>>(`${endpoint}/directory`, req, {
-      headers: {
-        'x-api-key': import.meta.env.VITE_VOYAGE_API_KEY ?? '',
+    const response = await apiClient.post<FetchResponse<CreateDirectoryResponse>, string>(
+      `${endpoint}/directory`,
+      JSON.stringify(req),
+      {
+        headers: {
+          'x-api-key': import.meta.env.VITE_VOYAGE_API_KEY ?? '',
+          'Content-Type': 'application/json',
+        },
       },
-    });
+    );
 
     if (response && response.status === 200) {
       return response.data;
