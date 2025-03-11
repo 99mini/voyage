@@ -1,6 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
 import { Global, Module } from '@nestjs/common';
-import { ServerlessProxyService } from './services/serverless-proxy.service';
+import { ServerlessProxyService } from './services';
 
 @Global()
 @Module({
