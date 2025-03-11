@@ -101,10 +101,6 @@ const FileList = ({ path }: FileListProps) => {
     return { folders, files };
   }, [data, sortField, sortDirection]);
 
-  if (isLoading) {
-    return <div className="p-4 text-center">파일 목록을 불러오는 중...</div>;
-  }
-
   if (error) {
     return <div className="p-4 text-center text-red-500">파일 목록을 불러오는 데 실패했습니다.</div>;
   }
@@ -114,8 +110,7 @@ const FileList = ({ path }: FileListProps) => {
       <div className="p-4 border-b flex items-center">
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <span className="text-gray-700 font-medium">현재 경로:</span>
-            <code className="bg-gray-100 px-2 py-1 rounded text-sm">{path || '/'}</code>
+            <code className="bg-gray-100 px-2 py-1 rounded text-sm">{path ? `/${path}` : '/'}</code>
           </div>
         </div>
         {parentPath !== null && (
@@ -139,6 +134,8 @@ const FileList = ({ path }: FileListProps) => {
             sortDirection={sortDirection}
           />
         </Table>
+      ) : isLoading ? (
+        <Table></Table>
       ) : (
         <div className="p-8 text-center text-gray-500">이 디렉토리에 파일이 없습니다.</div>
       )}
