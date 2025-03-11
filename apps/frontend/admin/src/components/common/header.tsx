@@ -12,7 +12,7 @@ import {
   navigationMenuTriggerStyle,
 } from '@packages/vds';
 
-import { PAGE_TITLE, ROUTE_PATH } from '@/lib/constant';
+import { PAGE_TITLE, ROUTE_PATH } from '@/lib/route-constants';
 
 const LinkItem = ({ to, children, isActive }: { to: string; children: React.ReactNode; isActive: boolean }) => {
   return (

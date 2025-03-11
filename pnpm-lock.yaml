@@ -104,6 +104,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-query:
+        specifier: ^3.39.3
+        version: 3.39.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-router:
         specifier: ^7.1.1
         version: 7.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -113,6 +116,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.10.14(@swc/helpers@0.5.5))(@types/node@22.13.0)(typescript@5.6.3)))
+      zustand:
+        specifier: ^5.0.3
+        version: 5.0.3(@types/react@18.3.18)(immer@9.0.21)(react@18.3.1)
     devDependencies:
       '@eslint/js':
         specifier: ^9.17.0
@@ -1327,10 +1333,6 @@ packages:
 
   '@babel/runtime-corejs3@7.26.7':
     resolution: {integrity: sha512-55gRV8vGrCIYZnaQHQrD92Lo/hYE3Sj5tmbuf0hhHR7sj2CWhEhHU89hbq+UVDXvFG1zUVXJhUkEq1eAfqXtFw==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/runtime@7.26.7':
-    resolution: {integrity: sha512-AOPI3D+a8dXnja+iwsUqGRjr1BbZIe771sXdapOtYI531gSqpi92vXivKcq2asu/DFpdl1ceFAKZyRzK2PCVcQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/runtime@7.26.9':
@@ -4739,6 +4741,10 @@ packages:
     resolution: {integrity: sha512-aVNobHnJqLiUelTaHat9DZ1qM2w0C0Eym4LPI/3JxOnSokGVdsl1T1kN7TFvsEAD8G47A6VKQ0TVHqbBnYMJlQ==}
     engines: {node: '>=12.0.0'}
 
+  big-integer@1.6.52:
+    resolution: {integrity: sha512-QxD8cf2eVqJOOz63z6JIN9BzvVs/dlySa5HGSBH5xtR8dPteIRQnBxxKqkNTiT6jbDTF6jAfrd4oMcND9RGbQg==}
+    engines: {node: '>=0.6'}
+
   big.js@5.2.2:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
 
@@ -4791,6 +4797,9 @@ packages:
   braces@3.0.3:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
+
+  broadcast-channel@3.7.0:
+    resolution: {integrity: sha512-cIAKJXAxGJceNZGTZSBzMxzyOn72cVgPnKx4dc6LRjQgbaJUQqhy5rzL3zbMxkMWsGKkv2hSFkPRMEXfoMZ2Mg==}
 
   browser-assert@1.2.1:
     resolution: {integrity: sha512-nfulgvOR6S4gt9UKCeGJOuSGBPGiFT6oQ/2UBnvTY/5aQ1PnksW72fhZkM30DzoRRv2WpwZf1vHHEr3mtuXIWQ==}
@@ -7030,6 +7039,9 @@ packages:
   js-git@0.7.8:
     resolution: {integrity: sha512-+E5ZH/HeRnoc/LW0AmAyhU+mNcWBzAKE+30+IDMLSLbbK+Tdt02AdkOKq9u15rlJsDEGFqtgckc8ZM59LhhiUA==}
 
+  js-sha3@0.8.0:
+    resolution: {integrity: sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q==}
+
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -7346,6 +7358,9 @@ packages:
 
   markdown-table@3.0.4:
     resolution: {integrity: sha512-wiYz4+JrLyb/DqW2hkFJxP7Vd7JuTDm77fvbM8VfEQdmSMqcImWeeRbHwZjBjIFki/VaMK2BhFi7oUUZeM5bqw==}
+
+  match-sorter@6.3.4:
+    resolution: {integrity: sha512-jfZW7cWS5y/1xswZo8VBOdudUiSd9nifYRWphc9M5D/ee4w4AoXLgBEdRbgVaxbMuagBPeUC5y2Hi8DO6o9aDg==}
 
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
@@ -7688,6 +7703,9 @@ packages:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
     engines: {node: '>=8.6'}
 
+  microseconds@0.2.0:
+    resolution: {integrity: sha512-n7DHHMjR1avBbSpsTBj6fmMGh2AGrifVV4e+WYc3Q9lO+xnSZ3NyhcBND3vzzatt05LFhoKFRxrIyklmLlUtyA==}
+
   mime-db@1.33.0:
     resolution: {integrity: sha512-BHJ/EKruNIqJf/QahvxwQZXKygOQ256myeN/Ew+THcAa5q+PjyTTMMeNQC4DZw5AwfvelsUrA6B67NKMqXDbzQ==}
     engines: {node: '>= 0.6'}
@@ -7848,6 +7866,9 @@ packages:
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
 
+  nano-time@1.0.0:
+    resolution: {integrity: sha512-flnngywOoQ0lLQOTRNexn2gGSNuM9bKj9RZAWSzhQ+UJYaAFG9bac4DW9VHjUAzrOaIcajHybCTHe/bkvozQqA==}
+
   nanoid@3.3.8:
     resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -8006,6 +8027,9 @@ packages:
   object.values@1.2.1:
     resolution: {integrity: sha512-gXah6aZrcUxjWg2zR2MwouP2eHlCBzdV4pygudehaKXSGW4v2AsRQUK+lwwXhii6KFZcunEnmSUoYp5CXibxtA==}
     engines: {node: '>= 0.4'}
+
+  oblivious-set@1.0.0:
+    resolution: {integrity: sha512-z+pI07qxo4c2CulUHCDf9lcqDlMSo72N/4rLUpRXf6fu+q8vjt8y0xS+Tlf8NTJDdTXHbdeO1n3MlbctwEoXZw==}
 
   obuf@1.1.2:
     resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
@@ -8954,6 +8978,18 @@ packages:
       react-loadable: '*'
       webpack: '>=4.41.1 || 5.x'
 
+  react-query@3.39.3:
+    resolution: {integrity: sha512-nLfLz7GiohKTJDuT4us4X3h/8unOh+00MLb2yJoGTPjxKs2bc1iDhkNx2bd5MKklXnOD3NrVZ+J2UXujA5In4g==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+
   react-refresh@0.14.2:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
     engines: {node: '>=0.10.0'}
@@ -9201,6 +9237,9 @@ packages:
 
   remark-stringify@11.0.0:
     resolution: {integrity: sha512-1OSmLd3awB/t8qdoEOMazZkNsfVTeY4fTsgzcQFdXNq8ToTN4ZGwrMnlda4K6smTFKD+GRV6O48i6Z4iKgPPpw==}
+
+  remove-accents@0.5.0:
+    resolution: {integrity: sha512-8g3/Otx1eJaVD12e31UbJj1YzdtVvzH85HV7t+9MJYk/u3XmkOUJ5Ys9wQrf9PCPK8+xn4ymzqYCiZl6QWKn+A==}
 
   renderkid@3.0.0:
     resolution: {integrity: sha512-q/7VIQA8lmM1hF+jn+sFSPWGlMkSAeNYcPLmDQx2zzuiDfaLrOmumR8iaUKlenFgh0XRPIUeSPlH3A+AW3Z5pg==}
@@ -10149,6 +10188,9 @@ packages:
   universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
+
+  unload@2.2.0:
+    resolution: {integrity: sha512-B60uB5TNBLtN6/LsgAf3udH9saB5p7gqJwcFfbOEZ8BcBHnGwCf6G/TGiEqkRAxX7zAFIUtzdrXQSdL3Q/wqNA==}
 
   unpipe@1.0.0:
     resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
@@ -11497,10 +11539,6 @@ snapshots:
       core-js-pure: 3.40.0
       regenerator-runtime: 0.14.1
 
-  '@babel/runtime@7.26.7':
-    dependencies:
-      regenerator-runtime: 0.14.1
-
   '@babel/runtime@7.26.9':
     dependencies:
       regenerator-runtime: 0.14.1
@@ -11827,7 +11865,7 @@ snapshots:
       '@babel/preset-env': 7.26.7(@babel/core@7.26.7)
       '@babel/preset-react': 7.26.3(@babel/core@7.26.7)
       '@babel/preset-typescript': 7.26.0(@babel/core@7.26.7)
-      '@babel/runtime': 7.26.7
+      '@babel/runtime': 7.26.9
       '@babel/runtime-corejs3': 7.26.7
       '@babel/traverse': 7.26.7
       '@docusaurus/logger': 3.7.0
@@ -14528,7 +14566,7 @@ snapshots:
   '@testing-library/dom@10.4.0':
     dependencies:
       '@babel/code-frame': 7.26.2
-      '@babel/runtime': 7.26.7
+      '@babel/runtime': 7.26.9
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
       chalk: 4.1.2
@@ -15610,6 +15648,8 @@ snapshots:
     dependencies:
       open: 8.4.2
 
+  big-integer@1.6.52: {}
+
   big.js@5.2.2: {}
 
   binary-extensions@2.3.0: {}
@@ -15703,6 +15743,17 @@ snapshots:
   braces@3.0.3:
     dependencies:
       fill-range: 7.1.1
+
+  broadcast-channel@3.7.0:
+    dependencies:
+      '@babel/runtime': 7.26.9
+      detect-node: 2.1.0
+      js-sha3: 0.8.0
+      microseconds: 0.2.0
+      nano-time: 1.0.0
+      oblivious-set: 1.0.0
+      rimraf: 3.0.2
+      unload: 2.2.0
 
   browser-assert@1.2.1: {}
 
@@ -18449,6 +18500,8 @@ snapshots:
       git-sha1: 0.1.2
       pako: 0.2.9
 
+  js-sha3@0.8.0: {}
+
   js-tokens@4.0.0: {}
 
   js-yaml@3.14.1:
@@ -18706,6 +18759,11 @@ snapshots:
       repeat-string: 1.6.1
 
   markdown-table@3.0.4: {}
+
+  match-sorter@6.3.4:
+    dependencies:
+      '@babel/runtime': 7.26.9
+      remove-accents: 0.5.0
 
   math-intrinsics@1.1.0: {}
 
@@ -19557,6 +19615,8 @@ snapshots:
       braces: 3.0.3
       picomatch: 2.3.1
 
+  microseconds@0.2.0: {}
+
   mime-db@1.33.0: {}
 
   mime-db@1.52.0: {}
@@ -19697,6 +19757,10 @@ snapshots:
       any-promise: 1.3.0
       object-assign: 4.1.1
       thenify-all: 1.6.0
+
+  nano-time@1.0.0:
+    dependencies:
+      big-integer: 1.6.52
 
   nanoid@3.3.8: {}
 
@@ -19852,6 +19916,8 @@ snapshots:
       call-bound: 1.0.3
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
+
+  oblivious-set@1.0.0: {}
 
   obuf@1.1.2: {}
 
@@ -20207,7 +20273,7 @@ snapshots:
 
   polished@4.3.1:
     dependencies:
-      '@babel/runtime': 7.26.7
+      '@babel/runtime': 7.26.9
 
   possible-typed-array-names@1.0.0: {}
 
@@ -20926,9 +20992,18 @@ snapshots:
 
   react-loadable-ssr-addon-v5-slorber@1.0.1(@docusaurus/react-loadable@6.0.0(react@19.0.0))(webpack@5.97.1(@swc/core@1.10.14(@swc/helpers@0.5.5))):
     dependencies:
-      '@babel/runtime': 7.26.7
+      '@babel/runtime': 7.26.9
       react-loadable: '@docusaurus/react-loadable@6.0.0(react@19.0.0)'
       webpack: 5.97.1(@swc/core@1.10.14(@swc/helpers@0.5.5))
+
+  react-query@3.39.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      '@babel/runtime': 7.26.9
+      broadcast-channel: 3.7.0
+      match-sorter: 6.3.4
+      react: 18.3.1
+    optionalDependencies:
+      react-dom: 18.3.1(react@18.3.1)
 
   react-refresh@0.14.2: {}
 
@@ -20953,13 +21028,13 @@ snapshots:
 
   react-router-config@5.1.1(react-router@5.3.4(react@19.0.0))(react@19.0.0):
     dependencies:
-      '@babel/runtime': 7.26.7
+      '@babel/runtime': 7.26.9
       react: 19.0.0
       react-router: 5.3.4(react@19.0.0)
 
   react-router-dom@5.3.4(react@19.0.0):
     dependencies:
-      '@babel/runtime': 7.26.7
+      '@babel/runtime': 7.26.9
       history: 4.10.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
@@ -20977,7 +21052,7 @@ snapshots:
 
   react-router@5.3.4(react@19.0.0):
     dependencies:
-      '@babel/runtime': 7.26.7
+      '@babel/runtime': 7.26.9
       history: 4.10.1
       hoist-non-react-statics: 3.3.2
       loose-envify: 1.4.0
@@ -21313,6 +21388,8 @@ snapshots:
       '@types/mdast': 4.0.4
       mdast-util-to-markdown: 2.1.2
       unified: 11.0.5
+
+  remove-accents@0.5.0: {}
 
   renderkid@3.0.0:
     dependencies:
@@ -22420,6 +22497,11 @@ snapshots:
       unist-util-visit-parents: 6.0.1
 
   universalify@2.0.1: {}
+
+  unload@2.2.0:
+    dependencies:
+      '@babel/runtime': 7.26.9
+      detect-node: 2.1.0
 
   unpipe@1.0.0: {}
 

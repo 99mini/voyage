@@ -4,10 +4,13 @@ import { Toaster } from '@packages/vds';
 
 import Footer from '@/components/common/footer';
 import Header from '@/components/common/header';
+import ProtectedRoute from '@/routes/protected-route';
 
 import Home from '@/pages';
+import Dashboard from '@/pages/dashboard';
+import Login from '@/pages/login';
 
-import { ROUTE_PATH } from '@/lib/constant';
+import { PROTECTED_PATH, PUBLIC_PATH } from '@/lib/route-constants';
 
 function RootRouter() {
   return (
@@ -16,7 +19,14 @@ function RootRouter() {
         <Header />
         <main className="container mx-auto p-4 md:px-0 flex-grow">
           <Routes>
-            <Route path={ROUTE_PATH.ROOT} element={<Home />} />
+            {/* 공개 라우트 */}
+            <Route path={PUBLIC_PATH.ROOT} element={<Home />} />
+            <Route path={PUBLIC_PATH.LOGIN} element={<Login />} />
+
+            {/* 보호된 라우트 */}
+            <Route element={<ProtectedRoute />}>
+              <Route path={PROTECTED_PATH.DASHBOARD} element={<Dashboard />} />
+            </Route>
           </Routes>
           <Toaster />
         </main>

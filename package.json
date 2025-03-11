@@ -21,6 +21,7 @@
     "dev:tool": "pnpm --filter tool run dev",
     "dev:admin": "pnpm --filter admin run dev",
     "dev:func": "pnpm --filter server-functions run dev",
+    "dev:vds": "pnpm --filter vds run dev",
     "dev:rest": "pnpm --filter server-rest run dev",
     "dev:api-client": "pnpm --filter api-client run dev",
     "dev:pb-api": "pnpm --filter pb-api run dev",

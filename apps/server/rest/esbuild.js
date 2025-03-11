@@ -20,6 +20,8 @@ await esbuild.build({
     'process.env.DO_FUNCTIONS_API_ENDPOINT': `"${process.env.DO_FUNCTIONS_API_ENDPOINT}"`,
     'process.env.NODE_ENV': `"${process.env.NODE_ENV}"`,
     'process.env.API_KEY': `"${process.env.API_KEY}"`,
+    'process.env.ADMIN_USER': `"${process.env.ADMIN_USER}"`, // TODO: remove
+    'process.env.ADMIN_PASSWORD': `"${process.env.ADMIN_PASSWORD}"`, // TODO: remove
   },
   external: [
     // Node.js 내장 모듈

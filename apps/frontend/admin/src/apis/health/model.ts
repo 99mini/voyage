@@ -1,4 +1,4 @@
-export interface Health {
+export interface HealthResponse {
   ok: boolean;
   timestamp: string;
   service: 'rest-api' | 'functions';
