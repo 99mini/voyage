@@ -11,12 +11,13 @@ export class WebhooksHealthController {
 
   @Get('health')
   @ApiOperation({
-    summary: '웹훅 서비스 상태 확인',
-    description: '웹훅 서비스의 현재 상태를 확인합니다. 서버리스 함수가 정상적으로 동작 중인지 확인하는 데 사용됩니다.',
+    summary: 'Check Webhooks Service Status',
+    description:
+      'Check the current status of the Webhooks Service. Used to confirm that the server is running properly.',
   })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({
-    description: '웹훅 서비스가 정상적으로 동작 중입니다.',
+    description: 'The Webhooks Service is running.',
     schema: {
       type: 'object',
       properties: {
