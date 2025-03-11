@@ -1,5 +1,7 @@
 import { Link } from 'react-router';
 
+import { ChevronLeft } from 'lucide-react';
+
 import { cn } from '@packages/vds';
 
 import { useFilesQuery } from '@/apis/files';
@@ -57,18 +59,10 @@ const FileList = ({ path }: FileListProps) => {
         </div>
         {parentPath !== null && (
           <Link
-            to={`${PROTECTED_PATH.FILE}/${parentPath}`}
+            to={`${PROTECTED_PATH.FILE}${parentPath ? `/${parentPath}` : ''}`}
             className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <ChevronLeft className="h-4 w-4" />
             상위 디렉토리로
           </Link>
         )}
