@@ -40,7 +40,7 @@ function Header() {
         <NavigationMenu orientation="vertical">
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="text-black">웹 툴</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="text-black">메뉴</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="flex flex-col gap-3 p-4">
                   {Object.entries(ROUTE_PATH)
