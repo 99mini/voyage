@@ -1,5 +1,3 @@
-import { Eye, EyeOff } from 'lucide-react';
-
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 import SortIcon, { SortDirection, SortField } from './sort-icon';
@@ -9,17 +7,12 @@ interface TableHeaderProps {
   sortDirection: SortDirection;
   onSort: (field: SortField) => void;
   showAllColumns: boolean;
-  onToggleColumns: (show: boolean) => void;
 }
 
 /**
  * 파일 목록 테이블의 헤더 컴포넌트
  */
-const FileTableHeader = ({ sortField, sortDirection, onSort, showAllColumns, onToggleColumns }: TableHeaderProps) => {
-  const toggleColumns = () => {
-    onToggleColumns(!showAllColumns);
-  };
-
+const FileTableHeader = ({ sortField, sortDirection, onSort, showAllColumns }: TableHeaderProps) => {
   return (
     <TableHeader>
       <TableRow>
@@ -62,15 +55,6 @@ const FileTableHeader = ({ sortField, sortDirection, onSort, showAllColumns, onT
             경로
             <SortIcon currentSortField={sortField} field="path" direction={sortDirection} />
           </div>
-        </TableHead>
-        <TableHead className="w-[40px]">
-          <button
-            onClick={toggleColumns}
-            className="p-1 rounded-md hover:bg-gray-100"
-            title={showAllColumns ? '열 숨기기' : '모든 열 보기'}
-          >
-            {showAllColumns ? <EyeOff className="h-4 w-4 text-gray-500" /> : <Eye className="h-4 w-4 text-gray-500" />}
-          </button>
         </TableHead>
       </TableRow>
     </TableHeader>

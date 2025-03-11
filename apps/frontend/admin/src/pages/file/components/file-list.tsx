@@ -1,13 +1,17 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router';
 
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Eye, EyeOff } from 'lucide-react';
+
+import { Input } from '@packages/vds';
 
 import { Table } from '@/components/ui/table';
 
 import FileTableBody from './table/body';
 import FileTableHeader from './table/header';
 import { SortDirection, SortField } from './table/sort-icon';
+
+import useDebounce from '@/hooks/use-debounce';
 
 import { useFilesQuery } from '@/apis/files';
 import { ReadFilesResponse } from '@/apis/files/model';
@@ -30,6 +34,15 @@ const FileList = ({ path }: FileListProps) => {
   // 모든 컬럼 표시 여부 상태
   const [showAllColumns, setShowAllColumns] = useState(false);
 
+  // 검색 상태
+  const [search, setSearch] = useState('');
+
+  const handleShowColumnsToggle = () => setShowAllColumns((prev) => !prev);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
   // 정렬 핸들러
   const handleSort = (field: SortField) => {
     if (field === sortField) {
@@ -40,11 +53,6 @@ const FileList = ({ path }: FileListProps) => {
       setSortField(field);
       setSortDirection('asc');
     }
-  };
-
-  // 컬럼 표시 토글 핸들러
-  const handleToggleColumns = (show: boolean) => {
-    setShowAllColumns(show);
   };
 
   // 상위 디렉토리 경로 계산
@@ -124,6 +132,18 @@ const FileList = ({ path }: FileListProps) => {
     return sortedMixes;
   }, [data, sortField, sortDirection]);
 
+  const debouncedSearch = useDebounce(search, 250);
+
+  const searchFiles = useMemo(() => {
+    return sortedData.filter((item) => {
+      return (
+        item.name.includes(debouncedSearch) ||
+        item.path.includes(debouncedSearch) ||
+        filetypeFor(item.name.split('.').pop()).includes(debouncedSearch)
+      );
+    });
+  }, [sortedData, debouncedSearch]);
+
   if (error) {
     return <div className="p-4 text-center text-red-500">파일 목록을 불러오는 데 실패했습니다.</div>;
   }
@@ -146,6 +166,22 @@ const FileList = ({ path }: FileListProps) => {
           </Link>
         )}
       </div>
+      <div className="p-4 border-b flex items-center justify-between">
+        <Input
+          placeholder="파일명, 확장자, 경로로 찾기"
+          className="w-32 text-xs sm:w-96"
+          value={search}
+          onChange={handleSearchChange}
+        />
+        <button
+          onClick={handleShowColumnsToggle}
+          className="p-1 rounded-md hover:bg-gray-100 flex items-center gap-1"
+          title={showAllColumns ? '열 숨기기' : '모든 열 보기'}
+        >
+          <div className="text-xs text-gray-500">{showAllColumns ? '열 숨기기' : '모든 열 보기'}</div>
+          {showAllColumns ? <Eye className="h-4 w-4 text-gray-500" /> : <EyeOff className="h-4 w-4 text-gray-500" />}
+        </button>
+      </div>
 
       {data?.length ? (
         <Table>
@@ -154,10 +190,9 @@ const FileList = ({ path }: FileListProps) => {
             sortDirection={sortDirection}
             onSort={handleSort}
             showAllColumns={showAllColumns}
-            onToggleColumns={handleToggleColumns}
           />
           <FileTableBody
-            files={sortedData}
+            files={searchFiles}
             sortField={sortField}
             sortDirection={sortDirection}
             showAllColumns={showAllColumns}
