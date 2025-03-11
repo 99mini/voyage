@@ -8,7 +8,7 @@ import { ReadFilesResponse } from '@/apis/files';
 
 import { PROTECTED_PATH } from '@/lib/constants/route.constant';
 
-import { FileItemProps } from '../types/file-item.type';
+import { FileItemProps } from '../../types/file-item.type';
 
 type FolderProps = FileItemProps & Pick<ReadFilesResponse, 'name' | 'isDirectory' | 'path'>;
 

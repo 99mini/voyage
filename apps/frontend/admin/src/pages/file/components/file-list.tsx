@@ -1,22 +1,17 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router';
 
-import { ChevronLeft, ChevronDown, ChevronUp, Copy } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronUp } from 'lucide-react';
 
-import { useToast } from '@packages/vds';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import FileRow from './table/file-row';
+import FolderRow from './table/folder-row';
 
 import { useFilesQuery } from '@/apis/files';
 import { ReadFilesResponse } from '@/apis/files/model';
 
 import { PROTECTED_PATH } from '@/lib/constants/route.constant';
-
-import File from './file';
-import Folder from './folder';
-
-import { STATIC_PATH } from '@/lib/constants/static.constant';
-import { copyToClipboard } from '@/lib/utils/clipboard';
 
 type FileListProps = {
   path?: string;
@@ -24,63 +19,6 @@ type FileListProps = {
 
 type SortField = 'name' | 'type' | 'path';
 type SortDirection = 'asc' | 'desc';
-
-// 파일 행 컴포넌트
-const FileRow = ({ file }: { file: ReadFilesResponse }) => {
-  const { toast } = useToast();
-
-  return (
-    <TableRow key={`file-${file.name}`}>
-      <TableCell>
-        <File {...file} />
-      </TableCell>
-      <TableCell>
-        <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-          파일
-        </span>
-      </TableCell>
-      <TableCell className="text-xs text-gray-500">
-        <div className="w-full inline-flex items-center justify-between">
-          <div className="truncate">{`${STATIC_PATH}/${file.path}`}</div>
-          <Copy
-            className="inline w-6 h-6 p-1 text-gray-500 cursor-pointer hover:text-gray-700 hover:bg-gray-200 rounded-md"
-            onClick={() =>
-              copyToClipboard(`${STATIC_PATH}/${file.path}`, {
-                onSuccess: () =>
-                  toast({
-                    description: '클립보드에 복사했어요.',
-                    duration: 3000,
-                  }),
-                onError: () =>
-                  toast({
-                    description: '클립보드에 복사하지 못합니다.',
-                    duration: 3000,
-                  }),
-              })
-            }
-          />
-        </div>
-      </TableCell>
-    </TableRow>
-  );
-};
-
-// 폴더 행 컴포넌트
-const FolderRow = ({ folder }: { folder: ReadFilesResponse }) => {
-  return (
-    <TableRow key={`folder-${folder.name}`}>
-      <TableCell>
-        <Folder {...folder} />
-      </TableCell>
-      <TableCell>
-        <span className="inline-flex items-center min-w-12 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-          폴더
-        </span>
-      </TableCell>
-      <TableCell className="text-xs text-gray-500">{folder.path}</TableCell>
-    </TableRow>
-  );
-};
 
 const FileList = ({ path }: FileListProps) => {
   const { data, isLoading, error } = useFilesQuery({
@@ -201,45 +139,45 @@ const FileList = ({ path }: FileListProps) => {
   // 파일 목록 렌더링
   const renderFileList = () => {
     // 타입으로 정렬할 때는 정렬 방향에 따라 폴더/파일 순서 결정
-    if (sortField === 'type') {
-      if (sortDirection === 'asc') {
-        // 오름차순: 폴더 먼저
-        return (
-          <>
-            {sortedData.folders.map((folder) => (
-              <FolderRow key={`folder-${folder.name}`} folder={folder} />
-            ))}
-            {sortedData.files.map((file) => (
-              <FileRow key={`file-${file.name}`} file={file} />
-            ))}
-          </>
-        );
-      } else {
-        // 내림차순: 파일 먼저
-        return (
-          <>
-            {sortedData.files.map((file) => (
-              <FileRow key={`file-${file.name}`} file={file} />
-            ))}
-            {sortedData.folders.map((folder) => (
-              <FolderRow key={`folder-${folder.name}`} folder={folder} />
-            ))}
-          </>
-        );
-      }
+    if (sortField !== 'type') {
+      // 다른 필드로 정렬할 때는 항상 폴더 먼저
+      return (
+        <>
+          {sortedData.folders.map((folder) => (
+            <FolderRow key={`folder-${folder.name}`} folder={folder} />
+          ))}
+          {sortedData.files.map((file) => (
+            <FileRow key={`file-${file.name}`} file={file} />
+          ))}
+        </>
+      );
     }
 
-    // 다른 필드로 정렬할 때는 항상 폴더 먼저
-    return (
-      <>
-        {sortedData.folders.map((folder) => (
-          <FolderRow key={`folder-${folder.name}`} folder={folder} />
-        ))}
-        {sortedData.files.map((file) => (
-          <FileRow key={`file-${file.name}`} file={file} />
-        ))}
-      </>
-    );
+    if (sortDirection === 'asc') {
+      // 오름차순: 폴더 먼저
+      return (
+        <>
+          {sortedData.folders.map((folder) => (
+            <FolderRow key={`folder-${folder.name}`} folder={folder} />
+          ))}
+          {sortedData.files.map((file) => (
+            <FileRow key={`file-${file.name}`} file={file} />
+          ))}
+        </>
+      );
+    } else {
+      // 내림차순: 파일 먼저
+      return (
+        <>
+          {sortedData.files.map((file) => (
+            <FileRow key={`file-${file.name}`} file={file} />
+          ))}
+          {sortedData.folders.map((folder) => (
+            <FolderRow key={`folder-${folder.name}`} folder={folder} />
+          ))}
+        </>
+      );
+    }
   };
 
   if (isLoading) {

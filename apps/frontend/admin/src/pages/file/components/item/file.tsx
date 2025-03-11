@@ -4,7 +4,7 @@ import { cn } from '@packages/vds';
 
 import { ReadFilesResponse } from '@/apis/files';
 
-import { FileItemProps } from '../types/file-item.type';
+import { FileItemProps } from '../../types/file-item.type';
 
 type FileProps = FileItemProps & Pick<ReadFilesResponse, 'name' | 'isDirectory'>;
 
