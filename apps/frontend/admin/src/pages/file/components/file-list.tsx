@@ -109,7 +109,7 @@ const FileList = ({ path }: FileListProps) => {
     <div className="bg-white rounded-lg shadow">
       <div className="p-4 border-b flex items-center">
         <div className="flex-1">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-max">
             <code className="bg-gray-100 px-2 py-1 rounded text-sm">{path ? `/${path}` : '/'}</code>
           </div>
         </div>

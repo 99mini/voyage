@@ -1,3 +1,8 @@
+/**
+ * TODO: 파일 확장자 자세히 작성
+ * @param ext
+ * @returns
+ */
 export const filetypeFor = (ext?: string) => {
   const lowerCaseExt = ext?.toLowerCase() ?? '';
   switch (lowerCaseExt) {
