@@ -10,15 +10,16 @@ import { ReadFilesResponse } from '@/apis/files/model';
 
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 
-import FileTableBody from './table/body';
-import FileTableHeader from './table/header';
-import { SortDirection, SortField } from './table/sort-icon';
-
 import useDebounce from '@/hooks/use-debounce';
+
 import useCreateFolder from '../hooks/use-create-folder';
 
 import { PROTECTED_PATH } from '@/lib/constants/route.constant';
 import { filetypeFor } from '@/lib/utils/file';
+
+import FileTableBody from './table/body';
+import FileTableHeader from './table/header';
+import { SortDirection, SortField } from './table/sort-icon';
 
 type FileListProps = {
   path?: string;

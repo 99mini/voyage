@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { Button, Input, Card, CardHeader, CardTitle, CardContent, CardFooter } from '@packages/vds';
+import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle, Input } from '@packages/vds';
 
 import { useAuth } from '@/contexts/auth/auth-context';
 

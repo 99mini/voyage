@@ -2,15 +2,15 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 
 import { Toaster } from '@packages/vds';
 
-import Footer from '@/components/common/footer';
-import Header from '@/components/common/header';
-import ProtectedRoute from '@/routes/protected-route';
-
 import Home from '@/pages';
-import Login from '@/pages/login';
-
 import Dashboard from '@/pages/dashboard';
 import FilePage from '@/pages/file';
+import Login from '@/pages/login';
+
+import ProtectedRoute from '@/routes/protected-route';
+
+import Footer from '@/components/common/footer';
+import Header from '@/components/common/header';
 
 import { PROTECTED_PATH, PUBLIC_PATH } from '@/lib/constants/route.constant';
 

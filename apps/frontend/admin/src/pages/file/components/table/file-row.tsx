@@ -2,18 +2,18 @@ import { Copy } from 'lucide-react';
 
 import { cn, useToast } from '@packages/vds';
 
-import { TableCell, TableRow } from '@/components/ui/table';
-
-import File from '../item/file';
-
 import { ReadFilesResponse } from '@/apis/files/model';
 
+import { TableCell, TableRow } from '@/components/ui/table';
+
 import useFileContextMenu from '../../hooks/use-file-context-menu';
-import FileContextMenu from '../context-menu/file-context-menu';
 
 import { STATIC_PATH } from '@/lib/constants/static.constant';
 import { copyToClipboard } from '@/lib/utils/clipboard';
 import { filetypeFor, formatFileSize } from '@/lib/utils/file';
+
+import FileContextMenu from '../context-menu/file-context-menu';
+import File from '../item/file';
 
 const formatDate = (timestamp: number) => {
   const date = new Date(timestamp);

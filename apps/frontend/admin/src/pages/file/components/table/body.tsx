@@ -1,8 +1,8 @@
-import { ReadFilesResponse } from '@/apis/files/model';
-
 import FileRow from './file-row';
 import FolderRow from './folder-row';
 import { SortDirection, SortField } from './sort-icon';
+
+import { ReadFilesResponse } from '@/apis/files/model';
 
 type FileTableBodyProps = {
   files: ReadFilesResponse[];

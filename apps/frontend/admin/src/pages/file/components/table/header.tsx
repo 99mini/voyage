@@ -1,6 +1,6 @@
-import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
-
 import SortIcon, { SortDirection, SortField } from './sort-icon';
+
+import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 interface TableHeaderProps {
   sortField: SortField;
