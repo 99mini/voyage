@@ -10,7 +10,7 @@ const FilePage = () => {
   const path = location.pathname.split('file/').slice(1).join('/');
 
   return (
-    <div className="p-6">
+    <div className="space-y-6">
       <h1 className="text-2xl font-bold mb-4">파일 관리</h1>
       <FileList path={path || undefined} />
     </div>

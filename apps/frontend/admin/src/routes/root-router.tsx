@@ -19,7 +19,7 @@ function RootRouter() {
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
         <Header />
-        <main className="container mx-auto p-4 md:px-0 flex-grow">
+        <main className="container mx-auto p-4 flex-grow">
           <Routes>
             {/* 공개 라우트 */}
             <Route path={PUBLIC_PATH.ROOT} element={<Home />} />
