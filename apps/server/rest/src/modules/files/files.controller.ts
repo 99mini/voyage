@@ -1,3 +1,5 @@
+import { Response } from 'express';
+
 import {
   Body,
   Controller,
@@ -16,15 +18,13 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiHeader, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
-
 import { ApiKeyGuard } from '@server-rest/auth/guards/api-key.guard';
 
-import { RenameFileDto } from './dto';
-
-import { NewFileEntity, ReadFileEntity, UpdateFileEntity, DeleteFileEntity } from './entities';
-
 import { FilesService } from './files.service';
+
+import { DeleteFileEntity, NewFileEntity, ReadFileEntity, UpdateFileEntity } from './entities';
+
+import { RenameFileDto } from './dto';
 
 @ApiTags('Files')
 @Controller('v1/files')

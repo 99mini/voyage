@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { CommonModule } from '@server-rest/common/common.module';
+
 import { WebhooksHealthController } from './health.controller';
+
 import { WebhooksHealthService } from './health.service';
 
 @Module({

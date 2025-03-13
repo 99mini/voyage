@@ -1,10 +1,9 @@
-import type { ReactNode } from 'react';
 import clsx from 'clsx';
-import Link from '@docusaurus/Link';
+
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
+import Layout from '@theme/Layout';
 
 import styles from './index.module.css';
 
@@ -22,7 +21,7 @@ function HomepageHeader() {
   );
 }
 
-export default function Home(): ReactNode {
+export default function Home(): React.ReactNode {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout title={`${siteConfig.title}`} description={`${siteConfig.tagline}`}>

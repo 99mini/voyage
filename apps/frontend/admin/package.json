@@ -15,6 +15,7 @@
     "deploy": "sh ./.scripts/deploy.sh",
     "lint": "eslint .",
     "preview": "vite preview",
+    "format": "prettier --write .",
     "prod": "pnpm run build && vite preview"
   },
   "dependencies": {

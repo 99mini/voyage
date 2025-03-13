@@ -1,6 +1,8 @@
-import React from 'react';
-import { SquareArrowOutUpRight } from 'lucide-react';
 import { siteUrl } from '~/lib/constants';
+
+import React from 'react';
+
+import { SquareArrowOutUpRight } from 'lucide-react';
 
 export default function Footer() {
   return (

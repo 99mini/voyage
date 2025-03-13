@@ -1,7 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { LoginDto } from './dto';
 import { LoginEntity } from './entities';
+
+import { LoginDto } from './dto';
 
 @Injectable()
 export class LoginService {

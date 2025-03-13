@@ -1,4 +1,5 @@
 import type { MetaFunction } from '@remix-run/node';
+
 import Footer from '~/components/common/footer';
 import Hero from '~/components/hero/hero';
 import ProjectSection from '~/components/hero/project-section';

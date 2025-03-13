@@ -1,13 +1,14 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { PathLike, RmOptions, promises as fs } from 'fs';
 import * as multer from 'multer';
-
 import { join } from 'path';
-import { promises as fs, PathLike, RmOptions } from 'fs';
+
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 
 import { ReadFileEntity } from './entities';
+
 import { RenameFileDto } from './dto';
 
-import { isRelativePath } from './utils/indes';
+import { isRelativePath } from './utils';
 
 @Injectable()
 export class FilesService {

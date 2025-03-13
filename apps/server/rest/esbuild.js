@@ -1,5 +1,5 @@
-import * as esbuild from 'esbuild';
 import dotenv from 'dotenv';
+import * as esbuild from 'esbuild';
 
 dotenv.config();
 

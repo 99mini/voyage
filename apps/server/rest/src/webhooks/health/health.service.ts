@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ServerlessProxyService } from '@server-rest/common/services/serverless-proxy.service';
 
 @Injectable()

@@ -1,6 +1,7 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Inject, Post, Res } from '@nestjs/common';
-import { ApiOperation, ApiTags, ApiOkResponse } from '@nestjs/swagger';
 import { Response } from 'express';
+
+import { Controller, Get, HttpCode, HttpStatus, Inject, Res } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { WebhooksHealthService } from './health.service';
 
