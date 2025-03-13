@@ -1,9 +1,9 @@
-import { useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 
 import { ChevronLeft, Eye, EyeOff, FilePlus, FolderIcon, FolderPlus } from 'lucide-react';
 
-import { Input } from '@packages/vds';
+import { Input, cn } from '@packages/vds';
 
 import { useFilesQuery } from '@/apis/files';
 import { ReadFilesResponse } from '@/apis/files/model';
@@ -26,6 +26,17 @@ type FileListProps = {
 };
 
 const FileList = ({ path }: FileListProps) => {
+  const splittedPath = useMemo(() => {
+    const splittedPath = path
+      ? (() => {
+          const parts = path.split('/').map(decodeURIComponent);
+          return [undefined, ...parts.map((_, index) => parts.slice(0, index + 1).join('/'))];
+        })()
+      : [undefined];
+
+    return splittedPath;
+  }, [path]);
+
   const { data, isLoading, error } = useFilesQuery({
     path,
   });
@@ -172,7 +183,23 @@ const FileList = ({ path }: FileListProps) => {
       <div className="p-4 border-b flex items-center">
         <div className="flex-1">
           <div className="flex items-center gap-2 w-max h-[24px]">
-            <code className="bg-gray-100 px-2 py-1 rounded text-sm">{path ? `/${decodeURIComponent(path)}` : '/'}</code>
+            <div className="inline-flex gap-2">
+              {splittedPath.map((item, index) => (
+                <Fragment key={item}>
+                  <Link to={`${PROTECTED_PATH.FILE}${item ? `/${item}` : ''}`}>
+                    <code
+                      className={cn(
+                        `px-2 py-1 rounded text-sm bg-gray-100 hover:bg-gray-200`,
+                        index === splittedPath.length - 1 ? 'text-black' : 'text-gray-500',
+                      )}
+                    >
+                      {item?.split('/').pop() || 'file'}
+                    </code>
+                  </Link>
+                  {index !== splittedPath.length - 1 && <span className="text-gray-500">/</span>}
+                </Fragment>
+              ))}
+            </div>
           </div>
         </div>
         {parentPath !== null && (
