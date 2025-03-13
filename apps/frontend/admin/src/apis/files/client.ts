@@ -1,17 +1,16 @@
-import { FetchResponse } from '../_model';
 import apiClient from '../_client';
-
+import { FetchResponse } from '../_model';
 import {
-  ReadFilesRequest,
-  ReadFilesResponse,
-  UploadFilesRequest,
-  UploadFilesResponse,
-  UpdateFilesRequest,
-  UpdateFilesResponse,
-  DeleteFilesResponse,
-  DeleteFilesRequest,
   CreateDirectoryRequest,
   CreateDirectoryResponse,
+  DeleteFilesRequest,
+  DeleteFilesResponse,
+  ReadFilesRequest,
+  ReadFilesResponse,
+  UpdateFilesRequest,
+  UpdateFilesResponse,
+  UploadFilesRequest,
+  UploadFilesResponse,
 } from './model';
 
 const endpoint = 'files';
@@ -41,9 +40,10 @@ export const uploadFile = async (req: UploadFilesRequest) => {
   try {
     const formData = new FormData();
 
-    const { path } = req;
+    const { path, file } = req;
 
     formData.append('path', path);
+    formData.append('file', file);
 
     const response = await apiClient.post<FetchResponse<UploadFilesResponse>>(`${endpoint}`, formData, {
       headers: {

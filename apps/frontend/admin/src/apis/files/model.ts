@@ -34,7 +34,7 @@ export type UpdateFilesResponse = {
 
 export type UploadFilesRequest = {
   path: string;
-  file: FormData;
+  file: File;
 };
 
 export type CreateDirectoryRequest = {

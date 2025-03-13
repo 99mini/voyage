@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 
 import { createDirectory, deleteFile, readFiles, updateFile, uploadFile } from './client';
 import {
@@ -29,10 +29,10 @@ export const useUpdateFileMutation = () =>
     mutationFn: (data: UpdateFilesRequest) => updateFile(data),
   });
 
-export const useUploadFileMutation = () =>
+export const useUploadFileMutation = (path: string) =>
   useMutation({
-    mutationKey: 'upload-file',
-    mutationFn: (data: UploadFilesRequest) => uploadFile(data),
+    mutationKey: ['upload-file', path],
+    mutationFn: (file: UploadFilesRequest['file']) => uploadFile({ path, file }),
   });
 
 export const useCreateDirectoryMutation = () =>

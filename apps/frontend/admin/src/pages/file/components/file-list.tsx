@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { ChevronRight, Eye, EyeOff, FilePlus, FolderIcon, FolderPlus } from 'lucide-react';
 
-import { Input, cn } from '@packages/vds';
+import { FileInput, Input, cn } from '@packages/vds';
 
 import { useFilesQuery } from '@/apis/files';
 import { ReadFilesResponse } from '@/apis/files/model';
@@ -13,6 +13,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import useDebounce from '@/hooks/use-debounce';
 
 import useCreateFolder from '../hooks/use-create-folder';
+import useUploadFile from '../hooks/use-upload-file';
 
 import { PROTECTED_PATH } from '@/lib/constants/route.constant';
 import { filetypeFor } from '@/lib/utils/file';
@@ -63,7 +64,8 @@ const FileList = ({ path }: FileListProps) => {
 
   // <--폴더 생성 로직 끝
 
-  // const { mutate: uploadFile } = useUploadFileMutation();
+  // MARK: 파일 업로드 로직
+  const { onUploadFile } = useUploadFile();
 
   /** Show All/Hide Columns Toggle */
   const handleShowColumnsToggle = () => setShowAllColumns((prev) => !prev);
@@ -165,7 +167,7 @@ const FileList = ({ path }: FileListProps) => {
           <div className="flex items-center gap-2 w-max h-[24px]">
             <div className="inline-flex gap-2">
               {splittedPath.map((item, index) => (
-                <Fragment key={item}>
+                <Fragment key={index}>
                   <Link to={`${PROTECTED_PATH.FILE}${item ? `/${item}` : ''}`}>
                     <code
                       className={cn(
@@ -199,9 +201,21 @@ const FileList = ({ path }: FileListProps) => {
         </div>
         <div className="flex items-end gap-2">
           {/* Upload Folder */}
-          <button className="p-1 rounded-md border border-blue-500 hover:bg-gray-100 flex items-center gap-2">
+          <label
+            className="p-1 rounded-md border border-blue-500 hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
+            onClick={(e) => e.stopPropagation()}
+          >
             <FilePlus className="h-5 w-5 text-blue-500" />
-          </button>
+            <FileInput
+              type="file"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                onUploadFile(file);
+              }}
+            />
+          </label>
           {/* Create Folder */}
           <button
             className="p-1 rounded-md border border-blue-500 hover:bg-gray-100 flex items-center gap-2"
