@@ -20,7 +20,7 @@
       - [Rest API](#rest-api)
     - [Functions](#functions)
       - [Functions API](#functions-api)
-  - [Batch](#batch) `as soon as possible`
+  - [Batch](#batch) `TODO`
     - [Batch API](#batch-api)
 - [Packages](#packages)
   - [api-client](#api-client)
@@ -48,8 +48,9 @@
 
 #### Feature Tool
 
-1. merge vertical images
-2. video to gif
+- merge vertical images
+- video to gif
+- generate password
 
 ### Tech
 
@@ -59,12 +60,22 @@
 
 #### Feature Tech
 
-1. docusaurus
+- tech documentation
+- study notes
 
 ### Admin
 
+- production: https://admin.zerovoyage.com
 - github: https://github.com/99mini/voyage/tree/main/apps/frontend/admin
 - tech stack: `typescript`, `reactjs`
+
+#### Feature Admin
+
+- monitoring server
+  - check server status
+  - monitor server logs (`TODO`)
+- manage files (DigitalOcean Volume)
+- manage users (`TODO`)
 
 ## Server
 
@@ -76,7 +87,7 @@
 
 #### Rest API
 
-1. provide rest api for frontend
+- provide rest api for frontend
 
 ### Functions
 
@@ -88,10 +99,10 @@
 provide serverless functions
 
 - wehooks
-- reports
-- auth
+- reports (`TODO`)
+- auth (`TODO`)
 
-### Batch `as soon as possible`
+### Batch `TODO`
 
 - github: https://github.com/99mini/voyage/tree/main/apps/server/batch
 
@@ -113,6 +124,7 @@ provide serverless functions
 
 ### VDS (Voyage Design System)
 
+- production: https://design.zerovoyage.com
 - github: https://github.com/99mini/voyage/tree/main/packages/vds
 - tech stack: `typescript`, `storebook`, `shadcn/ui`, `tailwindcss`
 
