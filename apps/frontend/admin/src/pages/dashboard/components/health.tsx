@@ -1,35 +1,55 @@
+import { useMemo } from 'react';
+
 import { useHealthQuery } from '@/apis';
 
+import Accordion from './accordion';
 import ApiCondition from './api-condition';
 
 const HealthCheck = () => {
-  const { data: restHealthData } = useHealthQuery({
+  const {
+    data: restHealthData,
+    isLoading: isLoadingRest,
+    isSuccess: isSuccessRest,
+  } = useHealthQuery({
     type: 'rest',
   });
 
-  const { data: webhooksHealthData } = useHealthQuery({
+  const {
+    data: webhooksHealthData,
+    isLoading: isLoadingWebhooks,
+    isSuccess: isSuccessWebhooks,
+  } = useHealthQuery({
     type: 'webhooks',
   });
 
+  const statusRest = useMemo(() => {
+    if (isLoadingRest) return 'loading';
+    if (isSuccessRest) return 'success';
+    return 'failure';
+  }, [isLoadingRest, isSuccessRest]);
+
+  const statusWebhooks = useMemo(() => {
+    if (isLoadingWebhooks) return 'loading';
+    if (isSuccessWebhooks) return 'success';
+    return 'failure';
+  }, [isLoadingWebhooks, isSuccessWebhooks]);
+
   return (
     <div className="space-y-4">
-      <details open>
-        <summary className="mb-2">REST API 상태</summary>
+      <Accordion title="REST API 상태">
         <ApiCondition
           endpoint="/v1/health"
-          status={restHealthData?.ok ? 'success' : 'failure'}
-          timestamp={restHealthData?.timestamp || 'unknown'}
+          status={statusRest}
+          timestamp={restHealthData?.timestamp || new Date().toISOString()}
         />
-      </details>
-
-      <details open>
-        <summary className="mb-2">Webhook API 상태</summary>
+      </Accordion>
+      <Accordion title="Webhook API 상태">
         <ApiCondition
           endpoint="/v1/webhooks/health"
-          status={webhooksHealthData?.ok ? 'success' : 'failure'}
-          timestamp={webhooksHealthData?.timestamp || 'unknown'}
+          status={statusWebhooks}
+          timestamp={webhooksHealthData?.timestamp || new Date().toISOString()}
         />
-      </details>
+      </Accordion>
     </div>
   );
 };

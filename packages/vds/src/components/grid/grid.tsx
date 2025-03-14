@@ -83,13 +83,12 @@ export const Grid = ({
                     height: 'auto',
                     rowGap,
                     columnGap,
-                    gridTemplateColumns: `repeat(${column}, 1fr)`,
                   }
                 : {}),
             },
             ...style,
           }}
-          className={cn('data-[regular="false"]:relative data-[regular="true"]:grid', className)}
+          className={cn('data-[regular="false"]:relative data-[regular="true"]:grid', `grid-cols-${column}`, className)}
           data-regular={!irregular}
         >
           {children}

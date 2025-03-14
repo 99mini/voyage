@@ -28,7 +28,7 @@ const Dashboard = () => {
         </Button>
       </div>
 
-      <Grid column={2} gap={12}>
+      <Grid gap={12} column={1} className="grid-cols-1 sm:grid-cols-2">
         <GridItem>
           <div className="p-6 bg-white rounded-lg shadow hover:shadow-md transition">
             <h2 className="text-xl font-semibold mb-2">시스템 상태</h2>
