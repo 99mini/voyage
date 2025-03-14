@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import type { Meta } from '@storybook/react';
 
@@ -9,9 +9,22 @@ const meta: Meta<typeof PageProgress> = {
   component: PageProgress,
   tags: ['autodocs'],
   argTypes: {
-    children: { control: 'text' },
+    value: { control: 'number' },
+    className: { control: 'text' },
   },
 } satisfies Meta<typeof PageProgress>;
+
+const useContainer = () => {
+  const ref = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!ref.current) {
+      ref.current = document.querySelector('#storybook-root') as HTMLElement;
+    }
+  }, []);
+
+  return ref.current;
+};
 
 const useProgress = () => {
   const [progress, setProgress] = useState(0);
@@ -40,37 +53,37 @@ const Dummy = () => {
 
 export const Default = ({ ...args }) => {
   const progress = useProgress();
+  const container = useContainer();
 
   return (
     <div>
       <Dummy />
-      <PageProgress container={document.querySelector('#storybook-root')} value={progress} {...args} />
+      <PageProgress container={container} value={progress} {...args} />
     </div>
   );
 };
 
 export const Bottom = ({ ...args }) => {
   const progress = useProgress();
+  const container = useContainer();
+
   return (
     <div>
       <Dummy />
-      <PageProgress
-        position="bottom"
-        container={document.querySelector('#storybook-root')}
-        value={progress}
-        {...args}
-      />
+      <PageProgress position="bottom" container={container} value={progress} {...args} />
     </div>
   );
 };
 
 export const WithoutBorder = ({ ...args }) => {
   const progress = useProgress();
+  const container = useContainer();
+
   return (
     <div>
       <Dummy />
       <PageProgress
-        container={document.querySelector('#storybook-root')}
+        container={container}
         value={progress}
         progressBaseClassName="border-none"
         progressClassName="border-none"
@@ -82,30 +95,24 @@ export const WithoutBorder = ({ ...args }) => {
 
 export const CustomProgressColor = ({ ...args }) => {
   const progress = useProgress();
+  const container = useContainer();
+
   return (
     <div>
       <Dummy />
-      <PageProgress
-        container={document.querySelector('#storybook-root')}
-        value={progress}
-        progressClassName="bg-red-500"
-        {...args}
-      />
+      <PageProgress container={container} value={progress} progressClassName="bg-red-500" {...args} />
     </div>
   );
 };
 
 export const CustomProgressBaseColor = ({ ...args }) => {
   const progress = useProgress();
+  const container = useContainer();
+
   return (
     <div>
       <Dummy />
-      <PageProgress
-        container={document.querySelector('#storybook-root')}
-        value={progress}
-        progressBaseClassName="bg-red-500"
-        {...args}
-      />
+      <PageProgress container={container} value={progress} progressBaseClassName="bg-red-500" {...args} />
     </div>
   );
 };

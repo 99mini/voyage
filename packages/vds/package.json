@@ -21,7 +21,8 @@
     "storybook": "storybook dev -p 6006",
     "format": "prettier --write .",
     "build:storybook": "rm -rf storybook-static && storybook build",
-    "deploy:storybook": "pnpm run build-storybook && sh ./.script/deploy-storybook.sh"
+    "deploy:storybook": "pnpm run build:storybook && sh ./.script/deploy-storybook.sh",
+    "deploy-only:storybook": "sh ./.script/deploy-storybook.sh"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.2",
