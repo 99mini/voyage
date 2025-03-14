@@ -22,7 +22,7 @@ import { ApiKeyGuard } from '@server-rest/auth/guards/api-key.guard';
 
 import { FilesService } from './files.service';
 
-import { DeleteFileEntity, NewFileEntity, ReadFileEntity, UpdateFileEntity } from './entities';
+import { DeleteFileEntity, ReadFileEntity, UpdateFileEntity, UploadFileEntity } from './entities';
 
 import { RenameFileDto } from './dto';
 
@@ -88,7 +88,7 @@ export class FilesController {
     Response<{
       status: number;
       message: string;
-      data: NewFileEntity;
+      data: UploadFileEntity;
     }>
   > {
     if (!file) {
@@ -97,12 +97,7 @@ export class FilesController {
 
     const { path } = body;
 
-    const filePath = await this.filesService.uploadFile(file, path);
-    // 환경에 따라 다른 URL 반환
-    const publicUrl =
-      process.env.NODE_ENV === 'production'
-        ? `https://static.zerovoyage.com/${path}/${file.originalname}`
-        : `http://localhost:3000/test/uploads/${path}/${file.originalname}`;
+    const { filePath, publicUrl } = await this.filesService.uploadFile(file, path);
 
     return res.status(HttpStatus.CREATED).json({
       status: HttpStatus.CREATED,
