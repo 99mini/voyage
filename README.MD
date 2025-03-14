@@ -15,13 +15,15 @@
     - [Tech](#tech)
       - [Feature Tech](#feature-tech)
     - [Admin](#admin)
+      - [Feature Admin](#feature-admin)
   - [Server](#server)
     - [Rest](#rest)
       - [Rest API](#rest-api)
     - [Functions](#functions)
       - [Functions API](#functions-api)
-  - [Batch](#batch) `TODO`
-    - [Batch API](#batch-api)
+    - [Batch](#batch-todo)
+      - [Batch API](#batch-api)
+  - [CLI](#cli-todo)
 - [Packages](#packages)
   - [api-client](#api-client)
   - [pb-api](#pb-api)
@@ -74,7 +76,7 @@
 - monitoring server
   - check server status
   - monitor server logs (`TODO`)
-- manage files (DigitalOcean Volume)
+- manage files (DigitalOcean Volume) `In Progress`
 - manage users (`TODO`)
 
 ## Server
@@ -110,19 +112,21 @@ provide serverless functions
 
 1. provide batch api
 
-## Packages
+## CLI `TODO`
 
-### api-client
+# Packages
+
+## api-client
 
 - github: https://github.com/99mini/voyage/tree/main/packages/api-client
 - tech stack: `typescript`, `fetch API`
 
-### pb-api
+## pb-api
 
 - github: https://github.com/99mini/voyage/tree/main/packages/pb-api
 - tech stack: `typescript`, `pocketbase`
 
-### VDS (Voyage Design System)
+## VDS (Voyage Design System)
 
 - production: https://design.zerovoyage.com
 - github: https://github.com/99mini/voyage/tree/main/packages/vds
