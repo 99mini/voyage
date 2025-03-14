@@ -48,7 +48,6 @@ export const uploadFile = async (req: UploadFilesRequest) => {
     const response = await apiClient.post<FetchResponse<UploadFilesResponse>>(`${endpoint}`, formData, {
       headers: {
         'x-api-key': import.meta.env.VITE_VOYAGE_API_KEY ?? '',
-        'Content-Type': 'multipart/form-data',
       },
     });
 
