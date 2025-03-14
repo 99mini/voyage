@@ -65,7 +65,7 @@ const FileList = ({ path }: FileListProps) => {
   // <--폴더 생성 로직 끝
 
   // MARK: 파일 업로드 로직
-  const { onUploadFile } = useUploadFile();
+  const { onUploadFile } = useUploadFile(path ? decodeURIComponent(path) : undefined);
 
   /** Show All/Hide Columns Toggle */
   const handleShowColumnsToggle = () => setShowAllColumns((prev) => !prev);
