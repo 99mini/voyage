@@ -55,21 +55,19 @@ class ApiClient {
     }
   }
 
-  public async post<T, D = unknown>(
+  public async post<T>(
     url: string,
-    data?: D,
+    data?: BodyInit | null | undefined,
     init?: Omit<RequestInit, 'method' | 'body'>,
   ): Promise<T | null> {
     try {
-      const body = data ? JSON.stringify(data) : undefined;
-
       const res = await fetch(`${this.baseUrl}/${url}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           ...init?.headers,
         },
-        body,
+        body: data,
         ...init,
       });
       if (!res.ok) {
@@ -82,9 +80,16 @@ class ApiClient {
     }
   }
 
-  public async delete<T>(url: string, init?: Omit<RequestInit, 'method'>): Promise<T | null> {
+  public async delete<T>(
+    url: string,
+    query?: string[][] | Record<string, string> | string | URLSearchParams,
+    init?: Omit<RequestInit, 'method'>,
+  ): Promise<T | null> {
     try {
-      const res = await fetch(`${this.baseUrl}/${url}`, {
+      const q = new URLSearchParams(query);
+      const uri = `${this.baseUrl}/${url}${q.size ? `?${q.toString()}` : ''}`;
+
+      const res = await fetch(uri, {
         method: 'DELETE',
         ...init,
       });
@@ -98,9 +103,9 @@ class ApiClient {
     }
   }
 
-  public async patch<T, D = unknown>(
+  public async patch<T>(
     url: string,
-    data?: D,
+    data?: BodyInit | null | undefined,
     init?: Omit<RequestInit, 'method' | 'body'>,
   ): Promise<T | null> {
     try {
@@ -125,9 +130,9 @@ class ApiClient {
     }
   }
 
-  public async put<T, D = unknown>(
+  public async put<T>(
     url: string,
-    data?: D,
+    data?: BodyInit | null | undefined,
     init?: Omit<RequestInit, 'method' | 'body'>,
   ): Promise<T | null> {
     try {

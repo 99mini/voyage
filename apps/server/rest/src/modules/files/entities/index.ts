@@ -1,6 +1,6 @@
-import { NewFileEntity } from './new-file.entity';
+import { DeleteFileEntity } from './delete-file.entity';
 import { ReadFileEntity } from './read-file.entity';
 import { UpdateFileEntity } from './update-file.entity';
-import { DeleteFileEntity } from './delete-file.entity';
+import { UploadFileEntity } from './upload-file.entity';
 
-export { NewFileEntity, ReadFileEntity, UpdateFileEntity, DeleteFileEntity };
+export { DeleteFileEntity, UploadFileEntity, ReadFileEntity, UpdateFileEntity };

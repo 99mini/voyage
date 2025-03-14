@@ -1,5 +1,6 @@
-import RootProvider from './contexts/root-provider';
 import RootRouter from './routes/root-router';
+
+import RootProvider from './contexts/root-provider';
 
 import './index.css';
 

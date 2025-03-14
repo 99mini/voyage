@@ -19,6 +19,7 @@
     "build": "rm -rf dist && pnpm rollup -c rollup.config.cjs --bundleConfigAsCjs",
     "dev": "rm -rf dist && pnpm rollup -c rollup.config.cjs --bundleConfigAsCjs -w",
     "storybook": "storybook dev -p 6006",
+    "format": "prettier --write .",
     "build-storybook": "rm -rf storybook-static && storybook build",
     "deploy:storybook": "pnpm run build-storybook && sh ./.script/deploy-storybook.sh"
   },

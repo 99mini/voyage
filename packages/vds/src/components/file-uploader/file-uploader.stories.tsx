@@ -1,7 +1,8 @@
+import { useEffect, useState } from 'react';
+
 import type { Meta } from '@storybook/react';
 
 import FileUploader from './file-uploader';
-import { useEffect, useState } from 'react';
 
 const meta: Meta<typeof FileUploader> = {
   title: 'input/FileUploader',

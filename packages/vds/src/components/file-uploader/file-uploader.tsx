@@ -1,6 +1,7 @@
+import { X } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 
-import { X } from 'lucide-react';
 import FileInput, { type FileInputProps } from '../file-input';
 import ImagePreviewGroup, { type ImagePreviewGroupProps } from '../image-preview-group';
 

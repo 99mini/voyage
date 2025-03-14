@@ -17,7 +17,7 @@ function RootRouter() {
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
         <Header />
-        <main className="container mx-auto p-4 md:px-0 flex-grow">
+        <main className="container mx-auto p-4 flex-grow">
           <Routes>
             <Route path={ROUTE_PATH.ROOT} element={<Home />} />
             <Route path={ROUTE_PATH.VERTICAL_IMAGE_MERGER} element={<VerticalImageMerger />} />

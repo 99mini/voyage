@@ -1,13 +1,14 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { PathLike, RmOptions, promises as fs } from 'fs';
 import * as multer from 'multer';
-
 import { join } from 'path';
-import { promises as fs, PathLike, RmOptions } from 'fs';
 
-import { ReadFileEntity } from './entities';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+
+import { ReadFileEntity, UploadFileEntity } from './entities';
+
 import { RenameFileDto } from './dto';
 
-import { isRelativePath } from './utils/indes';
+import { isRelativePath } from './utils';
 
 @Injectable()
 export class FilesService {
@@ -61,7 +62,20 @@ export class FilesService {
     }
   }
 
-  async uploadFile(file: Express.Multer.File, path: string): Promise<string> {
+  async createDirectory(path: string) {
+    if (isRelativePath(path)) {
+      throw new HttpException('Path includes relative path', HttpStatus.BAD_REQUEST);
+    }
+
+    try {
+      await fs.mkdir(join(this.basePath, path));
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException('Failed to create directory', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async uploadFile(file: Express.Multer.File, path: string): Promise<UploadFileEntity> {
     if (isRelativePath(path) || isRelativePath(file.originalname)) {
       throw new HttpException('Path includes relative path', HttpStatus.BAD_REQUEST);
     }
@@ -82,7 +96,15 @@ export class FilesService {
     await this._copyFile(file.path, targetPath);
 
     // 환경에 따라 다른 경로 반환
-    return `${this.basePath}/${path}/${file.originalname}`;
+    const publicUrl =
+      process.env.NODE_ENV === 'production'
+        ? join(`https://static.zerovoyage.com`, path, file.originalname)
+        : join(`http://localhost:3000/test/uploads`, path, file.originalname);
+
+    return {
+      filePath: join(this.basePath, path, file.originalname),
+      publicUrl,
+    };
   }
 
   async readList(path?: string): Promise<ReadFileEntity[]> {

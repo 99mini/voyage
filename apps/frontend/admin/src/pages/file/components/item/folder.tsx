@@ -1,14 +1,13 @@
-import { Link } from 'react-router';
-
 import { Folder as FolderIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import { cn } from '@packages/vds';
 
 import { ReadFilesResponse } from '@/apis/files';
 
-import { PROTECTED_PATH } from '@/lib/constants/route.constant';
-
 import { FileItemProps } from '../../types/file-item.type';
+
+import { PROTECTED_PATH } from '@/lib/constants/route.constant';
 
 type FolderProps = FileItemProps & Pick<ReadFilesResponse, 'name' | 'isDirectory' | 'path'>;
 

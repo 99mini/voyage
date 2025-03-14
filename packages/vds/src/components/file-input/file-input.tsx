@@ -1,8 +1,11 @@
-import { cn } from '@/lib/utils';
-import { PlusCircleIcon, X } from 'lucide-react';
 import { Fragment, useId, useState } from 'react';
-import Input, { type InputProps } from '../input';
+
+import { PlusCircleIcon, X } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+
 import Button from '../button';
+import Input, { type InputProps } from '../input';
 
 const Outer = ({
   as,

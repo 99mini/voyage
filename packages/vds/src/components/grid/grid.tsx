@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import GridContext, { type GirdContextType, type GridItemMetaDataType } from '../grid-context';
-
 import { cn } from '@/lib';
+
+import GridContext, { type GirdContextType, type GridItemMetaDataType } from '../grid-context';
 
 export type GridProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> & GridPropsType;
 

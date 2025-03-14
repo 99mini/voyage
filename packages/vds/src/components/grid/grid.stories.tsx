@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import React, { CSSProperties } from 'react';
 
-import Grid from './grid';
+import type { Meta, StoryObj } from '@storybook/react';
+
 import GridItem from '../grid-item';
+import Grid from './grid';
 
 const meta = {
   component: Grid,

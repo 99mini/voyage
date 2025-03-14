@@ -1,14 +1,14 @@
-import type { ReactNode } from 'react';
 import clsx from 'clsx';
-import Heading from '@theme/Heading';
+
 import Link from '@docusaurus/Link';
+import Heading from '@theme/Heading';
 
 import styles from './styles.module.css';
 
 type FeatureItem = {
   title: string;
   Svg: React.ComponentType<React.ComponentProps<'svg'>>;
-  description: ReactNode;
+  description: React.ReactNode;
   href?: string;
   to?: string;
 };
@@ -82,7 +82,7 @@ function Feature({ title, Svg, description, href, to }: FeatureItem) {
   );
 }
 
-export default function HomepageFeatures(): ReactNode {
+export default function HomepageFeatures(): React.ReactNode {
   return (
     <section className={styles.features_container}>
       <div className="container">

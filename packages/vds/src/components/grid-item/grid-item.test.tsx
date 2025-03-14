@@ -1,6 +1,7 @@
+import React from 'react';
+
 import { render } from '@testing-library/react';
 
-import React from 'react';
 import Grid from '../grid/grid';
 import GridItem from './grid-item';
 

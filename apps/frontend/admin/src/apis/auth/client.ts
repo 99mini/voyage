@@ -7,7 +7,7 @@ const endpoint = 'auth';
 
 export async function login(data: LoginRequest): Promise<LoginResponse | null> {
   try {
-    const response = await apiClient.post<FetchResponse<LoginResponse>>(`${endpoint}/login`, data);
+    const response = await apiClient.post<FetchResponse<LoginResponse>>(`${endpoint}/login`, JSON.stringify(data));
 
     if (response && response.status === 200) {
       return response.data;

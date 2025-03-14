@@ -1,3 +1,5 @@
+import { Response } from 'express';
+
 import {
   Body,
   Controller,
@@ -16,15 +18,13 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiHeader, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
-
 import { ApiKeyGuard } from '@server-rest/auth/guards/api-key.guard';
 
-import { RenameFileDto } from './dto';
-
-import { NewFileEntity, ReadFileEntity, UpdateFileEntity, DeleteFileEntity } from './entities';
-
 import { FilesService } from './files.service';
+
+import { DeleteFileEntity, ReadFileEntity, UpdateFileEntity, UploadFileEntity } from './entities';
+
+import { RenameFileDto } from './dto';
 
 @ApiTags('Files')
 @Controller('v1/files')
@@ -88,7 +88,7 @@ export class FilesController {
     Response<{
       status: number;
       message: string;
-      data: NewFileEntity;
+      data: UploadFileEntity;
     }>
   > {
     if (!file) {
@@ -97,12 +97,7 @@ export class FilesController {
 
     const { path } = body;
 
-    const filePath = await this.filesService.uploadFile(file, path);
-    // 환경에 따라 다른 URL 반환
-    const publicUrl =
-      process.env.NODE_ENV === 'production'
-        ? `https://static.zerovoyage.com/${path}/${file.originalname}`
-        : `http://localhost:3000/test/uploads/${path}/${file.originalname}`;
+    const { filePath, publicUrl } = await this.filesService.uploadFile(file, path);
 
     return res.status(HttpStatus.CREATED).json({
       status: HttpStatus.CREATED,
@@ -110,6 +105,58 @@ export class FilesController {
       data: {
         filePath,
         publicUrl,
+      },
+    });
+  }
+
+  @Post('/directory')
+  @ApiOperation({
+    summary: 'Create directory',
+    description: 'Creates a directory.',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        path: { type: 'string', example: 'path-to' },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: 'Directory created successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        status: { type: 'number', example: HttpStatus.CREATED },
+        message: { type: 'string', example: 'success' },
+        data: {
+          type: 'object',
+          properties: {
+            path: { type: 'string', example: 'path-to' },
+          },
+        },
+      },
+    },
+  })
+  async createDirectory(
+    @Res() res: Response,
+    @Body() body: { path: string },
+  ): Promise<
+    Response<{
+      status: number;
+      message: string;
+      data: { path: string };
+    }>
+  > {
+    const { path } = body;
+
+    await this.filesService.createDirectory(path);
+
+    return res.status(HttpStatus.CREATED).json({
+      status: HttpStatus.CREATED,
+      message: 'success',
+      data: {
+        path,
       },
     });
   }

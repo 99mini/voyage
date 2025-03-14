@@ -1,10 +1,8 @@
-import { TableBody } from '@/components/ui/table';
-
-import { ReadFilesResponse } from '@/apis/files/model';
-
 import FileRow from './file-row';
 import FolderRow from './folder-row';
 import { SortDirection, SortField } from './sort-icon';
+
+import { ReadFilesResponse } from '@/apis/files/model';
 
 type FileTableBodyProps = {
   files: ReadFilesResponse[];
@@ -21,7 +19,7 @@ const FileTableBody = ({ files, sortField, sortDirection, showAllColumns }: File
   if (sortField !== 'type') {
     // 다른 필드로 정렬할 때는 항상 폴더 먼저
     return (
-      <TableBody>
+      <>
         {files.map((file) => {
           const isDir = file.isDirectory;
           if (isDir) {
@@ -29,14 +27,14 @@ const FileTableBody = ({ files, sortField, sortDirection, showAllColumns }: File
           }
           return <FileRow key={`file-${file.name}`} file={file} showAllColumns={showAllColumns} />;
         })}
-      </TableBody>
+      </>
     );
   }
 
   if (sortDirection === 'asc') {
     // 오름차순: 폴더 먼저
     return (
-      <TableBody>
+      <>
         {files.map((file) => {
           const isDir = file.isDirectory;
           if (isDir) {
@@ -44,12 +42,12 @@ const FileTableBody = ({ files, sortField, sortDirection, showAllColumns }: File
           }
           return <FileRow key={`file-${file.name}`} file={file} showAllColumns={showAllColumns} />;
         })}
-      </TableBody>
+      </>
     );
   } else {
     // 내림차순: 파일 먼저
     return (
-      <TableBody>
+      <>
         {files.map((file) => {
           const isDir = file.isDirectory;
           if (isDir) {
@@ -57,7 +55,7 @@ const FileTableBody = ({ files, sortField, sortDirection, showAllColumns }: File
           }
           return <FileRow key={`file-${file.name}`} file={file} showAllColumns={showAllColumns} />;
         })}
-      </TableBody>
+      </>
     );
   }
 };

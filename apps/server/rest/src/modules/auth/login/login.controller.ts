@@ -1,12 +1,13 @@
+import { Response } from 'express';
+
 import { Body, Controller, HttpStatus, Inject, Post, Res } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
-import { Response } from 'express';
-
 import { LoginService } from './login.service';
 
-import { LoginDto } from './dto';
 import { LoginEntity } from './entities';
+
+import { LoginDto } from './dto';
 
 @Controller('v1/auth/login')
 export class LoginController {

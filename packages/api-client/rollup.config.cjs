@@ -1,14 +1,19 @@
+import dotenv from 'dotenv';
+
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
 import replace from '@rollup/plugin-replace';
-
-import dotenv from 'dotenv';
+import typescript from '@rollup/plugin-typescript';
 
 import pkg from './package.json';
 
-dotenv.config();
+dotenv.config({
+  path: `./.env${process.env.ENV_NAME ? `.${process.env.ENV_NAME}` : ''}`,
+});
+
+console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+console.log(`BASE_URL: ${process.env.BASE_URL}`);
 
 export default [
   {

@@ -1,29 +1,43 @@
-import { useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 
-import { ChevronLeft, Eye, EyeOff } from 'lucide-react';
+import { ChevronRight, Eye, EyeOff, FilePlus, FolderIcon, FolderPlus } from 'lucide-react';
 
-import { Input } from '@packages/vds';
-
-import { Table } from '@/components/ui/table';
-
-import FileTableBody from './table/body';
-import FileTableHeader from './table/header';
-import { SortDirection, SortField } from './table/sort-icon';
-
-import useDebounce from '@/hooks/use-debounce';
+import { FileInput, Input, cn } from '@packages/vds';
 
 import { useFilesQuery } from '@/apis/files';
 import { ReadFilesResponse } from '@/apis/files/model';
 
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
+
+import useDebounce from '@/hooks/use-debounce';
+
+import useCreateFolder from '../hooks/use-create-folder';
+import useUploadFile from '../hooks/use-upload-file';
+
 import { PROTECTED_PATH } from '@/lib/constants/route.constant';
 import { filetypeFor } from '@/lib/utils/file';
+
+import FileTableBody from './table/body';
+import FileTableHeader from './table/header';
+import { SortDirection, SortField } from './table/sort-icon';
 
 type FileListProps = {
   path?: string;
 };
 
 const FileList = ({ path }: FileListProps) => {
+  const splittedPath = useMemo(() => {
+    const splittedPath = path
+      ? (() => {
+          const parts = path.split('/').map(decodeURIComponent);
+          return [undefined, ...parts.map((_, index) => parts.slice(0, index + 1).join('/'))];
+        })()
+      : [undefined];
+
+    return splittedPath;
+  }, [path]);
+
   const { data, isLoading, error } = useFilesQuery({
     path,
   });
@@ -37,13 +51,31 @@ const FileList = ({ path }: FileListProps) => {
   // 검색 상태
   const [search, setSearch] = useState('');
 
+  // MARK: 폴더 생성 로직
+  const {
+    directoryRef,
+    directoryName,
+    onChangeDirectoryName,
+    isPendingCreateDirectory,
+    onPendingCreateDirectory,
+    onCreateDirectory,
+    onBlurDirectoryName,
+  } = useCreateFolder();
+
+  // <--폴더 생성 로직 끝
+
+  // MARK: 파일 업로드 로직
+  const { onUploadFile } = useUploadFile(path ? decodeURIComponent(path) : undefined);
+
+  /** Show All/Hide Columns Toggle */
   const handleShowColumnsToggle = () => setShowAllColumns((prev) => !prev);
 
+  /** Search Change */
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
-  // 정렬 핸들러
+  /** Sort */
   const handleSort = (field: SortField) => {
     if (field === sortField) {
       // 같은 필드를 클릭하면 방향만 전환
@@ -55,27 +87,7 @@ const FileList = ({ path }: FileListProps) => {
     }
   };
 
-  // 상위 디렉토리 경로 계산
-  const getParentPath = () => {
-    if (!path || path === '/') return null;
-
-    // 마지막 슬래시 제거
-    const trimmedPath = path.endsWith('/') ? path.slice(0, -1) : path;
-    // 마지막 슬래시 위치 찾기
-    const lastSlashIndex = trimmedPath.lastIndexOf('/');
-
-    if (lastSlashIndex <= 0) {
-      // 루트 디렉토리로 이동
-      return '';
-    }
-
-    // 상위 디렉토리 경로 반환
-    return trimmedPath.slice(0, lastSlashIndex);
-  };
-
-  const parentPath = getParentPath();
-
-  // 데이터 정렬
+  /** 데이터 정렬 */
   const sortedData = useMemo(() => {
     if (!data) return [];
 
@@ -153,34 +165,74 @@ const FileList = ({ path }: FileListProps) => {
       <div className="p-4 border-b flex items-center">
         <div className="flex-1">
           <div className="flex items-center gap-2 w-max h-[24px]">
-            <code className="bg-gray-100 px-2 py-1 rounded text-sm">{path ? `/${path}` : '/'}</code>
+            <div className="inline-flex gap-2">
+              {splittedPath.map((item, index) => (
+                <Fragment key={index}>
+                  <Link to={`${PROTECTED_PATH.FILE}${item ? `/${item}` : ''}`}>
+                    <code
+                      className={cn(
+                        `block h-6 px-2 py-1 rounded text-sm bg-gray-100 hover:bg-gray-200`,
+                        index === splittedPath.length - 1 ? 'text-black' : 'text-gray-500',
+                      )}
+                    >
+                      {item?.split('/').pop() || 'file'}
+                    </code>
+                  </Link>
+                  {index !== splittedPath.length - 1 && (
+                    <span className="inline-flex items-center justify-center text-gray-500 ">
+                      <ChevronRight width={16} height={16} />
+                    </span>
+                  )}
+                </Fragment>
+              ))}
+            </div>
           </div>
         </div>
-        {parentPath !== null && (
-          <Link
-            to={`${PROTECTED_PATH.FILE}${parentPath ? `/${parentPath}` : ''}`}
-            className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            상위 디렉토리로
-          </Link>
-        )}
       </div>
-      <div className="p-4 border-b flex items-center justify-between">
-        <Input
-          placeholder="파일명, 확장자, 경로로 찾기"
-          className="w-32 text-xs sm:w-96"
-          value={search}
-          onChange={handleSearchChange}
-        />
-        <button
-          onClick={handleShowColumnsToggle}
-          className="p-1 rounded-md hover:bg-gray-100 flex items-center gap-1"
-          title={showAllColumns ? '열 숨기기' : '모든 열 보기'}
-        >
-          <div className="text-xs text-gray-500">{showAllColumns ? '열 숨기기' : '모든 열 보기'}</div>
-          {showAllColumns ? <Eye className="h-4 w-4 text-gray-500" /> : <EyeOff className="h-4 w-4 text-gray-500" />}
-        </button>
+
+      <div className="h-32 sm:h-20 p-4 border-b flex flex-col sm:flex-row items-end justify-between">
+        <div className="h-10">
+          <Input
+            placeholder="파일명, 확장자, 경로로 찾기"
+            className="w-64 h-10 text-xs sm:w-96"
+            value={search}
+            onChange={handleSearchChange}
+          />
+        </div>
+        <div className="flex items-end gap-2">
+          {/* Upload Folder */}
+          <label
+            className="p-1 rounded-md border border-blue-500 hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <FilePlus className="h-5 w-5 text-blue-500" />
+            <FileInput
+              type="file"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                onUploadFile(file);
+              }}
+            />
+          </label>
+          {/* Create Folder */}
+          <button
+            className="p-1 rounded-md border border-blue-500 hover:bg-gray-100 flex items-center gap-2"
+            onClick={onPendingCreateDirectory}
+          >
+            <FolderPlus className="h-5 w-5 text-blue-500" />
+          </button>
+          {/* Show All Columns */}
+          <button
+            onClick={handleShowColumnsToggle}
+            className="p-1 rounded-md border border-blue-500 hover:bg-gray-100 flex items-center gap-2"
+            title={showAllColumns ? '열 숨기기' : '모든 열 보기'}
+          >
+            <div className="text-sm text-gray-500">{showAllColumns ? '열 숨기기' : '모든 열 보기'}</div>
+            {showAllColumns ? <Eye className="h-4 w-4 text-gray-500" /> : <EyeOff className="h-4 w-4 text-gray-500" />}
+          </button>
+        </div>
       </div>
 
       {data?.length ? (
@@ -191,12 +243,43 @@ const FileList = ({ path }: FileListProps) => {
             onSort={handleSort}
             showAllColumns={showAllColumns}
           />
-          <FileTableBody
-            files={searchFiles}
-            sortField={sortField}
-            sortDirection={sortDirection}
-            showAllColumns={showAllColumns}
-          />
+          <TableBody>
+            <FileTableBody
+              files={searchFiles}
+              sortField={sortField}
+              sortDirection={sortDirection}
+              showAllColumns={showAllColumns}
+            />
+            {isPendingCreateDirectory && (
+              <TableRow className="hover:bg-blue-50 bg-blue-50">
+                <TableCell colSpan={1} className="flex items-center gap-2 h-[42px]">
+                  <FolderIcon className="h-5 w-5 text-yellow-500" fill={'currentColor'} />
+                  <Input
+                    ref={directoryRef}
+                    onBlur={onBlurDirectoryName}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        onCreateDirectory(directoryName);
+                      }
+                    }}
+                    onChange={(e) => onChangeDirectoryName(e.target.value)}
+                    className="h-8 text-xs shadow-none bg-white"
+                    value={directoryName}
+                    placeholder=""
+                  />
+                </TableCell>
+                <TableCell colSpan={7}></TableCell>
+              </TableRow>
+            )}
+            <TableRow className="hover:bg-transparent">
+              <TableCell
+                colSpan={8}
+                style={{
+                  height: `${Math.max(12 - searchFiles.length, 1) * 32}px`,
+                }}
+              ></TableCell>
+            </TableRow>
+          </TableBody>
         </Table>
       ) : isLoading ? (
         <Table></Table>

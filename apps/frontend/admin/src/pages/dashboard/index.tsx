@@ -1,13 +1,14 @@
 import { Link, useNavigate } from 'react-router';
 
+import { ChevronRight } from 'lucide-react';
+
 import { Button, Grid, GridItem } from '@packages/vds';
 
 import { useAuth } from '@/contexts/auth/auth-context';
 
-import HealthCheck from './components/health';
-
 import { PROTECTED_PATH, PUBLIC_PATH } from '@/lib/constants/route.constant';
-import { ChevronRight } from 'lucide-react';
+
+import HealthCheck from './components/health';
 
 const Dashboard = () => {
   const { logout } = useAuth();

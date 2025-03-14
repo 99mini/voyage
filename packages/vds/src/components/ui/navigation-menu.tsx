@@ -1,8 +1,11 @@
 // TODO: left, right, bottom, top 설정 가능하게 하기
-import * as React from 'react';
-import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu';
 import { cva } from 'class-variance-authority';
+
+import * as React from 'react';
+
 import { ChevronDown } from 'lucide-react';
+
+import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu';
 
 import { cn } from '@/lib/utils';
 

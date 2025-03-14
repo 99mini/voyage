@@ -1,5 +1,6 @@
-import { cn } from '@/lib/utils';
 import ImagePreviewer, { type ImagePreviewerProps } from '@/components/image-previewer';
+
+import { cn } from '@/lib/utils';
 
 export type ImagePreviewGroupProps = {
   images: HTMLImageElement[] | string[] | File[];
