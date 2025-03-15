@@ -4,7 +4,47 @@ import React from 'react';
 
 import { SquareArrowOutUpRight } from 'lucide-react';
 
-export default function Footer() {
+const metadata = {
+  author: '99mini',
+  copyright: `© ${new Date().getFullYear()} zerovoyage. All rights reserved.`,
+};
+
+const siteMap: {
+  href: string;
+  text: string;
+}[] = [
+  { href: `${siteUrl}/`, text: '홈' },
+  { href: `${siteUrl}/sitemap.xml`, text: '사이트맵' },
+];
+
+const projects: {
+  href: string;
+  text: string;
+  icon: React.ReactNode;
+}[] = [
+  {
+    href: 'https://coin.zerovoyage.com',
+    text: 'Crypto Analytics',
+    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
+  },
+  {
+    href: 'https://tool.zerovoyage.com',
+    text: '웹 도구',
+    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
+  },
+  {
+    href: 'https://tech.zerovoyage.com',
+    text: '기술 블로그',
+    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
+  },
+  {
+    href: 'https://design.zerovoyage.com',
+    text: 'vds',
+    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
+  },
+];
+
+const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white py-6 px-4">
       <div className="container mx-auto">
@@ -45,39 +85,6 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
-
-const metadata = {
-  author: '99mini',
-  copyright: `© ${new Date().getFullYear()} zerovoyage. All rights reserved.`,
 };
 
-const siteMap: {
-  href: string;
-  text: string;
-}[] = [
-  { href: `${siteUrl}/`, text: '홈' },
-  { href: `${siteUrl}/sitemap.xml`, text: '사이트맵' },
-];
-
-const projects: {
-  href: string;
-  text: string;
-  icon: React.ReactNode;
-}[] = [
-  {
-    href: 'https://tool.zerovoyage.com/',
-    text: '웹 도구',
-    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
-  },
-  {
-    href: 'https://tech.zerovoyage.com',
-    text: '기술 블로그',
-    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
-  },
-  {
-    href: 'https://coin.zerovoyage.com',
-    text: 'Crypto Analytics',
-    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
-  },
-];
+export default Footer;

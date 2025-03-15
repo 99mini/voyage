@@ -13,6 +13,16 @@ export default function Index() {
     <main className="h-screen w-screen">
       <Hero />
       <div className="w-full">
+        <ProjectSection title="암호화폐 기술적 분석" href="https://coin.zerovoyage.com/">
+          <div className="flex flex-col items-center gap-4">
+            <h3>암호화폐 기술적 분석 메일링 서비스</h3>
+            <ul className="flex flex-col gap-2 w-full md:gap-4">
+              <li>업비트 상장 암호화폐의 daily 기술적 분석 제공</li>
+              <li>회원가입 후 최대 3개의 코인을 기술적 분석하여 메일링 제공</li>
+            </ul>
+          </div>
+        </ProjectSection>
+        <hr className="my-4" />
         <ProjectSection title="웹 도구" href="https://tool.zerovoyage.com/">
           <div className="flex flex-col items-center gap-4">
             <h3>웹 페이지에서 사용할 수 있는 도구를 만나보세요</h3>
@@ -34,12 +44,12 @@ export default function Index() {
           </div>
         </ProjectSection>
         <hr className="my-4" />
-        <ProjectSection title="암호화폐 기술적 분석" href="https://coin.zerovoyage.com/">
+        <ProjectSection title="VDS" href="https://design.zerovoyage.com/">
           <div className="flex flex-col items-center gap-4">
-            <h3>암호화폐 기술적 분석 메일링 서비스</h3>
+            <h3>디자인 시스템 - 스토리북</h3>
             <ul className="flex flex-col gap-2 w-full md:gap-4">
-              <li>업비트 상장 암호화폐의 daily 기술적 분석 제공</li>
-              <li>회원가입 후 최대 3개의 코인을 기술적 분석하여 메일링 제공</li>
+              <li>UI 컴포넌트 라이브러리</li>
+              <li>스토리북 | tailwindcss | shadcn</li>
             </ul>
           </div>
         </ProjectSection>
