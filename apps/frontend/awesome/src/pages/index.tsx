@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import AnalogClock from '@/components/clock/analog-clock';
+import DigitalClock from '@/components/clock/digital-clock';
 import RootLayout from '@/components/layout/root-layout';
 
 import { PAGE_TITLE } from '@/lib/constants/route.constant';
@@ -18,8 +19,7 @@ function Home() {
   return (
     <RootLayout title={PAGE_TITLE.ROOT}>
       <div className="flex justify-center items-center">
-        <div className="flex flex-col gap-4">
-          <AnalogClock time={time} />
+        <div className="w-full flex flex-col gap-4 p-4 justify-center items-center">
           <div className="flex gap-4 justify-center items-center">
             <div className="flex flex-col">
               <span className="text-2xl font-bold">{time.getHours() % 12}</span>
@@ -34,6 +34,8 @@ function Home() {
               <span className="text-gray-500">Seconds</span>
             </div>
           </div>
+          <AnalogClock time={time} />
+          <DigitalClock time={time} />
         </div>
       </div>
     </RootLayout>
