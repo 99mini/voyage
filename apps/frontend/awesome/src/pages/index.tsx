@@ -19,7 +19,7 @@ function Home() {
   return (
     <RootLayout title={PAGE_TITLE.ROOT}>
       <div className="flex justify-center items-center">
-        <div className="w-full flex flex-col gap-4 p-4 justify-center items-center">
+        <div className="flex flex-col gap-4 p-4 justify-center items-center">
           <div className="flex gap-4 justify-center items-center">
             <div className="flex flex-col">
               <span className="text-2xl font-bold">{time.getHours() % 12}</span>
@@ -35,7 +35,9 @@ function Home() {
             </div>
           </div>
           <AnalogClock time={time} />
-          <DigitalClock time={time} />
+          <div className="border py-2 rounded-md">
+            <DigitalClock time={time} />
+          </div>
         </div>
       </div>
     </RootLayout>
