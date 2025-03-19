@@ -1,27 +1,30 @@
 import * as d3 from 'd3';
+
 import { useEffect, useRef } from 'react';
 
 type AnalogClockProps = {
+  time: Date;
   width?: number;
   height?: number;
-  time: Date;
+  mode?: 'tick' | 'smooth';
+  secondHand?: boolean;
 };
 
-const AnalogClock = ({ width = 200, height = 200, time }: AnalogClockProps) => {
+const AnalogClock = ({ time, width = 200, height = 200, mode = 'tick', secondHand = true }: AnalogClockProps) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const gRef = useRef<SVGGElement | null>(null);
 
   // 시계 초기화 및 틱 마크 그리기
   useEffect(() => {
     if (!svgRef.current) return;
-    
+
     const svg = d3.select(svgRef.current);
     const radius = Math.min(width, height) / 2 - 10;
 
     svg.attr('width', width).attr('height', height);
 
     svg.selectAll('*').remove();
-    
+
     const g = svg.append('g').attr('transform', `translate(${width / 2},${height / 2})`);
     gRef.current = g.node();
 
@@ -40,7 +43,7 @@ const AnalogClock = ({ width = 200, height = 200, time }: AnalogClockProps) => {
   // 시계 바늘 그리기
   useEffect(() => {
     if (!gRef.current) return;
-    
+
     const g = d3.select(gRef.current);
     g.selectAll('.hand').remove();
 
@@ -59,12 +62,16 @@ const AnalogClock = ({ width = 200, height = 200, time }: AnalogClockProps) => {
 
     const hour = ((time.getHours() % 12) + time.getMinutes() / 60) * 30;
     const minute = time.getMinutes() * 6;
-    const second = time.getSeconds() * 6;
 
     drawHand((hour * Math.PI) / 180, 40, 4);
     drawHand((minute * Math.PI) / 180, 60, 3);
-    drawHand((second * Math.PI) / 180, 70, 2);
-  }, [time]);
+
+    if (secondHand) {
+      const second = time.getSeconds() * 6;
+
+      drawHand((second * Math.PI) / 180, 70, 2);
+    }
+  }, [secondHand, time]);
 
   return <svg ref={svgRef}></svg>;
 };
