@@ -15,6 +15,7 @@ const ClockSection = () => {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
   return (
     <ThemeLayout title="Clocks">
       <ItemLayout title="Text Clock (Default)" description="A simple text clock">
