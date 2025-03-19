@@ -1,6 +1,5 @@
 import * as d3 from 'd3';
-
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 type AnalogClockProps = {
   width?: number;
@@ -9,13 +8,22 @@ type AnalogClockProps = {
 };
 
 const AnalogClock = ({ width = 200, height = 200, time }: AnalogClockProps) => {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const gRef = useRef<SVGGElement | null>(null);
+
+  // 시계 초기화 및 틱 마크 그리기
   useEffect(() => {
-    const svg = d3.select('#clock');
+    if (!svgRef.current) return;
+    
+    const svg = d3.select(svgRef.current);
     const radius = Math.min(width, height) / 2 - 10;
 
     svg.attr('width', width).attr('height', height);
 
+    svg.selectAll('*').remove();
+    
     const g = svg.append('g').attr('transform', `translate(${width / 2},${height / 2})`);
+    gRef.current = g.node();
 
     g.append('circle').attr('r', radius).attr('fill', '#f0f0f0').attr('stroke', 'black');
 
@@ -29,15 +37,17 @@ const AnalogClock = ({ width = 200, height = 200, time }: AnalogClockProps) => {
     }
   }, [height, width]);
 
+  // 시계 바늘 그리기
   useEffect(() => {
-    const svg = d3.select('#clock g');
-    svg.selectAll('.hand').remove();
+    if (!gRef.current) return;
+    
+    const g = d3.select(gRef.current);
+    g.selectAll('.hand').remove();
 
     const drawHand = (angle: number, length: number, width: number) => {
       const x = Math.sin(angle) * length;
       const y = -Math.cos(angle) * length;
-      svg
-        .append('line')
+      g.append('line')
         .attr('class', 'hand')
         .attr('x1', 0)
         .attr('y1', 0)
@@ -56,7 +66,7 @@ const AnalogClock = ({ width = 200, height = 200, time }: AnalogClockProps) => {
     drawHand((second * Math.PI) / 180, 70, 2);
   }, [time]);
 
-  return <svg id="clock"></svg>;
+  return <svg ref={svgRef}></svg>;
 };
 
 export default AnalogClock;
