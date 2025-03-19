@@ -20,12 +20,12 @@ const SEGMENTS = {
   9: [true, true, true, true, false, true, true],
 };
 
-/** 모든 세그먼트가 있는 배열 (점멸 모드에서 사용) */
+/** 모든 세그먼트가 있는 배열 (잔상 모드에서 사용) */
 const ALL_SEGMENTS = [true, true, true, true, true, true, true];
 
 type DigitalClockProps = {
   time: Date;
-  mode?: 'default' | 'flash';
+  mode?: 'default' | 'burn-in';
   width?: number | string;
   height?: number;
   DigitStyles?: {
@@ -205,8 +205,8 @@ const DigitalClock = ({ time, mode = 'default', width = 240, height = 100, Digit
             },
           ];
 
-          // 점멸 모드일 경우 모든 세그먼트를 그리되, 비활성화된 세그먼트는 회색으로 표시
-          if (mode === 'flash') {
+          // 잔상 모드일 경우 모든 세그먼트를 그리되, 비활성화된 세그먼트는 회색으로 표시
+          if (mode === 'burn-in') {
             // 모든 세그먼트 그리기
             ALL_SEGMENTS.forEach((_, i) => {
               const isActive = activeSegments[i];

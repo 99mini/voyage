@@ -43,10 +43,10 @@ const ClockSection = () => {
         <DigitalClock time={time} />
       </ItemLayout>
       <ItemLayout
-        title="Digital Clock (Flash Mode)"
+        title="Digital Clock (Burn-in Mode)"
         description="A digital clock with inactive segments visible in gray"
       >
-        <DigitalClock time={time} mode="flash" />
+        <DigitalClock time={time} mode="burn-in" />
       </ItemLayout>
       <ItemLayout title="Digital Clock (420px)" description="A simple digital clock with width 420px">
         <DigitalClock time={time} width={420} />
