@@ -2,15 +2,12 @@ import * as d3 from 'd3';
 
 import { useCallback, useMemo } from 'react';
 
-type DigitalClockProps = {
-  width?: number | string;
-  height?: number;
-  time: Date;
-};
-
-// 7세그먼트 디스플레이의 각 세그먼트 정의 (상단, 우상단, 우하단, 하단, 좌하단, 좌상단, 중앙)
+/**
+ * @description
+ * - 7세그먼트 디스플레이의 각 세그먼트 정의 (상단, 우상단, 우하단, 하단, 좌하단, 좌상단, 중앙)
+ * - 각 숫자별로 어떤 세그먼트가 활성화되는지 정의 (0-9)
+ */
 const SEGMENTS = {
-  // 각 숫자별로 어떤 세그먼트가 활성화되는지 정의 (0-9)
   0: [true, true, true, true, true, true, false],
   1: [false, true, true, false, false, false, false],
   2: [true, true, false, true, true, false, true],
@@ -23,7 +20,21 @@ const SEGMENTS = {
   9: [true, true, true, true, false, true, true],
 };
 
-const DigitalClock = ({ time, width = 'auto', height = 100 }: DigitalClockProps) => {
+type DigitalClockProps = {
+  width?: number | string;
+  height?: number;
+  time: Date;
+  DigitStyles?: {
+    width?: number;
+    height?: number;
+    segmentWidth?: number;
+    spacing?: number;
+    colonWidth?: number;
+    padding?: number;
+  };
+};
+
+const DigitalClock = ({ time, width = 240, height = 100, DigitStyles }: DigitalClockProps) => {
   // 시간을 시:분:초 형식의 문자열로 변환
   const timeString = useMemo(() => {
     const hours = time.getHours().toString().padStart(2, '0');
@@ -32,6 +43,34 @@ const DigitalClock = ({ time, width = 'auto', height = 100 }: DigitalClockProps)
     return `${hours}:${minutes}:${seconds}`;
   }, [time]);
 
+  // 시계 그리기에 필요한 상수 정의
+  const digitWidth = DigitStyles?.width ?? 20;
+  const digitHeight = DigitStyles?.height ?? 40;
+  const segmentWidth = DigitStyles?.segmentWidth ?? 4;
+  const spacing = DigitStyles?.spacing ?? 10;
+  const colonWidth = DigitStyles?.colonWidth ?? 5;
+  const padding = DigitStyles?.padding ?? 10;
+  const tailMargin = 10;
+
+  // 전체 시계 너비 계산
+  const calculateClockWidth = useCallback(() => {
+    let totalWidth = padding * 2; // 시작과 끝 패딩
+    totalWidth += tailMargin * 2; // 끝 마진
+
+    timeString.split('').forEach((char) => {
+      if (char === ':') {
+        totalWidth += colonWidth + spacing;
+      } else {
+        totalWidth += digitWidth + spacing;
+      }
+    });
+
+    // 마지막 spacing 제거
+    totalWidth -= spacing;
+
+    return totalWidth;
+  }, [colonWidth, digitWidth, padding, spacing, timeString]);
+
   const drawClock = useCallback(
     (ref: SVGSVGElement) => {
       if (!ref) return;
@@ -39,17 +78,12 @@ const DigitalClock = ({ time, width = 'auto', height = 100 }: DigitalClockProps)
       const svg = d3.select(ref);
       svg.selectAll('*').remove();
 
-      svg.attr('width', width).attr('height', height);
+      // 계산된 너비 또는 사용자 지정 너비 사용
+      const actualWidth = width === 'auto' ? calculateClockWidth() : width;
+      svg.attr('width', actualWidth).attr('height', height);
 
       // 디지털 시계 설정
-      const digitWidth = 20;
-      const digitHeight = 40;
-      const segmentWidth = 4;
-      const spacing = 10;
-      const colonWidth = 5;
-
-      // 시간 문자열의 각 문자 처리
-      let xOffset = 10;
+      let xOffset = padding;
 
       timeString.split('').forEach((char) => {
         if (char === ':') {
@@ -108,7 +142,18 @@ const DigitalClock = ({ time, width = 'auto', height = 100 }: DigitalClockProps)
         }
       });
     },
-    [height, timeString, width],
+    [
+      calculateClockWidth,
+      colonWidth,
+      digitHeight,
+      digitWidth,
+      height,
+      padding,
+      segmentWidth,
+      spacing,
+      timeString,
+      width,
+    ],
   );
 
   return <svg ref={drawClock}></svg>;
