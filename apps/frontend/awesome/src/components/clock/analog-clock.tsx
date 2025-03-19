@@ -122,7 +122,7 @@ const AnalogClock = ({ time, width = 200, height = 200, mode = 'tick', secondHan
 
     // 시침 (짧고 굵게)
     drawHand((hour * Math.PI) / 180, 40, 4);
-    
+
     // 분침 (중간 길이와 굵기)
     drawHand((minute * Math.PI) / 180, 60, 3);
 

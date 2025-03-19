@@ -8,7 +8,7 @@ export const copyToClipboard = async (
   options?: {
     onSuccess?: () => void;
     onError?: () => void;
-  }
+  },
 ) => {
   try {
     await navigator.clipboard.writeText(text);
