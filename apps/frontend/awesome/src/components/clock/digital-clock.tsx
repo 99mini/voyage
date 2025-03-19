@@ -55,6 +55,8 @@ const DigitalClock = ({ time, mode = 'default', width = 240, height = 100, Digit
   const colonWidth = DigitStyles?.colonWidth ?? 5;
   const padding = DigitStyles?.padding ?? 10;
   const tailMargin = 10;
+  // 세그먼트 간 여백 (겹침 방지용)
+  const segmentGap = segmentWidth * 0.75;
 
   // 전체 시계 너비 계산
   const calculateClockWidth = useCallback(() => {
@@ -138,23 +140,31 @@ const DigitalClock = ({ time, mode = 'default', width = 240, height = 100, Digit
           // 숫자 그리기
           const digit = parseInt(char, 10);
           const activeSegments = SEGMENTS[digit as keyof typeof SEGMENTS];
-          
-          // 세그먼트 좌표 정의
+
+          // 세그먼트 좌표 계산을 위한 변수
+          const left = xOffset + segmentGap;
+          const right = xOffset + digitWidth - segmentGap;
+          const top = height / 2 - digitHeight / 2 + segmentGap;
+          const middle = height / 2;
+          const bottom = height / 2 + digitHeight / 2 - segmentGap;
+          const halfSegWidth = segmentWidth / 2;
+
+          // 각 세그먼트의 경로 정의 (겹침 방지를 위해 완전히 분리된 경로)
           const segmentPaths = [
-            // 상단 가로
-            `M ${xOffset} ${height / 2 - digitHeight / 2} h ${digitWidth}`,
-            // 우상단 세로
-            `M ${xOffset + digitWidth} ${height / 2 - digitHeight / 2} v ${digitHeight / 2}`,
-            // 우하단 세로
-            `M ${xOffset + digitWidth} ${height / 2} v ${digitHeight / 2}`,
-            // 하단 가로
-            `M ${xOffset} ${height / 2 + digitHeight / 2} h ${digitWidth}`,
-            // 좌하단 세로
-            `M ${xOffset} ${height / 2} v ${digitHeight / 2}`,
-            // 좌상단 세로
-            `M ${xOffset} ${height / 2 - digitHeight / 2} v ${digitHeight / 2}`,
-            // 중앙 가로
-            `M ${xOffset} ${height / 2} h ${digitWidth}`,
+            // 상단 가로 (a)
+            `M ${left} ${top} L ${right} ${top}`,
+            // 우상단 세로 (b)
+            `M ${right} ${top + halfSegWidth} L ${right} ${middle - halfSegWidth}`,
+            // 우하단 세로 (c)
+            `M ${right} ${middle + halfSegWidth} L ${right} ${bottom - halfSegWidth}`,
+            // 하단 가로 (d)
+            `M ${left} ${bottom} L ${right} ${bottom}`,
+            // 좌하단 세로 (e)
+            `M ${left} ${middle + halfSegWidth} L ${left} ${bottom - halfSegWidth}`,
+            // 좌상단 세로 (f)
+            `M ${left} ${top + halfSegWidth} L ${left} ${middle - halfSegWidth}`,
+            // 중앙 가로 (g)
+            `M ${left} ${middle} L ${right} ${middle}`,
           ];
 
           // 점멸 모드일 경우 모든 세그먼트를 그리되, 비활성화된 세그먼트는 회색으로 표시
@@ -167,7 +177,8 @@ const DigitalClock = ({ time, mode = 'default', width = 240, height = 100, Digit
                 .attr('d', segmentPaths[i])
                 .attr('stroke', isActive ? 'black' : '#6b7280') // 비활성화된 세그먼트는 gray-500 색상 사용
                 .attr('stroke-width', segmentWidth)
-                .attr('stroke-linecap', 'round')
+                .attr('stroke-linecap', 'round') // 끝부분을 둥글게 처리
+                .attr('fill', 'none') // 채우기 없음
                 .attr('opacity', isActive ? 1 : 0.5); // 비활성화된 세그먼트는 약간 투명하게
             });
           } else {
@@ -179,7 +190,8 @@ const DigitalClock = ({ time, mode = 'default', width = 240, height = 100, Digit
                   .attr('d', segmentPaths[i])
                   .attr('stroke', 'black')
                   .attr('stroke-width', segmentWidth)
-                  .attr('stroke-linecap', 'round');
+                  .attr('stroke-linecap', 'round') // 끝부분을 둥글게 처리
+                  .attr('fill', 'none'); // 채우기 없음
               }
             });
           }
@@ -195,8 +207,9 @@ const DigitalClock = ({ time, mode = 'default', width = 240, height = 100, Digit
       digitHeight,
       digitWidth,
       height,
-      mode, // mode를 의존성 배열에 추가
+      mode,
       padding,
+      segmentGap, // 새로 추가된 의존성
       segmentWidth,
       spacing,
       timeString,

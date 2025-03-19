@@ -43,7 +43,10 @@ const ClockSection = () => {
           <DigitalClock time={time} />
         </div>
       </ItemLayout>
-      <ItemLayout title="Digital Clock (Flash Mode)" description="A digital clock with inactive segments visible in gray">
+      <ItemLayout
+        title="Digital Clock (Flash Mode)"
+        description="A digital clock with inactive segments visible in gray"
+      >
         <div className="border py-2 rounded-md">
           <DigitalClock time={time} mode="flash" />
         </div>
@@ -53,9 +56,9 @@ const ClockSection = () => {
           <DigitalClock time={time} width={420} />
         </div>
       </ItemLayout>
-      <ItemLayout title="Digital Clock (Flash Mode 420px)" description="A digital clock with inactive segments visible in gray">
+      <ItemLayout title="Digital Clock (420x420)" description="A simple digital clock with size 420x420">
         <div className="border py-2 rounded-md hover:shadow-md transition-shadow">
-          <DigitalClock time={time} mode="flash" width={420} />
+          <DigitalClock time={time} width={420} height={420} />
         </div>
       </ItemLayout>
     </ThemeLayout>
