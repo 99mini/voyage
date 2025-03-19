@@ -20,10 +20,14 @@ const SEGMENTS = {
   9: [true, true, true, true, false, true, true],
 };
 
+// 모든 세그먼트가 있는 배열 (점멸 모드에서 사용)
+const ALL_SEGMENTS = [true, true, true, true, true, true, true];
+
 type DigitalClockProps = {
+  time: Date;
+  mode?: 'default' | 'flash';
   width?: number | string;
   height?: number;
-  time: Date;
   DigitStyles?: {
     width?: number;
     height?: number;
@@ -34,7 +38,7 @@ type DigitalClockProps = {
   };
 };
 
-const DigitalClock = ({ time, width = 240, height = 100, DigitStyles }: DigitalClockProps) => {
+const DigitalClock = ({ time, mode = 'default', width = 240, height = 100, DigitStyles }: DigitalClockProps) => {
   // 시간을 시:분:초 형식의 문자열로 변환
   const timeString = useMemo(() => {
     const hours = time.getHours().toString().padStart(2, '0');
@@ -133,8 +137,8 @@ const DigitalClock = ({ time, width = 240, height = 100, DigitStyles }: DigitalC
         } else {
           // 숫자 그리기
           const digit = parseInt(char, 10);
-          const segments = SEGMENTS[digit as keyof typeof SEGMENTS];
-
+          const activeSegments = SEGMENTS[digit as keyof typeof SEGMENTS];
+          
           // 세그먼트 좌표 정의
           const segmentPaths = [
             // 상단 가로
@@ -153,17 +157,32 @@ const DigitalClock = ({ time, width = 240, height = 100, DigitStyles }: DigitalC
             `M ${xOffset} ${height / 2} h ${digitWidth}`,
           ];
 
-          // 각 세그먼트 그리기
-          segments.forEach((isActive, i) => {
-            if (isActive) {
+          // 점멸 모드일 경우 모든 세그먼트를 그리되, 비활성화된 세그먼트는 회색으로 표시
+          if (mode === 'flash') {
+            // 모든 세그먼트 그리기
+            ALL_SEGMENTS.forEach((_, i) => {
+              const isActive = activeSegments[i];
               svg
                 .append('path')
                 .attr('d', segmentPaths[i])
-                .attr('stroke', 'black')
+                .attr('stroke', isActive ? 'black' : '#6b7280') // 비활성화된 세그먼트는 gray-500 색상 사용
                 .attr('stroke-width', segmentWidth)
-                .attr('stroke-linecap', 'round');
-            }
-          });
+                .attr('stroke-linecap', 'round')
+                .attr('opacity', isActive ? 1 : 0.5); // 비활성화된 세그먼트는 약간 투명하게
+            });
+          } else {
+            // 기본 모드: 활성화된 세그먼트만 그리기
+            activeSegments.forEach((isActive, i) => {
+              if (isActive) {
+                svg
+                  .append('path')
+                  .attr('d', segmentPaths[i])
+                  .attr('stroke', 'black')
+                  .attr('stroke-width', segmentWidth)
+                  .attr('stroke-linecap', 'round');
+              }
+            });
+          }
 
           xOffset += digitWidth + spacing;
         }
@@ -176,6 +195,7 @@ const DigitalClock = ({ time, width = 240, height = 100, DigitStyles }: DigitalC
       digitHeight,
       digitWidth,
       height,
+      mode, // mode를 의존성 배열에 추가
       padding,
       segmentWidth,
       spacing,
