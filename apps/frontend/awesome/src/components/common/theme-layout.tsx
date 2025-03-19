@@ -1,10 +1,18 @@
 import { cn } from '@packages/vds';
 
+import useScrollToHash from '@/hooks/use-scroll-to-hash';
+
 import { pascalCaseToKebabCase } from '@/lib/utils/string';
 
 const ThemeLayout = ({ title, children }: { title: string; children: React.ReactNode }) => {
+  const ref = useScrollToHash(pascalCaseToKebabCase(title));
+
   return (
-    <div className="flex flex-col gap-8 py-4 sm:px-0 px-4 w-full items-center justify-center">
+    <div
+      ref={ref}
+      id={pascalCaseToKebabCase(title)}
+      className="flex flex-col gap-8 py-4 sm:px-0 px-4 w-full items-center justify-center"
+    >
       <a
         href={`#${pascalCaseToKebabCase(title)}`}
         className={cn(
