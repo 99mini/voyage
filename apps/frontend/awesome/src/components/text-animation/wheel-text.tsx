@@ -90,8 +90,10 @@ const WheelText = ({
 
   // 애니메이션 초기화 및 완료 처리
   useEffect(() => {
+    // 컴포넌트가 마운트될 때 애니메이션 상태 초기화
     setAnimationComplete(new Array(textArray.length).fill(false));
 
+    // 애니메이션 완료 타이머 설정
     const timers = textArray.map((_, index) => {
       return setTimeout(
         () => {
@@ -101,10 +103,11 @@ const WheelText = ({
             return newState;
           });
         },
-        delay * index + duration,
+        delay * index + duration + 100, // 약간의 여유 시간 추가
       );
     });
 
+    // 컴포넌트가 언마운트될 때 타이머 정리
     return () => {
       timers.forEach((timer) => clearTimeout(timer));
     };
@@ -112,27 +115,58 @@ const WheelText = ({
 
   // 애니메이션 방향에 따른 스타일 설정
   const getAnimationStyle = (index: number) => {
+    const animationName = `wheelText${index}`;
+
+    // 애니메이션 키프레임 스타일 동적 생성
+    if (typeof document !== 'undefined') {
+      const styleSheet = document.styleSheets[0];
+      try {
+        // 방향에 따라 다른 키프레임 생성
+        let keyframeRule;
+
+        if (direction === 'top-to-bottom' || (direction === 'random' && index % 2 !== 0)) {
+          keyframeRule = `@keyframes ${animationName} {
+            0% { transform: translateY(-100%); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(100%); opacity: 0; }
+          }`;
+        } else {
+          keyframeRule = `@keyframes ${animationName} {
+            0% { transform: translateY(100%); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-100%); opacity: 0; }
+          }`;
+        }
+
+        styleSheet.insertRule(keyframeRule, styleSheet.cssRules.length);
+      } catch {
+        // 이미 존재하는 규칙이면 무시
+      }
+    }
+
     switch (direction) {
       case 'bottom-to-top':
         return {
           flexDirection: 'column' as const,
-          animationName: 'wheelText',
+          animationName,
         };
       case 'top-to-bottom':
         return {
           flexDirection: 'column-reverse' as const,
-          animationName: 'wheelText',
+          animationName,
         };
       case 'random':
         // 각 문자의 인덱스를 기반으로 방향 결정 (렌더링마다 변경되지 않도록)
         return {
           flexDirection: index % 2 === 0 ? ('column' as const) : ('column-reverse' as const),
-          animationName: 'wheelText',
+          animationName,
         };
       default:
         return {
           flexDirection: 'column' as const,
-          animationName: 'wheelText',
+          animationName,
         };
     }
   };
@@ -154,7 +188,7 @@ const WheelText = ({
             ) : (
               <div
                 ref={(el) => (animationRefs.current[index] = el)}
-                className="absolute inset-0"
+                className="absolute inset-0 animation-wheel-text"
                 style={{
                   animation: `${animationStyle.animationName} ${duration}ms ease-out forwards`,
                   animationDelay: `${delay * index}ms`,
