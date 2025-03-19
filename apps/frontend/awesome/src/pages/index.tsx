@@ -38,6 +38,15 @@ function Home() {
           >
             <AnalogClock time={time} secondHand={false} />
           </ItemLayout>
+          <ItemLayout title="Analog Clock (Smooth Mode)" description="A smooth analog clock with continuous movement">
+            <AnalogClock time={time} mode="smooth" />
+          </ItemLayout>
+          <ItemLayout
+            title="Analog Clock (Smooth Without Second Hand)"
+            description="A smooth analog clock without second hand"
+          >
+            <AnalogClock time={time} mode="smooth" secondHand={false} />
+          </ItemLayout>
           <ItemLayout title="Digital Clock (Default)" description="A simple digital clock">
             <div className="border py-2 rounded-md">
               <DigitalClock time={time} />
