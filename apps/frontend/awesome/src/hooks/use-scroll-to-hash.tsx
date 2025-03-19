@@ -8,7 +8,7 @@ import { useEffect, useRef } from 'react';
  */
 export const useScrollToHash = (
   hash?: string,
-  options: ScrollIntoViewOptions = { behavior: 'smooth', block: 'start' },
+  options: ScrollIntoViewOptions = { behavior: 'instant', block: 'start' },
 ) => {
   const ref = useRef<HTMLDivElement>(null);
   const hasScrolledRef = useRef(false);
