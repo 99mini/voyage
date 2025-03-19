@@ -1,10 +1,10 @@
 import ItemLayout from '@/components/common/item-layout';
 import ThemeLayout from '@/components/common/theme-layout';
-import WheelText from '@/components/wheel-text/wheel-text';
+import WheelText from '@/components/text-animation/wheel-text';
 
-const WheelTextSection = () => {
+const TextAnimationSection = () => {
   return (
-    <ThemeLayout title="Wheel Text">
+    <ThemeLayout title="Text Animation">
       <ItemLayout title="Wheel Text (Default)" description="Wheel text with default settings">
         <div className="flex items-center justify-center p-8">
           <WheelText text={'Hello World'} />
@@ -14,4 +14,4 @@ const WheelTextSection = () => {
   );
 };
 
-export default WheelTextSection;
+export default TextAnimationSection;
