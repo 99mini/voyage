@@ -2,19 +2,16 @@ import { cn } from '@packages/vds';
 
 import useScrollToHash from '@/hooks/use-scroll-to-hash';
 
-import { pascalCaseToKebabCase } from '@/lib/utils/string';
+import { generateSafeHash, pascalCaseToKebabCase } from '@/lib/utils/string';
 
 const ThemeLayout = ({ title, children }: { title: string; children: React.ReactNode }) => {
-  const ref = useScrollToHash(pascalCaseToKebabCase(title));
+  const hashTag = generateSafeHash(pascalCaseToKebabCase(title));
+  const ref = useScrollToHash(hashTag);
 
   return (
-    <div
-      ref={ref}
-      id={pascalCaseToKebabCase(title)}
-      className="flex flex-col gap-8 py-4 sm:px-0 px-4 w-full items-center justify-center"
-    >
+    <div ref={ref} id={hashTag} className="flex flex-col gap-8 py-4 sm:px-0 px-4 w-full items-center justify-center">
       <a
-        href={`#${pascalCaseToKebabCase(title)}`}
+        href={`#${hashTag}`}
         className={cn(
           'w-full transition relative',
           'text-xl sm:text-2xl font-bold text-gray-800',
