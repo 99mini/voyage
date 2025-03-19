@@ -20,7 +20,7 @@ const SEGMENTS = {
   9: [true, true, true, true, false, true, true],
 };
 
-// 모든 세그먼트가 있는 배열 (점멸 모드에서 사용)
+/** 모든 세그먼트가 있는 배열 (점멸 모드에서 사용) */
 const ALL_SEGMENTS = [true, true, true, true, true, true, true];
 
 type DigitalClockProps = {
@@ -55,8 +55,6 @@ const DigitalClock = ({ time, mode = 'default', width = 240, height = 100, Digit
   const colonWidth = DigitStyles?.colonWidth ?? 5;
   const padding = DigitStyles?.padding ?? 10;
   const tailMargin = 10;
-  // 세그먼트 간 여백 (겹침 방지용)
-  const segmentGap = segmentWidth * 0.75;
 
   // 전체 시계 너비 계산
   const calculateClockWidth = useCallback(() => {
@@ -142,29 +140,69 @@ const DigitalClock = ({ time, mode = 'default', width = 240, height = 100, Digit
           const activeSegments = SEGMENTS[digit as keyof typeof SEGMENTS];
 
           // 세그먼트 좌표 계산을 위한 변수
-          const left = xOffset + segmentGap;
-          const right = xOffset + digitWidth - segmentGap;
-          const top = height / 2 - digitHeight / 2 + segmentGap;
+          const left = xOffset;
+          const right = xOffset + digitWidth;
+          const top = height / 2 - digitHeight / 2;
           const middle = height / 2;
-          const bottom = height / 2 + digitHeight / 2 - segmentGap;
-          const halfSegWidth = segmentWidth / 2;
+          const bottom = height / 2 + digitHeight / 2;
 
-          // 각 세그먼트의 경로 정의 (겹침 방지를 위해 완전히 분리된 경로)
-          const segmentPaths = [
+          // 세그먼트 크기 및 위치 계산
+          const horizontalSegmentWidth = digitWidth - segmentWidth * 2;
+          const horizontalSegmentHeight = segmentWidth;
+          const verticalSegmentWidth = segmentWidth;
+          const verticalSegmentHeight = (digitHeight - segmentWidth * 3) / 2;
+
+          // 각 세그먼트의 위치와 크기 정의
+          const segmentRects = [
             // 상단 가로 (a)
-            `M ${left} ${top} L ${right} ${top}`,
+            {
+              x: left + segmentWidth,
+              y: top,
+              width: horizontalSegmentWidth,
+              height: horizontalSegmentHeight,
+            },
             // 우상단 세로 (b)
-            `M ${right} ${top + halfSegWidth} L ${right} ${middle - halfSegWidth}`,
+            {
+              x: right - segmentWidth,
+              y: top + segmentWidth,
+              width: verticalSegmentWidth,
+              height: verticalSegmentHeight,
+            },
             // 우하단 세로 (c)
-            `M ${right} ${middle + halfSegWidth} L ${right} ${bottom - halfSegWidth}`,
+            {
+              x: right - segmentWidth,
+              y: middle,
+              width: verticalSegmentWidth,
+              height: verticalSegmentHeight,
+            },
             // 하단 가로 (d)
-            `M ${left} ${bottom} L ${right} ${bottom}`,
+            {
+              x: left + segmentWidth,
+              y: bottom - horizontalSegmentHeight * 1.5,
+              width: horizontalSegmentWidth,
+              height: horizontalSegmentHeight,
+            },
             // 좌하단 세로 (e)
-            `M ${left} ${middle + halfSegWidth} L ${left} ${bottom - halfSegWidth}`,
+            {
+              x: left,
+              y: middle,
+              width: verticalSegmentWidth,
+              height: verticalSegmentHeight,
+            },
             // 좌상단 세로 (f)
-            `M ${left} ${top + halfSegWidth} L ${left} ${middle - halfSegWidth}`,
+            {
+              x: left,
+              y: top + segmentWidth,
+              width: verticalSegmentWidth,
+              height: verticalSegmentHeight,
+            },
             // 중앙 가로 (g)
-            `M ${left} ${middle} L ${right} ${middle}`,
+            {
+              x: left + segmentWidth,
+              y: middle - horizontalSegmentHeight / 2,
+              width: horizontalSegmentWidth,
+              height: horizontalSegmentHeight,
+            },
           ];
 
           // 점멸 모드일 경우 모든 세그먼트를 그리되, 비활성화된 세그먼트는 회색으로 표시
@@ -172,26 +210,31 @@ const DigitalClock = ({ time, mode = 'default', width = 240, height = 100, Digit
             // 모든 세그먼트 그리기
             ALL_SEGMENTS.forEach((_, i) => {
               const isActive = activeSegments[i];
+              const rect = segmentRects[i];
               svg
-                .append('path')
-                .attr('d', segmentPaths[i])
-                .attr('stroke', isActive ? 'black' : '#6b7280') // 비활성화된 세그먼트는 gray-500 색상 사용
-                .attr('stroke-width', segmentWidth)
-                .attr('stroke-linecap', 'round') // 끝부분을 둥글게 처리
-                .attr('fill', 'none') // 채우기 없음
+                .append('rect')
+                .attr('x', rect.x)
+                .attr('y', rect.y)
+                .attr('width', rect.width)
+                .attr('height', rect.height)
+                .attr('fill', isActive ? 'black' : '#6b7280') // 비활성화된 세그먼트는 gray-500 색상 사용
+                .attr('rx', 1) // 약간 둥근 모서리
                 .attr('opacity', isActive ? 1 : 0.5); // 비활성화된 세그먼트는 약간 투명하게
             });
           } else {
             // 기본 모드: 활성화된 세그먼트만 그리기
             activeSegments.forEach((isActive, i) => {
               if (isActive) {
+                const rect = segmentRects[i];
                 svg
-                  .append('path')
-                  .attr('d', segmentPaths[i])
-                  .attr('stroke', 'black')
-                  .attr('stroke-width', segmentWidth)
+                  .append('rect')
+                  .attr('x', rect.x)
+                  .attr('y', rect.y)
+                  .attr('width', rect.width)
+                  .attr('height', rect.height)
+                  .attr('fill', 'black')
                   .attr('stroke-linecap', 'round') // 끝부분을 둥글게 처리
-                  .attr('fill', 'none'); // 채우기 없음
+                  .attr('rx', 1); // 약간 둥근 모서리
               }
             });
           }
@@ -209,7 +252,6 @@ const DigitalClock = ({ time, mode = 'default', width = 240, height = 100, Digit
       height,
       mode,
       padding,
-      segmentGap, // 새로 추가된 의존성
       segmentWidth,
       spacing,
       timeString,

@@ -39,27 +39,19 @@ const ClockSection = () => {
         <AnalogClock time={time} mode="smooth" secondHand={false} />
       </ItemLayout>
       <ItemLayout title="Digital Clock (Default)" description="A simple digital clock">
-        <div className="border py-2 rounded-md">
-          <DigitalClock time={time} />
-        </div>
+        <DigitalClock time={time} />
       </ItemLayout>
       <ItemLayout
         title="Digital Clock (Flash Mode)"
         description="A digital clock with inactive segments visible in gray"
       >
-        <div className="border py-2 rounded-md">
-          <DigitalClock time={time} mode="flash" />
-        </div>
+        <DigitalClock time={time} mode="flash" />
       </ItemLayout>
       <ItemLayout title="Digital Clock (420px)" description="A simple digital clock with width 420px">
-        <div className="border py-2 rounded-md hover:shadow-md transition-shadow">
-          <DigitalClock time={time} width={420} />
-        </div>
+        <DigitalClock time={time} width={420} />
       </ItemLayout>
       <ItemLayout title="Digital Clock (420x420)" description="A simple digital clock with size 420x420">
-        <div className="border py-2 rounded-md hover:shadow-md transition-shadow">
-          <DigitalClock time={time} width={420} height={420} />
-        </div>
+        <DigitalClock time={time} width={420} height={420} />
       </ItemLayout>
     </ThemeLayout>
   );

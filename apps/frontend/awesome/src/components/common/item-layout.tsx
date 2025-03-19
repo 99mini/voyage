@@ -31,7 +31,7 @@ const ItemLayout = ({ title, description, children }: ItemLayoutProps) => {
           {title}
         </h3>
       </a>
-      {children}
+      <div className="border p-2 rounded-md hover:shadow-md transition-shadow">{children}</div>
       {description && <Description>{description}</Description>}
     </div>
   );
