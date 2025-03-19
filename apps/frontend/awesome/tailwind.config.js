@@ -51,6 +51,17 @@ module.exports = {
           5: 'hsl(var(--chart-5))',
         },
       },
+      keyframes: {
+        wheelText: {
+          '0%': { transform: 'translateY(100%)', opacity: 0 },
+          '20%': { opacity: 1 },
+          '80%': { opacity: 1 },
+          '100%': { transform: 'translateY(-100%)', opacity: 0 }
+        }
+      },
+      animation: {
+        'wheel-text': 'wheelText 1s ease-out forwards',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

@@ -5,8 +5,10 @@ import WheelText from '@/components/wheel-text/wheel-text';
 const WheelTextSection = () => {
   return (
     <ThemeLayout title="Wheel Text">
-      <ItemLayout title="Wheel Text" description="A simple wheel text">
-        <WheelText text="Hello World" />
+      <ItemLayout title="Wheel Text (Default)" description="Wheel text with default settings">
+        <div className="flex items-center justify-center p-8">
+          <WheelText text={'Hello World'} />
+        </div>
       </ItemLayout>
     </ThemeLayout>
   );
