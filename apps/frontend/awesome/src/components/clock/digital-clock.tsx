@@ -65,11 +65,26 @@ const DigitalClock = ({ time, width = 240, height = 100, DigitStyles }: DigitalC
       }
     });
 
-    // 마지막 spacing 제거
     totalWidth -= spacing;
 
     return totalWidth;
   }, [colonWidth, digitWidth, padding, spacing, timeString]);
+
+  // 콘텐츠의 실제 너비 계산 (패딩 제외)
+  const calculateContentWidth = useCallback(() => {
+    let contentWidth = 0;
+
+    timeString.split('').forEach((char) => {
+      if (char === ':') {
+        contentWidth += colonWidth + spacing;
+      } else {
+        contentWidth += digitWidth + spacing;
+      }
+    });
+
+    contentWidth -= spacing; // 마지막 spacing 제거
+    return contentWidth;
+  }, [colonWidth, digitWidth, spacing, timeString]);
 
   const drawClock = useCallback(
     (ref: SVGSVGElement) => {
@@ -78,12 +93,24 @@ const DigitalClock = ({ time, width = 240, height = 100, DigitStyles }: DigitalC
       const svg = d3.select(ref);
       svg.selectAll('*').remove();
 
-      // 계산된 너비 또는 사용자 지정 너비 사용
+      // SVG 크기 설정
       const actualWidth = width === 'auto' ? calculateClockWidth() : width;
       svg.attr('width', actualWidth).attr('height', height);
 
-      // 디지털 시계 설정
-      let xOffset = padding;
+      // 콘텐츠 너비 계산
+      const contentWidth = calculateContentWidth();
+
+      // 가운데 정렬을 위한 시작 위치 계산
+      let startX;
+      if (width === 'auto') {
+        startX = padding; // 자동 너비일 경우 기본 패딩 사용
+      } else {
+        // 사용자 지정 너비일 경우 가운데 정렬을 위한 시작 위치 계산
+        const availableWidth = Number(width);
+        startX = Math.max(padding, (availableWidth - contentWidth) / 2);
+      }
+
+      let xOffset = startX;
 
       timeString.split('').forEach((char) => {
         if (char === ':') {
@@ -144,6 +171,7 @@ const DigitalClock = ({ time, width = 240, height = 100, DigitStyles }: DigitalC
     },
     [
       calculateClockWidth,
+      calculateContentWidth,
       colonWidth,
       digitHeight,
       digitWidth,

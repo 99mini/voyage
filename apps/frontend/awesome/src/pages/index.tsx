@@ -38,6 +38,9 @@ function Home() {
           <div className="border py-2 rounded-md">
             <DigitalClock time={time} />
           </div>
+          <div className="border py-2 rounded-md hover:shadow-md transition-shadow">
+            <DigitalClock time={time} width={420} />
+          </div>
         </div>
       </div>
     </RootLayout>
