@@ -7,6 +7,12 @@ const year = new Date().getFullYear();
 const githubUrl = 'https://github.com/99mini/voyage';
 
 const Footer = () => {
+  const path = window.location.pathname;
+
+  if (path.startsWith('/preview')) {
+    return null;
+  }
+
   return (
     <footer className="py-2 px-4 border-t border-gray-200">
       <div className="container mx-auto flex flex-col justify-center items-center gap-4">

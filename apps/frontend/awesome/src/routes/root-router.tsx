@@ -20,6 +20,10 @@ function RootRouter() {
             {/* 공개 라우트 */}
             <Route path={PAGE_PATH.ROOT} element={<HomePage />} />
             <Route path={PAGE_PATH.CLOCK} element={<ClockPage />} />
+
+            {/* 프리뷰 라우트 */}
+            <Route path={`preview${PAGE_PATH.ROOT}`} element={<HomePage />} />
+            <Route path={`preview${PAGE_PATH.CLOCK}`} element={<ClockPage />} />
           </Routes>
         </main>
         <Footer />

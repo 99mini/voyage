@@ -7,9 +7,7 @@ import ClockSection from './components/clock';
 const ClockPage = () => {
   return (
     <RootLayout title={PAGE_TITLE.CLOCK}>
-      <div className="flex flex-col justify-center items-center gap-16">
-        <ClockSection />
-      </div>
+      <ClockSection />
     </RootLayout>
   );
 };

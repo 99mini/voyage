@@ -1,4 +1,4 @@
-export const generateSafeHash = (str: string) => str.replace(/[()|\s]/g, '').replace(/[^ㄱ-핳a-zA-Z0-9]/g, '-');
+export const generateSafeHash = (str: string) => str.replace(/[()|\s|,|.|\\/]/g, '').replace(/[^ㄱ-핳a-zA-Z0-9]/g, '-');
 
 export const camelCaseToPascalCase = (str: string) => str.replace(/([가-힣a-z])/g, (match) => match.toUpperCase());
 
