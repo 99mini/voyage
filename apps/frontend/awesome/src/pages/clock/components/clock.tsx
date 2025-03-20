@@ -17,7 +17,7 @@ const ClockSection = () => {
   }, []);
 
   return (
-    <ThemeLayout title="Clocks">
+    <ThemeLayout title="Clock">
       <ItemLayout title="Text Clock (Default)" description="A simple text clock">
         <TextClock time={time} />
       </ItemLayout>

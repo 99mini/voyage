@@ -10,7 +10,7 @@ import { generateSafeHash } from '@/lib/utils/string';
 
 const HomePage = () => {
   return (
-    <RootLayout title={PAGE_TITLE.ROOT}>
+    <RootLayout>
       {Object.entries(PAGE_PATH)
         .filter(([key]) => key !== 'ROOT')
         .map(([key, path]) => (
@@ -28,7 +28,7 @@ const HomePage = () => {
             </a>
 
             <Link to={path} className="text-blue-400 hover:text-blue-600 hover:underline mb-2">
-              {`${PAGE_TITLE[key as keyof typeof PAGE_TITLE]} 페이지 이동`}
+              {`Go to ${PAGE_TITLE[key as keyof typeof PAGE_TITLE]}`}
             </Link>
             <Preview src={`preview${path}`} />
           </div>
