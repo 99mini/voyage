@@ -4,9 +4,9 @@ import { PAGE_TITLE } from '@/lib/constants/route.constant';
 
 import ClockSection from './components/clock';
 
-const Home = () => {
+const ClockPage = () => {
   return (
-    <RootLayout title={PAGE_TITLE.ROOT}>
+    <RootLayout title={PAGE_TITLE.CLOCK}>
       <div className="flex flex-col justify-center items-center gap-16">
         <ClockSection />
       </div>
@@ -14,4 +14,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default ClockPage;

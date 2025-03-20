@@ -6,9 +6,9 @@ interface PageTitleProps extends Omit<React.HTMLProps<HTMLHeadingElement>, 'chil
 
 const PageTitle = ({ children, className, ...props }: PageTitleProps) => {
   return (
-    <h2 className={`${className ? className : ''} text-2xl font-bold mb-4`} {...props}>
+    <h1 className={`${className ? className : ''} text-2xl font-bold mb-4`} {...props}>
       {children}
-    </h2>
+    </h1>
   );
 };
 

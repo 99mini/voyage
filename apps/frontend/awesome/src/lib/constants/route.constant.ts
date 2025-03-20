@@ -1,6 +1,6 @@
 export const PAGE_PATH = {
   ROOT: '/',
-  LOGIN: '/login',
+  CLOCK: '/clock',
 } as const;
 
 export type RouteKey = keyof typeof PAGE_PATH;
@@ -8,5 +8,5 @@ export type RoutePath = (typeof PAGE_PATH)[RouteKey];
 
 export const PAGE_TITLE: Record<RouteKey, string> = {
   ROOT: 'Home',
-  LOGIN: 'Login',
+  CLOCK: 'Clock',
 } as const;
