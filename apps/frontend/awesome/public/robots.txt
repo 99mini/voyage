@@ -1,0 +1,3 @@
+Sitemap: https://awesome.zerovoyage.com/sitemap.xml
+User-agent: *   
+Allow: /        

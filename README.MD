@@ -16,6 +16,8 @@
       - [Feature Tech](#feature-tech)
     - [Admin](#admin)
       - [Feature Admin](#feature-admin)
+    - [Awesome](#awesome)
+      - [Feature Awesome](#feature-awesome)
   - [Server](#server)
     - [Rest](#rest)
       - [Rest API](#rest-api)
@@ -78,6 +80,21 @@
   - monitor server logs (`TODO`)
 - manage files (DigitalOcean Volume) `In Progress`
 - manage users (`TODO`)
+
+### Awesome
+
+- production: https://awesome.zerovoyage.com
+- github: https://github.com/99mini/voyage/tree/main/apps/frontend/awesome
+- tech stack: `typescript`, `reactjs`, `tailwindcss`, `shadcn/ui`
+
+#### Feature Awesome
+
+just for fun :) interactive ui
+
+- clock
+  - analog clock
+  - digital clock
+  - text clock
 
 ## Server
 
