@@ -17,7 +17,7 @@ const ClockSection = () => {
   }, []);
 
   return (
-    <ThemeLayout title="Clocks">
+    <ThemeLayout title="Clock">
       <ItemLayout title="Text Clock (Default)" description="A simple text clock">
         <TextClock time={time} />
       </ItemLayout>
@@ -48,11 +48,11 @@ const ClockSection = () => {
       >
         <DigitalClock time={time} mode="burn-in" />
       </ItemLayout>
-      <ItemLayout title="Digital Clock (420px)" description="A simple digital clock with width 420px">
-        <DigitalClock time={time} width={420} />
+      <ItemLayout title="Digital Clock (320px)" description="A simple digital clock with width 320px">
+        <DigitalClock time={time} width={320} />
       </ItemLayout>
-      <ItemLayout title="Digital Clock (420x420)" description="A simple digital clock with size 420x420">
-        <DigitalClock time={time} width={420} height={420} />
+      <ItemLayout title="Digital Clock (320x320)" description="A simple digital clock with size 320x320">
+        <DigitalClock time={time} width={320} height={320} />
       </ItemLayout>
     </ThemeLayout>
   );
