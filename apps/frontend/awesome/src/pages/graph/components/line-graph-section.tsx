@@ -3,26 +3,31 @@ import ThemeLayout from '@/components/common/theme-layout';
 
 import LineGraph from './line-graph';
 
+const randomData = [Array.from({ length: 100 }, (_, i) => ({ x: i, y: Math.random() }))];
+const randomTimeData = [
+  Array.from({ length: 100 }, (_, i) => ({
+    x: new Date().getTime() + i * 1000,
+    y: Math.random(),
+  })),
+];
+
+const multiData = [
+  Array.from({ length: 100 }, (_, i) => ({ x: i, y: Math.random() * 2 })),
+  Array.from({ length: 100 }, (_, i) => ({ x: i, y: Math.random() })),
+];
+
+const multiData2 = [
+  Array.from({ length: 100 }, (_, i) => ({ x: i, y: Math.random() * 2 })),
+  Array.from({ length: 100 }, (_, i) => ({ x: i, y: Math.random() * 3 })),
+  Array.from({ length: 100 }, (_, i) => ({ x: i, y: Math.random() })),
+];
+
+const multiDataDifferentLength = [
+  Array.from({ length: 100 }, (_, i) => ({ x: i, y: Math.random() * 2 })),
+  Array.from({ length: 50 }, (_, i) => ({ x: i, y: Math.random() })),
+];
+
 const LineGraphSection = () => {
-  const randomData = [Array.from({ length: 100 }, (_, i) => ({ x: i, y: Math.random() }))];
-  const randomTimeData = [
-    Array.from({ length: 100 }, (_, i) => ({
-      x: new Date().getTime() + i * 1000,
-      y: Math.random(),
-    })),
-  ];
-
-  const multiData = [
-    Array.from({ length: 100 }, (_, i) => ({ x: i, y: Math.random() * 2 })),
-    Array.from({ length: 100 }, (_, i) => ({ x: i, y: Math.random() })),
-  ];
-
-  const multiData2 = [
-    Array.from({ length: 100 }, (_, i) => ({ x: i, y: Math.random() * 2 })),
-    Array.from({ length: 100 }, (_, i) => ({ x: i, y: Math.random() * 3 })),
-    Array.from({ length: 100 }, (_, i) => ({ x: i, y: Math.random() })),
-  ];
-
   return (
     <ThemeLayout title="Line Graph">
       <ItemLayout title="Line Graph (Default)">
@@ -42,6 +47,9 @@ const LineGraphSection = () => {
       </ItemLayout>
       <ItemLayout title="Line Graph (Multi - 3)" description="Multiple datasets (3 datasets)">
         <LineGraph datum={multiData2} />
+      </ItemLayout>
+      <ItemLayout title="Line Graph (Multi - Different Length)" description="Multiple datasets (different length)">
+        <LineGraph datum={multiDataDifferentLength} />
       </ItemLayout>
       <ItemLayout title="Line Graph (320x320)" description="Width: 320, Height: 320">
         <LineGraph datum={randomData} width={320} height={320} />

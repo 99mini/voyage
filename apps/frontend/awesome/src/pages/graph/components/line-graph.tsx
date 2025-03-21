@@ -1,6 +1,10 @@
 import * as d3 from 'd3';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+import { cn } from '@packages/vds';
+
+import './animation.css';
 
 const generateColorPalette = ({ base, count }: { base: string; count: number }) => {
   let hue: number = 0;
@@ -52,6 +56,7 @@ type LineGraphProps = {
   datum: DataPoint[][];
   className?: string;
   style?: React.CSSProperties;
+  title?: string;
   width?: number;
   height?: number;
   xScaleType?: 'time' | 'linear';
@@ -73,6 +78,7 @@ const LineGraph = ({
   datum,
   className,
   style,
+  title,
   width = 320,
   height = 200,
   xScaleType = 'linear',
@@ -87,9 +93,8 @@ const LineGraph = ({
   animationEasing = 'linear',
   animationFillMode = 'forwards',
 }: LineGraphProps) => {
-  if (datum.map((d) => d.length).some((length) => length !== datum[0].length)) {
-    throw new Error('All datasets must have the same number of points');
-  }
+  const [isView, setIsView] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   const draw = useCallback(
     (ref: SVGElement | null) => {
@@ -100,15 +105,16 @@ const LineGraph = ({
 
       // 타입 명시적으로 지정
       let xScale: d3.ScaleLinear<number, number> | d3.ScaleTime<number, number>;
+      const maxLengthDataIndex = datum.findIndex((d) => d.length === Math.max(...datum.map((d) => d.length)));
       if (xScaleType === 'linear') {
         xScale = d3
           .scaleLinear()
-          .domain(d3.extent(datum[0], (d) => d.x) as [number, number])
+          .domain(d3.extent(datum[maxLengthDataIndex], (d) => d.x) as [number, number])
           .range([padding, width - padding]);
       } else {
         xScale = d3
           .scaleTime()
-          .domain(d3.extent(datum[0], (d) => new Date(d.x)) as [Date, Date])
+          .domain(d3.extent(datum[maxLengthDataIndex], (d) => new Date(d.x)) as [Date, Date])
           .range([padding, width - padding]);
       }
 
@@ -195,18 +201,34 @@ const LineGraph = ({
     ],
   );
 
+  useEffect(() => {
+    if (!ref.current) return;
+    console.log('ref.current', ref.current);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsView(true);
+        }
+      },
+      {
+        threshold: 0.1,
+      },
+    );
+
+    observer.observe(ref.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
-    <div className={className} style={style}>
-      <style>
-        {`
-          @keyframes draw-animation {
-            100% {
-              stroke-dashoffset: 0;
-            }
-          }
-        `}
-      </style>
-      <svg width={width} height={height} ref={draw}></svg>
+    <div className={cn(className, !isView && 'opacity-0')} style={style} ref={ref}>
+      {isView ? (
+        <svg width={width} height={height} aria-description={title} ref={draw} />
+      ) : (
+        <svg width={width} height={height} aria-hidden />
+      )}
     </div>
   );
 };
