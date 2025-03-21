@@ -10,8 +10,10 @@ const animationEaseingMap = {
   break: 'cubic-bezier(0.36, 0, 0.64, 1)',
 };
 
+type DataPoint = { x: number; y: number };
+
 type LineGraphProps = {
-  data: { x: number; y: number }[];
+  data: DataPoint[];
   className?: string;
   style?: React.CSSProperties;
   width?: number;
@@ -56,23 +58,44 @@ const LineGraph = ({
       const svg = d3.select(ref);
       svg.selectAll('*').remove();
 
-      const xScale = (xScaleType === 'linear' ? d3.scaleLinear() : d3.scaleTime())
-        .domain(d3.extent(data, (d) => d.x))
-        .range([padding, width - padding]);
+      // 타입 명시적으로 지정
+      let xScale: d3.ScaleLinear<number, number> | d3.ScaleTime<number, number>;
+      if (xScaleType === 'linear') {
+        xScale = d3
+          .scaleLinear()
+          .domain(d3.extent(data, (d) => d.x) as [number, number])
+          .range([padding, width - padding]);
+      } else {
+        xScale = d3
+          .scaleTime()
+          .domain(d3.extent(data, (d) => new Date(d.x)) as [Date, Date])
+          .range([padding, width - padding]);
+      }
 
-      const yScale = (yScaleType === 'linear' ? d3.scaleLinear() : d3.scaleTime())
-        .domain([0, d3.max(data, (d) => d.y)])
-        .range([height - padding, padding]);
+      // 타입 명시적으로 지정
+      let yScale: d3.ScaleLinear<number, number> | d3.ScaleTime<number, number>;
+      if (yScaleType === 'linear') {
+        yScale = d3
+          .scaleLinear()
+          .domain([0, d3.max(data, (d) => d.y) || 0])
+          .range([height - padding, padding]);
+      } else {
+        yScale = d3
+          .scaleTime()
+          .domain([new Date(0), new Date(d3.max(data, (d) => d.y) || 0)])
+          .range([height - padding, padding]);
+      }
 
       const line = d3
-        .line()
-        .x((d) => xScale(d.x) || 0)
-        .y((d) => yScale(d.y) || 0)
+        .line<DataPoint>()
+        .x((d) => xScale(xScaleType === 'time' ? new Date(d.x) : d.x))
+        .y((d) => yScale(yScaleType === 'time' ? new Date(d.y) : d.y))
         .curve(d3.curveBasis);
 
       svg
         .append('path')
-        .attr('d', line(data))
+        .datum(data)
+        .attr('d', line)
         .attr('stroke', color)
         .attr('fill', 'none')
         .attr('stroke-width', thickness);
