@@ -1,0 +1,28 @@
+---
+sidebar_position: 3
+slug: execution-context
+title: 'Execution Context'
+authors: [99mini]
+tags: [javascript]
+---
+
+실행 컨텍스트
+
+```javascript title="execution-context.js"
+function foo() {
+  let closureValue = 0;
+  return function () {
+    return ++closureValue;
+  };
+}
+
+const foo1 = foo();
+console.log(foo1()); // 1
+console.log(foo1()); // 2
+
+const foo2 = foo();
+console.log(foo2()); // 1
+console.log(foo2()); // 2
+```
+
+### 클로저 (Closure)

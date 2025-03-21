@@ -1,0 +1,75 @@
+---
+sidebar_position: 2
+slug: hoisting
+title: 'Hoisting'
+authors: [99mini]
+tags: [javascript]
+---
+
+### `var`
+
+```javascript title="var"
+console.log(a);
+var a = 1;
+```
+
+```md title="var output"
+undefined
+```
+
+### `let`
+
+```javascript title="let"
+console.log(a);
+let a = 1;
+```
+
+```md title="let output"
+Uncaught ReferenceError: b is not defined
+```
+
+### `const`
+
+```javascript title="const"
+console.log(a);
+const a = 1;
+```
+
+```md title="const output"
+Uncaught ReferenceError: a is not defined
+```
+
+### `function`
+
+```javascript title="function"
+console.log(a);
+function a() {
+  return 1;
+}
+```
+
+```md title="function output"
+1
+```
+
+### `arrow function`
+
+```javascript title="arrow function"
+console.log(a);
+const a = () => 1;
+```
+
+```md title="arrow function output"
+Uncaught ReferenceError: a is not defined
+```
+
+### `class`
+
+```javascript title="class"
+console.log(A);
+class A {}
+```
+
+```md title="class output"
+Uncaught ReferenceError: A is not defined
+```
