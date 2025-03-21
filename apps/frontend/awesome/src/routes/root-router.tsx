@@ -1,15 +1,17 @@
+import { lazy } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router';
 
 import { Toaster } from '@packages/vds';
 
-import ClockPage from '@/pages/clock';
-import GraphPage from '@/pages/graph';
 import HomePage from '@/pages/home';
 
 import Footer from '@/components/common/footer';
 import Header from '@/components/common/header';
 
 import { PAGE_PATH } from '@/lib/constants/route.constant';
+
+const ClockPage = lazy(() => import('@/pages/clock'));
+const GraphPage = lazy(() => import('@/pages/graph'));
 
 function RootRouter() {
   return (
