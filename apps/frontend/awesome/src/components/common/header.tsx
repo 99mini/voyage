@@ -1,9 +1,11 @@
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 import { PAGE_PATH, PAGE_TITLE } from '@/lib/constants/route.constant';
 
 const Header = () => {
-  const path = window.location.pathname;
+  const location = useLocation();
+
+  const path = location.pathname;
 
   if (path.startsWith('/preview')) {
     return null;

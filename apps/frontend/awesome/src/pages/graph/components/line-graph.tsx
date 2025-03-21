@@ -202,8 +202,10 @@ const LineGraph = ({
   );
 
   useEffect(() => {
-    if (!ref.current) return;
-    console.log('ref.current', ref.current);
+    if (!ref.current) {
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
