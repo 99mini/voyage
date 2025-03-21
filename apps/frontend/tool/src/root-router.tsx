@@ -4,7 +4,6 @@ import { Toaster } from '@packages/vds';
 
 import Home from '@/pages';
 import GifGenerator from '@/pages/gif-generator';
-import PDFToImagePage from '@/pages/pdf-to-image';
 import RandomPasswordGenerator from '@/pages/random-password-generator';
 import VerticalImageMerger from '@/pages/vertical-image-merger';
 
@@ -24,7 +23,6 @@ function RootRouter() {
             <Route path={ROUTE_PATH.VERTICAL_IMAGE_MERGER} element={<VerticalImageMerger />} />
             <Route path={ROUTE_PATH.GIF_GENERATOR} element={<GifGenerator />} />
             <Route path={ROUTE_PATH.RANDOM_PASSWORD_GENERATOR} element={<RandomPasswordGenerator />} />
-            <Route path={ROUTE_PATH.PDF_TO_IMAGE} element={<PDFToImagePage />} />
           </Routes>
           <Toaster />
         </main>
