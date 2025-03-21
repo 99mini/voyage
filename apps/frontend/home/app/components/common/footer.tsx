@@ -29,17 +29,22 @@ const projects: {
   },
   {
     href: 'https://tool.zerovoyage.com',
-    text: '웹 도구',
+    text: 'Web Tools',
     icon: <SquareArrowOutUpRight className="w-4 h-4" />,
   },
   {
     href: 'https://tech.zerovoyage.com',
-    text: '기술 블로그',
+    text: 'Technical Blog',
     icon: <SquareArrowOutUpRight className="w-4 h-4" />,
   },
   {
     href: 'https://design.zerovoyage.com',
     text: 'vds',
+    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
+  },
+  {
+    href: 'https://awesome.zerovoyage.com',
+    text: 'Awesome',
     icon: <SquareArrowOutUpRight className="w-4 h-4" />,
   },
 ];
