@@ -2,13 +2,13 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 
 import { Toaster } from '@packages/vds';
 
-import Footer from '@/components/common/footer';
-import Header from '@/components/common/header';
-
 import Home from '@/pages';
 import GifGenerator from '@/pages/gif-generator';
-import VerticalImageMerger from '@/pages/vertical-image-merger';
 import RandomPasswordGenerator from '@/pages/random-password-generator';
+import VerticalImageMerger from '@/pages/vertical-image-merger';
+
+import Footer from '@/components/common/footer';
+import Header from '@/components/common/header';
 
 import { ROUTE_PATH } from '@/lib/constant';
 

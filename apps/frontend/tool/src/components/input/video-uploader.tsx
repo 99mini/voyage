@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Label, FileInput } from '@packages/vds';
+import { FileInput, Label } from '@packages/vds';
 
 interface VideoUploaderProps {
   onUpload: (file: File[] | ((prev: File[]) => File[])) => void;

@@ -7,12 +7,12 @@ import DownloadButton from '@/components/common/download-button';
 import ImageUploader from '@/components/input/image-uploader';
 import RootLayout from '@/components/layout/root-layout';
 
+import { PAGE_TITLE } from '@/lib/constant';
+
 import ImageMerger from './components/image-merger';
 import MergedImagePreviewModal from './components/merged-image-preview-modal';
 
-import { PAGE_TITLE } from '@/lib/constant';
-
-function VerticalImageMerger() {
+const VerticalImageMerger = () => {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [mergedImage, setMergedImage] = useState<string>('');
 
@@ -63,6 +63,6 @@ function VerticalImageMerger() {
       )}
     </RootLayout>
   );
-}
+};
 
 export default VerticalImageMerger;

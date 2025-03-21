@@ -1,6 +1,6 @@
+import apiClient from '../_client';
 import { FetchResponse } from '../_modal';
 import { Health } from './heath.modal';
-import apiClient from '../_client';
 
 export async function healthCheck(type: 'rest' | 'webhooks' = 'rest'): Promise<Health | null> {
   const endpoint = type === 'rest' ? 'health' : `webhooks/health`;

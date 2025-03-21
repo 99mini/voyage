@@ -7,9 +7,9 @@ import DownloadButton from '@/components/common/download-button';
 import VideoUploader from '@/components/input/video-uploader';
 import RootLayout from '@/components/layout/root-layout';
 
-import VideoToGifController from './components/video-to-gif-controller';
-
 import { PAGE_TITLE } from '@/lib/constant';
+
+import VideoToGifController from './components/video-to-gif-controller';
 
 const GifGenerator = () => {
   const [videoFileList, setVideoFileList] = useState<File[]>([]);

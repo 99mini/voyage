@@ -1,14 +1,15 @@
-import { Check, Copy } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
+
+import { Check, Copy } from 'lucide-react';
 
 import { Button, Input, Label, Slider, useToast } from '@packages/vds';
 
 import Description from '@/components/common/description';
 import RootLayout from '@/components/layout/root-layout';
 
-import OptionCheckbox from './components/option-checkbox';
-
 import { PAGE_TITLE } from '@/lib/constant';
+
+import OptionCheckbox from './components/option-checkbox';
 
 const RandomPasswordGenerator = () => {
   const [password, setPassword] = useState<string>('');
