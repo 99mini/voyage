@@ -2,6 +2,42 @@ import * as d3 from 'd3';
 
 import { useCallback } from 'react';
 
+const generateColorPalette = ({ base, count }: { base: string; count: number }) => {
+  let hue: number = 0;
+  let saturation: number = 0;
+  let lightness: number = 0;
+  switch (base) {
+    case 'black':
+      hue = 0;
+      saturation = 0;
+      lightness = 0;
+      break;
+    case 'red':
+      hue = 0;
+      saturation = 100;
+      lightness = 50;
+      break;
+    case 'green':
+      hue = 120;
+      saturation = 100;
+      lightness = 50;
+      break;
+    case 'blue':
+      hue = 240;
+      saturation = 100;
+      lightness = 50;
+      break;
+    default:
+      hue = 0;
+      saturation = 100;
+      lightness = 50;
+  }
+  return Array.from(
+    { length: count },
+    (_, i) => `hsl(${(hue + i * 121) % 361}, ${(saturation + i * 31) % 101}%, ${(lightness + i * 31) % 101}%)`,
+  );
+};
+
 const animationEaseingMap = {
   linear: 'linear',
   easeIn: 'ease-in',
@@ -13,7 +49,7 @@ const animationEaseingMap = {
 type DataPoint = { x: number; y: number };
 
 type LineGraphProps = {
-  data: DataPoint[];
+  datum: DataPoint[][];
   className?: string;
   style?: React.CSSProperties;
   width?: number;
@@ -34,7 +70,7 @@ type LineGraphProps = {
 };
 
 const LineGraph = ({
-  data,
+  datum,
   className,
   style,
   width = 320,
@@ -51,6 +87,10 @@ const LineGraph = ({
   animationEasing = 'linear',
   animationFillMode = 'forwards',
 }: LineGraphProps) => {
+  if (datum.map((d) => d.length).some((length) => length !== datum[0].length)) {
+    throw new Error('All datasets must have the same number of points');
+  }
+
   const draw = useCallback(
     (ref: SVGElement | null) => {
       if (!ref) return;
@@ -63,26 +103,27 @@ const LineGraph = ({
       if (xScaleType === 'linear') {
         xScale = d3
           .scaleLinear()
-          .domain(d3.extent(data, (d) => d.x) as [number, number])
+          .domain(d3.extent(datum[0], (d) => d.x) as [number, number])
           .range([padding, width - padding]);
       } else {
         xScale = d3
           .scaleTime()
-          .domain(d3.extent(data, (d) => new Date(d.x)) as [Date, Date])
+          .domain(d3.extent(datum[0], (d) => new Date(d.x)) as [Date, Date])
           .range([padding, width - padding]);
       }
 
       // 타입 명시적으로 지정
       let yScale: d3.ScaleLinear<number, number> | d3.ScaleTime<number, number>;
+
       if (yScaleType === 'linear') {
         yScale = d3
           .scaleLinear()
-          .domain([0, d3.max(data, (d) => d.y) || 0])
+          .domain([0, d3.max(datum.flat(), (d) => d.y) || 0])
           .range([height - padding, padding]);
       } else {
         yScale = d3
           .scaleTime()
-          .domain([new Date(0), new Date(d3.max(data, (d) => d.y) || 0)])
+          .domain([new Date(0), new Date(d3.max(datum.flat(), (d) => d.y) || 0)])
           .range([height - padding, padding]);
       }
 
@@ -92,13 +133,21 @@ const LineGraph = ({
         .y((d) => yScale(yScaleType === 'time' ? new Date(d.y) : d.y))
         .curve(d3.curveBasis);
 
-      svg
-        .append('path')
-        .datum(data)
-        .attr('d', line)
-        .attr('stroke', color)
-        .attr('fill', 'none')
-        .attr('stroke-width', thickness);
+      const colors = generateColorPalette({ base: color, count: datum.length });
+
+      for (let i = 0; i < datum.length; i++) {
+        const data = datum[i];
+        const color = colors[i];
+
+        svg
+          .append('path')
+          .datum(data)
+          .attr('id', `line-${i}`)
+          .attr('d', line)
+          .attr('stroke', color)
+          .attr('fill', 'none')
+          .attr('stroke-width', thickness);
+      }
 
       if (xAxis) {
         svg
@@ -112,32 +161,34 @@ const LineGraph = ({
       }
 
       if (animation) {
-        const path = ref.querySelector('path');
-        const pathLength = path?.getTotalLength();
-        if (!pathLength) return;
+        const paths: NodeListOf<SVGPathElement> = ref.querySelectorAll('path[id^="line-"]');
+        for (let i = 0; i < paths.length; i++) {
+          const path = paths[i];
+          const pathLength = path?.getTotalLength();
+          if (!pathLength) continue;
 
-        svg
-          .select('path')
-          .attr('stroke-dashoffset', pathLength)
-          .attr('stroke-dasharray', pathLength)
-          .style(
-            'animation',
-            `draw-animation ${animationEaseingMap[animationEasing]} ${animationDuration}ms ${animationFillMode}`,
-          );
+          d3.select(path)
+            .attr('stroke-dashoffset', pathLength)
+            .attr('stroke-dasharray', pathLength)
+            .style(
+              'animation',
+              `draw-animation ${animationEaseingMap[animationEasing]} ${animationDuration}ms ${animationFillMode}`,
+            );
+        }
       }
     },
     [
       xScaleType,
-      data,
-      padding,
-      width,
       yScaleType,
-      height,
-      color,
-      thickness,
       xAxis,
       yAxis,
       animation,
+      datum,
+      padding,
+      width,
+      height,
+      color,
+      thickness,
       animationEasing,
       animationDuration,
       animationFillMode,
