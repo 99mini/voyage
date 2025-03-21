@@ -4,6 +4,8 @@ import Footer from '~/components/common/footer';
 import Hero from '~/components/hero/hero';
 import ProjectSection from '~/components/hero/project-section';
 
+const HorizontalLine = () => <hr className="my-4" />;
+
 export const meta: MetaFunction = () => {
   return [{ title: 'Zero Voyage' }, { name: 'description', content: 'Welcome to Zero Voyage!' }];
 };
@@ -22,7 +24,7 @@ export default function Index() {
             </ul>
           </div>
         </ProjectSection>
-        <hr className="my-4" />
+        <HorizontalLine />
         <ProjectSection title="Web Tools" href="https://tool.zerovoyage.com/">
           <div className="flex flex-col items-center gap-4">
             <h3>Web Tools</h3>
@@ -32,7 +34,7 @@ export default function Index() {
             </ul>
           </div>
         </ProjectSection>
-        <hr className="my-4" />
+        <HorizontalLine />
         <ProjectSection title="Technical Blog" href="https://tech.zerovoyage.com/">
           <div className="flex flex-col items-center gap-4">
             <h3>Technical Blog</h3>
@@ -43,7 +45,7 @@ export default function Index() {
             </ul>
           </div>
         </ProjectSection>
-        <hr className="my-4" />
+        <HorizontalLine />
         <ProjectSection title="VDS" href="https://design.zerovoyage.com/">
           <div className="flex flex-col items-center gap-4">
             <h3>Design System - Storybook</h3>
@@ -53,7 +55,7 @@ export default function Index() {
             </ul>
           </div>
         </ProjectSection>
-        <hr className="my-4" />
+        <HorizontalLine />
         <ProjectSection title="Awesome" href="https://awesome.zerovoyage.com/">
           <div className="flex flex-col items-center gap-4">
             <h3>Awesome</h3>
