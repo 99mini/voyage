@@ -17,7 +17,7 @@
     "format": "pnpm -r run format",
     "test": "pnpm -r run test",
     "deploy": "pnpm -r run deploy",
-    "dev:tech": "pnpm --filter tech run dev",
+    "dev:tech": "pnpm --filter tech run start",
     "dev:tool": "pnpm --filter tool run dev",
     "dev:admin": "pnpm --filter admin run dev",
     "dev:awesome": "pnpm --filter awesome run dev",
