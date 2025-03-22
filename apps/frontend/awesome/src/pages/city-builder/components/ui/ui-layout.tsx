@@ -7,7 +7,7 @@ type UILayoutProps = {
 };
 
 const UILayout = ({ children, position, className }: UILayoutProps) => {
-  return <div className={cn(`absolute ${position}-0`, className)}>{children}</div>;
+  return <div className={cn(`absolute ${position}-0 p-2`, className)}>{children}</div>;
 };
 
 export default UILayout;

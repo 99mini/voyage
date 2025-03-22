@@ -18,10 +18,10 @@ const GAME_SCREEN_HEIGHT = 'calc(100vh - 125px - 49px - 32px - 16px - 32px)';
 const GameScreen = ({ children }: GameScreenProps) => {
   return (
     <div
-      className={cn('game-scrollbar', 'w-full flex overflow-auto scrollbar-hide')}
+      className={cn('game-scrollbar', 'w-full overflow-auto scrollbar-hide', 'relative')}
       style={{ maxHeight: GAME_SCREEN_HEIGHT }}
     >
-      {children}
+      <div className="inline-block min-w-max min-h-max">{children}</div>
     </div>
   );
 };
