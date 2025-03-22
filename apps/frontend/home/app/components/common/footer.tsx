@@ -13,8 +13,8 @@ const siteMap: {
   href: string;
   text: string;
 }[] = [
-  { href: `${siteUrl}/`, text: '홈' },
-  { href: `${siteUrl}/sitemap.xml`, text: '사이트맵' },
+  { href: `${siteUrl}/`, text: 'home' },
+  { href: `${siteUrl}/sitemap.xml`, text: 'sitemap' },
 ];
 
 const projects: {
@@ -29,17 +29,22 @@ const projects: {
   },
   {
     href: 'https://tool.zerovoyage.com',
-    text: '웹 도구',
+    text: 'Web Tools',
     icon: <SquareArrowOutUpRight className="w-4 h-4" />,
   },
   {
     href: 'https://tech.zerovoyage.com',
-    text: '기술 블로그',
+    text: 'Technical Blog',
     icon: <SquareArrowOutUpRight className="w-4 h-4" />,
   },
   {
     href: 'https://design.zerovoyage.com',
     text: 'vds',
+    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
+  },
+  {
+    href: 'https://awesome.zerovoyage.com',
+    text: 'Awesome',
     icon: <SquareArrowOutUpRight className="w-4 h-4" />,
   },
 ];
@@ -50,7 +55,7 @@ const Footer = () => {
       <div className="container mx-auto">
         <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-start md:gap-0">
           <div className="flex flex-col space-y-2">
-            <h4 className="text-base font-bold">{'사이트 맵'}</h4>
+            <h4 className="text-base font-bold">{'Site map'}</h4>
             {siteMap.map((site) => (
               <a key={site.href} href={site.href} className="text-sm hover:underline hover:text-blue-400">
                 {site.text}

@@ -2,13 +2,13 @@ import { useMemo } from 'react';
 import { NavLink, useLocation } from 'react-router';
 
 import {
-  cn,
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
+  cn,
   navigationMenuTriggerStyle,
 } from '@packages/vds';
 

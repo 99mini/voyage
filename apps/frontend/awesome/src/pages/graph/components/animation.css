@@ -1,0 +1,5 @@
+@keyframes draw-animation {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}

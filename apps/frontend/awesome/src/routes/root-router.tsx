@@ -1,14 +1,17 @@
+import { lazy } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router';
 
 import { Toaster } from '@packages/vds';
 
-import ClockPage from '@/pages/clock';
 import HomePage from '@/pages/home';
 
 import Footer from '@/components/common/footer';
 import Header from '@/components/common/header';
 
 import { PAGE_PATH } from '@/lib/constants/route.constant';
+
+const ClockPage = lazy(() => import('@/pages/clock'));
+const GraphPage = lazy(() => import('@/pages/graph'));
 
 function RootRouter() {
   return (
@@ -20,10 +23,12 @@ function RootRouter() {
             {/* 공개 라우트 */}
             <Route path={PAGE_PATH.ROOT} element={<HomePage />} />
             <Route path={PAGE_PATH.CLOCK} element={<ClockPage />} />
+            <Route path={PAGE_PATH.GRAPH} element={<GraphPage />} />
 
             {/* 프리뷰 라우트 */}
             <Route path={`preview${PAGE_PATH.ROOT}`} element={<HomePage />} />
             <Route path={`preview${PAGE_PATH.CLOCK}`} element={<ClockPage />} />
+            <Route path={`preview${PAGE_PATH.GRAPH}`} element={<GraphPage />} />
           </Routes>
         </main>
         <Footer />

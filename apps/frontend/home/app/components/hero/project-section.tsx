@@ -14,7 +14,7 @@ export default function ProjectSection({ title, href, children }: SectionProps) 
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm text-gray-400 hover:underline hover:text-blue-400"
-        >{`${title} 바로가기`}</a>
+        >{`View ${title}`}</a>
       </div>
       <div className="container">{children}</div>
     </section>
