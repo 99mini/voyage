@@ -3,7 +3,8 @@ import RootLayout from '@/components/layout/root-layout';
 import Tile from './components/game-object/tile';
 import GameLayout from './components/game/game-layout';
 import GameScreen from './components/game/game-screen';
-import UILayout from './components/ui/ui-layout';
+import BottomUI from './components/ui/bottom-ui';
+import TopUI from './components/ui/top-ui';
 
 // 가로 50개, 세로 50개의 타일 생성
 const GRID_WIDTH = 50;
@@ -37,12 +38,8 @@ const CityBuilderPage = () => {
             )}
           </div>
         </GameScreen>
-        <UILayout position="top" className="w-full h-16 bg-white">
-          top
-        </UILayout>
-        <UILayout position="bottom" className="w-full h-16 bg-white">
-          bottom
-        </UILayout>
+        <TopUI />
+        <BottomUI />
       </GameLayout>
     </RootLayout>
   );
