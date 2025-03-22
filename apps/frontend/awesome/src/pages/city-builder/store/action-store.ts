@@ -1,10 +1,14 @@
 import { create } from 'zustand';
 
+// 액션 타입 정의
+export type ActionType = 'create' | 'delete' | 'buildRoad' | null;
+
 type ActionStore = {
-  selectedAction: 'create' | 'delete' | null;
+  selectedAction: ActionType;
   createLoad: () => void;
   deleteLoad: () => void;
-  onSelectAction: (action: 'create' | 'delete' | null) => void;
+  buildRoad: () => void;
+  onSelectAction: (action: ActionType) => void;
 };
 
 const useActionStore = create<ActionStore>((set) => {
@@ -15,6 +19,9 @@ const useActionStore = create<ActionStore>((set) => {
     },
     deleteLoad: () => {
       set({ selectedAction: 'delete' });
+    },
+    buildRoad: () => {
+      set({ selectedAction: 'buildRoad' });
     },
     onSelectAction: (action) => {
       set({ selectedAction: action });

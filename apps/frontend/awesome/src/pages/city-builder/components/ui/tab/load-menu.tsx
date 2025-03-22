@@ -1,13 +1,15 @@
 import { cn } from '@packages/vds';
+import { ActionType } from '@/pages/city-builder/store/action-store';
 
 type LoadMenuProps = {
   onCreate: () => void;
   onDelete: () => void;
-  selected: 'create' | 'delete' | null;
-  onSelected: (selected: 'create' | 'delete' | null) => void;
+  buildRoad: () => void;
+  selected: ActionType;
+  onSelected: (selected: ActionType) => void;
 };
 
-const LoadMenu = ({ onCreate, onDelete, selected, onSelected }: LoadMenuProps) => {
+const LoadMenu = ({ onCreate, onDelete, buildRoad, selected, onSelected }: LoadMenuProps) => {
   const handleCreate = () => {
     onSelected('create');
     onCreate();
@@ -16,6 +18,11 @@ const LoadMenu = ({ onCreate, onDelete, selected, onSelected }: LoadMenuProps) =
   const handleDelete = () => {
     onSelected('delete');
     onDelete();
+  };
+
+  const handleBuildRoad = () => {
+    onSelected('buildRoad');
+    buildRoad();
   };
 
   return (
@@ -37,6 +44,15 @@ const LoadMenu = ({ onCreate, onDelete, selected, onSelected }: LoadMenuProps) =
         onClick={handleDelete}
       >
         Delete
+      </button>
+      <button
+        className={cn(
+          'px-2 py-1 border rounded transition-colors hover:bg-gray-200 active:bg-gray-300',
+          selected === 'buildRoad' && 'bg-gray-200 border-green-300',
+        )}
+        onClick={handleBuildRoad}
+      >
+        길 만들기
       </button>
     </div>
   );

@@ -13,7 +13,7 @@ import UILayout from './ui-layout';
 const BottomUI = () => {
   const [selected, setSelected] = useState<TabKey>('city');
 
-  const { selectedAction, createLoad, deleteLoad, onSelectAction } = useActionStore.getState();
+  const { selectedAction, createLoad, deleteLoad, buildRoad, onSelectAction } = useActionStore.getState();
 
   const renderContent = (selected: TabKey) => {
     switch (selected) {
@@ -23,7 +23,13 @@ const BottomUI = () => {
         return <EconomyMenu />;
       case 'load':
         return (
-          <LoadMenu onCreate={createLoad} onDelete={deleteLoad} selected={selectedAction} onSelected={onSelectAction} />
+          <LoadMenu 
+            onCreate={createLoad} 
+            onDelete={deleteLoad} 
+            buildRoad={buildRoad}
+            selected={selectedAction} 
+            onSelected={onSelectAction} 
+          />
         );
       case 'build':
         return <BuildMenu />;
