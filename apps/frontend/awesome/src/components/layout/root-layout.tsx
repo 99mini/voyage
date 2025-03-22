@@ -7,7 +7,7 @@ type RootLayoutProps = {
 
 const RootLayout = ({ title, children }: RootLayoutProps) => {
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto flex flex-col flex-grow">
       {title && <PageTitle>{title}</PageTitle>}
       {children}
     </div>

@@ -12,23 +12,26 @@ import { PAGE_PATH } from '@/lib/constants/route.constant';
 
 const ClockPage = lazy(() => import('@/pages/clock'));
 const GraphPage = lazy(() => import('@/pages/graph'));
+const CityBuilderPage = lazy(() => import('@/pages/city-builder'));
 
 function RootRouter() {
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
         <Header />
-        <main className="container mx-auto p-4 flex-grow">
+        <main className="container mx-auto p-4 flex flex-col flex-grow">
           <Routes>
             {/* 공개 라우트 */}
             <Route path={PAGE_PATH.ROOT} element={<HomePage />} />
             <Route path={PAGE_PATH.CLOCK} element={<ClockPage />} />
             <Route path={PAGE_PATH.GRAPH} element={<GraphPage />} />
+            <Route path={PAGE_PATH.CITY_BUILDER} element={<CityBuilderPage />} />
 
             {/* 프리뷰 라우트 */}
             <Route path={`preview${PAGE_PATH.ROOT}`} element={<HomePage />} />
             <Route path={`preview${PAGE_PATH.CLOCK}`} element={<ClockPage />} />
             <Route path={`preview${PAGE_PATH.GRAPH}`} element={<GraphPage />} />
+            <Route path={`preview${PAGE_PATH.CITY_BUILDER}`} element={<CityBuilderPage />} />
           </Routes>
         </main>
         <Footer />
