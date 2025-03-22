@@ -1,6 +1,6 @@
 import RootLayout from '@/components/layout/root-layout';
 
-import Tile from './components/game-object/tile';
+import Tile from './components/game-object/tile/tile';
 import GameLayout from './components/game/game-layout';
 import GameScreen from './components/game/game-screen';
 import BottomUI from './components/ui/bottom-ui';

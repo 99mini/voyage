@@ -1,8 +1,6 @@
 import { cn } from '@packages/vds';
 
-type TileMeta = {
-  position: [number, number];
-};
+import { TileMeta } from '@/pages/city-builder/types/tile';
 
 type TileProps = {
   children: React.ReactNode;
