@@ -305,9 +305,17 @@ export class RoadNetwork {
    * 블록 ID로 연결 가져오기
    */
   getConnectionByBlocks(fromBlockId: number, toBlockId: number): Connection | undefined {
-    // 두 블록 사이의 연결 찾기
+    // 두 블록 사이의 연결 찾기 (정방향)
     for (const connection of this.connections.values()) {
       if (connection.fromBlockId === fromBlockId && connection.toBlockId === toBlockId) {
+        return connection;
+      }
+    }
+
+    // 정방향 연결이 없으면 역방향 연결 확인
+    for (const connection of this.connections.values()) {
+      if (connection.fromBlockId === toBlockId && connection.toBlockId === fromBlockId) {
+        console.log(`역방향 연결 사용: ${toBlockId} -> ${fromBlockId}`);
         return connection;
       }
     }
@@ -360,6 +368,7 @@ export class RoadNetwork {
           path.unshift(node);
         }
 
+        console.log(`경로 찾음: ${path.join(' -> ')}`);
         return path;
       }
 
@@ -367,7 +376,7 @@ export class RoadNetwork {
       const neighbors = this.adjacencyList.get(current) || [];
       for (const neighbor of neighbors) {
         if (!visited.has(neighbor)) {
-          // 연결이 실제로 존재하는지 확인
+          // 연결이 실제로 존재하는지 확인 (양방향 모두 확인)
           const connection = this.getConnectionByBlocks(current, neighbor);
           if (connection) {
             visited.add(neighbor);
@@ -378,6 +387,7 @@ export class RoadNetwork {
       }
     }
 
+    console.error(`경로를 찾지 못함: ${startId} -> ${endId}`);
     // 경로를 찾지 못했으면 빈 배열 반환
     return [];
   }

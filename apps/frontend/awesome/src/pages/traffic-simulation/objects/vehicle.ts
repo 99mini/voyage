@@ -138,6 +138,22 @@ class Vehicle {
 
     // 각도 계산 (차량이 이동 방향을 바라보도록)
     this.angle = Math.atan2(dirY, dirX);
+
+    // 로그
+    console.log('다음 목적지 설정:', {
+      현재블록: this.currentBlockId,
+      다음블록: nextBlock.id,
+      현재위치: [this.x, this.y],
+      목적지: this.nextPoint,
+      각도: Math.round((this.angle * 180) / Math.PI),
+      차선: this.laneNumber,
+      차선중앙위치: laneCenter,
+      차선오프셋: laneOffset,
+      연결ID: connection.id,
+      도로너비: roadWidth,
+      차선너비: laneWidth,
+      이동방향: isHorizontalMovement ? (dirX > 0 ? '왼쪽->오른쪽' : '오른쪽->왼쪽') : (dirY > 0 ? '위->아래' : '아래->위'),
+    });
   }
 
   /**
