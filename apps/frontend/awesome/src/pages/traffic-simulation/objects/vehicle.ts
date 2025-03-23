@@ -1,5 +1,5 @@
 import { ROAD_WIDTH } from '../constants/road';
-import { RoadBlock, Connection, RoadNetwork } from './road';
+import { Connection, RoadBlock, RoadNetwork } from './road';
 
 class Vehicle {
   // 위치 정보
@@ -64,12 +64,7 @@ class Vehicle {
   /**
    * 다음 목적지 설정하기
    */
-  setNextPoint(
-    point: [number, number],
-    currentBlock: RoadBlock,
-    nextBlock: RoadBlock,
-    connection: Connection
-  ) {
+  setNextPoint(point: [number, number], currentBlock: RoadBlock, nextBlock: RoadBlock, connection: Connection) {
     // 기본 다음 지점 설정
     const baseNextPoint: [number, number] = [point[0], point[1]];
 
@@ -135,13 +130,18 @@ class Vehicle {
   /**
    * 차량 업데이트
    */
-  update(vehicles: Vehicle[], blocks: Map<number, RoadBlock>, connections: Map<number, Connection>, roadNetwork?: RoadNetwork) {
+  update(
+    vehicles: Vehicle[],
+    blocks: Map<number, RoadBlock>,
+    connections: Map<number, Connection>,
+    roadNetwork?: RoadNetwork,
+  ) {
     // 경로가 없고 목적지가 설정되어 있으면 경로 생성
     if (this.path.length === 0 && this.currentBlockId !== this.destinationBlockId) {
       if (roadNetwork) {
         // roadNetwork를 사용하여 경로 생성
         const path = roadNetwork.findPath(this.currentBlockId, this.destinationBlockId);
-        
+
         if (path.length > 0) {
           console.log(`경로 생성 성공: ${this.currentBlockId} -> ${this.destinationBlockId}, 경로:`, path);
           // 경로의 첫 번째 요소는 현재 위치이므로 제거
@@ -170,7 +170,7 @@ class Vehicle {
       if (currentBlock && nextBlock) {
         // 현재 블록과 다음 블록 사이의 연결 찾기
         let connection: Connection | undefined;
-        
+
         if (roadNetwork) {
           // roadNetwork가 제공된 경우 해당 메서드 사용
           connection = roadNetwork.getConnectionByBlocks(currentBlock.id, nextBlockId);
@@ -183,11 +183,10 @@ class Vehicle {
             }
           }
         }
-        
+
         if (connection) {
           this.setNextPoint(nextBlock.edge, currentBlock, nextBlock, connection);
         } else {
-          console.error(`연결 정보를 찾을 수 없음: 현재=${this.currentBlockId}, 다음=${nextBlockId}`);
           // 연결을 찾을 수 없으면 다음 경로로 이동
           if (this.path.length > 0) {
             this.path.shift();

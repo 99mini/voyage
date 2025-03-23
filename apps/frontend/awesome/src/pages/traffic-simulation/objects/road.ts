@@ -61,21 +61,23 @@ export class Connection {
    * 생성자
    */
   constructor(
-    idOrParams: number | {
-      id: number;
-      fromBlockId: number;
-      toBlockId: number;
-      line: number;
-      inLanes: number;
-      outLanes: number;
-      maxSpeed: number;
-    },
+    idOrParams:
+      | number
+      | {
+          id: number;
+          fromBlockId: number;
+          toBlockId: number;
+          line: number;
+          inLanes: number;
+          outLanes: number;
+          maxSpeed: number;
+        },
     fromBlockId?: number,
     toBlockId?: number,
     line?: number,
     inLanes?: number,
     outLanes?: number,
-    maxSpeed?: number
+    maxSpeed?: number,
   ) {
     // 객체 형태의 매개변수인 경우
     if (typeof idOrParams === 'object') {
@@ -88,7 +90,7 @@ export class Connection {
       // 차선 수 검증
       if (idOrParams.inLanes + idOrParams.outLanes !== idOrParams.line) {
         console.error(
-          `유효하지 않은 차선 구성: 진입(${idOrParams.inLanes}) + 진출(${idOrParams.outLanes}) != 총(${idOrParams.line})`
+          `유효하지 않은 차선 구성: 진입(${idOrParams.inLanes}) + 진출(${idOrParams.outLanes}) != 총(${idOrParams.line})`,
         );
         // 기본값으로 설정
         this.inLanes = Math.floor(idOrParams.line / 2);
@@ -97,7 +99,7 @@ export class Connection {
         this.inLanes = idOrParams.inLanes;
         this.outLanes = idOrParams.outLanes;
       }
-    } 
+    }
     // 개별 매개변수인 경우
     else {
       this.id = idOrParams;
@@ -310,8 +312,6 @@ export class RoadNetwork {
       }
     }
 
-    // 연결을 찾지 못한 경우 로그 출력
-    console.warn(`연결을 찾을 수 없음: ${fromBlockId} -> ${toBlockId}`);
     return undefined;
   }
 
@@ -374,15 +374,12 @@ export class RoadNetwork {
             visited.add(neighbor);
             prev.set(neighbor, current);
             queue.push(neighbor);
-          } else {
-            console.warn(`연결 정보가 없어 건너뜀: ${current} -> ${neighbor}`);
           }
         }
       }
     }
 
     // 경로를 찾지 못했으면 빈 배열 반환
-    console.error(`경로를 찾을 수 없음: ${startId} -> ${endId}`);
     return [];
   }
 
