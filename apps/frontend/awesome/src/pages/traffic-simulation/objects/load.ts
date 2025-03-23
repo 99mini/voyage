@@ -83,6 +83,70 @@ class Load {
   }
 
   /**
+   * 시작 블록에서 목적지 블록까지의 경로 찾기 (BFS 사용)
+   * @returns 경로 (블록 ID 배열)
+   */
+  findPath(startBlockId: number, destinationBlockId: number): number[] {
+    // 시작 블록과 목적지 블록이 같으면 빈 경로 반환
+    if (startBlockId === destinationBlockId) {
+      return [destinationBlockId];
+    }
+
+    // BFS를 위한 큐와 방문 여부 맵 초기화
+    const queue: number[] = [startBlockId];
+    const visited = new Set<number>([startBlockId]);
+    // 각 노드의 이전 노드를 저장하는 맵
+    const previous = new Map<number, number>();
+
+    // BFS 실행
+    while (queue.length > 0) {
+      const currentId = queue.shift()!;
+
+      // 목적지에 도착했으면 경로 재구성
+      if (currentId === destinationBlockId) {
+        return this.reconstructPath(previous, startBlockId, destinationBlockId);
+      }
+
+      // 인접 노드 탐색
+      const neighbors = this.adjacencyList.get(currentId) || [];
+      for (const neighborId of neighbors) {
+        if (!visited.has(neighborId)) {
+          visited.add(neighborId);
+          queue.push(neighborId);
+          previous.set(neighborId, currentId);
+        }
+      }
+    }
+
+    // 경로를 찾지 못했으면 빈 배열 반환
+    return [];
+  }
+
+  /**
+   * 이전 노드 맵을 사용하여 경로 재구성
+   */
+  private reconstructPath(
+    previous: Map<number, number>,
+    startBlockId: number,
+    destinationBlockId: number
+  ): number[] {
+    const path: number[] = [destinationBlockId];
+    let currentId = destinationBlockId;
+
+    while (currentId !== startBlockId) {
+      const previousId = previous.get(currentId);
+      if (previousId === undefined) {
+        // 경로가 없는 경우
+        return [];
+      }
+      path.unshift(previousId);
+      currentId = previousId;
+    }
+
+    return path;
+  }
+
+  /**
    * BFS를 사용하여 특정 블록에서 도달 가능한 모든 이웃 노드 찾기
    */
   findNeighborsByBFS(startBlockId: number): [number, number][] {
@@ -113,6 +177,13 @@ class Load {
     }
 
     return neighbors;
+  }
+
+  /**
+   * ID로 블록 찾기
+   */
+  getBlockById(blockId: number): LoadBlock | undefined {
+    return this.blocks.find((block) => block.id === blockId);
   }
 
   draw(ctx: CanvasRenderingContext2D) {
