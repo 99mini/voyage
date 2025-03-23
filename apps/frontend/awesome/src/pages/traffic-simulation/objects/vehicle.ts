@@ -94,36 +94,34 @@ class Vehicle {
     // 도로 너비 계산
     const roadWidth = connection.line * ROAD_WIDTH;
 
-    // 우측통행 규칙에 따른 차선 선택
-    // 진행 방향에 따라 적절한 차선 선택
-    const isHorizontalMovement = Math.abs(dirX) > Math.abs(dirY);
+    // 각도 계산 (0도: 위쪽, 90도: 오른쪽, 180도: 아래쪽, 270도: 왼쪽)
+    // Math.atan2는 -PI ~ PI 범위를 반환하므로 0 ~ 2PI 범위로 변환
+    let angle = Math.atan2(-dirY, dirX); // y축 방향을 반대로 하여 0도가 위쪽을 가리키도록 함
 
-    // 우측통행에 맞는 차선 번호 계산
-    let rightLaneNumber;
-
-    if (isHorizontalMovement) {
-      if (dirX > 0) {
-        // 왼쪽->오른쪽 이동: 아래쪽 차선이 우측
-        rightLaneNumber = connection.line - 1;
-      } else {
-        // 오른쪽->왼쪽 이동: 위쪽 차선이 우측
-        rightLaneNumber = 0;
-      }
-    } else {
-      if (dirY > 0) {
-        // 위->아래 이동: 오른쪽 차선이 우측
-        rightLaneNumber = connection.line - 1;
-      } else {
-        // 아래->위 이동: 왼쪽 차선이 우측
-        rightLaneNumber = 0;
-      }
+    // 음수 각도를 양수로 변환 (0-360도 범위로)
+    if (angle < 0) {
+      angle += 2 * Math.PI;
     }
+
+    // 각도 저장 (라디안)
+    this.angle = angle;
+
+    // 각도를 도(degree)로 변환
+    const angleDegrees = (angle * 180) / Math.PI;
 
     // 차선 위치 계산 (도로 너비를 차선 수로 나눔)
     const laneWidth = roadWidth / connection.line;
 
-    // 우측통행을 위해 차선 번호 업데이트
-    this.laneNumber = rightLaneNumber;
+    // 각도에 따라 차선 선택
+    // 0° <= 각도 < 180°: 진출 차선 사용 (우측통행)
+    // 180° <= 각도 < 360°: 진입 차선 사용 (우측통행)
+    if (angleDegrees >= 0 && angleDegrees < 180) {
+      // 진출 차선 사용 (우측통행)
+      this.laneNumber = connection.outLanes - 1; // 가장 오른쪽 진출 차선
+    } else {
+      // 진입 차선 사용 (우측통행)
+      this.laneNumber = connection.inLanes - 1; // 가장 오른쪽 진입 차선
+    }
 
     // 차선의 중앙에 차량이 위치하도록 계산
     const laneCenter = laneWidth * this.laneNumber + laneWidth / 2;
@@ -135,9 +133,6 @@ class Vehicle {
 
     // 다음 지점 설정
     this.nextPoint = baseNextPoint;
-
-    // 각도 계산 (차량이 이동 방향을 바라보도록)
-    this.angle = Math.atan2(dirY, dirX);
   }
 
   /**
@@ -376,22 +371,23 @@ class Vehicle {
   draw(ctx: CanvasRenderingContext2D) {
     ctx.save();
     ctx.translate(this.x, this.y);
+
+    // 차량 회전 (0도는 위쪽, 90도는 오른쪽)
     ctx.rotate(this.angle);
 
-    // 차량 그리기
+    // 차량 본체 그리기
     ctx.fillStyle = this.color;
     ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
 
-    // 전면 표시 (차량 앞부분을 표시)
-    ctx.fillStyle = 'red';
-    ctx.fillRect(this.width / 2 - 3, -this.height / 2, 3, this.height);
+    // 차량 앞부분 표시 (삼각형)
+    ctx.beginPath();
+    ctx.moveTo(this.width / 2, 0);
+    ctx.lineTo(this.width / 2 + 5, -this.height / 4);
+    ctx.lineTo(this.width / 2 + 5, this.height / 4);
+    ctx.closePath();
+    ctx.fill();
 
     ctx.restore();
-
-    // 디버깅용 방향 표시와 목적지 표시
-    ctx.fillStyle = 'red';
-    ctx.font = '10px Arial';
-    ctx.fillText(`${Math.round((this.angle * 180) / Math.PI)}° L${this.laneNumber}`, this.x, this.y);
   }
 
   destroy() {
