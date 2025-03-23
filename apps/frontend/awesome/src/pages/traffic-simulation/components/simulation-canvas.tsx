@@ -15,7 +15,6 @@ const block0 = new RoadBlock({
   line: 1,
   maxSpeed: 3,
   id: 0,
-  roadType: 'horizontal',
 });
 
 const block1 = new RoadBlock({
@@ -23,7 +22,6 @@ const block1 = new RoadBlock({
   line: 1,
   maxSpeed: 3,
   id: 1,
-  roadType: 'horizontal',
 });
 
 const block2 = new RoadBlock({
@@ -31,7 +29,6 @@ const block2 = new RoadBlock({
   line: 1,
   maxSpeed: 3,
   id: 2,
-  roadType: 'horizontal',
 });
 
 // 수평 도로 블록 (아래쪽)
@@ -40,7 +37,6 @@ const block3 = new RoadBlock({
   line: 2,
   maxSpeed: 3,
   id: 3,
-  roadType: 'horizontal',
 });
 
 const block4 = new RoadBlock({
@@ -48,7 +44,6 @@ const block4 = new RoadBlock({
   line: 2,
   maxSpeed: 3,
   id: 4,
-  roadType: 'horizontal',
 });
 
 const block5 = new RoadBlock({
@@ -56,7 +51,6 @@ const block5 = new RoadBlock({
   line: 2,
   maxSpeed: 3,
   id: 5,
-  roadType: 'horizontal',
 });
 
 // 수직 도로 블록
@@ -65,7 +59,6 @@ const block6 = new RoadBlock({
   line: 2,
   maxSpeed: 2,
   id: 6,
-  roadType: 'vertical',
 });
 
 const block7 = new RoadBlock({
@@ -73,7 +66,6 @@ const block7 = new RoadBlock({
   line: 2,
   maxSpeed: 2,
   id: 7,
-  roadType: 'vertical',
 });
 
 const load = new Road({
@@ -94,8 +86,8 @@ load.addConnection(1, 4);
 load.addConnection(4, 7);
 
 // 가능한 시작점과 목적지 정의
-const possibleStarts = [0, 3, 6]; // 왼쪽 위, 왼쪽 아래, 위쪽 중앙, 오른쪽 위
-const possibleDestinations = [2, 5, 7]; // 오른쪽 위, 오른쪽 아래, 아래쪽 중앙, 왼쪽 위
+const possibleStarts = [0, 3, 6]; // 왼쪽 위, 왼쪽 아래, 위쪽 중앙
+const possibleDestinations = [2, 5, 7]; // 오른쪽 위, 오른쪽 아래, 아래쪽 중앙
 
 // 랜덤 시작점과 목적지 선택 함수
 const getRandomStartAndDestination = () => {
@@ -155,6 +147,7 @@ const SimulationCanvas = () => {
       if (startBlock && destBlock) {
         // 경로 찾기
         const path = load.findPath(startBlockId, destinationBlockId);
+        console.log(`경로 탐색: ${startBlockId} -> ${destinationBlockId}, 결과:`, path);
 
         if (path.length > 0) {
           // 새 차량 생성
@@ -171,6 +164,8 @@ const SimulationCanvas = () => {
 
           // 차량 등록
           vehicles[vehicleId++] = newVehicle;
+        } else {
+          console.error(`경로를 찾을 수 없음: ${startBlockId} -> ${destinationBlockId}`);
         }
       }
 

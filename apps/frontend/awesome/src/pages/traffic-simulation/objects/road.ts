@@ -7,27 +7,22 @@ class RoadBlock {
   maxSpeed: number;
   /** 블록 ID */
   id: number;
-  /** 도로 타입: 'horizontal', 'vertical', 'diagonal-right', 'diagonal-left' */
-  roadType: 'horizontal' | 'vertical' | 'diagonal-right' | 'diagonal-left';
 
   constructor({
     edge,
     line,
     maxSpeed,
     id,
-    roadType = 'horizontal',
   }: {
     edge: [number, number];
     line: number;
     maxSpeed: number;
     id: number;
-    roadType?: 'horizontal' | 'vertical' | 'diagonal-right' | 'diagonal-left';
   }) {
     this.edge = edge;
     this.line = line;
     this.maxSpeed = maxSpeed;
     this.id = id;
-    this.roadType = roadType;
   }
 
   /**
@@ -49,8 +44,8 @@ class RoadBlock {
     ctx.font = '12px Arial';
     ctx.fillText(
       String(this.id),
-      this.roadType === 'horizontal' ? this.edge[0] : this.edge[0] + 10,
-      this.roadType === 'horizontal' ? this.edge[1] + 10 : this.edge[1] - 10,
+      this.edge[0] + 10,
+      this.edge[1] - 10,
     );
   }
 }

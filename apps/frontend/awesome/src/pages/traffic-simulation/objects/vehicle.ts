@@ -19,8 +19,8 @@ class Vehicle {
   destinationBlockId: number;
   /** 이동 경로 (블록 ID 배열) */
   path: number[] = [];
-  /** 현재 이동 방향 (수평, 수직, 대각선) */
-  direction: 'horizontal' | 'vertical' | 'diagonal-right' | 'diagonal-left' = 'horizontal';
+  /** 현재 이동 방향 각도 (라디안) */
+  angle: number = 0;
   /** 다음 블록의 좌표 */
   nextPoint: [number, number] | null = null;
 
@@ -50,7 +50,7 @@ class Vehicle {
    */
   setPath(path: number[]) {
     this.path = path;
-    if (path.length > 1) {
+    if (path.length > 0) {
       // 다음 블록 ID 설정
       this.nextPoint = null;
     }
@@ -59,11 +59,15 @@ class Vehicle {
   /**
    * 다음 목적지 설정하기
    */
-  setNextPoint(point: [number, number], roadType: 'horizontal' | 'vertical' | 'diagonal-right' | 'diagonal-left') {
+  setNextPoint(point: [number, number]) {
     this.nextPoint = point;
-
-    // 이동 방향 설정 (도로 타입에 따라)
-    this.direction = roadType;
+    
+    // 이동 방향 각도 계산
+    if (this.nextPoint) {
+      const dx = this.nextPoint[0] - this.x;
+      const dy = this.nextPoint[1] - this.y;
+      this.angle = Math.atan2(dy, dx);
+    }
   }
 
   /**
@@ -78,7 +82,7 @@ class Vehicle {
       const nextBlockId = this.path[0];
       const nextBlock = blocks.find((block) => block.id === nextBlockId);
       if (nextBlock) {
-        this.setNextPoint(nextBlock.edge, nextBlock.roadType);
+        this.setNextPoint(nextBlock.edge);
       }
     }
 
@@ -87,21 +91,8 @@ class Vehicle {
       // 속도 조절 (앞 차량과의 거리에 따라)
       this.adjustSpeed(vehicles);
 
-      // 이동 방향에 따라 이동
-      switch (this.direction) {
-        case 'horizontal':
-          this.moveHorizontal();
-          break;
-        case 'vertical':
-          this.moveVertical();
-          break;
-        case 'diagonal-right':
-          this.moveDiagonalRight();
-          break;
-        case 'diagonal-left':
-          this.moveDiagonalLeft();
-          break;
-      }
+      // 목적지 방향으로 이동
+      this.moveTowardsTarget();
 
       // 목적지에 도착했는지 확인
       this.checkArrival();
@@ -113,47 +104,25 @@ class Vehicle {
    */
   adjustSpeed(vehicles: Vehicle[]) {
     let frontVehicles: Vehicle[] = [];
-    let isMovingRight: boolean;
-    let isMovingDown: boolean;
 
-    // 이동 방향에 따라 앞 차량 필터링
-    switch (this.direction) {
-      case 'horizontal':
-        // 수평 이동 시 같은 y축에 있고 진행 방향에 있는 차량 찾기
-        isMovingRight = this.nextPoint![0] > this.x;
-        frontVehicles = vehicles.filter(
-          (v) => v !== this && Math.abs(v.y - this.y) < 10 && (isMovingRight ? v.x > this.x : v.x < this.x),
-        );
-        break;
-      case 'vertical':
-        // 수직 이동 시 같은 x축에 있고 진행 방향에 있는 차량 찾기
-        isMovingDown = this.nextPoint![1] > this.y;
-        frontVehicles = vehicles.filter(
-          (v) => v !== this && Math.abs(v.x - this.x) < 10 && (isMovingDown ? v.y > this.y : v.y < this.y),
-        );
-        break;
-      case 'diagonal-right':
-      case 'diagonal-left':
-        // 대각선 이동 시 진행 방향에 있는 차량 찾기
-        frontVehicles = vehicles.filter((v) => {
-          if (v === this) return false;
+    // 진행 방향 앞에 있는 차량 찾기
+    frontVehicles = vehicles.filter((v) => {
+      if (v === this) return false;
 
-          // 차량 간의 벡터 계산
-          const dx = v.x - this.x;
-          const dy = v.y - this.y;
-
-          // 목적지까지의 벡터 계산
-          const targetDx = this.nextPoint![0] - this.x;
-          const targetDy = this.nextPoint![1] - this.y;
-
-          // 두 벡터의 내적이 양수이면 진행 방향에 있는 것
-          const dotProduct = dx * targetDx + dy * targetDy;
-
-          // 거리가 가까우면서 진행 방향에 있는 차량 필터링
-          return dotProduct > 0 && Math.sqrt(dx * dx + dy * dy) < 100;
-        });
-        break;
-    }
+      // 차량 간의 벡터 계산
+      const dx = v.x - this.x;
+      const dy = v.y - this.y;
+      
+      // 목적지까지의 벡터 계산
+      const targetDx = this.nextPoint![0] - this.x;
+      const targetDy = this.nextPoint![1] - this.y;
+      
+      // 두 벡터의 내적이 양수이면 진행 방향에 있는 것
+      const dotProduct = dx * targetDx + dy * targetDy;
+      
+      // 거리가 가까우면서 진행 방향에 있는 차량 필터링
+      return dotProduct > 0 && Math.sqrt(dx * dx + dy * dy) < 100;
+    });
 
     if (frontVehicles.length) {
       // 가장 가까운 앞 차량 찾기
@@ -190,91 +159,31 @@ class Vehicle {
    * @param v2 다른 차량
    */
   getDistance(v1: Vehicle, v2: Vehicle): number {
-    if (this.direction === 'horizontal') {
-      return Math.abs(v1.x - v2.x);
-    }
-    if (this.direction === 'vertical') {
-      return Math.abs(v1.y - v2.y);
-    }
-
     return Math.sqrt(Math.pow(v1.x - v2.x, 2) + Math.pow(v1.y - v2.y, 2));
   }
 
   /**
-   * 수평 방향으로 이동
+   * 목적지를 향해 이동
    */
-  moveHorizontal() {
-    const targetX = this.nextPoint![0];
-    // 목표 지점보다 오른쪽에 있으면 왼쪽으로 이동
-    if (this.x > targetX) {
-      this.x = Math.max(this.x - this.speed, targetX);
-    }
-    // 목표 지점보다 왼쪽에 있으면 오른쪽으로 이동
-    else if (this.x < targetX) {
-      this.x = Math.min(this.x + this.speed, targetX);
-    }
-  }
-
-  /**
-   * 수직 방향으로 이동
-   */
-  moveVertical() {
-    const targetY = this.nextPoint![1];
-    // 목표 지점보다 아래에 있으면 위로 이동
-    if (this.y > targetY) {
-      this.y = Math.max(this.y - this.speed, targetY);
-    }
-    // 목표 지점보다 위에 있으면 아래로 이동
-    else if (this.y < targetY) {
-      this.y = Math.min(this.y + this.speed, targetY);
-    }
-  }
-
-  /**
-   * 대각선 방향으로 이동 (왼쪽 위에서 오른쪽 아래로)
-   */
-  moveDiagonalRight() {
-    const targetX = this.nextPoint![0];
-    const targetY = this.nextPoint![1];
-
-    // 이동 벡터 계산
-    const dx = targetX - this.x;
-    const dy = targetY - this.y;
+  moveTowardsTarget() {
+    if (!this.nextPoint) return;
+    
+    const dx = this.nextPoint[0] - this.x;
+    const dy = this.nextPoint[1] - this.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
-
+    
     if (distance > 0) {
       // 정규화된 방향 벡터
       const dirX = dx / distance;
       const dirY = dy / distance;
-
+      
       // 속도에 따른 이동
       const moveDistance = Math.min(this.speed, distance);
       this.x += dirX * moveDistance;
       this.y += dirY * moveDistance;
-    }
-  }
-
-  /**
-   * 대각선 방향으로 이동 (오른쪽 위에서 왼쪽 아래로)
-   */
-  moveDiagonalLeft() {
-    const targetX = this.nextPoint![0];
-    const targetY = this.nextPoint![1];
-
-    // 이동 벡터 계산
-    const dx = targetX - this.x;
-    const dy = targetY - this.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance > 0) {
-      // 정규화된 방향 벡터
-      const dirX = dx / distance;
-      const dirY = dy / distance;
-
-      // 속도에 따른 이동
-      const moveDistance = Math.min(this.speed, distance);
-      this.x += dirX * moveDistance;
-      this.y += dirY * moveDistance;
+      
+      // 이동 방향 각도 업데이트
+      this.angle = Math.atan2(dy, dx);
     }
   }
 
@@ -309,45 +218,30 @@ class Vehicle {
    * 차량 그리기
    */
   draw(ctx: CanvasRenderingContext2D) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    
+    // 차량 그리기
     ctx.fillStyle = this.color;
-    let angle: number;
+    ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+    
+    // 전면 표시 (차량 앞부분을 표시)
+    ctx.fillStyle = 'red';
+    ctx.fillRect(this.width / 2 - 3, -this.height / 2, 3, this.height);
+    
+    ctx.restore();
 
-    // 이동 방향에 따라 차량 모양 변경
-    switch (this.direction) {
-      case 'horizontal':
-        // 수평 이동 시 가로로 긴 직사각형
-        ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
-        break;
-      case 'vertical':
-        // 수직 이동 시 세로로 긴 직사각형
-        ctx.fillRect(this.x - this.height / 2, this.y - this.width / 2, this.height, this.width);
-        break;
-      case 'diagonal-right':
-      case 'diagonal-left':
-        // 대각선 이동 시 회전된 직사각형
-        ctx.save();
-        ctx.translate(this.x, this.y);
-
-        // 대각선 각도 계산 (45도 또는 -45도)
-        angle = this.direction === 'diagonal-right' ? Math.PI / 4 : -Math.PI / 4;
-        ctx.rotate(angle);
-
-        // 회전된 좌표계에서 직사각형 그리기
-        ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
-        ctx.restore();
-        break;
-    }
-
-    // 디버깅용 방향 표시과 목적지 표시
+    // 디버깅용 방향 표시와 목적지 표시
     ctx.fillStyle = 'red';
     ctx.font = '10px Arial';
-    ctx.fillText(`${this.direction} ${this.destinationBlockId}`, this.x, this.y);
+    ctx.fillText(`${Math.round(this.angle * 180 / Math.PI)}° ${this.destinationBlockId}`, this.x, this.y);
   }
 
   destroy() {
     this.path = [];
     this.nextPoint = null;
-    this.direction = 'horizontal';
+    this.angle = 0;
     this.speed = 0;
     this.color = 'transparent';
   }
