@@ -82,15 +82,18 @@ class Vehicle {
     const perpY = dirX;
 
     // 도로 너비 계산
-    const roadWidth = nextBlock.line * road.ROAD_WIDTH; // 각 차선은 10px 너비
+    const roadWidth = nextBlock.line * road.ROAD_WIDTH;
 
     // 차선 위치 계산 (도로 중앙에서 차선 위치로 오프셋)
     // 차선 번호가 현재 블록의 차선 수보다 크면 조정
     const effectiveLaneNumber = Math.min(this.laneNumber, nextBlock.line - 1);
 
     // 차선 위치 계산 (도로 너비를 차선 수로 나눔)
-    // 첫 번째 차선은 왼쪽에서 시작, 마지막 차선은 오른쪽에 위치
-    const laneOffset = (roadWidth / nextBlock.line) * (effectiveLaneNumber + 0.5) - roadWidth / 2;
+    // 차선의 중앙에 차량이 위치하도록 계산
+    // 차선 너비의 절반을 더해 차선의 중앙에 위치하도록 함
+    const laneWidth = roadWidth / nextBlock.line;
+    const laneCenter = laneWidth * effectiveLaneNumber + laneWidth / 2;
+    const laneOffset = laneCenter - roadWidth / 2;
 
     // 차선 위치에 맞게 다음 지점 조정
     baseNextPoint[0] += perpX * laneOffset;
@@ -108,6 +111,8 @@ class Vehicle {
       목적지: this.nextPoint,
       각도: Math.round((this.angle * 180) / Math.PI),
       차선: this.laneNumber,
+      차선중앙위치: laneCenter,
+      차선오프셋: laneOffset,
     });
   }
 

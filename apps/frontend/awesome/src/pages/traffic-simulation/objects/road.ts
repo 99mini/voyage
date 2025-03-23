@@ -18,20 +18,14 @@ class RoadBlock {
   }
 
   /**
-   * 도로 그리기
+   * 도로 블록 그리기
    */
   draw(ctx: CanvasRenderingContext2D, neighborBlocks: RoadBlock[]) {
-    // 각 이웃 블록에 대한 연결 그리기
+    // 이웃 블록과의 연결선 그리기
     for (const neighborBlock of neighborBlocks) {
-      // 도로의 시작점과 끝점
-      const startX = this.edge[0];
-      const startY = this.edge[1];
-      const endX = neighborBlock.edge[0];
-      const endY = neighborBlock.edge[1];
-
-      // 도로의 방향 벡터
-      const dx = endX - startX;
-      const dy = endY - startY;
+      // 도로의 방향 벡터 계산
+      const dx = neighborBlock.edge[0] - this.edge[0];
+      const dy = neighborBlock.edge[1] - this.edge[1];
       const distance = Math.sqrt(dx * dx + dy * dy);
 
       // 정규화된 방향 벡터
@@ -48,55 +42,70 @@ class RoadBlock {
       // 도로 그리기 (회색 배경)
       ctx.fillStyle = '#888888';
       ctx.beginPath();
-
-      // 도로의 네 꼭지점 계산
-      const x1 = startX + (perpX * roadWidth) / 2;
-      const y1 = startY + (perpY * roadWidth) / 2;
-      const x2 = startX - (perpX * roadWidth) / 2;
-      const y2 = startY - (perpY * roadWidth) / 2;
-      const x3 = endX - (perpX * roadWidth) / 2;
-      const y3 = endY - (perpY * roadWidth) / 2;
-      const x4 = endX + (perpX * roadWidth) / 2;
-      const y4 = endY + (perpY * roadWidth) / 2;
-
-      // 도로 사각형 그리기
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x2, y2);
-      ctx.lineTo(x3, y3);
-      ctx.lineTo(x4, y4);
+      ctx.moveTo(
+        this.edge[0] - perpX * roadWidth / 2,
+        this.edge[1] - perpY * roadWidth / 2
+      );
+      ctx.lineTo(
+        this.edge[0] + perpX * roadWidth / 2,
+        this.edge[1] + perpY * roadWidth / 2
+      );
+      ctx.lineTo(
+        neighborBlock.edge[0] + perpX * roadWidth / 2,
+        neighborBlock.edge[1] + perpY * roadWidth / 2
+      );
+      ctx.lineTo(
+        neighborBlock.edge[0] - perpX * roadWidth / 2,
+        neighborBlock.edge[1] - perpY * roadWidth / 2
+      );
       ctx.closePath();
       ctx.fill();
 
-      // 도로 테두리
-      ctx.strokeStyle = 'black';
+      // 도로 테두리 그리기
+      ctx.strokeStyle = '#444444';
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // 차선 그리기
+      // 차선 그리기 (흰색 점선)
       if (this.line > 1) {
-        ctx.strokeStyle = 'white';
+        ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 2;
-        ctx.setLineDash([10, 10]); // 점선으로 차선 표시
+        ctx.setLineDash([10, 10]); // 점선 설정
 
+        // 각 차선 경계선 그리기
         for (let i = 1; i < this.line; i++) {
-          // 차선 위치 계산 (도로 너비를 차선 수로 나눔)
-          const laneOffset = (roadWidth / this.line) * i - roadWidth / 2;
+          // 차선 너비 계산
+          const laneWidth = roadWidth / this.line;
+          // 차선 위치 계산 (왼쪽 끝에서부터)
+          const lanePosition = i * laneWidth - roadWidth / 2;
 
           ctx.beginPath();
-          ctx.moveTo(startX + perpX * laneOffset, startY + perpY * laneOffset);
-          ctx.lineTo(endX + perpX * laneOffset, endY + perpY * laneOffset);
+          ctx.moveTo(
+            this.edge[0] + perpX * lanePosition,
+            this.edge[1] + perpY * lanePosition
+          );
+          ctx.lineTo(
+            neighborBlock.edge[0] + perpX * lanePosition,
+            neighborBlock.edge[1] + perpY * lanePosition
+          );
           ctx.stroke();
         }
 
-        // 점선 설정 초기화
-        ctx.setLineDash([]);
+        ctx.setLineDash([]); // 점선 설정 초기화
       }
     }
 
+    // 도로 블록 표시 (교차로)
+    ctx.fillStyle = '#666666';
+    ctx.beginPath();
+    ctx.arc(this.edge[0], this.edge[1], 5, 0, Math.PI * 2);
+    ctx.fill();
+
     // 블록 ID 표시 (디버깅용)
-    ctx.fillStyle = 'red';
+    ctx.fillStyle = '#ffffff';
     ctx.font = '12px Arial';
-    ctx.fillText(String(this.id), this.edge[0] + 10, this.edge[1] - 10);
+    ctx.textAlign = 'center';
+    ctx.fillText(`${this.id}`, this.edge[0], this.edge[1] + 4);
   }
 }
 

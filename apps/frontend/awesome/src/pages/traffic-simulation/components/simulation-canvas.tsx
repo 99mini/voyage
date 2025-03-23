@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import road from '../constants/road';
 import { Road, RoadBlock } from '../objects/road';
 import { Vehicle } from '../objects/vehicle';
 
@@ -172,27 +173,71 @@ const SimulationCanvas = () => {
           // 랜덤 차선 선택 (0부터 시작)
           const laneNumber = Math.floor(Math.random() * startBlock.line);
           
-          // 새 차량 생성
-          const newVehicle = new Vehicle({
-            x: startBlock.edge[0],
-            y: startBlock.edge[1],
-            speed: 2 + Math.random(), // 2~3 사이의 랜덤 속도
-            startBlockId,
-            destinationBlockId,
-          });
+          // 도로 방향에 수직인 벡터 계산 (차선 위치 계산용)
+          let perpX = 0;
+          let perpY = 0;
           
-          // 랜덤 색상 설정
-          newVehicle.color = getRandomColor();
-          
-          // 차선 번호 설정
-          newVehicle.laneNumber = laneNumber;
+          // 다음 블록이 있으면 방향 계산
+          if (path.length > 1) {
+            const nextBlockId = path[1];
+            const nextBlock = load.getBlockById(nextBlockId);
+            
+            if (nextBlock) {
+              // 도로의 방향 벡터 계산
+              const dx = nextBlock.edge[0] - startBlock.edge[0];
+              const dy = nextBlock.edge[1] - startBlock.edge[1];
+              const distance = Math.sqrt(dx * dx + dy * dy);
+              
+              // 정규화된 방향 벡터
+              const dirX = dx / distance;
+              const dirY = dy / distance;
+              
+              // 도로 방향에 수직인 벡터 (90도 회전)
+              perpX = -dirY;
+              perpY = dirX;
+              
+              // 도로 너비 계산
+              const roadWidth = startBlock.line * road.ROAD_WIDTH;
+              
+              // 차선 너비 계산
+              const laneWidth = roadWidth / startBlock.line;
+              
+              // 차선 중앙 위치 계산
+              const laneCenter = laneWidth * laneNumber + laneWidth / 2;
+              const laneOffset = laneCenter - roadWidth / 2;
+              
+              // 시작 위치 계산 (차선 중앙에 위치)
+              const startX = startBlock.edge[0] + perpX * laneOffset;
+              const startY = startBlock.edge[1] + perpY * laneOffset;
+              
+              // 새 차량 생성
+              const newVehicle = new Vehicle({
+                x: startX,
+                y: startY,
+                speed: 2 + Math.random(), // 2~3 사이의 랜덤 속도
+                startBlockId,
+                destinationBlockId,
+              });
+              
+              // 랜덤 색상 설정
+              newVehicle.color = getRandomColor();
+              
+              // 차선 번호 설정
+              newVehicle.laneNumber = laneNumber;
+              
+              // 이동 방향 각도 계산
+              newVehicle.angle = Math.atan2(dy, dx);
 
-          // 경로 설정
-          newVehicle.setPath(path);
+              // 경로 설정
+              newVehicle.setPath(path);
 
-          // 차량 등록
-          vehicles[vehicleId++] = newVehicle;
-          console.log(`새 차량 생성: ID=${vehicleId-1}, 시작=${startBlockId}, 목적지=${destinationBlockId}, 차선=${laneNumber}`);
+              // 차량 등록
+              vehicles[vehicleId++] = newVehicle;
+              console.log(`새 차량 생성: ID=${vehicleId-1}, 시작=${startBlockId}, 목적지=${destinationBlockId}, 차선=${laneNumber}`);
+            }
+          } else {
+            console.error(`경로에 다음 블록이 없음: ${startBlockId} -> ${destinationBlockId}`);
+          }
         } else {
           console.error(`경로를 찾을 수 없음: ${startBlockId} -> ${destinationBlockId}`);
         }
