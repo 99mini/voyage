@@ -93,11 +93,39 @@ class Vehicle {
 
     // 도로 너비 계산
     const roadWidth = connection.line * ROAD_WIDTH;
-
+    
+    // 우측통행 규칙에 따른 차선 선택
+    // 진행 방향에 따라 적절한 차선 선택
+    const isHorizontalMovement = Math.abs(dirX) > Math.abs(dirY);
+    
+    // 우측통행에 맞는 차선 번호 계산
+    let rightLaneNumber;
+    
+    if (isHorizontalMovement) {
+      if (dirX > 0) {
+        // 왼쪽->오른쪽 이동: 아래쪽 차선이 우측
+        rightLaneNumber = connection.line - 1;
+      } else {
+        // 오른쪽->왼쪽 이동: 위쪽 차선이 우측
+        rightLaneNumber = 0;
+      }
+    } else {
+      if (dirY > 0) {
+        // 위->아래 이동: 오른쪽 차선이 우측
+        rightLaneNumber = connection.line - 1;
+      } else {
+        // 아래->위 이동: 왼쪽 차선이 우측
+        rightLaneNumber = 0;
+      }
+    }
+    
     // 차선 위치 계산 (도로 너비를 차선 수로 나눔)
-    // 차선의 중앙에 차량이 위치하도록 계산
-    // 차선 너비의 절반을 더해 차선의 중앙에 위치하도록 함
     const laneWidth = roadWidth / connection.line;
+    
+    // 우측통행을 위해 차선 번호 업데이트
+    this.laneNumber = rightLaneNumber;
+    
+    // 차선의 중앙에 차량이 위치하도록 계산
     const laneCenter = laneWidth * this.laneNumber + laneWidth / 2;
     const laneOffset = laneCenter - roadWidth / 2;
 
@@ -124,6 +152,7 @@ class Vehicle {
       연결ID: connection.id,
       도로너비: roadWidth,
       차선너비: laneWidth,
+      이동방향: isHorizontalMovement ? (dirX > 0 ? '왼쪽->오른쪽' : '오른쪽->왼쪽') : (dirY > 0 ? '위->아래' : '아래->위'),
     });
   }
 

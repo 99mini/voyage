@@ -77,11 +77,11 @@ network.addConnection(
 
 // 수평 도로 블록 연결 (아래)
 network.addConnection(
-  new Connection({ id: 3, fromBlockId: 3, toBlockId: 4, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+  new Connection({ id: 3, fromBlockId: 3, toBlockId: 4, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
 );
 
 network.addConnection(
-  new Connection({ id: 4, fromBlockId: 4, toBlockId: 5, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+  new Connection({ id: 4, fromBlockId: 4, toBlockId: 5, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
 );
 
 // 교차로 연결
@@ -194,7 +194,7 @@ const SimulationCanvas = () => {
             validPath = true;
           }
         }
-        
+
         attempts++;
       }
 
@@ -227,43 +227,55 @@ const SimulationCanvas = () => {
         // 도로 방향에 수직인 벡터 (90도 회전)
         let laneNumber;
 
-        // 진입 차선인지 확인
-        const isHorizontalMovement = Math.abs(dirX) > Math.abs(dirY);
-        const isVerticalMovement = !isHorizontalMovement;
-        const isInLane = (isHorizontalMovement && dirX > 0) || (isVerticalMovement && dirY < 0);
+        // 진행 방향 확인
+        // 수평 이동: 왼쪽->오른쪽(dirX > 0) 또는 오른쪽->왼쪽(dirX < 0)
+        // 수직 이동: 위->아래(dirY > 0) 또는 아래->위(dirY < 0)
 
-        // 진입 또는 진출 차선 중에서 우측통행에 맞게 차선 선택
-        if (isInLane) {
-          // 진입 차선 중에서 선택
-          if (connection.inLanes > 0) {
-            if (isHorizontalMovement && dirX > 0) {
-              // 왼쪽->오른쪽 이동: 아래쪽 차선 사용 (우측통행)
-              laneNumber = connection.inLanes - 1;
-            } else if (isVerticalMovement && dirY < 0) {
-              // 아래->위 이동: 왼쪽 차선 사용 (우측통행)
-              laneNumber = 0;
-            } else {
-              // 기본값 (예외 처리)
-              laneNumber = 0;
-            }
-          } else {
-            laneNumber = 0;
-          }
-        } else {
-          // 진출 차선 중에서 선택
-          if (connection.outLanes > 0) {
-            if (isHorizontalMovement && dirX < 0) {
-              // 오른쪽->왼쪽 이동: 위쪽 차선 사용 (우측통행)
-              laneNumber = connection.inLanes;
-            } else if (isVerticalMovement && dirY > 0) {
-              // 위->아래 이동: 오른쪽 차선 사용 (우측통행)
+        // 우측통행 규칙에 따른 차선 선택
+        if (Math.abs(dirX) > Math.abs(dirY)) {
+          if (dirX > 0) {
+            // 왼쪽->오른쪽 이동
+            // 진입 차선은 도로 아래쪽(우측)
+            if (connection.inLanes > 0) {
+              // 진입 차선 중 가장 오른쪽(아래쪽) 차선 선택
               laneNumber = connection.line - 1;
             } else {
-              // 기본값 (예외 처리)
-              laneNumber = connection.inLanes;
+              // 진입 차선이 없는 경우 가장 오른쪽 차선 선택
+              laneNumber = connection.line - 1;
             }
           } else {
-            laneNumber = Math.max(0, connection.line - 1);
+            // 오른쪽->왼쪽 이동
+            // 진입 차선은 도로 위쪽(우측)
+            if (connection.inLanes > 0) {
+              // 진입 차선 중 가장 오른쪽(위쪽) 차선 선택
+              laneNumber = 0;
+            } else {
+              // 진입 차선이 없는 경우 가장 오른쪽 차선 선택
+              laneNumber = 0;
+            }
+          }
+        } else {
+          // 수직 이동
+          if (dirY > 0) {
+            // 위->아래 이동
+            // 진입 차선은 도로 오른쪽(우측)
+            if (connection.inLanes > 0) {
+              // 진입 차선 중 가장 오른쪽 차선 선택
+              laneNumber = connection.line - 1;
+            } else {
+              // 진입 차선이 없는 경우 가장 오른쪽 차선 선택
+              laneNumber = connection.line - 1;
+            }
+          } else {
+            // 아래->위 이동
+            // 진입 차선은 도로 왼쪽(우측)
+            if (connection.inLanes > 0) {
+              // 진입 차선 중 가장 오른쪽(왼쪽) 차선 선택
+              laneNumber = 0;
+            } else {
+              // 진입 차선이 없는 경우 가장 오른쪽 차선 선택
+              laneNumber = 0;
+            }
           }
         }
 
@@ -310,7 +322,7 @@ const SimulationCanvas = () => {
 
         console.log(`차량 각도 설정: ${Math.round((newVehicle.angle * 180) / Math.PI)}°, dx=${dx}, dy=${dy}`);
         console.log(
-          `차량 차선 설정: 차선=${laneNumber}, 진입차선여부=${isInLane}, 총차선수=${connection.line}, 진입차선수=${connection.inLanes}, 진출차선수=${connection.outLanes}`,
+          `차량 차선 설정: 차선=${laneNumber}, 진입차선여부=${Math.abs(dirX) > Math.abs(dirY)}, 총차선수=${connection.line}, 진입차선수=${connection.inLanes}, 진출차선수=${connection.outLanes}`,
         );
 
         // 경로 설정
