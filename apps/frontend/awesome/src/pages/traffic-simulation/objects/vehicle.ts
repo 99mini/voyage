@@ -102,12 +102,42 @@ class Vehicle {
     // 차선 위치 계산 (도로 중앙에서 차선 위치로 오프셋)
     // 차선 번호가 현재 블록의 차선 수보다 크면 조정
     const effectiveLaneNumber = Math.min(this.laneNumber, nextBlock.line - 1);
-
+    
+    // 진입 차선인지 진출 차선인지 결정
+    // 진행 방향에 따라 차선 번호 조정
+    let adjustedLaneNumber = effectiveLaneNumber;
+    
+    // 차량의 이동 방향 확인 (현재 블록에서 다음 블록으로 가는 방향)
+    // 수평 이동인 경우 (좌->우 또는 우->좌)
+    const isHorizontalMovement = Math.abs(dirX) > Math.abs(dirY);
+    // 수직 이동인 경우 (상->하 또는 하->상)
+    const isVerticalMovement = !isHorizontalMovement;
+    
+    // 진입 차선인지 확인
+    // 수평 이동에서 왼쪽->오른쪽 이동이거나, 수직 이동에서 아래->위 이동인 경우 진입 차선
+    const isInLane = (isHorizontalMovement && dirX > 0) || (isVerticalMovement && dirY < 0);
+    
+    if (isInLane) {
+      // 진입 차선 사용
+      if (effectiveLaneNumber >= nextBlock.inLanes) {
+        // 진입 차선 범위를 벗어난 경우, 가장 오른쪽(아래) 진입 차선으로 조정
+        adjustedLaneNumber = nextBlock.inLanes - 1;
+      }
+    } else {
+      // 진출 차선 사용
+      // 진출 차선은 진입 차선 이후부터 시작
+      const outLaneNumber = effectiveLaneNumber - nextBlock.inLanes;
+      if (outLaneNumber < 0) {
+        // 진출 차선 범위를 벗어난 경우, 가장 왼쪽(위) 진출 차선으로 조정
+        adjustedLaneNumber = nextBlock.inLanes;
+      }
+    }
+    
     // 차선 위치 계산 (도로 너비를 차선 수로 나눔)
     // 차선의 중앙에 차량이 위치하도록 계산
     // 차선 너비의 절반을 더해 차선의 중앙에 위치하도록 함
     const laneWidth = roadWidth / nextBlock.line;
-    const laneCenter = laneWidth * effectiveLaneNumber + laneWidth / 2;
+    const laneCenter = laneWidth * adjustedLaneNumber + laneWidth / 2;
     const laneOffset = laneCenter - roadWidth / 2;
 
     // 차선 위치에 맞게 다음 지점 조정
@@ -151,6 +181,8 @@ class Vehicle {
       목적지: this.nextPoint,
       각도: Math.round((this.angle * 180) / Math.PI),
       차선: this.laneNumber,
+      조정된차선: adjustedLaneNumber,
+      진입차선여부: isInLane,
       차선중앙위치: laneCenter,
       차선오프셋: laneOffset,
     });

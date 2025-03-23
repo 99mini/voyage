@@ -9,12 +9,63 @@ class RoadBlock {
   maxSpeed: number;
   /** 블록 ID */
   id: number;
+  /** 진입 차선 수 */
+  inLanes: number;
+  /** 진출 차선 수 */
+  outLanes: number;
 
-  constructor({ edge, line, maxSpeed, id }: { edge: [number, number]; line: number; maxSpeed: number; id: number }) {
+  constructor({ 
+    edge, 
+    line, 
+    maxSpeed, 
+    id, 
+    inLanes, 
+    outLanes 
+  }: { 
+    edge: [number, number]; 
+    line: number; 
+    maxSpeed: number; 
+    id: number; 
+    inLanes?: number; 
+    outLanes?: number; 
+  }) {
     this.edge = edge;
     this.line = line;
     this.maxSpeed = maxSpeed;
     this.id = id;
+    
+    // inLanes와 outLanes가 제공되면 사용하고, 그렇지 않으면 기본값 계산
+    if (inLanes !== undefined && outLanes !== undefined) {
+      // 진입 차선과 진출 차선의 합이 전체 차선 수와 같아야 함
+      if (inLanes + outLanes !== line) {
+        console.error(`진입 차선(${inLanes})과 진출 차선(${outLanes})의 합이 전체 차선 수(${line})와 일치하지 않습니다. 기본값 사용.`);
+        this.inLanes = Math.ceil(line / 2);
+        this.outLanes = Math.floor(line / 2);
+      } else {
+        this.inLanes = inLanes;
+        this.outLanes = outLanes;
+      }
+    } else {
+      // 기본적으로 차선 수를 반으로 나눔 (홀수일 경우 진입 차선이 하나 더 많음)
+      this.inLanes = Math.ceil(line / 2);
+      this.outLanes = Math.floor(line / 2);
+    }
+  }
+
+  /**
+   * 진입 차선과 진출 차선 수를 설정
+   * @param inLanes 진입 차선 수
+   * @param outLanes 진출 차선 수
+   */
+  setLanes(inLanes: number, outLanes: number) {
+    // 진입 차선과 진출 차선의 합이 전체 차선 수와 같아야 함
+    if (inLanes + outLanes !== this.line) {
+      console.error(`진입 차선(${inLanes})과 진출 차선(${outLanes})의 합이 전체 차선 수(${this.line})와 일치하지 않습니다.`);
+      return;
+    }
+    
+    this.inLanes = inLanes;
+    this.outLanes = outLanes;
   }
 
   /**
@@ -66,19 +117,26 @@ class RoadBlock {
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // 차선 그리기 (흰색 점선)
+      // 차선 경계선 그리기 (흰색 점선)
       if (this.line > 1) {
         ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 2;
         ctx.setLineDash([10, 10]); // 점선 설정
-
+        
         // 각 차선 경계선 그리기
         for (let i = 1; i < this.line; i++) {
-          // 차선 너비 계산
-          const laneWidth = roadWidth / this.line;
-          // 차선 위치 계산 (왼쪽 끝에서부터)
-          const lanePosition = i * laneWidth - roadWidth / 2;
-
+          const lanePosition = (i * roadWidth) / this.line - roadWidth / 2;
+          
+          // 진입/진출 차선 경계에 실선 그리기
+          if (i === this.inLanes) {
+            ctx.setLineDash([]); // 실선
+            ctx.lineWidth = 2; // 두껍게
+            ctx.strokeStyle = '#ff0'; // 노란색
+          } else {
+            ctx.setLineDash([10, 10]); // 점선
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#fff'; // 흰색
+          }
+          
           ctx.beginPath();
           ctx.moveTo(
             this.edge[0] + perpX * lanePosition,
@@ -90,8 +148,9 @@ class RoadBlock {
           );
           ctx.stroke();
         }
-
-        ctx.setLineDash([]); // 점선 설정 초기화
+        
+        // 선 스타일 초기화
+        ctx.setLineDash([]);
       }
     }
 

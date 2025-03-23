@@ -16,6 +16,8 @@ const block0 = new RoadBlock({
   line: 2,
   maxSpeed: 3,
   id: 0,
+  inLanes: 1,
+  outLanes: 1,
 });
 
 const block1 = new RoadBlock({
@@ -23,6 +25,8 @@ const block1 = new RoadBlock({
   line: 2,
   maxSpeed: 3,
   id: 1,
+  inLanes: 1,
+  outLanes: 1,
 });
 
 const block2 = new RoadBlock({
@@ -30,6 +34,8 @@ const block2 = new RoadBlock({
   line: 2,
   maxSpeed: 3,
   id: 2,
+  inLanes: 1,
+  outLanes: 1,
 });
 
 // 수평 도로 블록 (아래쪽)
@@ -38,6 +44,8 @@ const block3 = new RoadBlock({
   line: 2,
   maxSpeed: 3,
   id: 3,
+  inLanes: 1,
+  outLanes: 1,
 });
 
 const block4 = new RoadBlock({
@@ -52,6 +60,8 @@ const block5 = new RoadBlock({
   line: 2,
   maxSpeed: 3,
   id: 5,
+  inLanes: 1,
+  outLanes: 1,
 });
 
 // 수직 도로 블록
@@ -60,6 +70,8 @@ const block6 = new RoadBlock({
   line: 2,
   maxSpeed: 2,
   id: 6,
+  inLanes: 1,
+  outLanes: 1,
 });
 
 const block7 = new RoadBlock({
@@ -67,6 +79,8 @@ const block7 = new RoadBlock({
   line: 2,
   maxSpeed: 2,
   id: 7,
+  inLanes: 2,
+  outLanes: 1,
 });
 
 const load = new Road({
@@ -170,46 +184,67 @@ const SimulationCanvas = () => {
         console.log(`경로 탐색: ${startBlockId} -> ${destinationBlockId}, 결과:`, path);
 
         if (path.length > 0) {
-          // 랜덤 차선 선택 (0부터 시작)
-          const laneNumber = Math.floor(Math.random() * startBlock.line);
-          
-          // 도로 방향에 수직인 벡터 계산 (차선 위치 계산용)
-          let perpX = 0;
-          let perpY = 0;
-          
           // 다음 블록이 있으면 방향 계산
           if (path.length > 1) {
             const nextBlockId = path[1];
             const nextBlock = load.getBlockById(nextBlockId);
-            
+
             if (nextBlock) {
               // 도로의 방향 벡터 계산
               const dx = nextBlock.edge[0] - startBlock.edge[0];
               const dy = nextBlock.edge[1] - startBlock.edge[1];
               const distance = Math.sqrt(dx * dx + dy * dy);
-              
+
               // 정규화된 방향 벡터
               const dirX = dx / distance;
               const dirY = dy / distance;
-              
+
               // 도로 방향에 수직인 벡터 (90도 회전)
-              perpX = -dirY;
-              perpY = dirX;
-              
+              const perpX = -dirY;
+              const perpY = dirX;
+
+              // 도로 방향에 수직인 벡터 (90도 회전)
+              let laneNumber;
+
+              // 진입 차선인지 확인
+              const isHorizontalMovement = Math.abs(dirX) > Math.abs(dirY);
+              const isVerticalMovement = !isHorizontalMovement;
+              const isInLane = (isHorizontalMovement && dirX > 0) || (isVerticalMovement && dirY < 0);
+
+              // 진입 또는 진출 차선 중에서 랜덤 선택
+              if (isInLane) {
+                // 진입 차선 중에서 랜덤 선택
+                if (startBlock.inLanes > 0) {
+                  laneNumber = Math.floor(Math.random() * startBlock.inLanes);
+                } else {
+                  console.warn('진입 차선이 없습니다. 기본 차선 사용');
+                  laneNumber = 0;
+                }
+              } else {
+                // 진출 차선 중에서 랜덤 선택
+                if (startBlock.outLanes > 0) {
+                  // 진출 차선은 진입 차선 이후부터 시작
+                  laneNumber = startBlock.inLanes + Math.floor(Math.random() * startBlock.outLanes);
+                } else {
+                  console.warn('진출 차선이 없습니다. 기본 차선 사용');
+                  laneNumber = Math.max(0, startBlock.line - 1);
+                }
+              }
+
               // 도로 너비 계산
               const roadWidth = startBlock.line * road.ROAD_WIDTH;
-              
+
               // 차선 너비 계산
               const laneWidth = roadWidth / startBlock.line;
-              
+
               // 차선 중앙 위치 계산
               const laneCenter = laneWidth * laneNumber + laneWidth / 2;
               const laneOffset = laneCenter - roadWidth / 2;
-              
+
               // 시작 위치 계산 (차선 중앙에 위치)
               const startX = startBlock.edge[0] + perpX * laneOffset;
               const startY = startBlock.edge[1] + perpY * laneOffset;
-              
+
               // 새 차량 생성
               const newVehicle = new Vehicle({
                 x: startX,
@@ -218,13 +253,13 @@ const SimulationCanvas = () => {
                 startBlockId,
                 destinationBlockId,
               });
-              
+
               // 랜덤 색상 설정
               newVehicle.color = getRandomColor();
-              
+
               // 차선 번호 설정
               newVehicle.laneNumber = laneNumber;
-              
+
               // 이동 방향 각도 계산 - 수직 이동일 경우 특별 처리
               if (Math.abs(dx) < 0.001) {
                 // 수직 이동 (위/아래)
@@ -236,15 +271,20 @@ const SimulationCanvas = () => {
                 // 일반적인 각도 계산
                 newVehicle.angle = Math.atan2(dy, dx);
               }
-              
-              console.log(`차량 각도 설정: ${Math.round(newVehicle.angle * 180 / Math.PI)}°, dx=${dx}, dy=${dy}`);
+
+              console.log(`차량 각도 설정: ${Math.round((newVehicle.angle * 180) / Math.PI)}°, dx=${dx}, dy=${dy}`);
+              console.log(
+                `차량 차선 설정: 차선=${laneNumber}, 진입차선여부=${isInLane}, 총차선수=${startBlock.line}, 진입차선수=${startBlock.inLanes}, 진출차선수=${startBlock.outLanes}`,
+              );
 
               // 경로 설정
               newVehicle.setPath(path);
 
               // 차량 등록
               vehicles[vehicleId++] = newVehicle;
-              console.log(`새 차량 생성: ID=${vehicleId-1}, 시작=${startBlockId}, 목적지=${destinationBlockId}, 차선=${laneNumber}`);
+              console.log(
+                `새 차량 생성: ID=${vehicleId - 1}, 시작=${startBlockId}, 목적지=${destinationBlockId}, 차선=${laneNumber}`,
+              );
             }
           } else {
             console.error(`경로에 다음 블록이 없음: ${startBlockId} -> ${destinationBlockId}`);
