@@ -73,9 +73,24 @@ class Vehicle {
     const dy = nextBlock.edge[1] - currentBlock.edge[1];
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    // 정규화된 방향 벡터
-    const dirX = dx / distance;
-    const dirY = dy / distance;
+    // 정규화된 방향 벡터 (0으로 나누는 것 방지)
+    let dirX = 0;
+    let dirY = 0;
+    
+    if (distance > 0.001) {
+      dirX = dx / distance;
+      dirY = dy / distance;
+    } else {
+      // 거리가 너무 작으면 기본값 설정
+      console.warn('블록 간 거리가 너무 가까움:', currentBlock.id, nextBlock.id);
+      if (Math.abs(dx) > Math.abs(dy)) {
+        dirX = dx >= 0 ? 1 : -1;
+        dirY = 0;
+      } else {
+        dirX = 0;
+        dirY = dy >= 0 ? 1 : -1;
+      }
+    }
 
     // 도로 방향에 수직인 벡터 (90도 회전)
     const perpX = -dirY;
@@ -98,6 +113,21 @@ class Vehicle {
     // 차선 위치에 맞게 다음 지점 조정
     baseNextPoint[0] += perpX * laneOffset;
     baseNextPoint[1] += perpY * laneOffset;
+
+    // NaN 체크 및 수정
+    if (isNaN(baseNextPoint[0]) || isNaN(baseNextPoint[1])) {
+      console.error('nextPoint 계산 오류 - NaN 발생:', {
+        현재블록: currentBlock.id,
+        다음블록: nextBlock.id,
+        방향벡터: [dirX, dirY],
+        수직벡터: [perpX, perpY],
+        차선오프셋: laneOffset
+      });
+      
+      // 오류 발생 시 원래 목적지 사용
+      baseNextPoint[0] = point[0];
+      baseNextPoint[1] = point[1];
+    }
 
     this.nextPoint = baseNextPoint;
 
@@ -239,6 +269,14 @@ class Vehicle {
    */
   moveTowardsTarget() {
     if (!this.nextPoint) return;
+
+    // NaN 체크
+    if (isNaN(this.nextPoint[0]) || isNaN(this.nextPoint[1])) {
+      console.error('이동 오류 - nextPoint가 NaN입니다:', this.nextPoint);
+      // 현재 위치를 기준으로 임의의 목적지 설정 (응급 조치)
+      this.nextPoint = [this.x + 1, this.y];
+      return;
+    }
 
     const dx = this.nextPoint[0] - this.x;
     const dy = this.nextPoint[1] - this.y;
