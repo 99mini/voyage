@@ -136,10 +136,29 @@ class Vehicle {
    * 차량 업데이트
    */
   update(vehicles: Vehicle[], blocks: Map<number, RoadBlock>, connections: Map<number, Connection>, roadNetwork?: RoadNetwork) {
-    // 경로가 없고 목적지가 설정되어 있으면 경로 생성 필요
+    // 경로가 없고 목적지가 설정되어 있으면 경로 생성
     if (this.path.length === 0 && this.currentBlockId !== this.destinationBlockId) {
-      console.error(`경로가 설정되지 않음: ${this.currentBlockId} -> ${this.destinationBlockId}`);
-      return;
+      if (roadNetwork) {
+        // roadNetwork를 사용하여 경로 생성
+        const path = roadNetwork.findPath(this.currentBlockId, this.destinationBlockId);
+        
+        if (path.length > 0) {
+          console.log(`경로 생성 성공: ${this.currentBlockId} -> ${this.destinationBlockId}, 경로:`, path);
+          // 경로의 첫 번째 요소는 현재 위치이므로 제거
+          if (path[0] === this.currentBlockId) {
+            path.shift();
+          }
+          this.setPath(path);
+        } else {
+          console.error(`경로를 찾을 수 없음: ${this.currentBlockId} -> ${this.destinationBlockId}`);
+          // 경로를 찾을 수 없으면 차량 제거
+          this.destroy();
+          return;
+        }
+      } else {
+        console.error(`경로가 설정되지 않음: ${this.currentBlockId} -> ${this.destinationBlockId}`);
+        return;
+      }
     }
 
     // 다음 목적지가 없으면 설정
@@ -169,9 +188,17 @@ class Vehicle {
           this.setNextPoint(nextBlock.edge, currentBlock, nextBlock, connection);
         } else {
           console.error(`연결 정보를 찾을 수 없음: 현재=${this.currentBlockId}, 다음=${nextBlockId}`);
+          // 연결을 찾을 수 없으면 다음 경로로 이동
+          if (this.path.length > 0) {
+            this.path.shift();
+          }
         }
       } else {
         console.error(`블록을 찾을 수 없음: 현재=${this.currentBlockId}, 다음=${nextBlockId}`);
+        // 블록을 찾을 수 없으면 다음 경로로 이동
+        if (this.path.length > 0) {
+          this.path.shift();
+        }
       }
     }
 

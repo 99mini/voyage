@@ -324,6 +324,19 @@ export class RoadNetwork {
       return [startId];
     }
 
+    // 시작점이나 목적지가 인접 리스트에 없으면 빈 배열 반환
+    if (!this.adjacencyList.has(startId) || !this.adjacencyList.has(endId)) {
+      console.error(`시작점(${startId}) 또는 목적지(${endId})가 인접 리스트에 없습니다.`);
+      return [];
+    }
+
+    // 시작점에서 갈 수 있는 노드가 없으면 빈 배열 반환
+    const startNeighbors = this.adjacencyList.get(startId) || [];
+    if (startNeighbors.length === 0) {
+      console.error(`시작점(${startId})에서 갈 수 있는 노드가 없습니다.`);
+      return [];
+    }
+
     // 방문 여부 및 이전 노드 저장
     const visited = new Set<number>();
     const prev = new Map<number, number>();
@@ -347,6 +360,7 @@ export class RoadNetwork {
           path.unshift(node);
         }
 
+        console.log(`경로 찾기 성공: ${startId} -> ${endId}, 경로:`, path);
         return path;
       }
 
@@ -354,14 +368,21 @@ export class RoadNetwork {
       const neighbors = this.adjacencyList.get(current) || [];
       for (const neighbor of neighbors) {
         if (!visited.has(neighbor)) {
-          visited.add(neighbor);
-          prev.set(neighbor, current);
-          queue.push(neighbor);
+          // 연결이 실제로 존재하는지 확인
+          const connection = this.getConnectionByBlocks(current, neighbor);
+          if (connection) {
+            visited.add(neighbor);
+            prev.set(neighbor, current);
+            queue.push(neighbor);
+          } else {
+            console.warn(`연결 정보가 없어 건너뜀: ${current} -> ${neighbor}`);
+          }
         }
       }
     }
 
     // 경로를 찾지 못했으면 빈 배열 반환
+    console.error(`경로를 찾을 수 없음: ${startId} -> ${endId}`);
     return [];
   }
 

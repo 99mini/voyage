@@ -68,11 +68,11 @@ network.addBlock(block7);
 
 // 수평 도로 연결 (위)
 network.addConnection(
-  new Connection({ id: 1, fromBlockId: 0, toBlockId: 1, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+  new Connection({ id: 1, fromBlockId: 0, toBlockId: 1, line: 3, inLanes: 2, outLanes: 1, maxSpeed: 3 }),
 );
 
 network.addConnection(
-  new Connection({ id: 2, fromBlockId: 1, toBlockId: 2, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+  new Connection({ id: 2, fromBlockId: 1, toBlockId: 2, line: 3, inLanes: 2, outLanes: 1, maxSpeed: 3 }),
 );
 
 // 수평 도로 블록 연결 (아래)
@@ -86,15 +86,15 @@ network.addConnection(
 
 // 교차로 연결
 network.addConnection(
-  new Connection({ id: 5, fromBlockId: 1, toBlockId: 6, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+  new Connection({ id: 5, fromBlockId: 6, toBlockId: 1, line: 3, inLanes: 2, outLanes: 1, maxSpeed: 3 }),
 );
 
 network.addConnection(
-  new Connection({ id: 6, fromBlockId: 1, toBlockId: 4, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+  new Connection({ id: 6, fromBlockId: 1, toBlockId: 4, line: 3, inLanes: 2, outLanes: 1, maxSpeed: 3 }),
 );
 
 network.addConnection(
-  new Connection({ id: 7, fromBlockId: 4, toBlockId: 7, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+  new Connection({ id: 7, fromBlockId: 4, toBlockId: 7, line: 3, inLanes: 2, outLanes: 1, maxSpeed: 3 }),
 );
 
 // 가능한 시작점과 목적지 정의
@@ -168,159 +168,159 @@ const SimulationCanvas = () => {
       const random = Math.random();
       await new Promise((resolve) => setTimeout(resolve, Math.max(1000 * random, 250)));
 
-      // 랜덤 시작점과 목적지 선택
-      const { startBlockId, destinationBlockId } = getRandomStartAndDestination();
+      // 유효한 경로를 찾을 때까지 시도
+      let validPath = false;
+      let startBlockId, destinationBlockId, path;
+      let attempts = 0;
+      const maxAttempts = 5; // 최대 시도 횟수
 
-      // 시작 블록과 목적지 블록 가져오기
-      const startBlock = network.getBlockById(startBlockId);
-      const destBlock = network.getBlockById(destinationBlockId);
+      while (!validPath && attempts < maxAttempts) {
+        // 랜덤 시작점과 목적지 선택
+        const randomPoints = getRandomStartAndDestination();
+        startBlockId = randomPoints.startBlockId;
+        destinationBlockId = randomPoints.destinationBlockId;
 
-      if (startBlock && destBlock) {
-        // 경로 찾기
-        const path = network.findPath(startBlockId, destinationBlockId);
-        console.log(`경로 탐색: ${startBlockId} -> ${destinationBlockId}, 결과:`, path);
+        // 시작 블록과 목적지 블록 가져오기
+        const startBlock = network.getBlockById(startBlockId);
+        const destBlock = network.getBlockById(destinationBlockId);
 
-        if (path.length > 0) {
-          // 다음 블록이 있으면 방향 계산
-          if (path.length > 1) {
-            const nextBlockId = path[1];
-            const nextBlock = network.getBlockById(nextBlockId);
-            const connection = network.getConnectionByBlocks(startBlockId, nextBlockId);
+        if (startBlock && destBlock) {
+          // 경로 찾기
+          path = network.findPath(startBlockId, destinationBlockId);
+          console.log(`경로 탐색 시도 ${attempts + 1}: ${startBlockId} -> ${destinationBlockId}, 결과:`, path);
 
-            if (nextBlock && connection) {
-              // 도로의 방향 벡터 계산
-              const dx = nextBlock.edge[0] - startBlock.edge[0];
-              const dy = nextBlock.edge[1] - startBlock.edge[1];
-              const distance = Math.sqrt(dx * dx + dy * dy);
-
-              // 정규화된 방향 벡터
-              const dirX = dx / distance;
-              const dirY = dy / distance;
-
-              // 도로 방향에 수직인 벡터 (90도 회전)
-              const perpX = -dirY;
-              const perpY = dirX;
-
-              // 도로 방향에 수직인 벡터 (90도 회전)
-              let laneNumber;
-
-              // 진입 차선인지 확인
-              const isHorizontalMovement = Math.abs(dirX) > Math.abs(dirY);
-              const isVerticalMovement = !isHorizontalMovement;
-              const isInLane = (isHorizontalMovement && dirX > 0) || (isVerticalMovement && dirY < 0);
-
-              // 진입 또는 진출 차선 중에서 우측통행에 맞게 차선 선택
-              if (isInLane) {
-                // 진입 차선 중에서 선택
-                if (connection.inLanes > 0) {
-                  if (isHorizontalMovement && dirX > 0) {
-                    // 왼쪽->오른쪽 이동: 아래쪽 차선 사용 (우측통행)
-                    laneNumber = connection.inLanes - 1;
-                  } else if (isVerticalMovement && dirY < 0) {
-                    // 아래->위 이동: 왼쪽 차선 사용 (우측통행)
-                    laneNumber = 0;
-                  } else {
-                    // 기본값 (예외 처리)
-                    laneNumber = 0;
-                  }
-                } else {
-                  laneNumber = 0;
-                }
-              } else {
-                // 진출 차선 중에서 선택
-                if (connection.outLanes > 0) {
-                  if (isHorizontalMovement && dirX < 0) {
-                    // 오른쪽->왼쪽 이동: 위쪽 차선 사용 (우측통행)
-                    laneNumber = connection.inLanes;
-                  } else if (isVerticalMovement && dirY > 0) {
-                    // 위->아래 이동: 오른쪽 차선 사용 (우측통행)
-                    laneNumber = connection.line - 1;
-                  } else {
-                    // 기본값 (예외 처리)
-                    laneNumber = connection.inLanes;
-                  }
-                } else {
-                  laneNumber = Math.max(0, connection.line - 1);
-                }
-              }
-
-              // 도로 너비 계산
-              const roadWidth = connection.line * ROAD_WIDTH;
-
-              // 차선 너비 계산
-              const laneWidth = roadWidth / connection.line;
-
-              // 차선 중앙 위치 계산
-              const laneCenter = laneWidth * laneNumber + laneWidth / 2;
-              const laneOffset = laneCenter - roadWidth / 2;
-
-              // 시작 위치 계산 (차선 중앙에 위치)
-              const startX = startBlock.edge[0] + perpX * laneOffset;
-              const startY = startBlock.edge[1] + perpY * laneOffset;
-
-              // 새 차량 생성
-              const newVehicle = new Vehicle({
-                x: startX,
-                y: startY,
-                speed: 2 + Math.random(), // 2~3 사이의 랜덤 속도
-                startBlockId,
-                destinationBlockId,
-              });
-
-              // 랜덤 색상 설정
-              newVehicle.color = getRandomColor();
-
-              // 차선 번호 설정
-              newVehicle.laneNumber = laneNumber;
-
-              // 이동 방향 각도 계산 - 수직 이동일 경우 특별 처리
-              if (Math.abs(dx) < 0.001) {
-                // 수직 이동 (위/아래)
-                newVehicle.angle = dy > 0 ? Math.PI / 2 : -Math.PI / 2;
-              } else if (Math.abs(dy) < 0.001) {
-                // 수평 이동 (좌/우)
-                newVehicle.angle = dx > 0 ? 0 : Math.PI;
-              } else {
-                // 일반적인 각도 계산
-                newVehicle.angle = Math.atan2(dy, dx);
-              }
-
-              console.log(`차량 각도 설정: ${Math.round((newVehicle.angle * 180) / Math.PI)}°, dx=${dx}, dy=${dy}`);
-              console.log(
-                `차량 차선 설정: 차선=${laneNumber}, 진입차선여부=${isInLane}, 총차선수=${connection.line}, 진입차선수=${connection.inLanes}, 진출차선수=${connection.outLanes}`,
-              );
-
-              // 경로 설정
-              newVehicle.setPath(path);
-
-              // 차량 등록
-              vehicles[vehicleId++] = newVehicle;
-              console.log(
-                `새 차량 생성: ID=${vehicleId - 1}, 시작=${startBlockId}, 목적지=${destinationBlockId}, 차선=${laneNumber}`,
-              );
-            }
-          } else {
-            console.error(`경로에 다음 블록이 없음: ${startBlockId} -> ${destinationBlockId}`);
+          // 경로가 존재하고 길이가 2 이상인 경우 (시작점 + 최소 1개 이상의 다음 블록)
+          if (path.length >= 2) {
+            validPath = true;
           }
-        } else {
-          console.error(`경로를 찾을 수 없음: ${startBlockId} -> ${destinationBlockId}`);
         }
+        
+        attempts++;
       }
 
-      // 화면 밖으로 나간 차량 제거
-      const keys = Object.keys(vehicles);
-      for (const key of keys) {
-        const vehicle = vehicles[Number(key)];
-        if (
-          0 > vehicle.x ||
-          vehicle.x > WINDOW_WIDTH ||
-          0 > vehicle.y ||
-          vehicle.y > WINDOW_HEIGHT ||
-          vehicle.path.length === 0 // 목적지에 도착한 차량도 제거
-        ) {
-          console.log('차량 제거:', vehicle);
-          delete vehicles[Number(key)];
+      // 유효한 경로를 찾지 못한 경우
+      if (!validPath) {
+        console.error('유효한 경로를 찾을 수 없어 차량 생성을 건너뜁니다.');
+        return;
+      }
+
+      // 여기서부터는 validPath가 true이므로 startBlockId, destinationBlockId, path는 모두 정의되어 있음
+      const startBlock = network.getBlockById(startBlockId as number);
+      const nextBlockId = (path as number[])[1]; // 첫 번째 다음 블록
+      const nextBlock = network.getBlockById(nextBlockId);
+      const connection = network.getConnectionByBlocks(startBlockId as number, nextBlockId);
+
+      if (startBlock && nextBlock && connection) {
+        // 도로의 방향 벡터 계산
+        const dx = nextBlock.edge[0] - startBlock.edge[0];
+        const dy = nextBlock.edge[1] - startBlock.edge[1];
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // 정규화된 방향 벡터
+        const dirX = dx / distance;
+        const dirY = dy / distance;
+
+        // 도로 방향에 수직인 벡터 (90도 회전)
+        const perpX = -dirY;
+        const perpY = dirX;
+
+        // 도로 방향에 수직인 벡터 (90도 회전)
+        let laneNumber;
+
+        // 진입 차선인지 확인
+        const isHorizontalMovement = Math.abs(dirX) > Math.abs(dirY);
+        const isVerticalMovement = !isHorizontalMovement;
+        const isInLane = (isHorizontalMovement && dirX > 0) || (isVerticalMovement && dirY < 0);
+
+        // 진입 또는 진출 차선 중에서 우측통행에 맞게 차선 선택
+        if (isInLane) {
+          // 진입 차선 중에서 선택
+          if (connection.inLanes > 0) {
+            if (isHorizontalMovement && dirX > 0) {
+              // 왼쪽->오른쪽 이동: 아래쪽 차선 사용 (우측통행)
+              laneNumber = connection.inLanes - 1;
+            } else if (isVerticalMovement && dirY < 0) {
+              // 아래->위 이동: 왼쪽 차선 사용 (우측통행)
+              laneNumber = 0;
+            } else {
+              // 기본값 (예외 처리)
+              laneNumber = 0;
+            }
+          } else {
+            laneNumber = 0;
+          }
+        } else {
+          // 진출 차선 중에서 선택
+          if (connection.outLanes > 0) {
+            if (isHorizontalMovement && dirX < 0) {
+              // 오른쪽->왼쪽 이동: 위쪽 차선 사용 (우측통행)
+              laneNumber = connection.inLanes;
+            } else if (isVerticalMovement && dirY > 0) {
+              // 위->아래 이동: 오른쪽 차선 사용 (우측통행)
+              laneNumber = connection.line - 1;
+            } else {
+              // 기본값 (예외 처리)
+              laneNumber = connection.inLanes;
+            }
+          } else {
+            laneNumber = Math.max(0, connection.line - 1);
+          }
         }
+
+        // 도로 너비 계산
+        const roadWidth = connection.line * ROAD_WIDTH;
+
+        // 차선 너비 계산
+        const laneWidth = roadWidth / connection.line;
+
+        // 차선 중앙 위치 계산
+        const laneCenter = laneWidth * laneNumber + laneWidth / 2;
+        const laneOffset = laneCenter - roadWidth / 2;
+
+        // 시작 위치 계산 (차선 중앙에 위치)
+        const startX = startBlock.edge[0] + perpX * laneOffset;
+        const startY = startBlock.edge[1] + perpY * laneOffset;
+
+        // 새 차량 생성
+        const newVehicle = new Vehicle({
+          x: startX,
+          y: startY,
+          speed: 2 + Math.random(), // 2~3 사이의 랜덤 속도
+          startBlockId: startBlockId as number,
+          destinationBlockId: destinationBlockId as number,
+        });
+
+        // 랜덤 색상 설정
+        newVehicle.color = getRandomColor();
+
+        // 차선 번호 설정
+        newVehicle.laneNumber = laneNumber;
+
+        // 이동 방향 각도 계산 - 수직 이동일 경우 특별 처리
+        if (Math.abs(dx) < 0.001) {
+          // 수직 이동 (위/아래)
+          newVehicle.angle = dy > 0 ? Math.PI / 2 : -Math.PI / 2;
+        } else if (Math.abs(dy) < 0.001) {
+          // 수평 이동 (좌/우)
+          newVehicle.angle = dx > 0 ? 0 : Math.PI;
+        } else {
+          // 일반적인 각도 계산
+          newVehicle.angle = Math.atan2(dy, dx);
+        }
+
+        console.log(`차량 각도 설정: ${Math.round((newVehicle.angle * 180) / Math.PI)}°, dx=${dx}, dy=${dy}`);
+        console.log(
+          `차량 차선 설정: 차선=${laneNumber}, 진입차선여부=${isInLane}, 총차선수=${connection.line}, 진입차선수=${connection.inLanes}, 진출차선수=${connection.outLanes}`,
+        );
+
+        // 경로 설정
+        newVehicle.setPath(path as number[]);
+
+        // 차량 등록
+        vehicles[vehicleId++] = newVehicle;
+        console.log(
+          `새 차량 생성: ID=${vehicleId - 1}, 시작=${startBlockId}, 목적지=${destinationBlockId}, 차선=${laneNumber}`,
+        );
       }
     }, 1000);
 
