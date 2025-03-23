@@ -103,6 +103,23 @@ export class Connection {
       return;
     }
 
+    // 양방향 연결 확인 (반대 방향 연결이 있는지 확인)
+    let oppositeConnection: Connection | undefined;
+    for (const conn of connections.values()) {
+      if (conn.fromBlockId === this.toBlockId && conn.toBlockId === this.fromBlockId) {
+        oppositeConnection = conn;
+        break;
+      }
+    }
+
+    const hasOppositeDirection = !!oppositeConnection;
+
+    // 양방향 연결이 있고, 현재 연결의 ID가 반대 방향 연결의 ID보다 크면 그리지 않음
+    // 이렇게 하면 양방향 도로는 ID가 작은 연결만 그려짐
+    if (hasOppositeDirection && oppositeConnection && this.id > oppositeConnection.id) {
+      return;
+    }
+
     const [x1, y1] = fromBlock.edge;
     const [x2, y2] = toBlock.edge;
 
@@ -119,8 +136,10 @@ export class Connection {
     const perpX = -dirY;
     const perpY = dirX;
 
-    // 도로 너비 계산
-    const roadWidth = this.line * ROAD_WIDTH;
+    // 도로 너비 계산 - 양방향인 경우 두 배의 차선을 가진 도로로 그림
+    const roadWidth = hasOppositeDirection 
+      ? (this.line + (oppositeConnection?.line || 0)) * ROAD_WIDTH 
+      : this.line * ROAD_WIDTH;
 
     // 도로의 양쪽 가장자리 계산
     const edge1X = x1 - (perpX * roadWidth) / 2;
@@ -142,24 +161,20 @@ export class Connection {
     ctx.fillStyle = '#888888';
     ctx.fill();
 
-    // 양방향 연결 확인 (반대 방향 연결이 있는지 확인)
-    let hasOppositeDirection = false;
-    for (const conn of connections.values()) {
-      if (conn.fromBlockId === this.toBlockId && conn.toBlockId === this.fromBlockId) {
-        hasOppositeDirection = true;
-        break;
-      }
-    }
-
     // 차선 구분선 그리기
-    const laneWidth = roadWidth / this.line;
+    const laneWidth = ROAD_WIDTH;
+    const totalLanes = hasOppositeDirection 
+      ? this.line + (oppositeConnection?.line || 0) 
+      : this.line;
 
     // 차선 중앙에 노란 실선 그리기 (양방향 연결인 경우)
     if (hasOppositeDirection) {
-      const middleX = x1;
-      const middleY = y1;
-      const middleEndX = x2;
-      const middleEndY = y2;
+      // 중앙선 위치 계산 (첫 번째 방향의 차선 수에 해당하는 위치)
+      const centerOffset = -roadWidth / 2 + this.line * laneWidth;
+      const middleX = x1 + perpX * centerOffset;
+      const middleY = y1 + perpY * centerOffset;
+      const middleEndX = x2 + perpX * centerOffset;
+      const middleEndY = y2 + perpY * centerOffset;
 
       ctx.beginPath();
       ctx.moveTo(middleX, middleY);
@@ -171,7 +186,10 @@ export class Connection {
     }
 
     // 차선 구분선 그리기
-    for (let i = 1; i < this.line; i++) {
+    for (let i = 1; i < totalLanes; i++) {
+      // 양방향인 경우 중앙선은 이미 그렸으므로 건너뜀
+      if (hasOppositeDirection && i === this.line) continue;
+
       const offset = -roadWidth / 2 + i * laneWidth;
       const startX = x1 + perpX * offset;
       const startY = y1 + perpY * offset;
@@ -197,7 +215,13 @@ export class Connection {
     ctx.fillStyle = 'blue';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(`도로 ${this.id}`, centerX + offsetX, centerY + offsetY);
+    
+    // 양방향인 경우 두 ID를 모두 표시
+    if (hasOppositeDirection && oppositeConnection) {
+      ctx.fillText(`도로 ${this.id}/${oppositeConnection.id}`, centerX + offsetX, centerY + offsetY);
+    } else {
+      ctx.fillText(`도로 ${this.id}`, centerX + offsetX, centerY + offsetY);
+    }
   }
 }
 
