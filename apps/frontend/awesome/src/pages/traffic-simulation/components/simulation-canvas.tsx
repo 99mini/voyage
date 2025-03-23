@@ -211,22 +211,37 @@ const SimulationCanvas = () => {
               const isVerticalMovement = !isHorizontalMovement;
               const isInLane = (isHorizontalMovement && dirX > 0) || (isVerticalMovement && dirY < 0);
 
-              // 진입 또는 진출 차선 중에서 랜덤 선택
+              // 진입 또는 진출 차선 중에서 우측통행에 맞게 차선 선택
               if (isInLane) {
-                // 진입 차선 중에서 랜덤 선택
+                // 진입 차선 중에서 선택
                 if (startBlock.inLanes > 0) {
-                  laneNumber = Math.floor(Math.random() * startBlock.inLanes);
+                  if (isHorizontalMovement && dirX > 0) {
+                    // 왼쪽->오른쪽 이동: 아래쪽 차선 사용 (우측통행)
+                    laneNumber = startBlock.inLanes - 1;
+                  } else if (isVerticalMovement && dirY < 0) {
+                    // 아래->위 이동: 왼쪽 차선 사용 (우측통행)
+                    laneNumber = 0;
+                  } else {
+                    // 기본값 (예외 처리)
+                    laneNumber = 0;
+                  }
                 } else {
-                  console.warn('진입 차선이 없습니다. 기본 차선 사용');
                   laneNumber = 0;
                 }
               } else {
-                // 진출 차선 중에서 랜덤 선택
+                // 진출 차선 중에서 선택
                 if (startBlock.outLanes > 0) {
-                  // 진출 차선은 진입 차선 이후부터 시작
-                  laneNumber = startBlock.inLanes + Math.floor(Math.random() * startBlock.outLanes);
+                  if (isHorizontalMovement && dirX < 0) {
+                    // 오른쪽->왼쪽 이동: 위쪽 차선 사용 (우측통행)
+                    laneNumber = startBlock.inLanes;
+                  } else if (isVerticalMovement && dirY > 0) {
+                    // 위->아래 이동: 오른쪽 차선 사용 (우측통행)
+                    laneNumber = startBlock.line - 1;
+                  } else {
+                    // 기본값 (예외 처리)
+                    laneNumber = startBlock.inLanes;
+                  }
                 } else {
-                  console.warn('진출 차선이 없습니다. 기본 차선 사용');
                   laneNumber = Math.max(0, startBlock.line - 1);
                 }
               }

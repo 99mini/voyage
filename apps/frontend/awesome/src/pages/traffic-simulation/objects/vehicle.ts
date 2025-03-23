@@ -103,10 +103,6 @@ class Vehicle {
     // 차선 번호가 현재 블록의 차선 수보다 크면 조정
     const effectiveLaneNumber = Math.min(this.laneNumber, nextBlock.line - 1);
     
-    // 진입 차선인지 진출 차선인지 결정
-    // 진행 방향에 따라 차선 번호 조정
-    let adjustedLaneNumber = effectiveLaneNumber;
-    
     // 차량의 이동 방향 확인 (현재 블록에서 다음 블록으로 가는 방향)
     // 수평 이동인 경우 (좌->우 또는 우->좌)
     const isHorizontalMovement = Math.abs(dirX) > Math.abs(dirY);
@@ -114,22 +110,40 @@ class Vehicle {
     const isVerticalMovement = !isHorizontalMovement;
     
     // 진입 차선인지 확인
-    // 수평 이동에서 왼쪽->오른쪽 이동이거나, 수직 이동에서 아래->위 이동인 경우 진입 차선
+    // 우측통행: 
+    // - 수평 이동에서 왼쪽->오른쪽 이동은 아래쪽 차선(높은 번호)
+    // - 수평 이동에서 오른쪽->왼쪽 이동은 위쪽 차선(낮은 번호)
+    // - 수직 이동에서 위->아래 이동은 오른쪽 차선(높은 번호)
+    // - 수직 이동에서 아래->위 이동은 왼쪽 차선(낮은 번호)
     const isInLane = (isHorizontalMovement && dirX > 0) || (isVerticalMovement && dirY < 0);
     
-    if (isInLane) {
-      // 진입 차선 사용
-      if (effectiveLaneNumber >= nextBlock.inLanes) {
-        // 진입 차선 범위를 벗어난 경우, 가장 오른쪽(아래) 진입 차선으로 조정
-        adjustedLaneNumber = nextBlock.inLanes - 1;
-      }
-    } else {
-      // 진출 차선 사용
-      // 진출 차선은 진입 차선 이후부터 시작
-      const outLaneNumber = effectiveLaneNumber - nextBlock.inLanes;
-      if (outLaneNumber < 0) {
-        // 진출 차선 범위를 벗어난 경우, 가장 왼쪽(위) 진출 차선으로 조정
+    // 우측통행 적용을 위한 차선 번호 조정
+    let adjustedLaneNumber = effectiveLaneNumber;
+    
+    if (isHorizontalMovement) {
+      if (dirX > 0) {
+        // 왼쪽->오른쪽 이동: 아래쪽 차선 사용 (우측통행)
+        // 진입 차선 중에서 아래쪽(높은 번호) 차선 사용
+        if (nextBlock.inLanes > 0) {
+          // 진입 차선 범위 내에서 가장 아래쪽(높은 번호) 차선 선택
+          adjustedLaneNumber = nextBlock.inLanes - 1;
+        } else {
+          adjustedLaneNumber = 0;
+        }
+      } else {
+        // 오른쪽->왼쪽 이동: 위쪽 차선 사용 (우측통행)
+        // 진출 차선 중에서 위쪽(낮은 번호) 차선 사용
         adjustedLaneNumber = nextBlock.inLanes;
+      }
+    } else { // 수직 이동
+      if (dirY > 0) {
+        // 위->아래 이동: 오른쪽 차선 사용 (우측통행)
+        // 진출 차선 중에서 가장 오른쪽(높은 번호) 차선 선택
+        adjustedLaneNumber = nextBlock.line - 1;
+      } else {
+        // 아래->위 이동: 왼쪽 차선 사용 (우측통행)
+        // 진입 차선 중에서 가장 왼쪽(낮은 번호) 차선 선택
+        adjustedLaneNumber = 0;
       }
     }
     
@@ -183,6 +197,7 @@ class Vehicle {
       차선: this.laneNumber,
       조정된차선: adjustedLaneNumber,
       진입차선여부: isInLane,
+      이동방향: isHorizontalMovement ? (dirX > 0 ? '왼->오' : '오->왼') : (dirY > 0 ? '위->아래' : '아래->위'),
       차선중앙위치: laneCenter,
       차선오프셋: laneOffset,
     });
