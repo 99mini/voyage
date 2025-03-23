@@ -29,14 +29,82 @@ class RoadBlock {
    * 도로 그리기
    */
   draw(ctx: CanvasRenderingContext2D, neighborBlocks: RoadBlock[]) {
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-
+    // 각 이웃 블록에 대한 연결 그리기
     for (const neighborBlock of neighborBlocks) {
+      // 도로의 시작점과 끝점
+      const startX = this.edge[0];
+      const startY = this.edge[1];
+      const endX = neighborBlock.edge[0];
+      const endY = neighborBlock.edge[1];
+      
+      // 도로의 방향 벡터
+      const dx = endX - startX;
+      const dy = endY - startY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      // 정규화된 방향 벡터
+      const dirX = dx / distance;
+      const dirY = dy / distance;
+      
+      // 도로 방향에 수직인 벡터 (90도 회전)
+      const perpX = -dirY;
+      const perpY = dirX;
+      
+      // 도로 너비 (차선 수에 따라 조정)
+      const roadWidth = this.line * 10; // 각 차선은 10px 너비
+      
+      // 도로 그리기 (회색 배경)
+      ctx.fillStyle = '#888888';
       ctx.beginPath();
-      ctx.moveTo(this.edge[0], this.edge[1]);
-      ctx.lineTo(neighborBlock.edge[0], neighborBlock.edge[1]);
+      
+      // 도로의 네 꼭지점 계산
+      const x1 = startX + perpX * roadWidth / 2;
+      const y1 = startY + perpY * roadWidth / 2;
+      const x2 = startX - perpX * roadWidth / 2;
+      const y2 = startY - perpY * roadWidth / 2;
+      const x3 = endX - perpX * roadWidth / 2;
+      const y3 = endY - perpY * roadWidth / 2;
+      const x4 = endX + perpX * roadWidth / 2;
+      const y4 = endY + perpY * roadWidth / 2;
+      
+      // 도로 사각형 그리기
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.lineTo(x3, y3);
+      ctx.lineTo(x4, y4);
+      ctx.closePath();
+      ctx.fill();
+      
+      // 도로 테두리
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 1;
       ctx.stroke();
+      
+      // 차선 그리기
+      if (this.line > 1) {
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([10, 10]); // 점선으로 차선 표시
+        
+        for (let i = 1; i < this.line; i++) {
+          // 차선 위치 계산 (도로 너비를 차선 수로 나눔)
+          const laneOffset = roadWidth / this.line * i - roadWidth / 2;
+          
+          ctx.beginPath();
+          ctx.moveTo(
+            startX + perpX * laneOffset,
+            startY + perpY * laneOffset
+          );
+          ctx.lineTo(
+            endX + perpX * laneOffset,
+            endY + perpY * laneOffset
+          );
+          ctx.stroke();
+        }
+        
+        // 점선 설정 초기화
+        ctx.setLineDash([]);
+      }
     }
 
     // 블록 ID 표시 (디버깅용)

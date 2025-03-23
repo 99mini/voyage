@@ -23,6 +23,8 @@ class Vehicle {
   angle: number = 0;
   /** 다음 블록의 좌표 */
   nextPoint: [number, number] | null = null;
+  /** 현재 사용 중인 차선 번호 (0부터 시작) */
+  laneNumber: number;
 
   constructor({
     x,
@@ -43,6 +45,8 @@ class Vehicle {
     this.maxSpeed = speed;
     this.currentBlockId = startBlockId;
     this.destinationBlockId = destinationBlockId;
+    // 랜덤 차선 할당 (0부터 시작)
+    this.laneNumber = Math.floor(Math.random() * 2); // 최대 2개 차선까지 고려
   }
 
   /**
@@ -59,15 +63,44 @@ class Vehicle {
   /**
    * 다음 목적지 설정하기
    */
-  setNextPoint(point: [number, number]) {
-    this.nextPoint = point;
+  setNextPoint(point: [number, number], currentBlock: RoadBlock, nextBlock: RoadBlock) {
+    // 기본 다음 지점
+    const baseNextPoint: [number, number] = [point[0], point[1]];
+    
+    // 도로의 방향 벡터 계산
+    const dx = nextBlock.edge[0] - currentBlock.edge[0];
+    const dy = nextBlock.edge[1] - currentBlock.edge[1];
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    
+    // 정규화된 방향 벡터
+    const dirX = dx / distance;
+    const dirY = dy / distance;
+    
+    // 도로 방향에 수직인 벡터 (90도 회전)
+    const perpX = -dirY;
+    const perpY = dirX;
+    
+    // 도로 너비 계산
+    const roadWidth = currentBlock.line * 10; // 각 차선은 10px 너비
+    
+    // 차선 위치 계산 (도로 중앙에서 차선 위치로 오프셋)
+    // 차선 번호가 현재 블록의 차선 수보다 크면 조정
+    const effectiveLaneNumber = Math.min(this.laneNumber, currentBlock.line - 1);
+    
+    // 차선 위치 계산 (도로 너비를 차선 수로 나눔)
+    // 첫 번째 차선은 왼쪽에서 시작, 마지막 차선은 오른쪽에 위치
+    const laneOffset = roadWidth / currentBlock.line * (effectiveLaneNumber + 0.5) - roadWidth / 2;
+    
+    // 차선 위치에 맞게 다음 지점 조정
+    baseNextPoint[0] += perpX * laneOffset;
+    baseNextPoint[1] += perpY * laneOffset;
+    
+    this.nextPoint = baseNextPoint;
     
     // 이동 방향 각도 계산
-    if (this.nextPoint) {
-      const dx = this.nextPoint[0] - this.x;
-      const dy = this.nextPoint[1] - this.y;
-      this.angle = Math.atan2(dy, dx);
-    }
+    const targetDx = this.nextPoint[0] - this.x;
+    const targetDy = this.nextPoint[1] - this.y;
+    this.angle = Math.atan2(targetDy, targetDx);
   }
 
   /**
@@ -81,8 +114,10 @@ class Vehicle {
     if (!this.nextPoint && this.path.length > 0) {
       const nextBlockId = this.path[0];
       const nextBlock = blocks.find((block) => block.id === nextBlockId);
-      if (nextBlock) {
-        this.setNextPoint(nextBlock.edge);
+      const currentBlock = blocks.find((block) => block.id === this.currentBlockId);
+      
+      if (nextBlock && currentBlock) {
+        this.setNextPoint(nextBlock.edge, currentBlock, nextBlock);
       }
     }
 
@@ -95,7 +130,7 @@ class Vehicle {
       this.moveTowardsTarget();
 
       // 목적지에 도착했는지 확인
-      this.checkArrival();
+      this.checkArrival(blocks);
     }
   }
 
@@ -120,8 +155,11 @@ class Vehicle {
       // 두 벡터의 내적이 양수이면 진행 방향에 있는 것
       const dotProduct = dx * targetDx + dy * targetDy;
       
-      // 거리가 가까우면서 진행 방향에 있는 차량 필터링
-      return dotProduct > 0 && Math.sqrt(dx * dx + dy * dy) < 100;
+      // 같은 차선에 있는지 확인 (같은 차선에 있는 차량만 고려)
+      const sameLane = v.laneNumber === this.laneNumber;
+      
+      // 거리가 가까우면서 진행 방향에 있고 같은 차선에 있는 차량 필터링
+      return dotProduct > 0 && Math.sqrt(dx * dx + dy * dy) < 100 && sameLane;
     });
 
     if (frontVehicles.length) {
@@ -195,7 +233,7 @@ class Vehicle {
   /**
    * 현재 목적지에 도착했는지 확인
    */
-  checkArrival() {
+  checkArrival(blocks: RoadBlock[]) {
     if (!this.nextPoint) return;
 
     const reachedX = Math.abs(this.x - this.nextPoint[0]) < 2;
@@ -215,6 +253,18 @@ class Vehicle {
       if (this.currentBlockId === this.destinationBlockId) {
         // 목적지 도착 시 경로 비우기
         this.path = [];
+      } else if (this.path.length > 0) {
+        // 다음 블록으로 이동 준비
+        const nextBlockId = this.path[0];
+        const nextBlock = blocks.find((block) => block.id === nextBlockId);
+        const currentBlock = blocks.find((block) => block.id === this.currentBlockId);
+        
+        if (nextBlock && currentBlock) {
+          // 새로운 차선 할당 (교차로에서 차선 변경 가능)
+          if (nextBlock.line > 1) {
+            this.laneNumber = Math.floor(Math.random() * Math.min(nextBlock.line, 2));
+          }
+        }
       }
     }
   }
@@ -240,7 +290,7 @@ class Vehicle {
     // 디버깅용 방향 표시와 목적지 표시
     ctx.fillStyle = 'red';
     ctx.font = '10px Arial';
-    ctx.fillText(`${Math.round(this.angle * 180 / Math.PI)}° ${this.destinationBlockId}`, this.x, this.y);
+    ctx.fillText(`${Math.round(this.angle * 180 / Math.PI)}° L${this.laneNumber}`, this.x, this.y);
   }
 
   destroy() {
