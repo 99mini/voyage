@@ -1,5 +1,5 @@
 import { ROAD_WIDTH } from '../constants/road';
-import { RoadBlock, Connection } from './road';
+import { RoadBlock, Connection, RoadNetwork } from './road';
 
 class Vehicle {
   // 위치 정보
@@ -64,32 +64,32 @@ class Vehicle {
   /**
    * 다음 목적지 설정하기
    */
-  setNextPoint(point: [number, number], currentBlock: RoadBlock, nextBlock: RoadBlock, connection: Connection) {
-    // 기본 다음 지점
+  setNextPoint(
+    point: [number, number],
+    currentBlock: RoadBlock,
+    nextBlock: RoadBlock,
+    connection: Connection
+  ) {
+    // 기본 다음 지점 설정
     const baseNextPoint: [number, number] = [point[0], point[1]];
 
-    // 도로의 방향 벡터 계산
+    // 현재 블록에서 다음 블록으로의 방향 벡터 계산
     const dx = nextBlock.edge[0] - currentBlock.edge[0];
     const dy = nextBlock.edge[1] - currentBlock.edge[1];
-    const distance = Math.sqrt(dx * dx + dy * dy);
 
-    // 정규화된 방향 벡터 (0으로 나누는 것 방지)
+    // 방향 벡터 정규화
     let dirX = 0;
     let dirY = 0;
-    
-    if (distance > 0.001) {
+
+    // 방향 벡터가 0이 아닌 경우에만 정규화
+    if (dx !== 0 || dy !== 0) {
+      const distance = Math.sqrt(dx * dx + dy * dy);
       dirX = dx / distance;
       dirY = dy / distance;
     } else {
-      // 거리가 너무 작으면 기본값 설정
-      console.warn('블록 간 거리가 너무 가까움:', currentBlock.id, nextBlock.id);
-      if (Math.abs(dx) > Math.abs(dy)) {
-        dirX = dx >= 0 ? 1 : -1;
-        dirY = 0;
-      } else {
-        dirX = 0;
-        dirY = dy >= 0 ? 1 : -1;
-      }
+      // 방향 벡터가 0인 경우 기본값 설정
+      dirX = dx >= 0 ? 1 : -1;
+      dirY = dy >= 0 ? 1 : -1;
     }
 
     // 도로 방향에 수직인 벡터 (90도 회전)
@@ -110,76 +110,58 @@ class Vehicle {
     baseNextPoint[0] += perpX * laneOffset;
     baseNextPoint[1] += perpY * laneOffset;
 
-    // NaN 체크 및 수정
-    if (isNaN(baseNextPoint[0]) || isNaN(baseNextPoint[1])) {
-      console.error('nextPoint 계산 오류 - NaN 발생:', {
-        현재블록: currentBlock.id,
-        다음블록: nextBlock.id,
-        방향벡터: [dirX, dirY],
-        수직벡터: [perpX, perpY],
-        차선오프셋: laneOffset
-      });
-      
-      // 오류 발생 시 원래 목적지 사용
-      baseNextPoint[0] = point[0];
-      baseNextPoint[1] = point[1];
-    }
-
+    // 다음 지점 설정
     this.nextPoint = baseNextPoint;
 
-    // 이동 방향 각도 계산 - 수직 이동일 경우 특별 처리
-    const targetDx = this.nextPoint[0] - this.x;
-    const targetDy = this.nextPoint[1] - this.y;
-    
-    if (Math.abs(targetDx) < 0.001) {
-      // 수직 이동 (위/아래)
-      this.angle = targetDy > 0 ? Math.PI / 2 : -Math.PI / 2;
-    } else if (Math.abs(targetDy) < 0.001) {
-      // 수평 이동 (좌/우)
-      this.angle = targetDx > 0 ? 0 : Math.PI;
-    } else {
-      // 일반적인 각도 계산
-      this.angle = Math.atan2(targetDy, targetDx);
-    }
+    // 각도 계산 (차량이 이동 방향을 바라보도록)
+    this.angle = Math.atan2(dirY, dirX);
 
-    console.log(`차량 ${this.currentBlockId} -> ${nextBlock.id} 이동 설정:`, {
-      시작점: [this.x, this.y],
+    // 로그
+    console.log('다음 목적지 설정:', {
+      현재블록: this.currentBlockId,
+      다음블록: nextBlock.id,
+      현재위치: [this.x, this.y],
       목적지: this.nextPoint,
       각도: Math.round((this.angle * 180) / Math.PI),
       차선: this.laneNumber,
       차선중앙위치: laneCenter,
       차선오프셋: laneOffset,
       연결ID: connection.id,
-      총차선수: connection.line,
-      진입차선수: connection.inLanes,
-      진출차선수: connection.outLanes
+      도로너비: roadWidth,
+      차선너비: laneWidth,
     });
   }
 
   /**
    * 차량 업데이트
    */
-  update(vehicles: Vehicle[], blocks: Map<number, RoadBlock>, connections: Map<number, Connection>) {
-    // 경로가 없으면 업데이트 중단
-    if (this.path.length === 0) return;
+  update(vehicles: Vehicle[], blocks: Map<number, RoadBlock>, connections: Map<number, Connection>, roadNetwork?: RoadNetwork) {
+    // 경로가 없고 목적지가 설정되어 있으면 경로 생성 필요
+    if (this.path.length === 0 && this.currentBlockId !== this.destinationBlockId) {
+      console.error(`경로가 설정되지 않음: ${this.currentBlockId} -> ${this.destinationBlockId}`);
+      return;
+    }
 
     // 다음 목적지가 없으면 설정
     if (!this.nextPoint && this.path.length > 0) {
-      // 현재 블록과 다음 블록 가져오기
       const currentBlock = blocks.get(this.currentBlockId);
-
-      // 다음 블록은 경로의 첫 번째 요소
       const nextBlockId = this.path[0];
       const nextBlock = blocks.get(nextBlockId);
 
       if (currentBlock && nextBlock) {
-        // 다음 목적지 설정
-        // 두 블록 사이의 연결 찾기
+        // 현재 블록과 다음 블록 사이의 연결 찾기
         let connection: Connection | undefined;
-        for (const conn of connections.values()) {
-          if (conn.fromBlockId === currentBlock.id && conn.toBlockId === nextBlockId) {
-            connection = conn;
-            break;
+        
+        if (roadNetwork) {
+          // roadNetwork가 제공된 경우 해당 메서드 사용
+          connection = roadNetwork.getConnectionByBlocks(currentBlock.id, nextBlockId);
+        } else {
+          // roadNetwork가 없는 경우 connections에서 직접 찾기
+          for (const conn of connections.values()) {
+            if (conn.fromBlockId === currentBlock.id && conn.toBlockId === nextBlockId) {
+              connection = conn;
+              break;
+            }
           }
         }
         

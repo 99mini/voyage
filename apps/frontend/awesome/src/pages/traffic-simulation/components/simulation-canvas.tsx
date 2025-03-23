@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { ROAD_WIDTH } from '../constants/road';
-import { RoadBlock, Connection, RoadNetwork } from '../objects/road';
+import { Connection, RoadBlock, RoadNetwork } from '../objects/road';
 import { Vehicle } from '../objects/vehicle';
 
 let vehicleId = 0;
@@ -67,77 +67,35 @@ network.addBlock(block6);
 network.addBlock(block7);
 
 // 수평 도로 연결 (위)
-network.addConnection(new Connection(
-  1,
-  0,
-  1,
-  2,
-  1,
-  1,
-  3
-));
+network.addConnection(
+  new Connection({ id: 1, fromBlockId: 0, toBlockId: 1, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+);
 
-network.addConnection(new Connection(
-  2,
-  1,
-  2,
-  2,
-  1,
-  1,
-  3
-));
+network.addConnection(
+  new Connection({ id: 2, fromBlockId: 1, toBlockId: 2, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+);
 
 // 수평 도로 블록 연결 (아래)
-network.addConnection(new Connection(
-  3,
-  3,
-  4,
-  2,
-  1,
-  1,
-  3
-));
+network.addConnection(
+  new Connection({ id: 3, fromBlockId: 3, toBlockId: 4, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+);
 
-network.addConnection(new Connection(
-  4,
-  4,
-  5,
-  2,
-  1,
-  1,
-  3
-));
+network.addConnection(
+  new Connection({ id: 4, fromBlockId: 4, toBlockId: 5, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+);
 
 // 교차로 연결
-network.addConnection(new Connection(
-  5,
-  1,
-  6,
-  2,
-  1,
-  1,
-  2
-));
+network.addConnection(
+  new Connection({ id: 5, fromBlockId: 1, toBlockId: 6, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+);
 
-network.addConnection(new Connection(
-  6,
-  1,
-  4,
-  2,
-  1,
-  1,
-  2
-));
+network.addConnection(
+  new Connection({ id: 6, fromBlockId: 1, toBlockId: 4, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+);
 
-network.addConnection(new Connection(
-  7,
-  4,
-  7,
-  2,
-  1,
-  1,
-  2
-));
+network.addConnection(
+  new Connection({ id: 7, fromBlockId: 4, toBlockId: 7, line: 2, inLanes: 1, outLanes: 1, maxSpeed: 3 }),
+);
 
 // 가능한 시작점과 목적지 정의
 const possibleStarts = [0, 3, 6]; // 왼쪽 위, 왼쪽 아래, 위쪽 중앙
@@ -192,7 +150,7 @@ const SimulationCanvas = () => {
 
       // 모든 차량 업데이트 및 그리기
       for (const vehicle of Object.values(vehicles)) {
-        vehicle.update(Object.values(vehicles), network.blocks, network.connections);
+        vehicle.update(Object.values(vehicles), network.blocks, network.connections, network);
         vehicle.draw(ctx);
       }
 
