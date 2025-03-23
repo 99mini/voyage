@@ -368,7 +368,6 @@ export class RoadNetwork {
           path.unshift(node);
         }
 
-        console.log(`경로 찾음: ${path.join(' -> ')}`);
         return path;
       }
 
