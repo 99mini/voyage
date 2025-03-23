@@ -1,5 +1,5 @@
-import road from '../constants/road';
-import { RoadBlock } from './road';
+import { ROAD_WIDTH } from '../constants/road';
+import { RoadBlock, Connection } from './road';
 
 class Vehicle {
   // 위치 정보
@@ -64,7 +64,7 @@ class Vehicle {
   /**
    * 다음 목적지 설정하기
    */
-  setNextPoint(point: [number, number], currentBlock: RoadBlock, nextBlock: RoadBlock) {
+  setNextPoint(point: [number, number], currentBlock: RoadBlock, nextBlock: RoadBlock, connection: Connection) {
     // 기본 다음 지점
     const baseNextPoint: [number, number] = [point[0], point[1]];
 
@@ -97,61 +97,13 @@ class Vehicle {
     const perpY = dirX;
 
     // 도로 너비 계산
-    const roadWidth = nextBlock.line * road.ROAD_WIDTH;
+    const roadWidth = connection.line * ROAD_WIDTH;
 
-    // 차선 위치 계산 (도로 중앙에서 차선 위치로 오프셋)
-    // 차선 번호가 현재 블록의 차선 수보다 크면 조정
-    const effectiveLaneNumber = Math.min(this.laneNumber, nextBlock.line - 1);
-    
-    // 차량의 이동 방향 확인 (현재 블록에서 다음 블록으로 가는 방향)
-    // 수평 이동인 경우 (좌->우 또는 우->좌)
-    const isHorizontalMovement = Math.abs(dirX) > Math.abs(dirY);
-    // 수직 이동인 경우 (상->하 또는 하->상)
-    const isVerticalMovement = !isHorizontalMovement;
-    
-    // 진입 차선인지 확인
-    // 우측통행: 
-    // - 수평 이동에서 왼쪽->오른쪽 이동은 아래쪽 차선(높은 번호)
-    // - 수평 이동에서 오른쪽->왼쪽 이동은 위쪽 차선(낮은 번호)
-    // - 수직 이동에서 위->아래 이동은 오른쪽 차선(높은 번호)
-    // - 수직 이동에서 아래->위 이동은 왼쪽 차선(낮은 번호)
-    const isInLane = (isHorizontalMovement && dirX > 0) || (isVerticalMovement && dirY < 0);
-    
-    // 우측통행 적용을 위한 차선 번호 조정
-    let adjustedLaneNumber = effectiveLaneNumber;
-    
-    if (isHorizontalMovement) {
-      if (dirX > 0) {
-        // 왼쪽->오른쪽 이동: 아래쪽 차선 사용 (우측통행)
-        // 진입 차선 중에서 아래쪽(높은 번호) 차선 사용
-        if (nextBlock.inLanes > 0) {
-          // 진입 차선 범위 내에서 가장 아래쪽(높은 번호) 차선 선택
-          adjustedLaneNumber = nextBlock.inLanes - 1;
-        } else {
-          adjustedLaneNumber = 0;
-        }
-      } else {
-        // 오른쪽->왼쪽 이동: 위쪽 차선 사용 (우측통행)
-        // 진출 차선 중에서 위쪽(낮은 번호) 차선 사용
-        adjustedLaneNumber = nextBlock.inLanes;
-      }
-    } else { // 수직 이동
-      if (dirY > 0) {
-        // 위->아래 이동: 오른쪽 차선 사용 (우측통행)
-        // 진출 차선 중에서 가장 오른쪽(높은 번호) 차선 선택
-        adjustedLaneNumber = nextBlock.line - 1;
-      } else {
-        // 아래->위 이동: 왼쪽 차선 사용 (우측통행)
-        // 진입 차선 중에서 가장 왼쪽(낮은 번호) 차선 선택
-        adjustedLaneNumber = 0;
-      }
-    }
-    
     // 차선 위치 계산 (도로 너비를 차선 수로 나눔)
     // 차선의 중앙에 차량이 위치하도록 계산
     // 차선 너비의 절반을 더해 차선의 중앙에 위치하도록 함
-    const laneWidth = roadWidth / nextBlock.line;
-    const laneCenter = laneWidth * adjustedLaneNumber + laneWidth / 2;
+    const laneWidth = roadWidth / connection.line;
+    const laneCenter = laneWidth * this.laneNumber + laneWidth / 2;
     const laneOffset = laneCenter - roadWidth / 2;
 
     // 차선 위치에 맞게 다음 지점 조정
@@ -195,33 +147,47 @@ class Vehicle {
       목적지: this.nextPoint,
       각도: Math.round((this.angle * 180) / Math.PI),
       차선: this.laneNumber,
-      조정된차선: adjustedLaneNumber,
-      진입차선여부: isInLane,
-      이동방향: isHorizontalMovement ? (dirX > 0 ? '왼->오' : '오->왼') : (dirY > 0 ? '위->아래' : '아래->위'),
       차선중앙위치: laneCenter,
       차선오프셋: laneOffset,
+      연결ID: connection.id,
+      총차선수: connection.line,
+      진입차선수: connection.inLanes,
+      진출차선수: connection.outLanes
     });
   }
 
   /**
    * 차량 업데이트
    */
-  update(vehicles: Vehicle[], blocks: RoadBlock[]) {
+  update(vehicles: Vehicle[], blocks: Map<number, RoadBlock>, connections: Map<number, Connection>) {
     // 경로가 없으면 업데이트 중단
     if (this.path.length === 0) return;
 
     // 다음 목적지가 없으면 설정
     if (!this.nextPoint && this.path.length > 0) {
       // 현재 블록과 다음 블록 가져오기
-      const currentBlock = blocks.find((block) => block.id === this.currentBlockId);
+      const currentBlock = blocks.get(this.currentBlockId);
 
       // 다음 블록은 경로의 첫 번째 요소
       const nextBlockId = this.path[0];
-      const nextBlock = blocks.find((block) => block.id === nextBlockId);
+      const nextBlock = blocks.get(nextBlockId);
 
       if (currentBlock && nextBlock) {
         // 다음 목적지 설정
-        this.setNextPoint(nextBlock.edge, currentBlock, nextBlock);
+        // 두 블록 사이의 연결 찾기
+        let connection: Connection | undefined;
+        for (const conn of connections.values()) {
+          if (conn.fromBlockId === currentBlock.id && conn.toBlockId === nextBlockId) {
+            connection = conn;
+            break;
+          }
+        }
+        
+        if (connection) {
+          this.setNextPoint(nextBlock.edge, currentBlock, nextBlock, connection);
+        } else {
+          console.error(`연결 정보를 찾을 수 없음: 현재=${this.currentBlockId}, 다음=${nextBlockId}`);
+        }
       } else {
         console.error(`블록을 찾을 수 없음: 현재=${this.currentBlockId}, 다음=${nextBlockId}`);
       }
@@ -356,7 +322,7 @@ class Vehicle {
   /**
    * 현재 목적지에 도착했는지 확인
    */
-  checkArrival(blocks: RoadBlock[]) {
+  checkArrival(blocks: Map<number, RoadBlock>) {
     if (!this.nextPoint) return;
 
     const reachedX = Math.abs(this.x - this.nextPoint[0]) < 2;
@@ -372,23 +338,20 @@ class Vehicle {
         console.log(`차량이 블록 ${this.currentBlockId}로 이동, 남은 경로:`, this.path);
 
         // 새로운 차선 할당 (교차로에서 차선 변경 가능)
-        const currentBlock = blocks.find((block) => block.id === this.currentBlockId);
-        if (currentBlock && currentBlock.line > 1) {
-          this.laneNumber = Math.floor(Math.random() * currentBlock.line);
+        const currentBlock = blocks.get(this.currentBlockId);
+        if (currentBlock) {
+          // 기본적으로 2개의 차선 중에서 랜덤하게 선택
+          this.laneNumber = Math.floor(Math.random() * 2);
           console.log(`차량 차선 변경: ${this.laneNumber}`);
         }
-      }
 
-      // 다음 목적지 설정 초기화
-      this.nextPoint = null;
-
-      // 목적지에 도착했는지 확인
-      if (this.currentBlockId === this.destinationBlockId) {
-        // 목적지 도착 시 경로 비우기
-        console.log(`차량이 최종 목적지 ${this.destinationBlockId}에 도착`);
-        this.path = [];
+        // 다음 목적지 초기화 (다음 업데이트에서 새로 설정됨)
+        this.nextPoint = null;
+      } else {
+        // 모든 경로를 이동했으면 목적지에 도착한 것
+        console.log(`차량이 최종 목적지(${this.destinationBlockId})에 도착`);
+        this.destroy();
       }
-      // 다음 경로가 있으면 다음 목적지 설정은 update에서 처리됨
     }
   }
 

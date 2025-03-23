@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import road from '../constants/road';
-import { Road, RoadBlock } from '../objects/road';
+import { ROAD_WIDTH } from '../constants/road';
+import { RoadBlock, Connection, RoadNetwork } from '../objects/road';
 import { Vehicle } from '../objects/vehicle';
 
 let vehicleId = 0;
@@ -13,92 +13,131 @@ const WINDOW_HEIGHT = 600;
 // 수평 도로 블록 (위쪽)
 const block0 = new RoadBlock({
   edge: [20, 100],
-  line: 2,
-  maxSpeed: 3,
   id: 0,
-  inLanes: 1,
-  outLanes: 1,
 });
 
 const block1 = new RoadBlock({
   edge: [400, 100],
-  line: 2,
-  maxSpeed: 3,
   id: 1,
-  inLanes: 1,
-  outLanes: 1,
 });
 
 const block2 = new RoadBlock({
   edge: [780, 100],
-  line: 2,
-  maxSpeed: 3,
   id: 2,
-  inLanes: 1,
-  outLanes: 1,
 });
 
 // 수평 도로 블록 (아래쪽)
 const block3 = new RoadBlock({
   edge: [20, 200],
-  line: 2,
-  maxSpeed: 3,
   id: 3,
-  inLanes: 1,
-  outLanes: 1,
 });
 
 const block4 = new RoadBlock({
   edge: [400, 200],
-  line: 2,
-  maxSpeed: 3,
   id: 4,
 });
 
 const block5 = new RoadBlock({
   edge: [780, 200],
-  line: 2,
-  maxSpeed: 3,
   id: 5,
-  inLanes: 1,
-  outLanes: 1,
 });
 
 // 수직 도로 블록
 const block6 = new RoadBlock({
   edge: [400, 20],
-  line: 2,
-  maxSpeed: 2,
   id: 6,
-  inLanes: 1,
-  outLanes: 1,
 });
 
 const block7 = new RoadBlock({
   edge: [400, 580],
-  line: 2,
-  maxSpeed: 2,
   id: 7,
-  inLanes: 2,
-  outLanes: 1,
 });
 
-const load = new Road({
-  blocks: [block0, block1, block2, block3, block4, block5, block6, block7],
-});
+// 도로 네트워크 생성
+const network = new RoadNetwork();
+
+// 블록 추가
+network.addBlock(block0);
+network.addBlock(block1);
+network.addBlock(block2);
+network.addBlock(block3);
+network.addBlock(block4);
+network.addBlock(block5);
+network.addBlock(block6);
+network.addBlock(block7);
 
 // 수평 도로 연결 (위)
-load.addConnection(0, 1);
-load.addConnection(1, 2);
+network.addConnection(new Connection(
+  1,
+  0,
+  1,
+  2,
+  1,
+  1,
+  3
+));
+
+network.addConnection(new Connection(
+  2,
+  1,
+  2,
+  2,
+  1,
+  1,
+  3
+));
 
 // 수평 도로 블록 연결 (아래)
-load.addConnection(3, 4);
-load.addConnection(4, 5);
+network.addConnection(new Connection(
+  3,
+  3,
+  4,
+  2,
+  1,
+  1,
+  3
+));
+
+network.addConnection(new Connection(
+  4,
+  4,
+  5,
+  2,
+  1,
+  1,
+  3
+));
 
 // 교차로 연결
-load.addConnection(1, 6);
-load.addConnection(1, 4);
-load.addConnection(4, 7);
+network.addConnection(new Connection(
+  5,
+  1,
+  6,
+  2,
+  1,
+  1,
+  2
+));
+
+network.addConnection(new Connection(
+  6,
+  1,
+  4,
+  2,
+  1,
+  1,
+  2
+));
+
+network.addConnection(new Connection(
+  7,
+  4,
+  7,
+  2,
+  1,
+  1,
+  2
+));
 
 // 가능한 시작점과 목적지 정의
 const possibleStarts = [0, 3, 6]; // 왼쪽 위, 왼쪽 아래, 위쪽 중앙
@@ -127,13 +166,13 @@ const getRandomColor = () => {
 };
 
 // 연결 상태 확인 및 출력
-console.log('도로 연결 상태:', load.adjacencyList);
+console.log('도로 연결 상태:', network.adjacencyList);
 
 // 모든 가능한 경로 테스트
 for (const start of possibleStarts) {
   for (const dest of possibleDestinations) {
     if (start !== dest) {
-      const testPath = load.findPath(start, dest);
+      const testPath = network.findPath(start, dest);
       console.log(`테스트 경로 ${start} -> ${dest}:`, testPath);
     }
   }
@@ -149,11 +188,11 @@ const SimulationCanvas = () => {
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      load.draw(ctx);
+      network.draw(ctx);
 
       // 모든 차량 업데이트 및 그리기
       for (const vehicle of Object.values(vehicles)) {
-        vehicle.update(Object.values(vehicles), load.blocks);
+        vehicle.update(Object.values(vehicles), network.blocks, network.connections);
         vehicle.draw(ctx);
       }
 
@@ -175,21 +214,22 @@ const SimulationCanvas = () => {
       const { startBlockId, destinationBlockId } = getRandomStartAndDestination();
 
       // 시작 블록과 목적지 블록 가져오기
-      const startBlock = load.getBlockById(startBlockId);
-      const destBlock = load.getBlockById(destinationBlockId);
+      const startBlock = network.getBlockById(startBlockId);
+      const destBlock = network.getBlockById(destinationBlockId);
 
       if (startBlock && destBlock) {
         // 경로 찾기
-        const path = load.findPath(startBlockId, destinationBlockId);
+        const path = network.findPath(startBlockId, destinationBlockId);
         console.log(`경로 탐색: ${startBlockId} -> ${destinationBlockId}, 결과:`, path);
 
         if (path.length > 0) {
           // 다음 블록이 있으면 방향 계산
           if (path.length > 1) {
             const nextBlockId = path[1];
-            const nextBlock = load.getBlockById(nextBlockId);
+            const nextBlock = network.getBlockById(nextBlockId);
+            const connection = network.getConnectionByBlocks(startBlockId, nextBlockId);
 
-            if (nextBlock) {
+            if (nextBlock && connection) {
               // 도로의 방향 벡터 계산
               const dx = nextBlock.edge[0] - startBlock.edge[0];
               const dy = nextBlock.edge[1] - startBlock.edge[1];
@@ -214,10 +254,10 @@ const SimulationCanvas = () => {
               // 진입 또는 진출 차선 중에서 우측통행에 맞게 차선 선택
               if (isInLane) {
                 // 진입 차선 중에서 선택
-                if (startBlock.inLanes > 0) {
+                if (connection.inLanes > 0) {
                   if (isHorizontalMovement && dirX > 0) {
                     // 왼쪽->오른쪽 이동: 아래쪽 차선 사용 (우측통행)
-                    laneNumber = startBlock.inLanes - 1;
+                    laneNumber = connection.inLanes - 1;
                   } else if (isVerticalMovement && dirY < 0) {
                     // 아래->위 이동: 왼쪽 차선 사용 (우측통행)
                     laneNumber = 0;
@@ -230,27 +270,27 @@ const SimulationCanvas = () => {
                 }
               } else {
                 // 진출 차선 중에서 선택
-                if (startBlock.outLanes > 0) {
+                if (connection.outLanes > 0) {
                   if (isHorizontalMovement && dirX < 0) {
                     // 오른쪽->왼쪽 이동: 위쪽 차선 사용 (우측통행)
-                    laneNumber = startBlock.inLanes;
+                    laneNumber = connection.inLanes;
                   } else if (isVerticalMovement && dirY > 0) {
                     // 위->아래 이동: 오른쪽 차선 사용 (우측통행)
-                    laneNumber = startBlock.line - 1;
+                    laneNumber = connection.line - 1;
                   } else {
                     // 기본값 (예외 처리)
-                    laneNumber = startBlock.inLanes;
+                    laneNumber = connection.inLanes;
                   }
                 } else {
-                  laneNumber = Math.max(0, startBlock.line - 1);
+                  laneNumber = Math.max(0, connection.line - 1);
                 }
               }
 
               // 도로 너비 계산
-              const roadWidth = startBlock.line * road.ROAD_WIDTH;
+              const roadWidth = connection.line * ROAD_WIDTH;
 
               // 차선 너비 계산
-              const laneWidth = roadWidth / startBlock.line;
+              const laneWidth = roadWidth / connection.line;
 
               // 차선 중앙 위치 계산
               const laneCenter = laneWidth * laneNumber + laneWidth / 2;
@@ -289,7 +329,7 @@ const SimulationCanvas = () => {
 
               console.log(`차량 각도 설정: ${Math.round((newVehicle.angle * 180) / Math.PI)}°, dx=${dx}, dy=${dy}`);
               console.log(
-                `차량 차선 설정: 차선=${laneNumber}, 진입차선여부=${isInLane}, 총차선수=${startBlock.line}, 진입차선수=${startBlock.inLanes}, 진출차선수=${startBlock.outLanes}`,
+                `차량 차선 설정: 차선=${laneNumber}, 진입차선여부=${isInLane}, 총차선수=${connection.line}, 진입차선수=${connection.inLanes}, 진출차선수=${connection.outLanes}`,
               );
 
               // 경로 설정

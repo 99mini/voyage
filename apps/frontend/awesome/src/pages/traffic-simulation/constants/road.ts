@@ -1,5 +1,1 @@
-const road = {
-  ROAD_WIDTH: 15,
-};
-
-export default road;
+export const ROAD_WIDTH = 15;
