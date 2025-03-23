@@ -9,33 +9,86 @@ const vehicles: Record<number, Vehicle> = {};
 const WINDOW_WIDTH = 800;
 const WINDOW_HEIGHT = 600;
 
+// 수평 도로 블록
 const block1 = new LoadBlock({
   edge: [0, 100],
+  line: 1,
+  maxSpeed: 3,
+  id: 0,
+});
+
+const block2 = new LoadBlock({
+  edge: [400, 100],
   line: 1,
   maxSpeed: 3,
   id: 1,
 });
 
-const block2 = new LoadBlock({
-  edge: [1000, 100],
+const block3 = new LoadBlock({
+  edge: [800, 100],
   line: 1,
   maxSpeed: 3,
   id: 2,
 });
 
-const block3 = new LoadBlock({
-  edge: [2000, 100],
-  line: 1,
+const block4 = new LoadBlock({
+  edge: [0, 200],
+  line: 2,
   maxSpeed: 3,
   id: 3,
 });
 
-const load = new Load({
-  blocks: [block1, block2, block3],
+const block5 = new LoadBlock({
+  edge: [400, 200],
+  line: 2,
+  maxSpeed: 3,
+  id: 4,
 });
 
-load.addConnection(1, 2); 
-load.addConnection(2, 3); 
+const block6 = new LoadBlock({
+  edge: [800, 200],
+  line: 2,
+  maxSpeed: 3,
+  id: 5,
+});
+
+// 수직 도로 블록
+const block7 = new LoadBlock({
+  edge: [400, 100],
+  line: 2, // 2차선 수직 도로
+  maxSpeed: 2,
+  id: 6,
+});
+
+const block8 = new LoadBlock({
+  edge: [400, 300],
+  line: 2,
+  maxSpeed: 2,
+  id: 7,
+});
+
+const block9 = new LoadBlock({
+  edge: [400, 0],
+  line: 2,
+  maxSpeed: 2,
+  id: 8,
+});
+
+const load = new Load({
+  blocks: [block1, block2, block3, block4, block5, block6, block7, block8, block9],
+});
+
+// 수평 도로 연결
+load.addConnection(0, 1);
+load.addConnection(1, 2);
+
+// 수평 도로 블록 연결
+load.addConnection(3, 4);
+load.addConnection(4, 5);
+
+// 수직 도로 연결
+load.addConnection(6, 7);
+load.addConnection(7, 8);
 
 const SimulationCanvas = () => {
   const callbackRef = useCallback((canvas: HTMLCanvasElement) => {
