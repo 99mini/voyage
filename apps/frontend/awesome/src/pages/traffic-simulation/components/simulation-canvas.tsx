@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { Load, LoadBlock } from '../objects/load';
+import { Road, RoadBlock } from '../objects/road';
 import { Vehicle } from '../objects/vehicle';
 
 let vehicleId = 0;
@@ -10,99 +10,102 @@ const WINDOW_WIDTH = 800;
 const WINDOW_HEIGHT = 600;
 
 // 수평 도로 블록 (위쪽)
-const block1 = new LoadBlock({
-  edge: [0, 100],
+const block0 = new RoadBlock({
+  edge: [20, 100],
   line: 1,
   maxSpeed: 3,
   id: 0,
+  roadType: 'horizontal',
 });
 
-const block2 = new LoadBlock({
+const block1 = new RoadBlock({
   edge: [400, 100],
   line: 1,
   maxSpeed: 3,
   id: 1,
+  roadType: 'horizontal',
 });
 
-const block3 = new LoadBlock({
-  edge: [800, 100],
+const block2 = new RoadBlock({
+  edge: [780, 100],
   line: 1,
   maxSpeed: 3,
   id: 2,
+  roadType: 'horizontal',
 });
 
 // 수평 도로 블록 (아래쪽)
-const block4 = new LoadBlock({
-  edge: [0, 200],
+const block3 = new RoadBlock({
+  edge: [20, 200],
   line: 2,
   maxSpeed: 3,
   id: 3,
+  roadType: 'horizontal',
 });
 
-const block5 = new LoadBlock({
+const block4 = new RoadBlock({
   edge: [400, 200],
   line: 2,
   maxSpeed: 3,
   id: 4,
+  roadType: 'horizontal',
 });
 
-const block6 = new LoadBlock({
-  edge: [800, 200],
+const block5 = new RoadBlock({
+  edge: [780, 200],
   line: 2,
   maxSpeed: 3,
   id: 5,
+  roadType: 'horizontal',
 });
 
 // 수직 도로 블록
-const block7 = new LoadBlock({
-  edge: [400, 100],
-  line: 2, // 2차선 수직 도로
+const block6 = new RoadBlock({
+  edge: [400, 20],
+  line: 2,
   maxSpeed: 2,
   id: 6,
+  roadType: 'vertical',
 });
 
-const block8 = new LoadBlock({
-  edge: [400, 300],
+const block7 = new RoadBlock({
+  edge: [400, 580],
   line: 2,
   maxSpeed: 2,
   id: 7,
+  roadType: 'vertical',
 });
 
-const block9 = new LoadBlock({
-  edge: [400, 0],
-  line: 2,
-  maxSpeed: 2,
-  id: 8,
+const load = new Road({
+  blocks: [block0, block1, block2, block3, block4, block5, block6, block7],
 });
 
-const load = new Load({
-  blocks: [block1, block2, block3, block4, block5, block6, block7, block8, block9],
-});
-
-// 수평 도로 연결
+// 수평 도로 연결 (위)
 load.addConnection(0, 1);
 load.addConnection(1, 2);
 
-// 수평 도로 블록 연결
+// 수평 도로 블록 연결 (아래)
 load.addConnection(3, 4);
 load.addConnection(4, 5);
 
-// 수직 도로 연결
-load.addConnection(6, 7);
-load.addConnection(8, 6);
-
 // 교차로 연결
-load.addConnection(1, 6); // 위쪽 수평 도로에서 수직 도로로
-load.addConnection(6, 4); // 수직 도로에서 아래쪽 수평 도로로
+load.addConnection(1, 6);
+load.addConnection(1, 4);
+load.addConnection(4, 7);
 
 // 가능한 시작점과 목적지 정의
-const possibleStarts = [0, 3, 8]; // 왼쪽 위, 왼쪽 아래, 위쪽 중앙
-const possibleDestinations = [2, 5, 7]; // 오른쪽 위, 오른쪽 아래, 아래쪽 중앙
+const possibleStarts = [0, 3, 6]; // 왼쪽 위, 왼쪽 아래, 위쪽 중앙, 오른쪽 위
+const possibleDestinations = [2, 5, 7]; // 오른쪽 위, 오른쪽 아래, 아래쪽 중앙, 왼쪽 위
 
 // 랜덤 시작점과 목적지 선택 함수
 const getRandomStartAndDestination = () => {
   const startIdx = Math.floor(Math.random() * possibleStarts.length);
-  const destIdx = Math.floor(Math.random() * possibleDestinations.length);
+  let destIdx;
+
+  // 시작점과 목적지가 같지 않도록 설정
+  do {
+    destIdx = Math.floor(Math.random() * possibleDestinations.length);
+  } while (possibleStarts[startIdx] === possibleDestinations[destIdx]);
 
   return {
     startBlockId: possibleStarts[startIdx],
@@ -182,6 +185,7 @@ const SimulationCanvas = () => {
           vehicle.y > WINDOW_HEIGHT ||
           vehicle.path.length === 0 // 목적지에 도착한 차량도 제거
         ) {
+          console.log('차량 제거:', vehicle);
           delete vehicles[Number(key)];
         }
       }
