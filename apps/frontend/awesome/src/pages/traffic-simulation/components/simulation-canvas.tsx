@@ -9,28 +9,33 @@ const vehicles: Record<number, Vehicle> = {};
 const WINDOW_WIDTH = 800;
 const WINDOW_HEIGHT = 600;
 
-const load = new Load({
-  blocks: [
-    new LoadBlock({
-      edge: [0, 100],
-      neighbors: [[1000, 100]],
-      line: 1,
-      maxSpeed: 3,
-    }),
-    new LoadBlock({
-      edge: [1000, 100],
-      neighbors: [[2000, 100]],
-      line: 1,
-      maxSpeed: 3,
-    }),
-    new LoadBlock({
-      edge: [2000, 100],
-      neighbors: [[3000, 100]],
-      line: 1,
-      maxSpeed: 3,
-    }),
-  ],
+const block1 = new LoadBlock({
+  edge: [0, 100],
+  line: 1,
+  maxSpeed: 3,
+  id: 1,
 });
+
+const block2 = new LoadBlock({
+  edge: [1000, 100],
+  line: 1,
+  maxSpeed: 3,
+  id: 2,
+});
+
+const block3 = new LoadBlock({
+  edge: [2000, 100],
+  line: 1,
+  maxSpeed: 3,
+  id: 3,
+});
+
+const load = new Load({
+  blocks: [block1, block2, block3],
+});
+
+load.addConnection(1, 2); 
+load.addConnection(2, 3); 
 
 const SimulationCanvas = () => {
   const callbackRef = useCallback((canvas: HTMLCanvasElement) => {
