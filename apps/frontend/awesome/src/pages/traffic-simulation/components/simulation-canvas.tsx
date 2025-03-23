@@ -225,8 +225,19 @@ const SimulationCanvas = () => {
               // 차선 번호 설정
               newVehicle.laneNumber = laneNumber;
               
-              // 이동 방향 각도 계산
-              newVehicle.angle = Math.atan2(dy, dx);
+              // 이동 방향 각도 계산 - 수직 이동일 경우 특별 처리
+              if (Math.abs(dx) < 0.001) {
+                // 수직 이동 (위/아래)
+                newVehicle.angle = dy > 0 ? Math.PI / 2 : -Math.PI / 2;
+              } else if (Math.abs(dy) < 0.001) {
+                // 수평 이동 (좌/우)
+                newVehicle.angle = dx > 0 ? 0 : Math.PI;
+              } else {
+                // 일반적인 각도 계산
+                newVehicle.angle = Math.atan2(dy, dx);
+              }
+              
+              console.log(`차량 각도 설정: ${Math.round(newVehicle.angle * 180 / Math.PI)}°, dx=${dx}, dy=${dy}`);
 
               // 경로 설정
               newVehicle.setPath(path);

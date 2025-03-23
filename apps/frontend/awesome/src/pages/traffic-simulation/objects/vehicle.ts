@@ -101,10 +101,20 @@ class Vehicle {
 
     this.nextPoint = baseNextPoint;
 
-    // 이동 방향 각도 계산
+    // 이동 방향 각도 계산 - 수직 이동일 경우 특별 처리
     const targetDx = this.nextPoint[0] - this.x;
     const targetDy = this.nextPoint[1] - this.y;
-    this.angle = Math.atan2(targetDy, targetDx);
+    
+    if (Math.abs(targetDx) < 0.001) {
+      // 수직 이동 (위/아래)
+      this.angle = targetDy > 0 ? Math.PI / 2 : -Math.PI / 2;
+    } else if (Math.abs(targetDy) < 0.001) {
+      // 수평 이동 (좌/우)
+      this.angle = targetDx > 0 ? 0 : Math.PI;
+    } else {
+      // 일반적인 각도 계산
+      this.angle = Math.atan2(targetDy, targetDx);
+    }
 
     console.log(`차량 ${this.currentBlockId} -> ${nextBlock.id} 이동 설정:`, {
       시작점: [this.x, this.y],
@@ -244,8 +254,17 @@ class Vehicle {
       this.x += dirX * moveDistance;
       this.y += dirY * moveDistance;
 
-      // 이동 방향 각도 업데이트
-      this.angle = Math.atan2(dy, dx);
+      // 이동 방향 각도 업데이트 - 수직 이동일 경우 특별 처리
+      if (Math.abs(dx) < 0.001) {
+        // 수직 이동 (위/아래)
+        this.angle = dy > 0 ? Math.PI / 2 : -Math.PI / 2;
+      } else if (Math.abs(dy) < 0.001) {
+        // 수평 이동 (좌/우)
+        this.angle = dx > 0 ? 0 : Math.PI;
+      } else {
+        // 일반적인 각도 계산
+        this.angle = Math.atan2(dy, dx);
+      }
     }
   }
 
