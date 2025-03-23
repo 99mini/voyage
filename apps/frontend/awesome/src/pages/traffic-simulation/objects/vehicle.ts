@@ -379,13 +379,14 @@ class Vehicle {
     ctx.fillStyle = this.color;
     ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
 
-    // 차량 앞부분 표시 (삼각형)
-    ctx.beginPath();
-    ctx.moveTo(this.width / 2, 0);
-    ctx.lineTo(this.width / 2 + 5, -this.height / 4);
-    ctx.lineTo(this.width / 2 + 5, this.height / 4);
-    ctx.closePath();
-    ctx.fill();
+    // 차량 앞쪽에 삼각형 그리기
+    ctx.fillStyle = 'red';
+    ctx.fillRect(this.width / 2, -this.height / 2, 5, this.height);
+
+    // 차량 각도 표시
+    ctx.font = '10px Arial';
+    ctx.fillStyle = 'black';
+    ctx.fillText(Math.round(Math.floor((this.angle * 180) / Math.PI)).toString(), 0, 0);
 
     ctx.restore();
   }
