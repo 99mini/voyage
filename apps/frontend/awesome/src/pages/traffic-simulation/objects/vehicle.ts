@@ -113,14 +113,14 @@ class Vehicle {
     const laneWidth = roadWidth / connection.line;
 
     // 각도에 따라 차선 선택
-    // 0° <= 각도 < 180°: 진출 차선 사용 (우측통행)
-    // 180° <= 각도 < 360°: 진입 차선 사용 (우측통행)
+    // 0° <= 각도 < 180°: 오른쪽 차선 사용 (우측통행)
+    // 180° <= 각도 < 360°: 왼쪽 차선 사용 (우측통행)
     if (angleDegrees >= 0 && angleDegrees < 180) {
-      // 진출 차선 사용 (우측통행)
-      this.laneNumber = connection.outLanes - 1; // 가장 오른쪽 진출 차선
+      // 오른쪽 차선 사용 (우측통행)
+      this.laneNumber = connection.line - 1; // 가장 오른쪽 차선
     } else {
-      // 진입 차선 사용 (우측통행)
-      this.laneNumber = connection.inLanes - 1; // 가장 오른쪽 진입 차선
+      // 왼쪽 차선 사용 (우측통행)
+      this.laneNumber = 0; // 가장 왼쪽 차선
     }
 
     // 차선의 중앙에 차량이 위치하도록 계산

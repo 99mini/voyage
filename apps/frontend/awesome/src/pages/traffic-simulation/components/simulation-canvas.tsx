@@ -66,36 +66,32 @@ network.addBlock(block5);
 network.addBlock(block6);
 network.addBlock(block7);
 
-// 수평 도로 연결 (위)
-network.addConnection(
-  new Connection({ id: 1, fromBlockId: 0, toBlockId: 1, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
-
-network.addConnection(
-  new Connection({ id: 2, fromBlockId: 1, toBlockId: 2, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
+// 수평 도로 블록 연결 (위)
+network.addConnection(new Connection({ id: 1, fromBlockId: 0, toBlockId: 1, line: 2, maxSpeed: 3 }));
+network.addConnection(new Connection({ id: 2, fromBlockId: 1, toBlockId: 2, line: 2, maxSpeed: 3 }));
 
 // 수평 도로 블록 연결 (아래)
-network.addConnection(
-  new Connection({ id: 3, fromBlockId: 3, toBlockId: 4, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
-
-network.addConnection(
-  new Connection({ id: 4, fromBlockId: 4, toBlockId: 5, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
+network.addConnection(new Connection({ id: 3, fromBlockId: 3, toBlockId: 4, line: 2, maxSpeed: 3 }));
+network.addConnection(new Connection({ id: 4, fromBlockId: 4, toBlockId: 5, line: 2, maxSpeed: 3 }));
 
 // 교차로 연결
-network.addConnection(
-  new Connection({ id: 5, fromBlockId: 6, toBlockId: 1, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
+network.addConnection(new Connection({ id: 5, fromBlockId: 6, toBlockId: 1, line: 2, maxSpeed: 3 }));
+network.addConnection(new Connection({ id: 6, fromBlockId: 1, toBlockId: 4, line: 2, maxSpeed: 3 }));
+network.addConnection(new Connection({ id: 7, fromBlockId: 4, toBlockId: 7, line: 2, maxSpeed: 3 }));
 
-network.addConnection(
-  new Connection({ id: 6, fromBlockId: 1, toBlockId: 4, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
+// 반대 차선 연결
+// 수평 도로 블록 연결 (위)
+network.addConnection(new Connection({ id: 8, fromBlockId: 1, toBlockId: 0, line: 2, maxSpeed: 3 }));
+network.addConnection(new Connection({ id: 9, fromBlockId: 2, toBlockId: 1, line: 2, maxSpeed: 3 }));
 
-network.addConnection(
-  new Connection({ id: 7, fromBlockId: 4, toBlockId: 7, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
+// 수평 도로 블록 연결 (아래)
+network.addConnection(new Connection({ id: 10, fromBlockId: 4, toBlockId: 3, line: 2, maxSpeed: 3 }));
+network.addConnection(new Connection({ id: 11, fromBlockId: 5, toBlockId: 4, line: 2, maxSpeed: 3 }));
+
+// 교차로 연결
+network.addConnection(new Connection({ id: 12, fromBlockId: 1, toBlockId: 6, line: 2, maxSpeed: 3 }));
+network.addConnection(new Connection({ id: 13, fromBlockId: 4, toBlockId: 1, line: 2, maxSpeed: 3 }));
+network.addConnection(new Connection({ id: 14, fromBlockId: 7, toBlockId: 4, line: 2, maxSpeed: 3 }));
 
 // 가능한 시작점과 목적지 정의
 const possibleSet = [
@@ -261,47 +257,23 @@ const SimulationCanvas = () => {
         if (Math.abs(dirX) > Math.abs(dirY)) {
           if (dirX > 0) {
             // 왼쪽->오른쪽 이동
-            // 진입 차선은 도로 아래쪽(우측)
-            if (connection.inLanes > 0) {
-              // 진입 차선 중 가장 오른쪽(아래쪽) 차선 선택
-              laneNumber = connection.line - 1;
-            } else {
-              // 진입 차선이 없는 경우 가장 오른쪽 차선 선택
-              laneNumber = connection.line - 1;
-            }
+            // 가장 오른쪽(아래쪽) 차선 선택
+            laneNumber = connection.line - 1;
           } else {
             // 오른쪽->왼쪽 이동
-            // 진입 차선은 도로 위쪽(우측)
-            if (connection.inLanes > 0) {
-              // 진입 차선 중 가장 오른쪽(위쪽) 차선 선택
-              laneNumber = 0;
-            } else {
-              // 진입 차선이 없는 경우 가장 오른쪽 차선 선택
-              laneNumber = 0;
-            }
+            // 가장 왼쪽(위쪽) 차선 선택
+            laneNumber = 0;
           }
         } else {
           // 수직 이동
           if (dirY > 0) {
             // 위->아래 이동
-            // 진입 차선은 도로 오른쪽(우측)
-            if (connection.inLanes > 0) {
-              // 진입 차선 중 가장 오른쪽 차선 선택
-              laneNumber = connection.line - 1;
-            } else {
-              // 진입 차선이 없는 경우 가장 오른쪽 차선 선택
-              laneNumber = connection.line - 1;
-            }
+            // 가장 오른쪽 차선 선택
+            laneNumber = connection.line - 1;
           } else {
             // 아래->위 이동
-            // 진입 차선은 도로 왼쪽(우측)
-            if (connection.inLanes > 0) {
-              // 진입 차선 중 가장 오른쪽(왼쪽) 차선 선택
-              laneNumber = 0;
-            } else {
-              // 진입 차선이 없는 경우 가장 오른쪽 차선 선택
-              laneNumber = 0;
-            }
+            // 가장 왼쪽 차선 선택
+            laneNumber = 0;
           }
         }
 

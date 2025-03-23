@@ -38,6 +38,8 @@ export class RoadBlock {
   }
 }
 
+let connectionId = 0;
+
 /**
  * 도로 연결 (간선)
  */
@@ -50,10 +52,6 @@ export class Connection {
   toBlockId: number;
   /** 차선 수 */
   line: number;
-  /** 진입 차선 수 */
-  inLanes: number;
-  /** 진출 차선 수 */
-  outLanes: number;
   /** 최대 속도 */
   maxSpeed: number;
 
@@ -68,77 +66,35 @@ export class Connection {
           fromBlockId: number;
           toBlockId: number;
           line: number;
-          inLanes: number;
-          outLanes: number;
           maxSpeed: number;
         },
     fromBlockId?: number,
     toBlockId?: number,
     line?: number,
-    inLanes?: number,
-    outLanes?: number,
     maxSpeed?: number,
   ) {
     // 객체 형태의 매개변수인 경우
     if (typeof idOrParams === 'object') {
-      this.id = idOrParams.id;
+      this.id = connectionId++;
       this.fromBlockId = idOrParams.fromBlockId;
       this.toBlockId = idOrParams.toBlockId;
       this.line = idOrParams.line;
       this.maxSpeed = idOrParams.maxSpeed;
-
-      // 차선 수 검증
-      if (idOrParams.inLanes + idOrParams.outLanes !== idOrParams.line) {
-        console.error(
-          `유효하지 않은 차선 구성: 진입(${idOrParams.inLanes}) + 진출(${idOrParams.outLanes}) != 총(${idOrParams.line})`,
-        );
-        // 기본값으로 설정
-        this.inLanes = Math.floor(idOrParams.line / 2);
-        this.outLanes = idOrParams.line - this.inLanes;
-      } else {
-        this.inLanes = idOrParams.inLanes;
-        this.outLanes = idOrParams.outLanes;
-      }
     }
     // 개별 매개변수인 경우
     else {
-      this.id = idOrParams;
+      this.id = connectionId++;
       this.fromBlockId = fromBlockId!;
       this.toBlockId = toBlockId!;
       this.line = line!;
       this.maxSpeed = maxSpeed!;
-
-      // 차선 수 검증
-      if (inLanes! + outLanes! !== line) {
-        console.error(`유효하지 않은 차선 구성: 진입(${inLanes}) + 진출(${outLanes}) != 총(${line})`);
-        // 기본값으로 설정
-        this.inLanes = Math.floor(line! / 2);
-        this.outLanes = line! - this.inLanes;
-      } else {
-        this.inLanes = inLanes!;
-        this.outLanes = outLanes!;
-      }
     }
-  }
-
-  /**
-   * 차선 설정
-   */
-  setLanes(inLanes: number, outLanes: number) {
-    if (inLanes + outLanes !== this.line) {
-      console.error(
-        `진입 차선(${inLanes})과 진출 차선(${outLanes})의 합이 전체 차선 수(${this.line})와 일치하지 않습니다.`,
-      );
-      return;
-    }
-    this.inLanes = inLanes;
-    this.outLanes = outLanes;
   }
 
   /**
    * 도로 연결 그리기
    */
-  draw(ctx: CanvasRenderingContext2D, blocks: Map<number, RoadBlock>) {
+  draw(ctx: CanvasRenderingContext2D, blocks: Map<number, RoadBlock>, connections: Map<number, Connection>) {
     const fromBlock = blocks.get(this.fromBlockId);
     const toBlock = blocks.get(this.toBlockId);
 
@@ -186,9 +142,35 @@ export class Connection {
     ctx.fillStyle = '#888888';
     ctx.fill();
 
+    // 양방향 연결 확인 (반대 방향 연결이 있는지 확인)
+    let hasOppositeDirection = false;
+    for (const conn of connections.values()) {
+      if (conn.fromBlockId === this.toBlockId && conn.toBlockId === this.fromBlockId) {
+        hasOppositeDirection = true;
+        break;
+      }
+    }
+
     // 차선 구분선 그리기
     const laneWidth = roadWidth / this.line;
 
+    // 차선 중앙에 노란 실선 그리기 (양방향 연결인 경우)
+    if (hasOppositeDirection) {
+      const middleX = x1;
+      const middleY = y1;
+      const middleEndX = x2;
+      const middleEndY = y2;
+
+      ctx.beginPath();
+      ctx.moveTo(middleX, middleY);
+      ctx.lineTo(middleEndX, middleEndY);
+      ctx.strokeStyle = 'yellow';
+      ctx.setLineDash([]);
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // 차선 구분선 그리기
     for (let i = 1; i < this.line; i++) {
       const offset = -roadWidth / 2 + i * laneWidth;
       const startX = x1 + perpX * offset;
@@ -199,16 +181,8 @@ export class Connection {
       ctx.beginPath();
       ctx.moveTo(startX, startY);
       ctx.lineTo(endX, endY);
-
-      // 진입 차선과 진출 차선 경계는 노란색 실선, 나머지는 흰색 점선
-      if (i === this.inLanes) {
-        ctx.strokeStyle = 'yellow';
-        ctx.setLineDash([]);
-      } else {
-        ctx.strokeStyle = 'white';
-        ctx.setLineDash([5, 5]);
-      }
-
+      ctx.strokeStyle = 'white';
+      ctx.setLineDash([5, 5]);
       ctx.lineWidth = 1;
       ctx.stroke();
     }
@@ -272,19 +246,13 @@ export class RoadNetwork {
       this.adjacencyList.set(toBlockId, []);
     }
 
-    // 인접 리스트에 연결 추가 (양방향)
+    // 인접 리스트에 연결 추가 (단방향)
     const fromAdjList = this.adjacencyList.get(fromBlockId);
     if (fromAdjList && !fromAdjList.includes(toBlockId)) {
       fromAdjList.push(toBlockId);
     }
 
-    // 양방향 연결을 위해 반대 방향도 추가
-    const toAdjList = this.adjacencyList.get(toBlockId);
-    if (toAdjList && !toAdjList.includes(fromBlockId)) {
-      toAdjList.push(fromBlockId);
-    }
-
-    console.log(`연결 추가: ${fromBlockId} <-> ${toBlockId}, 연결 ID: ${connection.id}`);
+    console.log(`연결 추가: ${fromBlockId} -> ${toBlockId}, 연결 ID: ${connection.id}`);
   }
 
   /**
@@ -305,17 +273,9 @@ export class RoadNetwork {
    * 블록 ID로 연결 가져오기
    */
   getConnectionByBlocks(fromBlockId: number, toBlockId: number): Connection | undefined {
-    // 두 블록 사이의 연결 찾기 (정방향)
+    // 두 블록 사이의 연결 찾기 (정방향만 확인)
     for (const connection of this.connections.values()) {
       if (connection.fromBlockId === fromBlockId && connection.toBlockId === toBlockId) {
-        return connection;
-      }
-    }
-
-    // 정방향 연결이 없으면 역방향 연결 확인
-    for (const connection of this.connections.values()) {
-      if (connection.fromBlockId === toBlockId && connection.toBlockId === fromBlockId) {
-        console.log(`역방향 연결 사용: ${toBlockId} -> ${fromBlockId}`);
         return connection;
       }
     }
@@ -375,7 +335,7 @@ export class RoadNetwork {
       const neighbors = this.adjacencyList.get(current) || [];
       for (const neighbor of neighbors) {
         if (!visited.has(neighbor)) {
-          // 연결이 실제로 존재하는지 확인 (양방향 모두 확인)
+          // 연결이 실제로 존재하는지 확인 (단방향만 확인)
           const connection = this.getConnectionByBlocks(current, neighbor);
           if (connection) {
             visited.add(neighbor);
@@ -397,7 +357,7 @@ export class RoadNetwork {
   draw(ctx: CanvasRenderingContext2D) {
     // 모든 연결 그리기
     for (const connection of this.connections.values()) {
-      connection.draw(ctx, this.blocks);
+      connection.draw(ctx, this.blocks, this.connections);
     }
 
     // 모든 블록 그리기
