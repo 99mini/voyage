@@ -18,6 +18,7 @@ sidebar_position: 1
 ## 프론트엔드
 
 1. [이펙티브 타입스크립트](/docs/category/이펙티브-타입스크립트)
+2. [javascript](/docs/category/javascript)
 
 ## 실습
 

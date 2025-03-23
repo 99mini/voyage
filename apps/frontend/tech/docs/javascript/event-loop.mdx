@@ -1,0 +1,36 @@
+---
+sidebar_position: 1
+slug: event-loop
+title: 'Event Loop'
+authors: [99mini]
+tags: [javascript]
+---
+
+콜백함수를 태스크 큐에 넣는 함수들
+
+- `setTimeout`, `setInterval`, `setImmediate`, `requestAnimationFrame`, `I/O`, `UI 렌더링`
+
+콜백함수를 마이크로태스크 큐에 넣는 함수들
+
+- `process.nextTick`, `Promise`, `Object.observe`, `MutationObserver`
+
+실행 순서: 콜 스택 -> 마이크로태스크 큐 -> 태스크 큐
+
+```javascript title="event-loop.js"
+var foo = function () {
+  setTimeout(() => console.log('태스크 큐!'), 0);
+  Promise.resolve().then(() => console.log('마이크로태스크 큐!'));
+  console.log('콜 스택!');
+
+  return 'call foo finish';
+};
+
+console.log(foo());
+```
+
+```md title="output"
+콜 스택!
+call foo finish
+마이크로태스크 큐!
+태스크 큐!
+```
