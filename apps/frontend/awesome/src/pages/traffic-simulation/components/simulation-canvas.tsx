@@ -68,11 +68,11 @@ network.addBlock(block7);
 
 // 수평 도로 연결 (위)
 network.addConnection(
-  new Connection({ id: 1, fromBlockId: 0, toBlockId: 1, line: 3, inLanes: 2, outLanes: 1, maxSpeed: 3 }),
+  new Connection({ id: 1, fromBlockId: 0, toBlockId: 1, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
 );
 
 network.addConnection(
-  new Connection({ id: 2, fromBlockId: 1, toBlockId: 2, line: 3, inLanes: 2, outLanes: 1, maxSpeed: 3 }),
+  new Connection({ id: 2, fromBlockId: 1, toBlockId: 2, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
 );
 
 // 수평 도로 블록 연결 (아래)
@@ -86,15 +86,15 @@ network.addConnection(
 
 // 교차로 연결
 network.addConnection(
-  new Connection({ id: 5, fromBlockId: 6, toBlockId: 1, line: 3, inLanes: 2, outLanes: 1, maxSpeed: 3 }),
+  new Connection({ id: 5, fromBlockId: 6, toBlockId: 1, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
 );
 
 network.addConnection(
-  new Connection({ id: 6, fromBlockId: 1, toBlockId: 4, line: 3, inLanes: 2, outLanes: 1, maxSpeed: 3 }),
+  new Connection({ id: 6, fromBlockId: 1, toBlockId: 4, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
 );
 
 network.addConnection(
-  new Connection({ id: 7, fromBlockId: 4, toBlockId: 7, line: 3, inLanes: 2, outLanes: 1, maxSpeed: 3 }),
+  new Connection({ id: 7, fromBlockId: 4, toBlockId: 7, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
 );
 
 // 가능한 시작점과 목적지 정의
