@@ -360,7 +360,6 @@ export class RoadNetwork {
           path.unshift(node);
         }
 
-        console.log(`경로 찾기 성공: ${startId} -> ${endId}, 경로:`, path);
         return path;
       }
 

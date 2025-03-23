@@ -93,14 +93,14 @@ class Vehicle {
 
     // 도로 너비 계산
     const roadWidth = connection.line * ROAD_WIDTH;
-    
+
     // 우측통행 규칙에 따른 차선 선택
     // 진행 방향에 따라 적절한 차선 선택
     const isHorizontalMovement = Math.abs(dirX) > Math.abs(dirY);
-    
+
     // 우측통행에 맞는 차선 번호 계산
     let rightLaneNumber;
-    
+
     if (isHorizontalMovement) {
       if (dirX > 0) {
         // 왼쪽->오른쪽 이동: 아래쪽 차선이 우측
@@ -118,13 +118,13 @@ class Vehicle {
         rightLaneNumber = 0;
       }
     }
-    
+
     // 차선 위치 계산 (도로 너비를 차선 수로 나눔)
     const laneWidth = roadWidth / connection.line;
-    
+
     // 우측통행을 위해 차선 번호 업데이트
     this.laneNumber = rightLaneNumber;
-    
+
     // 차선의 중앙에 차량이 위치하도록 계산
     const laneCenter = laneWidth * this.laneNumber + laneWidth / 2;
     const laneOffset = laneCenter - roadWidth / 2;
@@ -138,22 +138,6 @@ class Vehicle {
 
     // 각도 계산 (차량이 이동 방향을 바라보도록)
     this.angle = Math.atan2(dirY, dirX);
-
-    // 로그
-    console.log('다음 목적지 설정:', {
-      현재블록: this.currentBlockId,
-      다음블록: nextBlock.id,
-      현재위치: [this.x, this.y],
-      목적지: this.nextPoint,
-      각도: Math.round((this.angle * 180) / Math.PI),
-      차선: this.laneNumber,
-      차선중앙위치: laneCenter,
-      차선오프셋: laneOffset,
-      연결ID: connection.id,
-      도로너비: roadWidth,
-      차선너비: laneWidth,
-      이동방향: isHorizontalMovement ? (dirX > 0 ? '왼쪽->오른쪽' : '오른쪽->왼쪽') : (dirY > 0 ? '위->아래' : '아래->위'),
-    });
   }
 
   /**
@@ -172,14 +156,12 @@ class Vehicle {
         const path = roadNetwork.findPath(this.currentBlockId, this.destinationBlockId);
 
         if (path.length > 0) {
-          console.log(`경로 생성 성공: ${this.currentBlockId} -> ${this.destinationBlockId}, 경로:`, path);
           // 경로의 첫 번째 요소는 현재 위치이므로 제거
           if (path[0] === this.currentBlockId) {
             path.shift();
           }
           this.setPath(path);
         } else {
-          console.error(`경로를 찾을 수 없음: ${this.currentBlockId} -> ${this.destinationBlockId}`);
           // 경로를 찾을 수 없으면 차량 제거
           this.destroy();
           return;
@@ -367,19 +349,15 @@ class Vehicle {
 
     // 현재 지점에 도착했으면 다음 경로로 이동
     if (reachedX && reachedY) {
-      console.log(`차량이 블록 ${this.currentBlockId}의 목적지에 도착, 다음 경로 처리`);
-
       // 현재 블록 ID 업데이트 (경로의 첫 번째 요소로)
       if (this.path.length > 0) {
         this.currentBlockId = this.path.shift()!;
-        console.log(`차량이 블록 ${this.currentBlockId}로 이동, 남은 경로:`, this.path);
 
         // 새로운 차선 할당 (교차로에서 차선 변경 가능)
         const currentBlock = blocks.get(this.currentBlockId);
         if (currentBlock) {
           // 기본적으로 2개의 차선 중에서 랜덤하게 선택
           this.laneNumber = Math.floor(Math.random() * 2);
-          console.log(`차량 차선 변경: ${this.laneNumber}`);
         }
 
         // 다음 목적지 초기화 (다음 업데이트에서 새로 설정됨)

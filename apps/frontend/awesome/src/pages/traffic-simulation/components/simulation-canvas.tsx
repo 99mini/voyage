@@ -187,7 +187,6 @@ const SimulationCanvas = () => {
         if (startBlock && destBlock) {
           // 경로 찾기
           path = network.findPath(startBlockId, destinationBlockId);
-          console.log(`경로 탐색 시도 ${attempts + 1}: ${startBlockId} -> ${destinationBlockId}, 결과:`, path);
 
           // 경로가 존재하고 길이가 2 이상인 경우 (시작점 + 최소 1개 이상의 다음 블록)
           if (path.length >= 2) {
@@ -319,11 +318,6 @@ const SimulationCanvas = () => {
           // 일반적인 각도 계산
           newVehicle.angle = Math.atan2(dy, dx);
         }
-
-        console.log(`차량 각도 설정: ${Math.round((newVehicle.angle * 180) / Math.PI)}°, dx=${dx}, dy=${dy}`);
-        console.log(
-          `차량 차선 설정: 차선=${laneNumber}, 진입차선여부=${Math.abs(dirX) > Math.abs(dirY)}, 총차선수=${connection.line}, 진입차선수=${connection.inLanes}, 진출차선수=${connection.outLanes}`,
-        );
 
         // 경로 설정
         newVehicle.setPath(path as number[]);
