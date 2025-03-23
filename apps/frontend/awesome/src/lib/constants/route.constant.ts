@@ -2,7 +2,7 @@ export const PAGE_PATH = {
   ROOT: '/',
   CLOCK: '/clock',
   GRAPH: '/graph',
-  CITY_BUILDER: '/city-builder',
+  TRAFFIC_SIMULATION: '/traffic-simulation',
 } as const;
 
 export type RouteKey = keyof typeof PAGE_PATH;
@@ -12,5 +12,5 @@ export const PAGE_TITLE: Record<RouteKey, string> = {
   ROOT: 'Home',
   CLOCK: 'Clock',
   GRAPH: 'Graph',
-  CITY_BUILDER: 'City Builder',
+  TRAFFIC_SIMULATION: 'Traffic Simulation',
 } as const;
