@@ -79,6 +79,11 @@ class Road {
       this.adjacencyList[fromBlockId] = [];
     }
     this.adjacencyList[fromBlockId].push(toBlockId);
+
+    if (!this.adjacencyList[toBlockId]) {
+      this.adjacencyList[toBlockId] = [];
+    }
+    this.adjacencyList[toBlockId].push(fromBlockId);
   }
 
   /**
