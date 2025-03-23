@@ -139,7 +139,12 @@ class Vehicle {
 
       // 거리에 따라 속도 조절
       if (minDistance < 30) {
-        this.speed = 0;
+        // 교차로에서 교착 상태 방지: 현재 움직이고 있는 차량은 계속 진행
+        if (this.speed > 0) {
+          this.speed = this.maxSpeed * 0.5; // 감속은 하되 멈추지 않음
+        } else {
+          this.speed = 0;
+        }
       } else if (minDistance < 50) {
         this.speed = this.maxSpeed * 0.3;
       } else if (minDistance < 80) {
