@@ -254,25 +254,27 @@ const SimulationCanvas = () => {
         // 수직 이동: 위->아래(dirY > 0) 또는 아래->위(dirY < 0)
 
         // 우측통행 규칙에 따른 차선 선택
+        // 진행 방향을 기준으로 항상 오른쪽 차선을 선택
         if (Math.abs(dirX) > Math.abs(dirY)) {
+          // 수평 이동
           if (dirX > 0) {
             // 왼쪽->오른쪽 이동
-            // 가장 오른쪽(아래쪽) 차선 선택
+            // 진행 방향 기준 오른쪽(아래쪽) 차선 선택
             laneNumber = connection.line - 1;
           } else {
             // 오른쪽->왼쪽 이동
-            // 가장 왼쪽(위쪽) 차선 선택
+            // 진행 방향 기준 오른쪽(위쪽) 차선 선택
             laneNumber = 0;
           }
         } else {
           // 수직 이동
           if (dirY > 0) {
             // 위->아래 이동
-            // 가장 오른쪽 차선 선택
+            // 진행 방향 기준 오른쪽 차선 선택
             laneNumber = connection.line - 1;
           } else {
             // 아래->위 이동
-            // 가장 왼쪽 차선 선택
+            // 진행 방향 기준 오른쪽 차선 선택
             laneNumber = 0;
           }
         }

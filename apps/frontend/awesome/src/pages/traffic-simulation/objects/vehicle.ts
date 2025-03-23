@@ -112,14 +112,13 @@ class Vehicle {
     // 차선 위치 계산 (도로 너비를 차선 수로 나눔)
     const laneWidth = roadWidth / connection.line;
 
-    // 각도에 따라 차선 선택
-    // 0° <= 각도 < 180°: 오른쪽 차선 사용 (우측통행)
-    // 180° <= 각도 < 360°: 왼쪽 차선 사용 (우측통행)
+    // 각도에 따라 차선 선택 (항상 우측통행)
+    // 도로의 방향 벡터와 수직인 벡터를 이용하여 우측 차선 결정
     if (angleDegrees >= 0 && angleDegrees < 180) {
-      // 오른쪽 차선 사용 (우측통행)
+      // 진행 방향 기준 오른쪽 차선 사용 (우측통행)
       this.laneNumber = connection.line - 1; // 가장 오른쪽 차선
     } else {
-      // 왼쪽 차선 사용 (우측통행)
+      // 진행 방향 기준 오른쪽 차선 사용 (우측통행)
       this.laneNumber = 0; // 가장 왼쪽 차선
     }
 
