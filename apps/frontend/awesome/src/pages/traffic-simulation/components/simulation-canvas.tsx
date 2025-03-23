@@ -75,15 +75,6 @@ network.addConnection(
   new Connection({ id: 2, fromBlockId: 1, toBlockId: 2, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
 );
 
-// 반대 방향 연결 추가 (위)
-network.addConnection(
-  new Connection({ id: 8, fromBlockId: 2, toBlockId: 1, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
-
-network.addConnection(
-  new Connection({ id: 9, fromBlockId: 1, toBlockId: 0, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
-
 // 수평 도로 블록 연결 (아래)
 network.addConnection(
   new Connection({ id: 3, fromBlockId: 3, toBlockId: 4, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
@@ -91,15 +82,6 @@ network.addConnection(
 
 network.addConnection(
   new Connection({ id: 4, fromBlockId: 4, toBlockId: 5, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
-
-// 반대 방향 연결 추가 (아래)
-network.addConnection(
-  new Connection({ id: 10, fromBlockId: 5, toBlockId: 4, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
-
-network.addConnection(
-  new Connection({ id: 11, fromBlockId: 4, toBlockId: 3, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
 );
 
 // 교차로 연결
@@ -115,28 +97,31 @@ network.addConnection(
   new Connection({ id: 7, fromBlockId: 4, toBlockId: 7, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
 );
 
-// 반대 방향 교차로 연결 추가
-network.addConnection(
-  new Connection({ id: 12, fromBlockId: 1, toBlockId: 6, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
-
-network.addConnection(
-  new Connection({ id: 13, fromBlockId: 4, toBlockId: 1, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
-
-network.addConnection(
-  new Connection({ id: 14, fromBlockId: 7, toBlockId: 4, line: 4, inLanes: 2, outLanes: 2, maxSpeed: 3 }),
-);
-
 // 가능한 시작점과 목적지 정의
 const possibleSet = [
   [
-    [0, 3, 6], // 왼쪽 위, 왼쪽 아래, 위쪽 중앙
-    [2, 5, 7], // 오른쪽 위, 오른쪽 아래, 아래쪽 중앙
+    [0], // 왼쪽 위
+    [2, 3, 5, 6, 7],
   ],
   [
-    [2, 5, 7], // 오른쪽 위, 오른쪽 아래, 아래쪽 중앙
-    [0, 3, 6], // 왼쪽 위, 왼쪽 아래, 위쪽 중앙
+    [2], // 오른쪽 위
+    [0, 3, 5, 6, 7],
+  ],
+  [
+    [3], // 왼쪽 아래
+    [0, 2, 5, 6, 7],
+  ],
+  [
+    [5], // 오른쪽 아래
+    [0, 2, 3, 6, 7],
+  ],
+  [
+    [6], // 중앙 위
+    [0, 2, 3, 5, 7],
+  ],
+  [
+    [7], // 중앙 아래
+    [0, 2, 3, 5, 6],
   ],
 ];
 
