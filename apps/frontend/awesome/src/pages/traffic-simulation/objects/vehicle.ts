@@ -1,8 +1,8 @@
 class Vehicle {
   x: number;
   y: number;
-  width = 40;
-  height = 20;
+  width = 20;
+  height = 10;
   speed = 2;
   color = 'blue';
 
@@ -22,11 +22,11 @@ class Vehicle {
           closestVehicle = vehicle;
         }
       }
-      if (closestVehicle.x - this.x < 40) {
+      if (closestVehicle.x - this.x < 20) {
         this.speed = 0;
-      } else if (closestVehicle.x - this.x < 80) {
+      } else if (closestVehicle.x - this.x < 40) {
         this.speed = 1;
-      } else if (closestVehicle.x - this.x < 100) {
+      } else if (closestVehicle.x - this.x < 60) {
         this.speed = 2;
       } else {
         this.speed = 3;
@@ -40,7 +40,7 @@ class Vehicle {
 
   draw(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = this.color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
   }
 }
 

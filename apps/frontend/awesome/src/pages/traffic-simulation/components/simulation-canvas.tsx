@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
+import { Load, LoadBlock } from '../objects/load';
 import { Vehicle } from '../objects/vehicle';
 
 let id = 0;
@@ -7,6 +8,29 @@ const vehicles: Record<number, Vehicle> = {};
 
 const WINDOW_WIDTH = 800;
 const WINDOW_HEIGHT = 600;
+
+const load = new Load({
+  blocks: [
+    new LoadBlock({
+      edge: [0, 100],
+      neighbors: [[1000, 100]],
+      line: 1,
+      maxSpeed: 3,
+    }),
+    new LoadBlock({
+      edge: [1000, 100],
+      neighbors: [[2000, 100]],
+      line: 1,
+      maxSpeed: 3,
+    }),
+    new LoadBlock({
+      edge: [2000, 100],
+      neighbors: [[3000, 100]],
+      line: 1,
+      maxSpeed: 3,
+    }),
+  ],
+});
 
 const SimulationCanvas = () => {
   const callbackRef = useCallback((canvas: HTMLCanvasElement) => {
@@ -16,6 +40,7 @@ const SimulationCanvas = () => {
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      load.draw(ctx);
       for (const vehicle of Object.values(vehicles)) {
         vehicle.update(Object.values(vehicles));
         vehicle.draw(ctx);
