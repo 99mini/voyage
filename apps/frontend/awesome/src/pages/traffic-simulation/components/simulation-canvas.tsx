@@ -111,6 +111,19 @@ const getRandomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
+// 연결 상태 확인 및 출력
+console.log('도로 연결 상태:', load.adjacencyList);
+
+// 모든 가능한 경로 테스트
+for (const start of possibleStarts) {
+  for (const dest of possibleDestinations) {
+    if (start !== dest) {
+      const testPath = load.findPath(start, dest);
+      console.log(`테스트 경로 ${start} -> ${dest}:`, testPath);
+    }
+  }
+}
+
 const SimulationCanvas = () => {
   const [simulationRunning, setSimulationRunning] = useState(true);
 
@@ -158,54 +171,19 @@ const SimulationCanvas = () => {
         if (path.length > 0) {
           // 랜덤 차선 선택 (0부터 시작)
           const laneNumber = Math.floor(Math.random() * startBlock.line);
-
-          // 도로 방향에 수직인 벡터 계산 (차선 위치 계산용)
-          let perpX = 0;
-          let perpY = 0;
-
-          // 다음 블록이 있으면 방향 계산
-          if (path.length > 1) {
-            const nextBlockId = path[1];
-            const nextBlock = load.getBlockById(nextBlockId);
-
-            if (nextBlock) {
-              // 도로의 방향 벡터 계산
-              const dx = nextBlock.edge[0] - startBlock.edge[0];
-              const dy = nextBlock.edge[1] - startBlock.edge[1];
-              const distance = Math.sqrt(dx * dx + dy * dy);
-
-              // 정규화된 방향 벡터
-              const dirX = dx / distance;
-              const dirY = dy / distance;
-
-              // 도로 방향에 수직인 벡터 (90도 회전)
-              perpX = -dirY;
-              perpY = dirX;
-            }
-          }
-
-          // 도로 너비 계산
-          const roadWidth = startBlock.line * 10; // 각 차선은 10px 너비
-
-          // 차선 위치 계산
-          const laneOffset = (roadWidth / startBlock.line) * (laneNumber + 0.5) - roadWidth / 2;
-
-          // 시작 위치 계산 (차선 위치 고려)
-          const startX = startBlock.edge[0] + perpX * laneOffset;
-          const startY = startBlock.edge[1] + perpY * laneOffset;
-
+          
           // 새 차량 생성
           const newVehicle = new Vehicle({
-            x: startX,
-            y: startY,
+            x: startBlock.edge[0],
+            y: startBlock.edge[1],
             speed: 2 + Math.random(), // 2~3 사이의 랜덤 속도
             startBlockId,
             destinationBlockId,
           });
-
+          
           // 랜덤 색상 설정
           newVehicle.color = getRandomColor();
-
+          
           // 차선 번호 설정
           newVehicle.laneNumber = laneNumber;
 
@@ -214,6 +192,7 @@ const SimulationCanvas = () => {
 
           // 차량 등록
           vehicles[vehicleId++] = newVehicle;
+          console.log(`새 차량 생성: ID=${vehicleId-1}, 시작=${startBlockId}, 목적지=${destinationBlockId}, 차선=${laneNumber}`);
         } else {
           console.error(`경로를 찾을 수 없음: ${startBlockId} -> ${destinationBlockId}`);
         }
