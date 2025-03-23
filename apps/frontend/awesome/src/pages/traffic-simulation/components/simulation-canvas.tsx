@@ -98,11 +98,20 @@ network.addConnection(
 );
 
 // 가능한 시작점과 목적지 정의
-const possibleStarts = [0, 3, 6]; // 왼쪽 위, 왼쪽 아래, 위쪽 중앙
-const possibleDestinations = [2, 5, 7]; // 오른쪽 위, 오른쪽 아래, 아래쪽 중앙
+const possibleSet = [
+  // [
+  //   [0, 3, 6], // 왼쪽 위, 왼쪽 아래, 위쪽 중앙
+  //   [2, 5, 7], // 오른쪽 위, 오른쪽 아래, 아래쪽 중앙
+  // ],
+  [
+    [2, 5, 7], // 오른쪽 위, 오른쪽 아래, 아래쪽 중앙
+    [0, 3, 6], // 왼쪽 위, 왼쪽 아래, 위쪽 중앙
+  ],
+];
 
 // 랜덤 시작점과 목적지 선택 함수
 const getRandomStartAndDestination = () => {
+  const [possibleStarts, possibleDestinations] = possibleSet[Math.floor(Math.random() * possibleSet.length)];
   const startIdx = Math.floor(Math.random() * possibleStarts.length);
   let destIdx;
 
@@ -127,11 +136,13 @@ const getRandomColor = () => {
 console.log('도로 연결 상태:', network.adjacencyList);
 
 // 모든 가능한 경로 테스트
-for (const start of possibleStarts) {
-  for (const dest of possibleDestinations) {
-    if (start !== dest) {
-      const testPath = network.findPath(start, dest);
-      console.log(`테스트 경로 ${start} -> ${dest}:`, testPath);
+for (const [possibleStarts, possibleDestinations] of possibleSet) {
+  for (const start of possibleStarts) {
+    for (const dest of possibleDestinations) {
+      if (start !== dest) {
+        const testPath = network.findPath(start, dest);
+        console.log(`테스트 경로 ${start} -> ${dest}:`, testPath);
+      }
     }
   }
 }
