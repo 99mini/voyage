@@ -1,0 +1,247 @@
+---
+sidebar_position: 4
+slug: 우아한-타입스크립트-4장-타입-확장하기-좁히기
+title: '[4장] 타입 확장하기 / 좁히기'
+authors: [99mini]
+tags: [typescript]
+date: 2025-04-05
+---
+
+[4장] 타입 확장하기 / 좁히기
+
+<!-- truncate -->
+
+### 4.1 타입 확장하기
+
+```typescript
+type BaseMenuItem = {
+  itemName: string null;
+  itemImageUrl: string null;
+  itemDiscountAmount: number;
+  stock: number | null;
+};
+
+type BaseCartItem = {
+  quantity: number;
+} & BaseMenuItem;
+```
+
+`BaseMenuItem`을 유지하며 `BaseCartItem`를 확장가능
+
+:::tip
+
+타입스크립트의 타입을 속성의 집합이 아니라 값의 집합으로 이해해야 한다.
+
+:::
+
+**유니온 타입**
+
+유니온 타입에서 타입의 합집합으로 해석할 수 있다. 이때 유니온 타입으로 선언된 값은 유니온 타입에 포함된 모든 타입이 공통으로 갖고 있는 속성에만 접근할 수 있다.
+
+```typescript
+interface CookingStep {
+  orderId: string;
+  price: number;
+}
+interface DeliveryStep {
+  orderId: string;
+  time: number;
+  distance: string;
+}
+function getDeliveryDistance(step: CookingStep | DeliveryStep) {
+  return step.distance;
+  //          ~~~~~~~~ Property 'distance' does not exist on type 'CookingStep | DeliveryStep'
+  //                       Property 'distance' does not exist on type 'CookingStep'
+}
+```
+
+**교차 집합**
+
+```typescript
+/*배달 팁*/
+interface DeliveryTip {
+  tip: string;
+}
+/* 별점*/
+interface StarRating {
+  rate: number;
+}
+/*주문 필터*/
+type Filter = DeliveryTip & StarRating;
+const filter: Filter = {
+  tip: '1000원 이하',
+  rate: 4,
+};
+```
+
+교차 타입을 사용할 때 타입이 서로 호환되지 않는 경우
+
+```typescript
+type IdType = string | number;
+type Numeric = number | boolean;
+type Universal = IdType & Numeric;
+```
+
+1. string이면서 number인 경우 => 거짓
+2. string이면서 boolean인 경우 => 거짓
+3. number이면서 number인 경우 => 참
+4. number이면서 boolean인 경우 => 참
+
+따라서 `Universal` 타입은 number로 추론
+
+### 4.2 타입 좁히기 - 타입 가드
+
+**런타임에서 처리하기**
+
+자바스크립트 연산자 `typeof`, `instanceof`, `in`을 사용하여 제어문으로 특정 타입 값만 가질 수 밖에 없도록 타입 좁히기
+
+**원시 타입을 추론할 때: `typeof`**
+
+:::warning
+
+`null`, `Array`의 경우 원시 타입이 `object`로 추론되기 때문에 복잡한 타입 검증에 한계가 있다.
+:::
+
+typeof를 이용하여 검사할 수 있는 타입
+
+- `string`
+- `number`
+- `boolean`
+- `undefined`
+- `object`
+- `function`
+- `bigint`
+- `symbol`
+
+**인트턴스화된 객체 타입 판별: `instanceof`**
+
+```typescript
+const onKeyDown = (event: React.KeyboardEvent) => {
+  if (event.target instanceof HTMLInputElement & event.key === "Enter") {
+  // 이 분기에서는 event.target의 타입이 HTMLInputElement이며
+  // event.key가 'Enter'이다
+  event.target.blur();
+  onCTAButtonClick(event);
+};
+```
+
+**객체에 속성이 있는지 판단: `in`**
+
+```typescript
+const foo = () => {
+  const val = Math.random() > 0.5 ? { large: 'is over 0.5' } : { small: 'is under 0.5' };
+
+  if ('large' in val) return val.large;
+  return val.small;
+};
+```
+
+**사용자 정의 타입 가드: `is`연산자**
+
+```ts
+const isDestinationCode = (x: string): x is DestinationCode => destinationCodeList.includes (x);
+
+const getAvailableDestinationNameList = async (): PromiseDestinationName[]> => {
+  const data = await AxiosRequest<string[]>("get", ".../destinations");
+  const destinationNames: DestinationName[] = [];
+  data?.forEach((str) => {
+    if (isDestinationCode(str)) {
+      destinationNames.push(DestinationNameSet[str]);
+    }
+  });
+  return destinationNames;
+  /*
+  isDestinationCode의 반환값에 is 연산자를 사용하지 않고, boolean을 사용한다면 str이 string 타입으로 추론
+   */
+```
+
+### 4.3 타입 좁히기 - 식별할 수 있는유니온(Discriminated Unions)
+
+```diff
+type TextError = {
++ errorType: "TEXT";
+  errorCode: string;
+  errorMessage: string;
+};
+
+type ToastError = {
++ errorType: "TOAST";
+  errorCode: string;
+  errorMessage: string;
+  toastShowDuration: number; // 토스트를 띄워줄 시간
+};
+
+type AlertError = {
++ errorType: "ALERT";
+  errorCode: string;
+  errorMessage: string;
+  onConfirm: () => void; // 얼럿 창의 확인 버튼을 누른 뒤 액션
+};
+```
+
+```ts
+type ErrorFeedbackType = TextError | ToastError | AlertError;
+
+const errorArr: ErrorFeedbackType[] = [
+  {
+    errorType: 'TEXT',
+    errorCode: '999',
+    errorMessage: '잘못된에러',
+    toastShowDuration: 3000,
+    //  ~~~~~~~~~~~~~~~~~ Object literal may only specify known properties, and 'toastShowDuration' does not exist in type 'TextError'
+    onConfirm: () => 0,
+  },
+];
+```
+
+:::tip
+
+유니온의 판별자로 사용할 수 있는 타입을 다음과 같이 정의하고 있다.
+
+- 리터럴 타입이어야한다.
+- 판별자로 선정한 값에 적어도 하나 이상의 유닛 타입이 포함되어야 하며, 인스턴스화할 수 있는 타입(instantiable type)은 포함되지 않아야 한다.
+
+:::
+
+```ts
+interface A {
+  value: 'a'; // unit type
+  answer: 1;
+}
+
+interface B {
+  value: string; // not unit type
+  answer: 2;
+}
+
+interface C {
+  value: Error; // instantiable type
+  answer: 3;
+}
+```
+
+### 4.4 Exhaustiveness Checking으로 정확한 타입 분기 유지하기
+
+타입에 대한 철저한 분기 처리가 필요한 경우 Exhaustiveness Checking 패턴을 활용할 수 있다.
+
+```ts
+type ProductPrice = '10000' | '20000' | '5000';
+const getProductName = (productPrice: ProductPrice): string => {
+  if (productPrice === '10000') return '배민상품권 1만 원';
+  if (productPrice === '20000') return '배민상품권 2만 원';
+  // if (productPrice === "5000") return "배민상품권 5천 원";
+  else {
+    exhaustiveCheck(productPrice); // Error: Argument of type 'string'is not assign
+    return '배민상품권';
+  }
+};
+const exhaustiveCheck = (param: never) => {
+  throw new Error('type error!');
+};
+```
+
+> Exhaustiveness Checking 패턴에 대하여
+> 프로덕트 코드에 assertion을 추가하는 것에 대해서 주석 혹은 문서화 대신 코드를 통해서 설명할 수 있을 것이다.
+> 트레이드 오프로 번들 사이즈가 커전다는 단점도 존재할 수 있지만 성능상 큰 영향을 미치지 않을 것으로 예상
+
+> 최종 수정일: 2025.04.05
