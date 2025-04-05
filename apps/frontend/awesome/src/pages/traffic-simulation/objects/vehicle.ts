@@ -378,7 +378,7 @@ class Vehicle {
     ctx.fillStyle = this.color;
     ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
 
-    // 차량 앞쪽에 삼각형 그리기
+    // 차량 앞쪽에 범퍼 그리기 (차량의 크기보다 작게)
     ctx.fillStyle = 'red';
     ctx.fillRect(this.width / 2, -this.height / 2, 5, this.height);
 
