@@ -10,7 +10,7 @@ export const SpacingScale = () => (
   <div>
     {Object.entries(spacing).map(([key, value]) => (
       <div key={key} className="flex flex-col gap-2 mb-2">
-        <div>{key}</div>
+        <div>{`gap-${key}`}</div>
         <div className="flex flex-row">
           {Array.from({ length: 3 }).map((_, index) => {
             if (index === 1) {

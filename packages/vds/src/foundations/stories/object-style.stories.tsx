@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Meta } from '@storybook/react';
 
 import { radius, shadow } from '../object-style';
@@ -24,8 +22,22 @@ export const BorderRadius = () => (
 
 export const Shadows = () => (
   <div>
-    {Object.entries(shadow).map(([key, value]) => (
-      <TokenBox key={key} label={`shadow-${key}`} value={value} style={{ boxShadow: value, backgroundColor: '#fff' }} />
-    ))}
+    {Object.entries(shadow).map(([key, value], index) => {
+      return (
+        <div key={key}>
+          <TokenBox label={`shadow-${key}`} value={value} style={{ boxShadow: value, backgroundColor: '#fff' }} />
+          {index % 3 === 2 && (
+            <div
+              style={{
+                width: '100%',
+                height: 1,
+                backgroundColor: '#eee',
+                margin: '16px 0',
+              }}
+            />
+          )}
+        </div>
+      );
+    })}
   </div>
 );
