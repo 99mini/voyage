@@ -93,7 +93,7 @@ const FileInput = ({
       {props.multiple && files.length > 0 && (
         <div className="flex justify-end mb-2">
           <span
-            className="text-xs text-red-400 hover:text-red-700 cursor-pointer"
+            className="text-vds-caption-sm text-vds-error-500 hover:text-vds-error-700 cursor-pointer"
             onClick={(e) => {
               e.preventDefault();
               handleClear();
