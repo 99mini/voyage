@@ -73,10 +73,4 @@ export const colors = {
     strong: '#757575',
     focus: '#3269FF',
   },
-
-  // HIGHLIGHT (Selection, Hover 등)
-
-  'vds-hover': 'rgba(50, 105, 255, 0.08)',
-  'vds-active': 'rgba(50, 105, 255, 0.12)',
-  'vds-selected': 'rgba(50, 105, 255, 0.16)',
 };
