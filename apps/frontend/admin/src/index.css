@@ -61,3 +61,22 @@
     --chart-5: 340 75% 55%;
   }
 }
+
+@layer base {
+  .border-border {
+    /* Your declarations here. */
+  }
+  .bg-background {
+    /* Your declarations here. */
+  }
+  .text-foreground {
+    /* Your declarations here. */
+  }
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}

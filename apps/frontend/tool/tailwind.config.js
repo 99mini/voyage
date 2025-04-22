@@ -5,7 +5,7 @@ module.exports = {
   darkMode: ['class'],
   content: ['./index.html', './src/**/*.{ts,tsx,js,jsx}', '../../../packages/vds/src/**/*.{ts,tsx,js,jsx}'],
   theme: {
-    extends: vdsTailwindThemeExtend,
+    extend: vdsTailwindThemeExtend,
   },
   plugins: [vdsPlugin, require('tailwindcss-animate')],
 };
