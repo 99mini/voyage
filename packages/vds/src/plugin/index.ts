@@ -1,6 +1,4 @@
-// TODO: implement plugin
-import plugin from 'tailwindcss/plugin';
+import vdsPlugin from './plugin';
+import vdsTailwindThemeExtend from './theme';
 
-const vdsPlugin = plugin(() => {});
-
-export default vdsPlugin;
+export { vdsTailwindThemeExtend, vdsPlugin };

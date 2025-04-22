@@ -4,3 +4,5 @@ export * from './foundations';
 
 export * from './lib';
 export * from './hooks';
+
+export * from './plugin';
