@@ -3,8 +3,7 @@ import { Button as ShadcnButton, type ButtonProps as ShadcnButtonProps } from '@
 export type ButtonProps = ShadcnButtonProps;
 
 const Button = ({ ...props }: ButtonProps) => {
-  const { className, ...rest } = props;
-  return <ShadcnButton {...rest} className="bg-vds-primary-500"></ShadcnButton>;
+  return <ShadcnButton {...props}></ShadcnButton>;
 };
 
 export default Button;
