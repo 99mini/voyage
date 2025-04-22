@@ -87,6 +87,7 @@ const RandomPasswordGenerator = () => {
               <Label htmlFor="length">비밀번호 길이: {passwordLength}</Label>
             </div>
             <Slider
+              className="bg-vds-primary-500"
               id="length"
               min={4}
               max={64}

@@ -4,7 +4,7 @@ import { radius, shadow } from '../object-style';
 import TokenBox from './token-box';
 
 export default {
-  title: 'Foundations/Radius',
+  title: 'Foundations/ObjectStyle',
 } as Meta;
 
 export const BorderRadius = () => (
