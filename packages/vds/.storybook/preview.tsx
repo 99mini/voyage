@@ -21,6 +21,19 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    options: {
+      storySort: {
+        order: [
+          'Foundations',
+          ['Colors', 'Typography', 'ObjectStyle', 'Layout'],
+          'Atom',
+          ['Button', 'Label', 'PageProgress'],
+          'Input',
+          ['Input', 'FileInput', 'FileUploader'],
+          'Layout',
+        ],
+      },
+    },
   },
 };
 
