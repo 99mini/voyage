@@ -28,6 +28,11 @@ sqld:
   permalink: /네트워크
   description: 네트워크
 
+운영체제:
+  label: 운영체제
+  permalink: /운영체제
+  description: 운영체제
+
 http:
   label: HTTP
   permalink: /http

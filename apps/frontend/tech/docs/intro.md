@@ -18,6 +18,8 @@ sidebar_position: 0
 <!-- 101 ~ 200 -->
 
 1. [code complete2](/docs/category/code-complete2)
+2. [네트워크](/docs/category/네트워크)
+3. [운영체제](/docs/category/운영체제)
 
 ## 프론트엔드
 
@@ -26,6 +28,7 @@ sidebar_position: 0
 1. [이펙티브 타입스크립트](/docs/category/이펙티브-타입스크립트)
 2. [우아한 타입스크립트](/docs/category/우아한-타입스크립트)
 3. [javascript](/docs/category/javascript)
+4. [Reactjs](/docs/category/reactjs)
 
 ## 실습
 
