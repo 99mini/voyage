@@ -18,6 +18,8 @@ sidebar_position: 0
 <!-- 101 ~ 200 -->
 
 1. [code complete2](/docs/category/code-complete2)
+2. [네트워크](/docs/category/네트워크)
+3. [운영체제](/docs/category/운영체제)
 
 ## 프론트엔드
 
