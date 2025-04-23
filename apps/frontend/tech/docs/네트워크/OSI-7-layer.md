@@ -19,7 +19,7 @@ OSI 7 계층
 | 5     | Session 세션        | TLS, SSH, ISO, RPC        |
 | 4     | Transport 전송      | TCP, UDP                  |
 | 3     | Network 네트워크    | IP, ICMP, ARP             |
-| 2     | DataLink 데이터링크 | Ehternet, ATM, LAN, Wifi  |
+| 2     | DataLink 데이터링크 | Ethernet, ATM, LAN, Wifi  |
 | 1     | Physical 물리       | Modem, Cable, Fiber       |
 
 1. 물리 계층 (Physical Layer)
