@@ -25,4 +25,164 @@ console.log(foo2()); // 1
 console.log(foo2()); // 2
 ```
 
-### 클로저 (Closure)
+## 클로저 (Closure)
+
+클로저(Closure)는 함수가 생성될 때의 스코프(lexical scope)를 기억해서, 외부 함수가 종료된 이후에도 그 지역 변수에 접근할 수 있는 함수.
+즉, 내부 함수가 외부 함수의 변수에 "접근권"을 가지는 구조입니다.
+
+```javascript title="closure.js"
+function outer() {
+  let count = 0;
+
+  return function inner() {
+    count++;
+    console.log(`현재 count는 ${count}입니다.`);
+  };
+}
+
+const counter = outer();
+counter(); // 현재 count는 1입니다.
+counter(); // 현재 count는 2입니다.
+counter(); // 현재 count는 3입니다.
+```
+
+### 클로저의 이점
+
+- 데이터 은닉: 상태와 상태 변경 함수를 클로저 내부에 캡슐화하여 외부에서 직접 접근을 방지
+- 상태 일관성 유지: 상태 변경이 정의된 방식으로만 이루어지므로, 예측 가능한 상태 관리 가능
+- 메모리 효율성: 필요한 상태만을 유지하므로 메모리 사용을 최적화
+
+### 클로저의 활용 사례
+
+1. 상태 유지 (Encapsulation)
+
+```javascript title="encapsulation.js"
+function createCounter() {
+  let count = 0;
+
+  return {
+    increment() {
+      count++;
+      return count;
+    },
+    decrement() {
+      count--;
+      return count;
+    },
+    getCount() {
+      return count;
+    },
+  };
+}
+
+const counter = createCounter();
+console.log(counter.increment()); // 1
+console.log(counter.increment()); // 2
+console.log(counter.decrement()); // 1
+console.log(counter.getCount()); // 1
+```
+
+count는 외부에서 직접 접근할 수 없고, 오직 메서드를 통해서만 접근 가능 → 정보 은닉
+
+2. Event Handler에서 상태 보존
+
+```javascript title="click-count-button.js"
+function setupButton() {
+  let clickCount = 0;
+  const button = document.createElement('button');
+  button.innerText = 'Click me';
+  document.body.appendChild(button);
+
+  button.addEventListener('click', () => {
+    clickCount++;
+    console.log(`Button clicked ${clickCount} times`);
+  });
+}
+
+setupButton();
+```
+
+클릭 횟수를 추적하는 clickCount는 클로저에 의해 메모리에 유지
+
+3. 부분 적용 함수 (Partial Application)
+
+```javascript title="multiply.js"
+function multiply(a) {
+  return function (b) {
+    return a * b;
+  };
+}
+
+const double = multiply(2);
+console.log(double(5)); // 10
+console.log(double(10)); // 20
+```
+
+multiply의 내부 함수가 a를 기억해서, double은 항상 b \* 2를 수행합니다.
+
+4. 메모이제이션(Memoization)
+
+```javascript title="memoization.js"
+function memoize(fn) {
+  const cache = {};
+  return function (...args) {
+    const key = JSON.stringify(args);
+    if (cache[key]) {
+      console.log('Fetching from cache:', key);
+      return cache[key];
+    }
+    console.log('Calculating result for:', key);
+    const result = fn(...args);
+    cache[key] = result;
+    return result;
+  };
+}
+
+// 사용 예시
+const factorial = memoize(function f(n) {
+  return n <= 1 ? 1 : n * f(n - 1);
+});
+
+console.log(factorial(5)); // 계산 수행
+console.log(factorial(5)); // 캐시에서 가져옴
+```
+
+### 클로저를 활용한 실제 라이브러리 사례
+
+1. React의 상태 관리
+
+```jsx title="use-state.jsx"
+import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  function handleClick() {
+    setCount((prevCount) => prevCount + 1);
+  }
+
+  return <button onClick={handleClick}>Count: {count}</button>;
+}
+```
+
+`handleClick`함수는 클로저를 사용하여 `count`상태에 접근하고, 이전 상태를 기반으로 새로운 상태를 설정
+
+2. [Zustand](https://github.com/pmndrs/zustand)에서의 클로저 활용
+
+Zustand의 create 함수는 내부적으로 클로저를 사용하여 상태와 상태 변경 함수를 유지한다.
+이렇게 생성된 상태는 외부에서 직접 접근할 수 없으며, 오직 set, get 함수 등을 통해서만 접근 가능하다.
+이러한 구조는 상태의 안전성과 예측 가능성을 높인다.
+
+```javascript title="zustand-example.js"
+import create from 'zustand';
+
+const useCounterStore = create((set, get) => ({
+  count: 0,
+  increment: () => set((state) => ({ count: state.count + 1 })),
+  decrement: () => set((state) => ({ count: state.count - 1 })),
+  reset: () => set({ count: 0 }),
+}));
+```
+
+`useCounterStore`는 클로저를 통해 `count`상태와 이를 변경하는 함수들을 캡슐화한다.
+외부에서는 `useCounterStore`를 통해서만 `count`상태에 접근하거나 변경 가능
