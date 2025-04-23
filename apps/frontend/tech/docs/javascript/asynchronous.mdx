@@ -115,3 +115,70 @@ Promise.resolve('즉시 성공').then(console.log); // 즉시 성공
 
 Promise.reject('즉시 실패').catch(console.error); // 즉시 실패
 ```
+
+### `Promise` 정적 메서드를 이용한 유틸 함수
+
+#### `Promise.race`로 타임아웃 처리
+
+```javascript title="async-timeout.js"
+function fetchWithTimeout(url, timeout = 3000) {
+  const fetchPromise = fetch(url);
+
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('⏰ 요청 시간이 초과되었습니다.')), timeout),
+  );
+
+  return Promise.race([fetchPromise, timeoutPromise]);
+}
+
+// 사용 예시
+fetchWithTimeout('https://jsonplaceholder.typicode.com/posts/1', 2000)
+  .then((res) => res.json())
+  .then((data) => console.log('데이터 수신:', data))
+  .catch((err) => console.error('에러 발생:', err.message));
+```
+
+#### `stale` 상태 방지
+
+```javascript title="async-stale.js"
+function createStaleSafeFetcher() {
+  let latestRequestId = 0;
+
+  return async function fetchSafe(url) {
+    const requestId = ++latestRequestId;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (requestId !== latestRequestId) {
+      throw new Error('Stale response ignored');
+    }
+
+    return data;
+  };
+}
+
+// 사용 예시
+const safeFetch = createStaleSafeFetcher();
+
+safeFetch('https://jsonplaceholder.typicode.com/posts/1')
+  .then((data) => console.log('[1차 요청] 응답:', data))
+  .catch((err) => console.warn('[1차 요청] 무시됨:', err.message));
+
+safeFetch('https://jsonplaceholder.typicode.com/posts/2')
+  .then((data) => console.log('[2차 요청] 응답:', data))
+  .catch((err) => console.warn('[2차 요청] 무시됨:', err.message));
+```
+
+```text title="output"
+> [2차 요청] 응답: {
+    userId: 1,
+    id: 2,
+    title: 'qui est esse',
+    body: 'est rerum tempore vitae\n' +
+        'sequi sint nihil reprehenderit dolor beatae ea dolores neque\n' +
+        'fugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\n' +
+        'qui aperiam non debitis possimus qui neque nisi nulla'
+    }
+> [1차 요청] 무시됨: Stale response ignored
+```
