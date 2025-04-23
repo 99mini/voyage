@@ -6,6 +6,16 @@ authors: [99mini]
 tags: [javascript]
 ---
 
+### 동시성(Concurrency)
+
+**자바스크립트는 싱글 스레드 프로그래밍 언어**이다. 여러작업을 동시에 실행하기 위하여 동시성으로 문제를 해결한다.
+
+> Concurrency is about dealing with lots of things at once. Parallelism is about doing lots of things at once. - Rob Pike
+
+**동시성**이란 작은 단위로 프로세스(혹은 쓰레드)를 실행시켜 동시에 일어나는 것처럼 보이게 하는 방식이다.
+
+### 이벤트 루프
+
 콜백함수를 태스크 큐에 넣는 함수들
 
 - `setTimeout`, `setInterval`, `setImmediate`, `requestAnimationFrame`, `I/O`, `UI 렌더링`
