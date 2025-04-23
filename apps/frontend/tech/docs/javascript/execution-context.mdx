@@ -1,12 +1,20 @@
 ---
 sidebar_position: 3
-slug: execution-context
-title: 'Execution Context'
+slug: execution-context-n-closure
+title: 'Execution Context & Closure'
 authors: [99mini]
 tags: [javascript]
 ---
 
-실행 컨텍스트
+## 실행 컨텍스트
+
+실행 컨텍스트는 자바스크립트 코드가 실행될 때 생성되는 환경
+
+- 변수 환경(Variable Environment): 선언된 변수와 함수의 정보.
+- 스코프 체인(Scope Chain): 현재 컨텍스트와 외부 컨텍스트의 참조를 포함하여, 변수의 접근 범위를 결정.
+- this 바인딩: 현재 컨텍스트에서의 this 키워드가 참조하는 객체.​
+
+자바스크립트는 싱글 스레드로 동작하며, 실행 컨텍스트는 **콜 스택(Call Stack)**을 통해 관리된다.
 
 ```javascript title="execution-context.js"
 function foo() {
@@ -27,7 +35,8 @@ console.log(foo2()); // 2
 
 ## 클로저 (Closure)
 
-클로저(Closure)는 함수가 생성될 때의 스코프(lexical scope)를 기억해서, 외부 함수가 종료된 이후에도 그 지역 변수에 접근할 수 있는 함수.
+클로저(Closure)는 함수가 생성될 때의 스코프(**lexical scope** 혹은 정적 스코프(Static Scope))를 기억해서 외부 함수가 종료된 이후에도 그 지역 변수에 접근할 수 있는 함수.
+정적 스코프는 코드 작성 시점의 스코프 구조를 기준으로 변수 접근이 이루어진다.
 즉, 내부 함수가 외부 함수의 변수에 "접근권"을 가지는 구조입니다.
 
 ```javascript title="closure.js"
