@@ -170,4 +170,92 @@ function MyInput(props: ComponentProps<'input'>) {
 
 ### 타입스크립트로 리액트 컴포넌트 만들기
 
-p.268
+```tsx
+type ReactSelectProps = React.ComponentPropsWithoutRef<'select'>;
+
+interface SelectProps<OptionType extends Record<string, string>> {
+  id?: ReactSelectProps['id'];
+  className?: ReactSelectProps['className'];
+}
+```
+
+**공변성과 반공변성**
+
+타입 `A`가 `B`의 서브타입일 때, `T<A>`가 `T<B>`의 서브타입이 된다면 **공변성**을 띠고 있다. 좁은 타입에서 넓은 타입으로 할당 가능
+
+```typescript
+inferface User {
+  id: string
+}
+
+inferface Member extends User {
+  nickname: string;
+}
+
+let users: Array<User> = [];
+let members: Array<Member> = [];
+
+users = members; // OK
+members = users; // Error
+```
+
+제네릭 타입을 지닌 함수는 **반공변성**을 가진다.
+`T<B>`가 `T<A>`의 서브타입이 되어 좁은 타입 `T<A>`의 함수를 넓은 타입 `T<B>`의 함수에 적용할 수 없다.
+
+```typescript
+type PrintUserInfo<U extends User> = (user: U) => void;
+
+let printUser: PrintUserInfo<User> = (user) => console.log(user.id);
+
+let printMember: PrintUserInfo<Member> = (user) => console.log(user.id, user.nickname);
+
+printMember = printUser; // OK
+
+printUser = printMember; // Error - Property 'nickname' is missing in type 'User' but required in type 'Memeber'
+```
+
+```tsx
+inferface Props<T extends string> {
+  onChangeA?: (selected: T) => void; // 반공변성
+  onChangeB?(selected: T): void;     // 이변성: 공변성 + 반공변성
+}
+```
+
+```tsx
+interface Props<T extends string> {
+  onChangeA?: (selected: T) => void;
+  onChangeB?(selected: T): void;
+}
+
+const Select = ({ onChangeA, onChangeB }: Props<string>) => {
+  // 제네릭 타입에 string 대신 Props<'apple'>로 선언할 경우 에러가 발생하지 않는다.
+  return (
+    <div>
+      <button onClick={() => onChangeA?.('apple')}>A</button>
+      <button onClick={() => onChangeB?.('apple')}>B</button>
+    </div>
+  );
+};
+
+const App = () => {
+  const change = (selectedApple: 'apple') => console.log(selectedApple);
+
+  return (
+    <Select
+      //  onChangeA={change}
+      //  ~~~~~~~~~
+      //  Type '(selectedApple: "apple") => void' is not assignable to type '(selected: string) => void'.
+      //    Types of parameters 'selectedApple' and 'selected' are incompatible.
+      //      Type 'string' is not assignable to type '"apple"'.ts(2322)
+      onChangeB={change}
+    />;
+
+  )
+};
+```
+
+:::
+
+안전한 타입 가드를 위해서는 일반적으로 반공변적인 함수 타입을 설정하는 것이 권장된다.
+
+:::
