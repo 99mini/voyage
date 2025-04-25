@@ -36,12 +36,12 @@ type ReactNode = ReactChild | ReactFragment | ReactPortal | boolean | null | und
 
 ```tsx
 interface MyComponentProps1 {
-    children?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 interface MyProps {}
 
-interface MyComponentProps2 = PropsWithChildren<MyProps>
+type MyComponentProps2 = PropsWithChildren<MyProps>;
 ```
 
 **`JSX.Element`**
