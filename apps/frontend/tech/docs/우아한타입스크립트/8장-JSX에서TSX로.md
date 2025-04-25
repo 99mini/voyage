@@ -184,11 +184,11 @@ interface SelectProps<OptionType extends Record<string, string>> {
 타입 `A`가 `B`의 서브타입일 때, `T<A>`가 `T<B>`의 서브타입이 된다면 **공변성**을 띠고 있다. 좁은 타입에서 넓은 타입으로 할당 가능
 
 ```typescript
-inferface User {
-  id: string
+interface User {
+  id: string;
 }
 
-inferface Member extends User {
+interface Member extends User {
   nickname: string;
 }
 
@@ -215,9 +215,9 @@ printUser = printMember; // Error - Property 'nickname' is missing in type 'User
 ```
 
 ```tsx
-inferface Props<T extends string> {
+interface Props<T extends string> {
   onChangeA?: (selected: T) => void; // 반공변성
-  onChangeB?(selected: T): void;     // 이변성: 공변성 + 반공변성
+  onChangeB?(selected: T): void; // 이변성: 공변성 + 반공변성
 }
 ```
 
