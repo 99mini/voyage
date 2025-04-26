@@ -8,8 +8,9 @@ import { ReadFileEntity, UploadFileEntity } from './entities';
 
 import { RenameFileDto } from './dto';
 
-import { isRelativePath } from './utils';
+import { isSafePath } from './utils';
 
+// TODO: 에러 상태를 모듈화하여 관리
 @Injectable()
 export class FilesService {
   private readonly basePath =
@@ -63,8 +64,8 @@ export class FilesService {
   }
 
   async createDirectory(path: string) {
-    if (isRelativePath(path)) {
-      throw new HttpException('Path includes relative path', HttpStatus.BAD_REQUEST);
+    if (!isSafePath(this.basePath, path)) {
+      throw new HttpException('Invalid path', HttpStatus.BAD_REQUEST);
     }
 
     try {
@@ -76,8 +77,8 @@ export class FilesService {
   }
 
   async uploadFile(file: Express.Multer.File, path: string): Promise<UploadFileEntity> {
-    if (isRelativePath(path) || isRelativePath(file.originalname)) {
-      throw new HttpException('Path includes relative path', HttpStatus.BAD_REQUEST);
+    if (!isSafePath(this.basePath, path) || !isSafePath(this.basePath, file.originalname)) {
+      throw new HttpException('Invalid path', HttpStatus.BAD_REQUEST);
     }
 
     const targetDir = join(this.basePath, path);
@@ -108,8 +109,8 @@ export class FilesService {
   }
 
   async readList(path?: string): Promise<ReadFileEntity[]> {
-    if (isRelativePath(path)) {
-      throw new HttpException('Path includes relative path', HttpStatus.BAD_REQUEST);
+    if (!isSafePath(this.basePath, path)) {
+      throw new HttpException('Invalid path', HttpStatus.BAD_REQUEST);
     }
 
     const isExistPath = await this._isExistDir(join(this.basePath, path ?? ''));
@@ -153,8 +154,12 @@ export class FilesService {
   async renameFile(dto: Required<Pick<RenameFileDto, 'path' | 'filename' | 'newFilename'>>) {
     const { path, filename, newFilename } = dto;
 
-    if (isRelativePath(path) || isRelativePath(newFilename) || isRelativePath(filename)) {
-      throw new HttpException('Path includes relative path', HttpStatus.BAD_REQUEST);
+    if (
+      !isSafePath(this.basePath, path) ||
+      !isSafePath(this.basePath, newFilename) ||
+      !isSafePath(this.basePath, filename)
+    ) {
+      throw new HttpException('Invalid path', HttpStatus.BAD_REQUEST);
     }
 
     const isExistPath = await this._isExistDir(join(this.basePath, path));
@@ -172,8 +177,12 @@ export class FilesService {
   async moveFile(dto: Required<Pick<RenameFileDto, 'path' | 'filename' | 'newPath'>>) {
     const { path, filename, newPath: targetPath } = dto;
 
-    if (isRelativePath(path) || isRelativePath(targetPath) || isRelativePath(filename)) {
-      throw new HttpException('Path includes relative path', HttpStatus.BAD_REQUEST);
+    if (
+      !isSafePath(this.basePath, path) ||
+      !isSafePath(this.basePath, targetPath) ||
+      !isSafePath(this.basePath, filename)
+    ) {
+      throw new HttpException('Invalid path', HttpStatus.BAD_REQUEST);
     }
 
     const isExistFile = await this._isExistDir(join(this.basePath, path, filename));
@@ -197,8 +206,8 @@ export class FilesService {
   async deleteFile(path: string) {
     const targetPath = join(this.basePath, path);
 
-    if (isRelativePath(path)) {
-      throw new HttpException('Path includes relative path', HttpStatus.BAD_REQUEST);
+    if (!isSafePath(this.basePath, path)) {
+      throw new HttpException('Invalid path', HttpStatus.BAD_REQUEST);
     }
 
     await this._deleteFile(targetPath, { recursive: true });

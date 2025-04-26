@@ -8,7 +8,7 @@ async function bootstrap() {
 
   // CORS 설정 추가
   app.enableCors({
-    origin: ['https://zerovoyage.com', 'https://api.zerovoyage.com', 'http://localhost:3000', 'http://localhost:5173'],
+    origin: ['http://localhost:3000', 'http://localhost:5173'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
