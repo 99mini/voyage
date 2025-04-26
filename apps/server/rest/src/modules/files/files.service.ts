@@ -10,6 +10,7 @@ import { RenameFileDto } from './dto';
 
 import { isSafePath } from './utils';
 
+// TODO: 에러 상태를 모듈화하여 관리
 @Injectable()
 export class FilesService {
   private readonly basePath =
