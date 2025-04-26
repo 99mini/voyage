@@ -41,7 +41,7 @@ interface Props {
   className?: string;
 }
 
-const HrComponent = styled.hr<Pick<Props, 'hegiht' | 'color' | 'isFull'>>``;
+const HrComponent = styled.hr<Pick<Props, 'height' | 'color' | 'isFull'>>``;
 
 export const Hr = ({ height, color, isFull, className }: Props) => {
   return <HrComponent height={height} color={color} isFull={isFull} className={className} />;
