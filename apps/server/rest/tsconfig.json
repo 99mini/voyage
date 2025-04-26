@@ -2,6 +2,7 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "strictPropertyInitialization": false,
+    "types": ["jest"],
     "rootDir": "./src",
     "outDir": "./dist",
     "module": "ESNext",

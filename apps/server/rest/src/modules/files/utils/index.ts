@@ -11,6 +11,12 @@ export const isSafePath = (basePath: string, targetPath?: string): boolean => {
     return true;
   }
 
+  const relativePathRegex = /(\.\.\/|\.\.\\|\/\.\.|\\\.\.)/;
+
+  if (relativePathRegex.test(targetPath)) {
+    return false;
+  }
+
   const normalized = normalize(targetPath);
   const resolved = resolve(basePath, normalized);
 
