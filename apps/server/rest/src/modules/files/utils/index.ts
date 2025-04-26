@@ -8,7 +8,7 @@ import { normalize, resolve } from 'path';
  */
 export const isSafePath = (basePath: string, targetPath?: string): boolean => {
   if (!targetPath) {
-    return false;
+    return true;
   }
 
   const normalized = normalize(targetPath);
