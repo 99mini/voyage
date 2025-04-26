@@ -1,10 +1,18 @@
+import { normalize, resolve } from 'path';
+
 /**
- * True if the included path is relative("..")
- * @param val
+ * Checks if the target path is safe by ensuring it does not contain any relative path components.
+ * @param basePath The base path to check against.
+ * @param targetPath The target path to check.
+ * @returns True if the target path is safe, false otherwise.
  */
-export const isRelativePath = (val?: string) => {
-  if (!val) {
+export const isSafePath = (basePath: string, targetPath?: string): boolean => {
+  if (!targetPath) {
     return false;
   }
-  return val.includes('..');
+
+  const normalized = normalize(targetPath);
+  const resolved = resolve(basePath, normalized);
+
+  return resolved.startsWith(basePath);
 };
