@@ -17,8 +17,13 @@ describe('isSafePath', () => {
 
   test('should return false for paths with invalid characters', () => {
     const invalidPath = 'uploads/../test.txt';
-
     expect(isSafePath(basePath, invalidPath)).toBe(false);
+  });
+
+  test('should return false for paths with encoded invalid characters', () => {
+    const encodedPath = 'uploads/%2E%2E/test.txt';
+
+    expect(isSafePath(basePath, encodedPath)).toBe(false);
   });
 
   test('should return true for paths is empty or undefined', () => {
