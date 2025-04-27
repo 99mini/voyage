@@ -5,8 +5,12 @@ describe('isSafePath', () => {
 
   test('should return true for valid paths', () => {
     const validPath = 'uploads/test.txt';
+    const imgPath = 'uploads/banner-4096x2304.png';
+    const videoPath = 'uploads/[video]-number-001.mp4';
 
     expect(isSafePath(basePath, validPath)).toBe(true);
+    expect(isSafePath(basePath, imgPath)).toBe(true);
+    expect(isSafePath(basePath, videoPath)).toBe(true);
   });
 
   test('should return false for paths outside base path', () => {
