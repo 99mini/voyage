@@ -1,4 +1,4 @@
-import { normalize, resolve } from 'path';
+import path from 'path';
 
 /**
  * Checks if the target path is safe by ensuring it does not contain any relative path components.
@@ -11,16 +11,20 @@ export const isSafePath = (basePath: string, targetPath?: string): boolean => {
     return true;
   }
 
-  const encodedPath = decodeURIComponent(targetPath);
-
+  let encodedPath: string;
+  try {
+    encodedPath = decodeURIComponent(targetPath);
+  } catch (error) {
+    return false; // Malformed URI sequence, path is not safe
+  }
   const relativePathRegex = /(\.\.\/|\.\.\\|\/\.\.|\\\.\.)/;
 
   if (relativePathRegex.test(encodedPath)) {
     return false;
   }
+  const normalized = path.normalize(encodedPath);
+  const resolved = path.resolve(basePath, normalized);
 
-  const normalized = normalize(encodedPath);
-  const resolved = resolve(basePath, normalized);
-
-  return resolved.startsWith(basePath);
+  const relative = path.relative(basePath, resolved);
+  return !relative.startsWith('..') && !path.isAbsolute(relative);
 };

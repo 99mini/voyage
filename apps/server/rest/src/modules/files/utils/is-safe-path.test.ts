@@ -36,4 +36,10 @@ describe('isSafePath', () => {
     expect(isSafePath(basePath, emptyPath)).toBe(true);
     expect(isSafePath(basePath)).toBe(true);
   });
+
+  test('should return false for malformed URI sequence', () => {
+    const malformedPath = 'uploads/%E0%A4%A';
+
+    expect(isSafePath(basePath, malformedPath)).toBe(false);
+  });
 });
