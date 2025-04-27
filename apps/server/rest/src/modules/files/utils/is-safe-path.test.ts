@@ -1,4 +1,4 @@
-import { isSafePath } from '.';
+import { isSafePath } from './is-safe-path';
 
 describe('isSafePath', () => {
   const basePath = '/mnt/volume_sgp1_01/static';

@@ -311,6 +311,7 @@ export class FilesController {
       message: 'Not implemented',
     });
   }
+
   @Delete()
   @ApiOperation({
     summary: 'Delete file or directory',
