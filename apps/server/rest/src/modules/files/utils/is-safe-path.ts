@@ -11,13 +11,15 @@ export const isSafePath = (basePath: string, targetPath?: string): boolean => {
     return true;
   }
 
+  const encodedPath = decodeURIComponent(targetPath);
+
   const relativePathRegex = /(\.\.\/|\.\.\\|\/\.\.|\\\.\.)/;
 
-  if (relativePathRegex.test(targetPath)) {
+  if (relativePathRegex.test(encodedPath)) {
     return false;
   }
 
-  const normalized = normalize(targetPath);
+  const normalized = normalize(encodedPath);
   const resolved = resolve(basePath, normalized);
 
   return resolved.startsWith(basePath);
