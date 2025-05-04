@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { Check, Copy } from 'lucide-react';
-
 import { Button, Input, Label, Slider, useToast } from '@packages/vds';
 
+import CopyButton from '@/components/common/copy-button';
 import Description from '@/components/common/description';
 import RootLayout from '@/components/layout/root-layout';
 
@@ -18,7 +17,6 @@ const RandomPasswordGenerator = () => {
   const [includeLowercase, setIncludeLowercase] = useState<boolean>(true);
   const [includeNumbers, setIncludeNumbers] = useState<boolean>(true);
   const [includeSpecialChars, setIncludeSpecialChars] = useState<boolean>(false);
-  const [copied, setCopied] = useState<boolean>(false);
 
   const { toast } = useToast();
 
@@ -49,16 +47,6 @@ const RandomPasswordGenerator = () => {
     setPassword(generatedPassword);
   }, [includeLowercase, includeNumbers, includeSpecialChars, includeUppercase, passwordLength]);
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(password);
-    setCopied(true);
-    toast({
-      description: '클립보드에 비밀번호를 복사했어요.',
-      duration: 3000,
-    });
-    setTimeout(() => setCopied(false), 3000);
-  };
-
   // 컴포넌트 마운트 시와 옵션 변경 시 비밀번호 생성
   useEffect(() => {
     generatePassword();
@@ -71,15 +59,15 @@ const RandomPasswordGenerator = () => {
         <div className="space-y-6">
           <div className="flex items-center space-x-4">
             <Input value={password} readOnly className="flex-1 font-mono text-lg" />
-            <Button
-              variant="outline"
-              size="icon"
-              className={copied ? 'border-green-500' : ''}
-              onClick={copyToClipboard}
-              title="클립보드에 복사"
-            >
-              {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-            </Button>
+            <CopyButton
+              value={password}
+              onCopy={() =>
+                toast({
+                  description: '클립보드에 비밀번호를 복사했어요.',
+                  duration: 3000,
+                })
+              }
+            />
           </div>
 
           <div className="space-y-2">
