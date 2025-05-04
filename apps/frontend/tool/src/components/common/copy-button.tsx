@@ -2,7 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Check, Copy } from 'lucide-react';
 
+import { cn } from '@packages/vds';
 import { Button } from '@packages/vds';
+
+const style = {
+  'animation-icon': 'absolute inset-0 flex items-center justify-center transition-all duration-300',
+  'animation-icon-copied': 'opacity-0 scale-90',
+  'animation-icon-not-copied': 'opacity-100 scale-100',
+  icon: 'h-4 w-4',
+};
 
 type CopyButtonProps = {
   value: string;
@@ -40,11 +48,17 @@ const CopyButton = ({ value, onCopy }: CopyButtonProps) => {
     <Button
       variant="outline"
       size="icon"
-      className={copied ? 'border-green-500' : ''}
+      className={cn('relative', copied && 'border-green-500')}
       onClick={() => copyToClipboard(value, onCopy)}
       title="클립보드에 복사"
     >
-      {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+      <span className={cn(style['animation-icon'], style[`animation-icon-${copied ? 'copied' : 'not-copied'}`])}>
+        <Copy className={style['icon']} />
+      </span>
+      <span className={cn(style['animation-icon'], style[`animation-icon-${!copied ? 'copied' : 'not-copied'}`])}>
+        <Check className={cn(style['icon'], 'text-green-500')} />
+      </span>
+      <span className="sr-only">{copied ? '복사됨' : '복사'}</span>
     </Button>
   );
 };
