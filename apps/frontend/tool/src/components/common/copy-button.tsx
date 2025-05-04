@@ -30,9 +30,10 @@ type CopyButtonProps = {
   onCopy?: () => void;
   className?: string;
   size?: 'icon' | 'small' | 'large';
+  disabled?: boolean;
 };
 
-const CopyButton = ({ value, onCopy, className, size = 'icon' }: CopyButtonProps) => {
+const CopyButton = ({ value, onCopy, className, size = 'icon', disabled }: CopyButtonProps) => {
   const [copied, setCopied] = useState<'idle' | 'animating' | 'copied'>('idle');
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -73,6 +74,7 @@ const CopyButton = ({ value, onCopy, className, size = 'icon' }: CopyButtonProps
       )}
       onClick={() => copyToClipboard(value, onCopy)}
       title="클립보드에 복사"
+      disabled={disabled}
     >
       <span
         className={cn(
