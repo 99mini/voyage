@@ -1,6 +1,17 @@
 import { useState } from 'react';
 
-import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from '@packages/vds';
+import {
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Textarea,
+  useToast,
+} from '@packages/vds';
+
+import CopyButton from '@/components/common/copy-button';
 
 const httpMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
@@ -11,26 +22,27 @@ const CurlGenerator = () => {
   const [body, setBody] = useState('');
   const [query, setQuery] = useState('');
 
+  const { toast } = useToast();
+
   const buildCurl = () => {
     let curl = `curl -X ${method} "${url}${query ? '?' + query : ''}"`;
 
-    if (headers.trim()) {
-      headers.split('\n').forEach((h) => {
-        const [key, val] = h.split(':');
-        curl += ` \\\n  -H "${key.trim()}: ${val.trim()}"`;
-      });
-    }
+    try {
+      if (headers.trim()) {
+        headers.split('\n').forEach((h) => {
+          const [key, val] = h.split(':');
+          curl += ` \\\n  -H "${key.trim()}: ${val.trim()}"`;
+        });
+      }
 
-    if (body.trim() && method !== 'GET') {
-      curl += ` \\\n  -d '${body}'`;
+      if (body.trim() && method !== 'GET') {
+        curl += ` \\\n  -d '${body}'`;
+      }
+    } catch (error) {
+      console.error(error);
     }
 
     return curl;
-  };
-
-  const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(buildCurl());
-    alert('cURL 명령어가 복사되었습니다!');
   };
 
   return (
@@ -59,9 +71,15 @@ const CurlGenerator = () => {
       <Textarea placeholder="Headers (key: value)" value={headers} onChange={(e) => setHeaders(e.target.value)} />
       <Textarea placeholder="Body (JSON or text)" value={body} onChange={(e) => setBody(e.target.value)} />
 
-      <div className="bg-gray-900 text-white p-4 rounded font-mono whitespace-pre-wrap">{buildCurl()}</div>
-
-      <Button onClick={copyToClipboard}>cURL 복사</Button>
+      <div className="relative">
+        <div className="bg-gray-900 text-white p-4 rounded font-mono whitespace-pre-wrap">{buildCurl()}</div>
+        <CopyButton
+          className="absolute top-4 right-4 bg-transparent text-white"
+          size="small"
+          value={buildCurl()}
+          onCopy={() => toast({ description: 'cURL 명령어가 복사되었습니다!' })}
+        />
+      </div>
     </main>
   );
 };
