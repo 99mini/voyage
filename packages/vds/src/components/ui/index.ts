@@ -7,3 +7,5 @@ export * from './radio-group';
 export * from './slider';
 export * from './toast';
 export * from './toaster';
+export * from './select';
+export * from './textarea';
