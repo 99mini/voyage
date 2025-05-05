@@ -2,6 +2,8 @@ import * as d3 from 'd3';
 
 import { useEffect, useRef, useState } from 'react';
 
+import { getWakatimeContribute } from '@/apis/me/contribute';
+
 const WakaTimeGraph = () => {
   const [data, setData] = useState<{ date: Date; hours: number }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -11,13 +13,12 @@ const WakaTimeGraph = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://api.zerovoyage.com/v1/me/contribute/wakatime`);
-        const { data } = await response.json();
+        const response = await getWakatimeContribute();
 
         setData(
-          data.days
-            .slice(data.days.findIndex((d: any) => d.total > 0))
-            .map((d: any) => ({
+          response.data
+            .reverse()
+            .map((d) => ({
               date: new Date(d.date),
               hours: d.total / 3600,
             }))
@@ -32,6 +33,7 @@ const WakaTimeGraph = () => {
             }, []),
         );
       } catch (err) {
+        console.error(err);
         setError(err.message);
       } finally {
         setLoading(false);
