@@ -37,3 +37,5 @@ export type DateData = {
    */
   total: number;
 };
+
+export type useContributeQueryParams = 'wakatime';

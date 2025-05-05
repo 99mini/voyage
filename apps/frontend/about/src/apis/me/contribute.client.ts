@@ -1,4 +1,4 @@
-import { ContributeResponse } from './contribute.type';
+import type { ContributeResponse } from './contribute.type';
 
 export const getWakatimeContribute = async (): Promise<ContributeResponse> => {
   try {

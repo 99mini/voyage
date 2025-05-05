@@ -1,47 +1,33 @@
 import * as d3 from 'd3';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
-import { getWakatimeContribute } from '@/apis/me/contribute';
+import { useContributeQuery } from '@/apis/me';
 
 const WakaTimeGraph = () => {
-  const [data, setData] = useState<{ date: Date; hours: number }[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getWakatimeContribute();
+  const { data: wakaData, isLoading, error } = useContributeQuery('wakatime');
 
-        setData(
-          response.data
-            .reverse()
-            .map((d) => ({
-              date: new Date(d.date),
-              hours: d.total / 3600,
-            }))
-            .reduce((acc: any, cur: any, idx: number) => {
-              if (idx === 0) {
-                return [cur];
-              }
-              const prev = acc[acc.length - 1];
+  const data = useMemo(() => {
+    if (!wakaData) return [];
 
-              const totalHours = prev.hours + cur.hours;
-              return [...acc, { ...cur, hours: totalHours }];
-            }, []),
-        );
-      } catch (err) {
-        console.error(err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+    return wakaData.data
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .map((d) => ({
+        date: new Date(d.date),
+        hours: d.total / 3600,
+      }))
+      .reduce<{ date: Date; hours: number }[]>((acc, cur, idx) => {
+        if (idx === 0) {
+          return [cur];
+        }
+        const prev = acc[acc.length - 1];
 
-    fetchData();
-  }, []);
+        const totalHours = prev.hours + cur.hours;
+        return [...acc, { ...cur, hours: totalHours }];
+      }, []);
+  }, [wakaData?.data]);
 
   useEffect(() => {
     if (data.length === 0 || error) return;
@@ -54,19 +40,17 @@ const WakaTimeGraph = () => {
 
     svg.selectAll('*').remove();
 
-    // 스케일 설정
-    const xScale = d3
-      .scaleTime()
-      .domain(d3.extent(data, (d) => d.date))
-      .range([0, width]);
+    const xScaleDomain = d3.extent(data, (d) => d.date) as [Date, Date];
 
-    const yScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(data, (d) => d.hours)])
-      .nice()
-      .range([height, 0]);
+    // 스케일 설정
+    const xScale = d3.scaleTime().domain(xScaleDomain).range([0, width]);
+
+    const yScaleMax = d3.max(data, (d) => d.hours) ?? 0;
+
+    const yScale = d3.scaleLinear().domain([0, yScaleMax]).nice().range([height, 0]);
 
     // 축 생성
+
     const xAxis = d3.axisBottom(xScale).ticks(d3.timeDay.every(60)).tickFormat(d3.timeFormat('%y-%m-%d'));
 
     const yAxis = d3
@@ -80,7 +64,7 @@ const WakaTimeGraph = () => {
     // 축 그리기
     g.append('g')
       .attr('transform', `translate(0,${height})`)
-      .call(xAxis)
+      .call(xAxis, 0)
       .selectAll('text')
       .style('text-anchor', 'end')
       .attr('dx', '-.8em')
@@ -91,7 +75,7 @@ const WakaTimeGraph = () => {
 
     // 라인 생성기
     const line = d3
-      .line()
+      .line<{ date: Date; hours: number }>()
       .x((d) => xScale(d.date))
       .y((d) => yScale(d.hours))
       .curve(d3.curveMonotoneX);
@@ -100,8 +84,8 @@ const WakaTimeGraph = () => {
     g.append('path').datum(data).attr('fill', 'none').attr('stroke', '#4a90e2').attr('stroke-width', 2).attr('d', line);
   }, [data, error]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <svg
