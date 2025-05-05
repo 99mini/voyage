@@ -153,14 +153,22 @@ export function useLineChart(svgRef: RefObject<SVGSVGElement>, data: ChartData[]
           const d0 = data[Math.max(0, Math.min(idx, data.length - 1))];
           const tooltipX = xScale(d0.x);
           const tooltipY = yScale(d0.y);
-          tooltip.attr('transform', `translate(${tooltipX},${tooltipY - 50})`).style('display', null);
           tooltipTextX.text(xIsDate ? d3.timeFormat('%Y-%m-%d')(d0.x as Date) : (d0.x as number).toFixed(2));
           tooltipTextY.text(`${d0.y.toFixed(2)}`);
           const textLengthX = (tooltipTextX.node() as SVGTextElement).getComputedTextLength();
           const textLengthY = (tooltipTextY.node() as SVGTextElement).getComputedTextLength();
-          tooltipRect.attr('width', Math.max(120, Math.max(textLengthX, textLengthY) + 24));
+          const tooltipWidth = Math.max(120, Math.max(textLengthX, textLengthY) + 24);
+          tooltipRect.attr('width', tooltipWidth);
+          // 오른쪽 경계 체크 및 위치 조정
+          let tx = tooltipX;
+          if (tooltipX + tooltipWidth > innerWidth) {
+            tx = innerWidth - tooltipWidth;
+          }
+          // 왼쪽 경계도 보정 (옵션)
+          if (tx < 0) tx = 0;
+          tooltip.attr('transform', `translate(${tx},${tooltipY - 50})`).style('display', null);
           // 원의 위치를 정확한 포인트에 맞춤
-          tooltipCircle.attr('cx', 0).attr('cy', 50);
+          tooltipCircle.attr('cx', tooltipX - tx).attr('cy', 50);
           // 수평선 표시 및 위치 조정
           hoverLine
             .attr('x1', 0)
