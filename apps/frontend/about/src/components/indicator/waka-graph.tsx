@@ -1,10 +1,6 @@
 import * as d3 from 'd3';
 
-// TODO: awesome 프로젝트에서 home 프로젝트로 이전하기
-// TODO: 홈 프로젝트에 깃헙, 와카 등 개인 정보 보여주는 페이지 제작
-// TODO: 홈 프로젝트에 포트폴리오 페이지 제작
-
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const WakaTimeGraph = () => {
   const [data, setData] = useState<{ date: Date; hours: number }[]>([]);
