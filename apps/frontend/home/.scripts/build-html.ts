@@ -32,5 +32,7 @@ const html = `<!doctype html>
 </html>
 `;
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
 fs.writeFileSync(path.resolve(__dirname, '../dist/index.html'), html);
 console.log('✅ Static HTML generated.');
