@@ -12,4 +12,9 @@ export const useContributeQuery = (provider: useContributeQueryParams) =>
           return getWakatimeContribute();
       }
     },
+    retry: 3,
+    retryDelay: 1000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });

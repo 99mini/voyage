@@ -84,8 +84,39 @@ const WakaTimeGraph = () => {
     g.append('path').datum(data).attr('fill', 'none').attr('stroke', '#4a90e2').attr('stroke-width', 2).attr('d', line);
   }, [data, error]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (isLoading)
+    return (
+      // skeleton
+      <svg
+        width={800}
+        height={400}
+        style={{
+          margin: '20px auto',
+          display: 'block',
+          backgroundColor: '#f9f9f9',
+          borderRadius: '8px',
+        }}
+      />
+    );
+
+  if (error)
+    return (
+      <div
+        style={{
+          position: 'relative',
+          width: 800,
+          height: 400,
+          margin: '20px auto',
+          display: 'block',
+          backgroundColor: '#f9f9f9',
+          borderRadius: '8px',
+        }}
+      >
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+          Error: {error?.message}
+        </div>
+      </div>
+    );
 
   return (
     <svg
