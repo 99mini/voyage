@@ -8,9 +8,12 @@ const formatWakatime = (days: WakaTime.Day[]) => {
     currentStreak: 0,
     maxStreak: 0,
     total: 0,
+    startDate: '',
+    endDate: new Date().toISOString().split('T')[0],
   };
 
   const sortedDays = [...days].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
   const dateDataList: DateData[] = sortedDays.map((day) => ({
     date: day.date,
     total: day.total,
@@ -46,6 +49,8 @@ const formatWakatime = (days: WakaTime.Day[]) => {
   ret.currentStreak = currentStreak;
   ret.maxStreak = maxStreak;
   ret.total = sortedDays.reduce((acc, day) => acc + day.total, 0);
+  ret.startDate = sortedDays[sortedDays.length - 1].date;
+  ret.endDate = sortedDays[0].date;
 
   return ret;
 };

@@ -32,6 +32,8 @@ describe('formatWakatime', () => {
       currentStreak: 2,
       maxStreak: 3,
       total: 15,
+      startDate: '2025-05-01',
+      endDate: '2025-05-09',
     });
   });
 });
