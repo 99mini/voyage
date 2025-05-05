@@ -85,5 +85,48 @@ export function useLineChart(svgRef: RefObject<SVGSVGElement>, data: ChartData[]
 
     // 라인 그리기
     g.append('path').datum(data).attr('fill', 'none').attr('stroke', '#4a90e2').attr('stroke-width', 2).attr('d', line);
+
+    // === Tooltip 추가 ===
+    // 1. tooltip 요소 생성 (group + rect + text)
+    const tooltip = g.append('g').style('display', 'none');
+    tooltip.append('rect')
+      .attr('width', 120)
+      .attr('height', 40)
+      .attr('fill', 'white')
+      .attr('stroke', '#4a90e2')
+      .attr('rx', 8)
+      .attr('ry', 8)
+      .attr('opacity', 0.95);
+    const tooltipText = tooltip.append('text')
+      .attr('x', 10)
+      .attr('y', 22)
+      .attr('font-size', 14)
+      .attr('fill', '#222');
+
+    // 2. 마우스 이벤트용 overlay 생성
+    g.append('rect')
+      .attr('width', innerWidth)
+      .attr('height', innerHeight)
+      .attr('fill', 'none')
+      .attr('pointer-events', 'all')
+      .on('mousemove', function (event) {
+        const [mx] = d3.pointer(event);
+        const x0 = xIsDate ? xScale.invert(mx) : xScale.invert(mx);
+        const bisect = d3.bisector((d: ChartData) => d.x).left;
+        const idx = bisect(data, x0);
+        const d0 = data[Math.max(0, Math.min(idx, data.length - 1))];
+        tooltip
+          .attr('transform', `translate(${xScale(d0.x)},${yScale(d0.y) - 45}`)
+          .style('display', null);
+        tooltip.select('text').text(
+          xIsDate
+            ? `${d3.timeFormat('%Y-%m-%d')(d0.x as Date)}: ${d0.y}`
+            : `${d0.x}: ${d0.y}`
+        );
+      })
+      .on('mouseleave', function () {
+        tooltip.style('display', 'none');
+      });
+
   }, [svgRef, data, options]);
 }
