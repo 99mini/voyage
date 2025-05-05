@@ -2,7 +2,7 @@ import { useMemo, useRef } from 'react';
 
 import { useContributeQuery } from '@/apis/me';
 
-import { GraphData } from '@/lib/types';
+import { ChartData } from '@/lib/types';
 
 import { useLineChart } from './useLineChart';
 
@@ -11,7 +11,7 @@ const WakaTimeGraph = () => {
 
   const { data: wakaData, isLoading, error } = useContributeQuery('wakatime');
 
-  const data: GraphData[] = useMemo(() => {
+  const data: ChartData[] = useMemo(() => {
     if (!wakaData) return [];
 
     return wakaData.data
@@ -20,7 +20,7 @@ const WakaTimeGraph = () => {
         x: new Date(d.date),
         y: d.total / 3600,
       }))
-      .reduce<GraphData[]>((acc, cur, idx) => {
+      .reduce<ChartData[]>((acc, cur, idx) => {
         if (idx === 0) {
           return [cur];
         }
