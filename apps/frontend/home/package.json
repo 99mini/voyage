@@ -1,13 +1,14 @@
 {
   "name": "home",
   "private": true,
-  "version": "0.1.2",
+  "version": "1.0.0",
   "sideEffects": false,
   "type": "module",
   "homepage": "https://zerovoyage.com",
   "packageManager": "pnpm@10.4.1",
   "scripts": {
     "build": "vite build",
+    "build:static": "pnpm run build && pnpm tsx ./.scripts/build-html.ts",
     "dev": "vite",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "format": "prettier --write .",

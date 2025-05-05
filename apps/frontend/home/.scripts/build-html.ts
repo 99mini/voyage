@@ -1,4 +1,9 @@
-<!doctype html>
+import fs from 'fs';
+import path from 'path';
+
+import { render } from '../src/entry-server';
+
+const html = `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -21,7 +26,11 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/entry-client.tsx"></script>
+    <div id="root">${render()}</div>
+    <script type="module" src="/entry-client.js"></script>
   </body>
 </html>
+`;
+
+fs.writeFileSync(path.resolve(__dirname, '../dist/index.html'), html);
+console.log('✅ Static HTML generated.');
