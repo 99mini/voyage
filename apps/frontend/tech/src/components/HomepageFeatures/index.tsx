@@ -30,7 +30,7 @@ const FeatureList: FeatureItem[] = [
     title: 'Zero Voyage',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: <>0부터 시작하는 항해: zerovoyage의 모든 제품 확인하기</>,
-    href: 'https://zerovoyage.com',
+    href: 'https://about.zerovoyage.com',
   },
   // {
   //   title: 'Focus on What Matters',

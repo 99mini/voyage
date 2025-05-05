@@ -151,7 +151,7 @@ const config: Config = {
           items: [
             {
               label: 'Zero Voyage',
-              href: 'https://zerovoyage.com',
+              href: 'https://about.zerovoyage.com',
             },
             {
               label: 'Crypto Monitor',

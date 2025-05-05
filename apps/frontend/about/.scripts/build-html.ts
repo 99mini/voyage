@@ -27,7 +27,7 @@ const html = `<!doctype html>
     <title>zerovoyage</title>
     <meta property="og:title" content="zerovoyage" />
     <meta property="og:description" content="zerovoyage" />
-    <meta property="og:url" content="https://zerovoyage.com/" />
+    <meta property="og:url" content="https://about.zerovoyage.com/" />
     <meta name="description" content="zerovoyage" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2L0YWL45W7"></script>

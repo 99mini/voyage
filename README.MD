@@ -9,7 +9,7 @@
 
 - [Apps](#apps)
   - [Frontend](#frontend)
-    - [Home](#home)
+    - [About](#about)
     - [Tool](#tool)
       - [Feature Tool](#feature-tool)
     - [Tech](#tech)
@@ -38,11 +38,11 @@
 
 ## Frontend
 
-### Home
+### About
 
-- production: https://zerovoyage.com/ (https://www.zerovoyage.com)
-- github: https://github.com/99mini/voyage/tree/main/apps/frontend/home
-- tech stack: `typescript`, `reactjs`, `tailwindcss`, `shadcn/ui`, `remix`
+- production: https://about.zerovoyage.com
+- github: https://github.com/99mini/voyage/tree/main/apps/frontend/about
+- tech stack: `typescript`, `reactjs`, `tailwindcss`, `shadcn/ui`
 
 ### Tool
 
