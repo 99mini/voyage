@@ -4,7 +4,7 @@ export interface SectionProps {
   children: React.ReactNode;
 }
 
-export default function ProjectSection({ title, href, children }: SectionProps) {
+const ProjectSection = ({ title, href, children }: SectionProps) => {
   return (
     <section className="container py-10 w-full mx-auto px-4 md:px-0">
       <div className="flex flex-col gap-2 md:flex-row md:items-end md:gap-4 w-full mb-2">
@@ -19,4 +19,6 @@ export default function ProjectSection({ title, href, children }: SectionProps) 
       <div className="container">{children}</div>
     </section>
   );
-}
+};
+
+export default ProjectSection;

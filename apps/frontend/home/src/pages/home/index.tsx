@@ -1,18 +1,11 @@
-import type { MetaFunction } from '@remix-run/node';
-
-import Footer from '~/components/common/footer';
-import Hero from '~/components/hero/hero';
-import ProjectSection from '~/components/hero/project-section';
+import Hero from '@/components/hero/hero';
+import ProjectSection from '@/components/hero/project-section';
 
 const HorizontalLine = () => <hr className="my-4" />;
 
-export const meta: MetaFunction = () => {
-  return [{ title: 'Zero Voyage' }, { name: 'description', content: 'Welcome to Zero Voyage!' }];
-};
-
-export default function Index() {
+export default function Home() {
   return (
-    <main className="h-screen w-screen">
+    <>
       <Hero />
       <div className="w-full">
         <ProjectSection title="Crypto Analytics" href="https://coin.zerovoyage.com/">
@@ -66,7 +59,6 @@ export default function Index() {
           </div>
         </ProjectSection>
       </div>
-      <Footer />
-    </main>
+    </>
   );
 }

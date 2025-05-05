@@ -1,8 +1,8 @@
-import { siteUrl } from '~/lib/constants';
-
 import React from 'react';
 
 import { SquareArrowOutUpRight } from 'lucide-react';
+
+import { BASE_URL } from '@/lib/constants/url';
 
 const metadata = {
   author: '99mini',
@@ -13,8 +13,8 @@ const siteMap: {
   href: string;
   text: string;
 }[] = [
-  { href: `${siteUrl}/`, text: 'home' },
-  { href: `${siteUrl}/sitemap.xml`, text: 'sitemap' },
+  { href: `${BASE_URL}/`, text: 'home' },
+  { href: `${BASE_URL}/sitemap.xml`, text: 'sitemap' },
 ];
 
 const projects: {

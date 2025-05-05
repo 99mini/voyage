@@ -1,22 +1,11 @@
-import type { Config } from 'tailwindcss';
+import { vdsPlugin, vdsTailwindThemeExtend } from '@packages/vds';
 
-export default {
-  content: ['./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}', '../../../packages/vds/src/**/*.{ts,tsx,js,jsx}'],
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  darkMode: ['class'],
+  content: ['./index.html', './src/**/*.{ts,tsx,js,jsx}', '../../../packages/vds/src/**/*.{ts,tsx,js,jsx}'],
   theme: {
-    extend: {
-      fontFamily: {
-        sans: [
-          'Inter',
-          'ui-sans-serif',
-          'system-ui',
-          'sans-serif',
-          'Apple Color Emoji',
-          'Segoe UI Emoji',
-          'Segoe UI Symbol',
-          'Noto Color Emoji',
-        ],
-      },
-    },
+    extend: vdsTailwindThemeExtend,
   },
-  plugins: [],
-} satisfies Config;
+  plugins: [vdsPlugin, require('tailwindcss-animate')],
+};
