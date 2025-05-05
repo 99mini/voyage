@@ -3,6 +3,22 @@ import path from 'path';
 
 import { render } from '../src/entry-server';
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
+const manifestPath = path.resolve(__dirname, '../dist/.vite/manifest.json');
+const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+
+const entry = manifest['src/entry-client.tsx'];
+const jsFile = entry?.file;
+const cssFiles = entry?.css || [];
+
+console.log('manifest js:', jsFile);
+console.log('manifest css:', cssFiles);
+
+const cssLinks = cssFiles.map((href: string) => `<link rel="stylesheet" href="./${href}">`).join('\n');
+
+const jsScript = jsFile ? `<script type="module" src="./${jsFile}"></script>` : '';
+
 const html = `<!doctype html>
 <html lang="en">
   <head>
@@ -21,18 +37,16 @@ const html = `<!doctype html>
         dataLayer.push(arguments);
       }
       gtag('js', new Date());
-
       gtag('config', 'G-2L0YWL45W7');
     </script>
+    ${cssLinks}
   </head>
   <body>
     <div id="root">${render()}</div>
-    <script type="module" src="/entry-client.js"></script>
+    ${jsScript}
   </body>
 </html>
 `;
-
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 fs.writeFileSync(path.resolve(__dirname, '../dist/index.html'), html);
 console.log('✅ Static HTML generated.');
