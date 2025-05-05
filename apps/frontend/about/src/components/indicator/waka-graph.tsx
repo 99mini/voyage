@@ -4,28 +4,30 @@ import { useEffect, useMemo, useRef } from 'react';
 
 import { useContributeQuery } from '@/apis/me';
 
+import { GraphData } from '@/lib/types';
+
 const WakaTimeGraph = () => {
   const svgRef = useRef<SVGSVGElement>(null);
 
   const { data: wakaData, isLoading, error } = useContributeQuery('wakatime');
 
-  const data = useMemo(() => {
+  const data: GraphData[] = useMemo(() => {
     if (!wakaData) return [];
 
     return wakaData.data
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
       .map((d) => ({
         date: new Date(d.date),
-        hours: d.total / 3600,
+        value: d.total / 3600,
       }))
-      .reduce<{ date: Date; hours: number }[]>((acc, cur, idx) => {
+      .reduce<{ date: Date; value: number }[]>((acc, cur, idx) => {
         if (idx === 0) {
           return [cur];
         }
         const prev = acc[acc.length - 1];
 
-        const totalHours = prev.hours + cur.hours;
-        return [...acc, { ...cur, hours: totalHours }];
+        const totalHours = prev.value + cur.value;
+        return [...acc, { ...cur, value: totalHours }];
       }, []);
   }, [wakaData?.data]);
 
@@ -45,7 +47,7 @@ const WakaTimeGraph = () => {
     // 스케일 설정
     const xScale = d3.scaleTime().domain(xScaleDomain).range([0, width]);
 
-    const yScaleMax = d3.max(data, (d) => d.hours) ?? 0;
+    const yScaleMax = d3.max(data, (d) => d.value) ?? 0;
 
     const yScale = d3.scaleLinear().domain([0, yScaleMax]).nice().range([height, 0]);
 
@@ -75,9 +77,9 @@ const WakaTimeGraph = () => {
 
     // 라인 생성기
     const line = d3
-      .line<{ date: Date; hours: number }>()
+      .line<GraphData>()
       .x((d) => xScale(d.date))
-      .y((d) => yScale(d.hours))
+      .y((d) => yScale(d.value))
       .curve(d3.curveMonotoneX);
 
     // 라인 그리기
