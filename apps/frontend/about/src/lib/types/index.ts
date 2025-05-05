@@ -1,3 +1,3 @@
-import type { GraphData } from './graph.type';
+import type { ChartData, ChartOptions } from './graph.type';
 
-export type { GraphData };
+export type { ChartData, ChartOptions };

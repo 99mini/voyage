@@ -1,10 +1,10 @@
-import * as d3 from 'd3';
-
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { useContributeQuery } from '@/apis/me';
 
 import { GraphData } from '@/lib/types';
+
+import { useLineChart } from './useLineChart';
 
 const WakaTimeGraph = () => {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -17,74 +17,21 @@ const WakaTimeGraph = () => {
     return wakaData.data
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
       .map((d) => ({
-        date: new Date(d.date),
-        value: d.total / 3600,
+        x: new Date(d.date),
+        y: d.total / 3600,
       }))
-      .reduce<{ date: Date; value: number }[]>((acc, cur, idx) => {
+      .reduce<GraphData[]>((acc, cur, idx) => {
         if (idx === 0) {
           return [cur];
         }
         const prev = acc[acc.length - 1];
 
-        const totalHours = prev.value + cur.value;
-        return [...acc, { ...cur, value: totalHours }];
+        const totalHours = prev.y + cur.y;
+        return [...acc, { ...cur, y: totalHours }];
       }, []);
   }, [wakaData?.data]);
 
-  useEffect(() => {
-    if (data.length === 0 || error) return;
-
-    // D3 시각화 설정
-    const svg = d3.select(svgRef.current);
-    const margin = { top: 20, right: 30, bottom: 40, left: 50 };
-    const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
-
-    svg.selectAll('*').remove();
-
-    const xScaleDomain = d3.extent(data, (d) => d.date) as [Date, Date];
-
-    // 스케일 설정
-    const xScale = d3.scaleTime().domain(xScaleDomain).range([0, width]);
-
-    const yScaleMax = d3.max(data, (d) => d.value) ?? 0;
-
-    const yScale = d3.scaleLinear().domain([0, yScaleMax]).nice().range([height, 0]);
-
-    // 축 생성
-
-    const xAxis = d3.axisBottom(xScale).ticks(d3.timeDay.every(60)).tickFormat(d3.timeFormat('%y-%m-%d'));
-
-    const yAxis = d3
-      .axisLeft(yScale)
-      .ticks(5)
-      .tickFormat((d) => `${d}h`);
-
-    // SVG 그룹 생성
-    const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
-
-    // 축 그리기
-    g.append('g')
-      .attr('transform', `translate(0,${height})`)
-      .call(xAxis, 0)
-      .selectAll('text')
-      .style('text-anchor', 'end')
-      .attr('dx', '-.8em')
-      .attr('dy', '.15em')
-      .attr('transform', 'rotate(-45)');
-
-    g.append('g').call(yAxis);
-
-    // 라인 생성기
-    const line = d3
-      .line<GraphData>()
-      .x((d) => xScale(d.date))
-      .y((d) => yScale(d.value))
-      .curve(d3.curveMonotoneX);
-
-    // 라인 그리기
-    g.append('path').datum(data).attr('fill', 'none').attr('stroke', '#4a90e2').attr('stroke-width', 2).attr('d', line);
-  }, [data, error]);
+  useLineChart(svgRef, data);
 
   if (isLoading)
     return (
