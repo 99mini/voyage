@@ -22,36 +22,38 @@ export class ContributeService {
       maxStreak: 0,
     };
 
-    let currentStreak = days[days.length - 1].total > 0 ? 1 : 0;
-    let breakCurrentStreak = false;
-    let maxStreak = 0;
-    let tempStreak = 0;
+    const sortedDays = [...days].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    const dateDataList: DateData[] = sortedDays.map((day) => ({
+      date: day.date,
+      total: day.total,
+    }));
 
-    days
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-      .forEach((day, index) => {
-        const dateData: DateData = {
-          date: day.date,
-          total: day.total,
-        };
-        ret.data.push(dateData);
+    ret.data = dateDataList;
 
-        if (index > 0 && day.total < 1) {
-          breakCurrentStreak = true;
-        }
-
-        if (index > 0 && !breakCurrentStreak && day.total > 0) {
-          currentStreak++;
-        }
-
+    const maxStreak = sortedDays.reduce<{ max: number; current: number }>(
+      (acc, day) => {
         if (day.total > 0) {
-          tempStreak++;
+          acc.current += 1;
+          acc.max = Math.max(acc.max, acc.current);
         } else {
-          tempStreak = 0;
+          acc.current = 0;
         }
+        return acc;
+      },
+      { max: 0, current: 0 },
+    ).max;
 
-        maxStreak = Math.max(maxStreak, tempStreak);
-      });
+    const currentStreak = (() => {
+      let streak = 0;
+      for (const day of sortedDays) {
+        if (day.total > 0) {
+          streak++;
+        } else {
+          break;
+        }
+      }
+      return streak;
+    })();
 
     ret.currentStreak = currentStreak;
     ret.maxStreak = maxStreak;
