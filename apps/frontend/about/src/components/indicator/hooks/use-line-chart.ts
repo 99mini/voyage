@@ -100,25 +100,38 @@ export function useLineChart(svgRef: RefObject<SVGSVGElement>, data: ChartData[]
         .attr('rx', 8)
         .attr('ry', 8)
         .attr('opacity', 0.95);
-      const tooltipTextX = tooltip.append('text').attr('x', 10).attr('y', 20).attr('font-size', 14).attr('fill', '#222');
-      const tooltipTextY = tooltip.append('text').attr('x', 10).attr('y', 38).attr('font-size', 14).attr('fill', '#222');
+      const tooltipTextX = tooltip
+        .append('text')
+        .attr('x', 10)
+        .attr('y', 20)
+        .attr('font-size', 14)
+        .attr('fill', '#222');
+      const tooltipTextY = tooltip
+        .append('text')
+        .attr('x', 10)
+        .attr('y', 38)
+        .attr('font-size', 14)
+        .attr('fill', '#222');
 
       // 수평선(hover line) 추가 (툴팁 그룹 외부에 추가)
-      const hoverLine = g.append('line')
+      const hoverLine = g
+        .append('line')
         .attr('stroke', '#888')
         .attr('stroke-width', 1)
         .attr('stroke-dasharray', '4 2')
         .style('display', 'none');
 
       // 수직선(hover vertical line) 추가
-      const hoverVLine = g.append('line')
+      const hoverVLine = g
+        .append('line')
         .attr('stroke', '#888')
         .attr('stroke-width', 1)
         .attr('stroke-dasharray', '4 2')
         .style('display', 'none');
 
       // 원(circle) 추가 (툴팁 그룹 내부)
-      const tooltipCircle = tooltip.append('circle')
+      const tooltipCircle = tooltip
+        .append('circle')
         .attr('cx', 0)
         .attr('cy', 50)
         .attr('r', 6)
@@ -169,6 +182,5 @@ export function useLineChart(svgRef: RefObject<SVGSVGElement>, data: ChartData[]
           hoverVLine.style('display', 'none');
         });
     }
-
   }, [svgRef, data, options]);
 }

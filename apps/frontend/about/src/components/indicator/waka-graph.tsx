@@ -4,7 +4,7 @@ import { useContributeQuery } from '@/apis/me';
 
 import { ChartData } from '@/lib/types';
 
-import { useLineChart } from './useLineChart';
+import { useLineChart } from './hooks';
 
 const WakaTimeGraph = () => {
   const svgRef = useRef<SVGSVGElement>(null);
