@@ -31,7 +31,9 @@ const WakaTimeGraph = () => {
       }, []);
   }, [wakaData?.data]);
 
-  useLineChart(svgRef, data);
+  useLineChart(svgRef, data, {
+    tooltip: true,
+  });
 
   if (isLoading)
     return (
