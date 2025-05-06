@@ -7,7 +7,10 @@ export class WebhooksHealthService {
 
   async check() {
     return this.serverlessProxyService
-      .proxyToServerless('webhooks/health', 'health')
-      .then((res) => ({ ...res.data, env: process.env.NODE_ENV }));
+      .proxyToServerless({ path: 'webhooks/health', cacheKey: 'health' })
+      .then((res) => ({
+        ...res,
+        env: process.env.NODE_ENV,
+      }));
   }
 }

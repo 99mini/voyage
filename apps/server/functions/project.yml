@@ -7,3 +7,9 @@ packages:
         runtime: nodejs:18
         main: ''
         environment: {}
+      - name: github
+        runtime: nodejs:18
+        main: ''
+        environment: {}
+        limits:
+          timeout: 900000
