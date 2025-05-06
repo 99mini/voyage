@@ -12,6 +12,14 @@ export async function main(event: any, context: any) {
     };
   }
 
+  if (limit && limit > 5) {
+    // TODO: temp limit
+    return {
+      status: 400,
+      data: 'limit is too high',
+    };
+  }
+
   console.info(`[INFO] Analyzing user: ${username} with limit ${limit ?? 10}`);
 
   return {
