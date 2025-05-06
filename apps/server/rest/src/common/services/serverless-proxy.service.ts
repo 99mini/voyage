@@ -10,7 +10,7 @@ export class ServerlessProxyService {
 
   constructor(@Inject(HttpService) private readonly httpService: HttpService) {}
 
-  async proxyToServerless(path: string, cacheKey?: string) {
+  async proxyToServerless({ path, data, cacheKey }: { path: string; data?: any; cacheKey?: string }) {
     // 캐시 키가 제공된 경우에만 캐시 확인
     if (cacheKey) {
       const cachedResponse = this.cache.get(cacheKey);
@@ -22,15 +22,11 @@ export class ServerlessProxyService {
 
     try {
       const response = await firstValueFrom(
-        this.httpService.post(
-          `${process.env.DO_FUNCTIONS_API_ENDPOINT}/${path}?blocking=true&result=true`,
-          {},
-          {
-            headers: {
-              Authorization: `Basic ${process.env.DO_FUNCTIONS_API_KEY}`,
-            },
+        this.httpService.post(`${process.env.DO_FUNCTIONS_API_ENDPOINT}/${path}?blocking=true&result=true`, data, {
+          headers: {
+            Authorization: `Basic ${process.env.DO_FUNCTIONS_API_KEY}`,
           },
-        ),
+        }),
       );
 
       // 캐시 키가 제공된 경우에만 캐시 저장

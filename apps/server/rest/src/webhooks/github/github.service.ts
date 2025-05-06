@@ -2,15 +2,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ServerlessProxyService } from '@server-rest/common/services/serverless-proxy.service';
 
 @Injectable()
-export class WebhooksHealthService {
+export class WebhooksGithubService {
   constructor(@Inject(ServerlessProxyService) private readonly serverlessProxyService: ServerlessProxyService) {}
 
-  async check() {
+  async analyzeUserRepo({ username, limit }: { username: string; limit?: number }) {
     return this.serverlessProxyService
-      .proxyToServerless({ path: 'webhooks/health', cacheKey: 'health' })
-      .then((res) => ({
-        ...res.data,
-        env: process.env.NODE_ENV,
-      }));
+      .proxyToServerless({ path: 'webhooks/github', data: { username, limit }, cacheKey: 'analyzeUserRepo' })
+      .then((res) => res.data);
   }
 }
