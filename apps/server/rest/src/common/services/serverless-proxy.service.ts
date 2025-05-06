@@ -10,7 +10,7 @@ export class ServerlessProxyService {
 
   constructor(@Inject(HttpService) private readonly httpService: HttpService) {}
 
-  async proxyToServerless({ path, data, cacheKey }: { path: string; data?: any; cacheKey?: string }) {
+  async proxyToServerless({ path, data = {}, cacheKey }: { path: string; data?: any; cacheKey?: string }) {
     // 캐시 키가 제공된 경우에만 캐시 확인
     if (cacheKey) {
       const cachedResponse = this.cache.get(cacheKey);
