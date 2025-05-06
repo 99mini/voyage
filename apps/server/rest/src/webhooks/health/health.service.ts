@@ -9,7 +9,7 @@ export class WebhooksHealthService {
     return this.serverlessProxyService
       .proxyToServerless({ path: 'webhooks/health', cacheKey: 'health' })
       .then((res) => ({
-        ...res.data,
+        ...res,
         env: process.env.NODE_ENV,
       }));
   }

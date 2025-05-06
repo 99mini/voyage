@@ -1,7 +1,10 @@
 // --- 타입 선언 및 상수 분리 ---
-import { GITHUB_API } from './constants';
-import { fetchJSON, processRepo } from './service';
-import { AnalyzeResult, LangDetail, Repo } from './types';
+import { fetchAllRepos, processRepo } from './service';
+import { AnalyzeResult, LangDetail } from './types';
+
+// 함수형/선언형 스타일의 analyzeUser
+
+// 반복문 기반의 fetchAllRepos
 
 export async function analyzeUser({
   username,
@@ -10,35 +13,17 @@ export async function analyzeUser({
   username: string;
   limit?: number;
 }): Promise<AnalyzeResult> {
-  // 1. 모든 레포를 페이지네이션으로 수집 (limit까지)
-  let page = 1;
-  let repos: Repo[] = [];
-  let flag = true;
-
-  while (flag) {
-    const pageRepos = await fetchJSON<Repo[]>(`${GITHUB_API}/users/${username}/repos?per_page=100&page=${page}`);
-    if (pageRepos.length === 0) break;
-    repos = repos.concat(pageRepos.filter((repo) => !repo.fork));
-    if (repos.length >= limit) {
-      repos = repos.slice(0, limit);
-      flag = false;
-    }
-    page++;
-  }
-
-  // 2. 각 레포에 대해 processRepo를 병렬 실행
+  // 1. 모든 레포를 함수형으로 수집
+  const repos = await fetchAllRepos(username, limit);
+  // 2. 언어별 집계 객체 준비
   const languageDetail: LangDetail = {};
+  // 3. 레포 라인 수 병렬 집계
   const repoResults = await Promise.all(repos.map((repo) => processRepo(username, repo, languageDetail)));
-
-  // 3. 총 라인 수, 레포 수 등 집계
-  const totalLine = repoResults.reduce((acc, cur) => acc + cur, 0);
-  const repoCount = repoResults.length;
-  const languageCount = Object.keys(languageDetail).length;
-
+  // 4. 결과 집계 (reduce만 사용)
   return {
-    totalLine,
-    languageCount,
-    repoCount,
+    totalLine: repoResults.reduce((acc, cur) => acc + cur, 0),
+    languageCount: Object.keys(languageDetail).length,
+    repoCount: repoResults.length,
     languageDetail,
   };
 }

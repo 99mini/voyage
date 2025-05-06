@@ -7,7 +7,11 @@ export class WebhooksGithubService {
 
   async analyzeUserRepo({ username, limit }: { username: string; limit?: number }) {
     return this.serverlessProxyService
-      .proxyToServerless({ path: 'webhooks/github', data: { username, limit }, cacheKey: 'analyzeUserRepo' })
-      .then((res) => res.data);
+      .proxyToServerless({
+        path: 'webhooks/github',
+        data: { username, limit },
+        cacheKey: `analyzeUserRepo-${username}-${limit}`,
+      })
+      .then((res) => res);
   }
 }

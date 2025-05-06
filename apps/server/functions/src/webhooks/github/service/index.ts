@@ -14,7 +14,7 @@ async function countLinesInRawContent(url: string): Promise<number> {
   return body.split('\n').length;
 }
 
-export async function fetchJSON<T>(url: string): Promise<T> {
+async function fetchJSON<T>(url: string): Promise<T> {
   const res = await fetch(url, { headers });
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}: ${url}`);
   return await res.json();
@@ -72,4 +72,22 @@ export async function processRepo(username: string, repo: Repo, langDetail: Lang
   console.debug(`[INFO] Repo ${repo.name} has ${repoLanguages.size} languages...`);
 
   return repoLines;
+}
+
+export async function fetchAllRepos(username: string, limit: number): Promise<Repo[]> {
+  let page = 1;
+  let repos: Repo[] = [];
+  let done = false;
+  while (!done) {
+    const pageRepos = await fetchJSON<Repo[]>(`${GITHUB_API}/users/${username}/repos?per_page=100&page=${page}`);
+    if (pageRepos.length === 0) break;
+    const filtered = pageRepos.filter((repo) => !repo.fork);
+    repos = repos.concat(filtered);
+    if (repos.length >= limit) {
+      repos = repos.slice(0, limit);
+      done = true;
+    }
+    page++;
+  }
+  return repos;
 }

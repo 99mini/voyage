@@ -10,13 +10,21 @@ export class ServerlessProxyService {
 
   constructor(@Inject(HttpService) private readonly httpService: HttpService) {}
 
-  async proxyToServerless({ path, data = {}, cacheKey }: { path: string; data?: any; cacheKey?: string }) {
+  async proxyToServerless({
+    path,
+    data = {},
+    cacheKey,
+  }: {
+    path: string;
+    data?: any;
+    cacheKey?: string;
+  }): Promise<{ data: any; cacheHit: boolean }> {
     // 캐시 키가 제공된 경우에만 캐시 확인
     if (cacheKey) {
-      const cachedResponse = this.cache.get(cacheKey);
+      const cachedResponse: { data: any; cacheHit: boolean } | undefined = this.cache.get(cacheKey);
       if (cachedResponse) {
         console.log(`Hit cache for ${cacheKey}`);
-        return cachedResponse;
+        return { ...cachedResponse, cacheHit: true };
       }
     }
 
@@ -34,7 +42,7 @@ export class ServerlessProxyService {
         this.cache.set(cacheKey, response.data);
       }
 
-      return response.data;
+      return { ...response.data, cacheHit: false };
     } catch (error) {
       console.error(error);
       throw new HttpException('Failed to call serverless function', HttpStatus.INTERNAL_SERVER_ERROR);
