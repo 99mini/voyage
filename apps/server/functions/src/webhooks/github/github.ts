@@ -70,81 +70,96 @@ async function countLinesInRawContent(url: string): Promise<number> {
   return body.split('\n').length;
 }
 
-async function processRepo(username: string, repo: Repo, langDetail: LangDetail): Promise<number> {
+async function processRepo(
+  username: string,
+  repo: Repo,
+  langDetail: LangDetail
+): Promise<number> {
   const treeUrl = `${GITHUB_API}/repos/${username}/${repo.name}/git/trees/${repo.default_branch}?recursive=1`;
   const tree = await fetchJSON<any>(treeUrl);
-  let repoLanguages = new Set<string>();
-  let repoLines = 0;
 
-  for (const item of tree.tree) {
-    if (item.type !== 'blob') continue;
-    const lang = getLangFromExt(item.path);
-    if (!lang) continue;
+  // 1. blob만 필터링
+  const blobs = (tree.tree as any[]).filter((item) => item.type === 'blob');
 
-    const rawUrl = `https://raw.githubusercontent.com/${username}/${repo.name}/${repo.default_branch}/${item.path}`;
-    try {
-      const lines = await countLinesInRawContent(rawUrl);
-      repoLines += lines;
+  // 2. 언어 확장자 필터링 및 정보 생성
+  const blobLangs = blobs
+    .map((item) => ({
+      ...item,
+      lang: getLangFromExt(item.path),
+    }))
+    .filter((item) => !!item.lang);
 
-      if (!langDetail[lang]) {
-        langDetail[lang] = { line: 0, repo: 0 };
+  // 3. 비동기적으로 각 파일의 라인 수 계산
+  const results = await Promise.all(
+    blobLangs.map(async (item) => {
+      const rawUrl = `https://raw.githubusercontent.com/${username}/${repo.name}/${repo.default_branch}/${item.path}`;
+      try {
+        const lines = await countLinesInRawContent(rawUrl);
+        return { lang: item.lang as string, lines };
+      } catch {
+        return null;
       }
-      langDetail[lang].line += lines;
-      repoLanguages.add(lang);
-    } catch {
-      continue; // Skip files that can't be read
+    })
+  );
+
+  // 4. 유효한 결과만 추출
+  const validResults = results.filter((r): r is { lang: string; lines: number } => !!r);
+
+  // 5. 라인 합산 및 언어별 정보 갱신
+  const repoLanguages = new Set<string>();
+  validResults.forEach(({ lang, lines }) => {
+    if (!langDetail[lang]) {
+      langDetail[lang] = { line: 0, repo: 0 };
     }
-  }
+    langDetail[lang].line += lines;
+    repoLanguages.add(lang);
+  });
+
+  // 6. 언어별 레포 수 증가
+  Array.from(repoLanguages).forEach((lang) => {
+    langDetail[lang].repo += 1;
+  });
+
+  const repoLines = validResults.reduce((acc, cur) => acc + cur.lines, 0);
 
   console.debug(`[INFO] Repo ${repo.name} has ${repoLines} lines of code...`);
   console.debug(`[INFO] Repo ${repo.name} has ${repoLanguages.size} languages...`);
-
-  // Count languages used in this repo
-  for (const lang of Array.from(repoLanguages)) {
-    langDetail[lang].repo += 1;
-  }
 
   return repoLines;
 }
 
 export async function analyzeUser({ username, limit = 10 }: { username: string; limit?: number }): Promise<AnalyzeResult> {
+  // 1. 모든 레포를 페이지네이션으로 수집 (limit까지)
   let page = 1;
-  let totalLine = 0;
-  let repoCount = 0;
-  const languageDetail: LangDetail = {};
-
+  let repos: Repo[] = [];
   let flag = true;
+
   while (flag) {
-    const repos = await fetchJSON<Repo[]>(`${GITHUB_API}/users/${username}/repos?per_page=100&page=${page}`);
-    console.debug(`[INFO] Processing page ${page}...`);
-    console.debug(`[INFO] Found ${repos.length} repos...`);
-    if (repos.length === 0) break;
-
-    for (const repo of repos) {
-      if (repoCount >= limit) {
-        flag = false;
-        break;
-      }
-      if (repo.fork) continue;
-      try {
-        const repoLines = await processRepo(username, repo, languageDetail);
-        totalLine += repoLines;
-        repoCount++;
-      } catch (err) {
-        console.error(`Error processing repo ${repo.name}: ${err}`);
-        continue;
-      }
+    const pageRepos = await fetchJSON<Repo[]>(`${GITHUB_API}/users/${username}/repos?per_page=100&page=${page}`);
+    if (pageRepos.length === 0) break;
+    repos = repos.concat(pageRepos.filter((repo) => !repo.fork));
+    if (repos.length >= limit) {
+      repos = repos.slice(0, limit);
+      flag = false;
     }
-
     page++;
   }
 
-  const result: AnalyzeResult = {
+  // 2. 각 레포에 대해 processRepo를 병렬 실행
+  const languageDetail: LangDetail = {};
+  const repoResults = await Promise.all(
+    repos.map((repo) => processRepo(username, repo, languageDetail))
+  );
+
+  // 3. 총 라인 수, 레포 수 등 집계
+  const totalLine = repoResults.reduce((acc, cur) => acc + cur, 0);
+  const repoCount = repoResults.length;
+  const languageCount = Object.keys(languageDetail).length;
+
+  return {
     totalLine,
-    languageCount: Object.keys(languageDetail).length,
+    languageCount,
     repoCount,
     languageDetail,
   };
-
-  return result;
 }
