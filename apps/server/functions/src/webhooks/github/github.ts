@@ -1,9 +1,29 @@
-const GITHUB_API = 'https://api.github.com';
-const PAT = process.env.GITHUB_TOKEN || '';
+// --- 타입 선언 및 상수 분리 ---
 
-const headers = { ...(PAT && { Authorization: `Bearer ${PAT}` }), 'User-Agent': 'LineCounter' };
+export const GITHUB_API = 'https://api.github.com';
+export const PAT = process.env.GITHUB_TOKEN || '';
 
-const EXTENSION_TO_LANGUAGE: Record<string, string> = {
+export const headers: Record<string, string> = {
+  ...(PAT && { Authorization: `Bearer ${PAT}` }),
+  'User-Agent': 'LineCounter',
+};
+
+export type Repo = {
+  name: string;
+  fork: boolean;
+  default_branch: string;
+};
+
+export type LangDetail = Record<string, { line: number; repo: number }>;
+
+export interface AnalyzeResult {
+  totalLine: number;
+  languageCount: number;
+  repoCount: number;
+  languageDetail: LangDetail;
+}
+
+export const EXTENSION_TO_LANGUAGE: Record<string, string> = {
   js: 'javascript',
   jsx: 'javascript',
   mjs: 'javascript',
@@ -50,7 +70,7 @@ async function countLinesInRawContent(url: string): Promise<number> {
   return body.split('\n').length;
 }
 
-async function processRepo(username: string, repo: any, langDetail: any): Promise<number> {
+async function processRepo(username: string, repo: Repo, langDetail: LangDetail): Promise<number> {
   const treeUrl = `${GITHUB_API}/repos/${username}/${repo.name}/git/trees/${repo.default_branch}?recursive=1`;
   const tree = await fetchJSON<any>(treeUrl);
   let repoLanguages = new Set<string>();
@@ -87,15 +107,15 @@ async function processRepo(username: string, repo: any, langDetail: any): Promis
   return repoLines;
 }
 
-export async function analyzeUser({ username, limit = 10 }: { username: string; limit?: number }) {
+export async function analyzeUser({ username, limit = 10 }: { username: string; limit?: number }): Promise<AnalyzeResult> {
   let page = 1;
   let totalLine = 0;
   let repoCount = 0;
-  const languageDetail: any = {};
+  const languageDetail: LangDetail = {};
 
   let flag = true;
   while (flag) {
-    const repos = await fetchJSON<any[]>(`${GITHUB_API}/users/${username}/repos?per_page=100&page=${page}`);
+    const repos = await fetchJSON<Repo[]>(`${GITHUB_API}/users/${username}/repos?per_page=100&page=${page}`);
     console.debug(`[INFO] Processing page ${page}...`);
     console.debug(`[INFO] Found ${repos.length} repos...`);
     if (repos.length === 0) break;
@@ -119,7 +139,7 @@ export async function analyzeUser({ username, limit = 10 }: { username: string; 
     page++;
   }
 
-  const result = {
+  const result: AnalyzeResult = {
     totalLine,
     languageCount: Object.keys(languageDetail).length,
     repoCount,
