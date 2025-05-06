@@ -1,9 +1,8 @@
 import { IsOptional, IsString } from 'class-validator';
 
-export class RenameFileDto {
-  @IsString()
-  path: string;
+import { BasePathDto } from './base-path.dto';
 
+export class RenameFileDto extends BasePathDto {
   @IsOptional()
   @IsString()
   newPath?: string;
