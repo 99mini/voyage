@@ -20,10 +20,20 @@ export async function analyzeUser({
   // 3. 레포 라인 수 병렬 집계
   const repoResults = await Promise.all(repos.map((repo) => processRepo(username, repo, languageDetail)));
   // 4. 결과 집계 (reduce만 사용)
-  return {
+  const result = {
     totalLine: repoResults.reduce((acc, cur) => acc + cur, 0),
     languageCount: Object.keys(languageDetail).length,
     repoCount: repoResults.length,
     languageDetail,
   };
+
+  return result;
+}
+
+export async function sendTaskUpdate({ id, result }: { id: string; result: AnalyzeResult }): Promise<void> {
+  await fetch('https://api.zerovoyage.com/internal/task/complete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, result }),
+  });
 }

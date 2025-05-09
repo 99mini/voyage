@@ -1,9 +1,16 @@
-import { analyzeUser } from '@functions/webhooks/github';
+import { analyzeUser, sendTaskUpdate } from '@functions/webhooks/github';
 
 export async function main(event: any, context: any) {
-  const { username, limit } = event;
+  const { username, limit, taskId } = event;
 
-  console.info(`[INFO] body: username=${username}, limit=${limit}`);
+  console.info(`[INFO] body: username=${username}, limit=${limit}, taskId=${taskId}`);
+
+  if (!taskId) {
+    return {
+      status: 400,
+      data: 'taskId is required',
+    };
+  }
 
   if (!username) {
     return {
@@ -22,8 +29,15 @@ export async function main(event: any, context: any) {
 
   console.info(`[INFO] Analyzing user: ${username} with limit ${limit ?? 10}`);
 
+  const result = await analyzeUser({ username, limit });
+
+  await sendTaskUpdate({
+    id: taskId,
+    result,
+  });
+
   return {
     status: 200,
-    data: await analyzeUser({ username, limit }),
+    data: 'success',
   };
 }
