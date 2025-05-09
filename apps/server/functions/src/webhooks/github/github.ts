@@ -1,10 +1,5 @@
-// --- 타입 선언 및 상수 분리 ---
 import { fetchAllRepos, processRepo } from './service';
 import { AnalyzeResult, LangDetail } from './types';
-
-// 함수형/선언형 스타일의 analyzeUser
-
-// 반복문 기반의 fetchAllRepos
 
 export async function analyzeUser({
   username,
@@ -31,7 +26,7 @@ export async function analyzeUser({
 }
 
 export async function sendTaskUpdate({ id, result }: { id: string; result: AnalyzeResult }): Promise<void> {
-  await fetch('https://api.zerovoyage.com/internal/task/complete', {
+  await fetch('https://api.zerovoyage.com/v1/internal/task/complete', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ id, result }),
