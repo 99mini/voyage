@@ -6,11 +6,11 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { WebhooksGithubService } from './github.service';
 
 @ApiTags('Webhooks')
-@Controller('v1/webhooks')
+@Controller('v1/webhooks/github')
 export class WebhooksGithubController {
   constructor(@Inject(WebhooksGithubService) private readonly webhooksGithubService: WebhooksGithubService) {}
 
-  @Post('github/analyze-user-repo')
+  @Post('analyze-user-repo')
   @ApiOperation({
     summary: 'Analyze User Repository',
     description: 'Analyze the repository of the user and return the result.',

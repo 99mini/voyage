@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
 import { FilesModule } from './modules/files/files.module';
 import { HealthModule } from './modules/health/health.module';
+import { InternalModule } from './modules/internal/internal.module';
 import { MeModule } from './modules/me/me.module';
 
 import { CommonModule } from './common/common.module';
@@ -21,6 +22,7 @@ import { WebhooksModule } from './webhooks/webhooks.module';
     FilesModule,
     WebhooksModule,
     MeModule,
+    InternalModule,
   ],
 })
 export class AppModule {}
