@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { WebSocketGatewayService } from '@server-rest/modules/ws/ws.gateway';
+import { WebSocketGatewayService } from '@server-rest/ws/ws.gateway';
 
 import { TaskDto } from './dto';
 
