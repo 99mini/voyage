@@ -18,10 +18,10 @@ export class ServerlessProxyService {
     path: string;
     data?: any;
     cacheKey?: string;
-  }): Promise<{ data: any; cacheHit: boolean }> {
+  }): Promise<{ data: any; cacheHit: boolean; status: number }> {
     // 캐시 키가 제공된 경우에만 캐시 확인
     if (cacheKey) {
-      const cachedResponse: { data: any; cacheHit: boolean } | undefined = this.cache.get(cacheKey);
+      const cachedResponse: { data: any; cacheHit: boolean; status: number } | undefined = this.cache.get(cacheKey);
       if (cachedResponse) {
         console.log(`Hit cache for ${cacheKey}`);
         return { ...cachedResponse, cacheHit: true };

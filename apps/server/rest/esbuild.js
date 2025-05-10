@@ -5,7 +5,7 @@ dotenv.config();
 
 console.log(`🔨 Building with esbuild...: ${process.env.NODE_ENV}`);
 
-await esbuild.build({
+const result = await esbuild.build({
   entryPoints: ['src/main.ts'],
   bundle: true,
   platform: 'node',
@@ -20,6 +20,10 @@ await esbuild.build({
     'process.env.DO_FUNCTIONS_API_ENDPOINT': `"${process.env.DO_FUNCTIONS_API_ENDPOINT}"`,
     'process.env.NODE_ENV': `"${process.env.NODE_ENV}"`,
     'process.env.API_KEY': `"${process.env.API_KEY}"`,
+    'process.env.SUPABASE_URL': `"${process.env.SUPABASE_URL}"`,
+    'process.env.SUPABASE_ANON_KEY': `"${process.env.SUPABASE_ANON_KEY}"`,
+    'process.env.SUPABASE_SERVICE_ROLE_KEY': `"${process.env.SUPABASE_SERVICE_ROLE_KEY}"`,
+    'process.env.DATABASE_URL': `"${process.env.DATABASE_URL}"`,
     'process.env.ADMIN_USER': `"${process.env.ADMIN_USER}"`, // TODO: remove
     'process.env.ADMIN_PASSWORD': `"${process.env.ADMIN_PASSWORD}"`, // TODO: remove
   },
@@ -55,6 +59,12 @@ await esbuild.build({
     'class-transformer',
     'class-validator',
   ],
+});
+
+Object.entries(result).forEach(([key, value]) => {
+  console.log(`${key}:`);
+  console.log(JSON.stringify(value));
+  console.log('----------------');
 });
 
 console.log('✅ esBuild complete.');

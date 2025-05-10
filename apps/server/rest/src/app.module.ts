@@ -9,6 +9,7 @@ import { MeModule } from './modules/me/me.module';
 
 import { CommonModule } from './common/common.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { SupabaseModule } from './supabase/supabase.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
 
 @Module({
@@ -25,6 +26,7 @@ import { WebhooksModule } from './webhooks/webhooks.module';
     MeModule,
     InternalModule,
     PrismaModule,
+    SupabaseModule,
   ],
 })
 export class AppModule {}

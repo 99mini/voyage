@@ -46,6 +46,6 @@ export class WebhooksGithubController {
     },
   })
   async analyzeUserRepo(@Res() res: Response, @Body() body: { username: string; limit?: number }) {
-    return res.status(HttpStatus.ACCEPTED).json(this.webhooksGithubService.analyzeUserRepo(body));
+    return res.status(HttpStatus.ACCEPTED).json(await this.webhooksGithubService.analyzeUserRepo(body));
   }
 }
