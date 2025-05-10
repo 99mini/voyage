@@ -11,7 +11,7 @@ export class WebhooksGithubService {
       this.serverlessProxyService.proxyToServerless({
         path: 'webhooks/github',
         data: { username, limit, taskId },
-        cacheKey: `analyzeUserRepo-${username}-${limit}`,
+        cacheKey: `analyzeUserRepo-${username}`,
       });
 
       return {

@@ -3,6 +3,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 
+import { PrismaService } from './prisma/prisma.service';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -12,6 +14,10 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
+
+  // Prisma shutdown hooks
+  const prismaService = app.get(PrismaService);
+  await prismaService.enableShutdownHooks(app);
 
   // TODO: swagger production 환경에서 적용
   // 스웨거 설정
