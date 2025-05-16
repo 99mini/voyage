@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
+import pkg from '../../../package.json';
+
 @Injectable()
 export class HealthService {
   check() {
@@ -8,6 +10,7 @@ export class HealthService {
       timestamp: new Date().toISOString(),
       service: 'rest-api',
       env: process.env.NODE_ENV,
+      version: pkg.version,
     };
   }
 
@@ -18,6 +21,7 @@ export class HealthService {
       service: 'rest-api',
       env: process.env.NODE_ENV,
       body,
+      version: pkg.version,
     };
   }
 }
