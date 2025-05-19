@@ -5,7 +5,13 @@ export class TaskDto<T = unknown> {
   @IsNotEmpty()
   id: string;
 
+  @IsString()
+  @IsNotEmpty()
+  status: 'success' | 'failed';
+
   result: T;
+
+  error?: Error;
 }
 
 export class TaskDtoWithT<T = unknown> extends TaskDto<T> {

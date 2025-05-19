@@ -12,7 +12,15 @@ export class TaskService {
   ) {}
 
   async complete(taskDto: TaskDtoWithT): Promise<void> {
-    const { id, result, t } = taskDto;
+    const { id, result, t, error, status } = taskDto;
+
+    if (status === 'failed') {
+      console.error(`[ERR] task status: ${status}`);
+      console.error(`[ERR] task id: ${id}`);
+      console.error(`[ERR] task error: ${JSON.stringify(error)}`);
+
+      throw new HttpException(error?.message ?? 'Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     console.info(`[INFO] task id: ${id}`);
     console.info(`[INFO] task result: ${JSON.stringify(result)}`);

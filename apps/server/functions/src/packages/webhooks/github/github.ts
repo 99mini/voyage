@@ -22,20 +22,38 @@ export async function main(event: any, context: any) {
 
   console.info(`[INFO] Analyzing user: ${username} with limit ${limit ?? 10}`);
 
-  const result = await analyzeUser({ username, limit });
+  try {
+    const result = await analyzeUser({ username, limit });
 
-  console.info(`[INFO] Analyzed successfully`);
+    console.info(`[INFO] Analyzed successfully`);
 
-  await sendTaskUpdate({
-    id: taskId,
-    result,
-    t: 'github',
-  });
+    await sendTaskUpdate({
+      id: taskId,
+      result,
+      status: 'success',
+      t: 'github',
+    });
 
-  console.info(`[INFO] Task updated successfully`);
+    console.info(`[INFO] Task updated successfully`);
 
-  return {
-    status: 200,
-    data: 'success',
-  };
+    return {
+      status: 200,
+      data: 'success',
+    };
+  } catch (error) {
+    console.error(`[ERR] Analyze user failed: ${error}`);
+
+    await sendTaskUpdate({
+      id: taskId,
+      result: null,
+      error,
+      status: 'failed',
+      t: 'github',
+    });
+
+    return {
+      status: 500,
+      data: 'failed',
+    };
+  }
 }
