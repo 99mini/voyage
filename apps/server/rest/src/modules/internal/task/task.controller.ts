@@ -1,11 +1,12 @@
 import { Response } from 'express';
 
-import { Body, Controller, HttpStatus, Inject, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Inject, Post, Query, Res } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 import { TaskService } from './task.service';
 
 import { TaskDto } from './dto';
+import { TaskDtoWithT } from './dto/task.dto';
 
 @Controller('v1/internal/task')
 export class TaskController {
@@ -52,6 +53,7 @@ export class TaskController {
   async complete(
     @Res() res: Response,
     @Body() taskDto: TaskDto,
+    @Query('t') t?: TaskDtoWithT['t'],
   ): Promise<
     Response<{
       status: HttpStatus;
@@ -59,7 +61,11 @@ export class TaskController {
       data: {};
     }>
   > {
-    await this.taskService.complete(taskDto);
+    const request: TaskDtoWithT = {
+      ...taskDto,
+      t,
+    };
+    await this.taskService.complete(request);
 
     return res.status(HttpStatus.OK).json({
       status: HttpStatus.OK,

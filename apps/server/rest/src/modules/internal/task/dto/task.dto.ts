@@ -7,3 +7,8 @@ export class TaskDto<T = unknown> {
 
   result: T;
 }
+
+export class TaskDtoWithT<T = unknown> extends TaskDto<T> {
+  @IsString()
+  t?: 'github'; // 다른 task가 있으면 추가
+}

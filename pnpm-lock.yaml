@@ -586,6 +586,10 @@ importers:
         version: 2.1.9(@types/node@22.13.0)(lightningcss@1.29.1)(terser@5.37.0)
 
   apps/server/functions:
+    dependencies:
+      '@server/shared':
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@babel/cli':
         specifier: ^7.26.4

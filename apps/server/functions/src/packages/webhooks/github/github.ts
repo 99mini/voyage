@@ -1,4 +1,5 @@
-import { analyzeUser, sendTaskUpdate } from '@functions/webhooks/github';
+import { analyzeUser } from '@functions/webhooks/github';
+import { sendTaskUpdate } from '@server/shared';
 
 export async function main(event: any, context: any) {
   const { username, limit, taskId } = event;
@@ -31,10 +32,15 @@ export async function main(event: any, context: any) {
 
   const result = await analyzeUser({ username, limit });
 
+  console.info(`[INFO] Analyzed successfully`);
+
   await sendTaskUpdate({
     id: taskId,
     result,
+    t: 'github',
   });
+
+  console.info(`[INFO] Task updated successfully`);
 
   return {
     status: 200,

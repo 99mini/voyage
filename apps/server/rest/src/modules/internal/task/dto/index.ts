@@ -1,3 +1,3 @@
-import { TaskDto } from './task.dto';
+import { TaskDto, TaskDtoWithT } from './task.dto';
 
-export { TaskDto };
+export { TaskDto, TaskDtoWithT };

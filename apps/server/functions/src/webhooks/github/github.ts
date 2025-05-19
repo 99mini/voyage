@@ -1,5 +1,6 @@
+import { AnalyzeResult, LangDetail } from '@server/shared';
+
 import { fetchAllRepos, processRepo } from './service';
-import { AnalyzeResult, LangDetail } from './types';
 
 export async function analyzeUser({
   username,
@@ -16,6 +17,7 @@ export async function analyzeUser({
   const repoResults = await Promise.all(repos.map((repo) => processRepo(username, repo, languageDetail)));
   // 4. 결과 집계 (reduce만 사용)
   const result = {
+    username,
     totalLine: repoResults.reduce((acc, cur) => acc + cur, 0),
     languageCount: Object.keys(languageDetail).length,
     repoCount: repoResults.length,
