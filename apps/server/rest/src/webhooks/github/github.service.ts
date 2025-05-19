@@ -20,8 +20,14 @@ export class WebhooksGithubService {
         },
       });
 
-      if (existingTask && existingTask.status === 'pending') {
-        throw new HttpException('Task already exists', HttpStatus.CONFLICT);
+      if (existingTask) {
+        if (existingTask.status === 'pending') {
+          throw new HttpException('Task already exists', HttpStatus.CONFLICT);
+        }
+        // 6시간 이내 요청 시 거절
+        if (existingTask.updatedAt.getTime() + 6 * 60 * 60 * 1000 > Date.now()) {
+          throw new HttpException('Too many requests', HttpStatus.FORBIDDEN);
+        }
       }
 
       this.serverlessProxyService.proxyToServerless({

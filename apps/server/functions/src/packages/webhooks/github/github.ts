@@ -7,6 +7,7 @@ export async function main(event: any, context: any) {
   console.info(`[INFO] body: username=${username}, limit=${limit}, taskId=${taskId}`);
 
   if (!taskId) {
+    console.error(`[ERR] taskId is required`);
     return {
       status: 400,
       data: 'taskId is required',
@@ -14,9 +15,18 @@ export async function main(event: any, context: any) {
   }
 
   if (!username) {
+    console.error(`[ERR] username is required`);
     return {
       status: 400,
       data: 'username is required',
+    };
+  }
+
+  if (limit && limit > 20) {
+    console.error(`[ERR] limit is too large: ${limit}`);
+    return {
+      status: 403,
+      data: 'limit is too large',
     };
   }
 
