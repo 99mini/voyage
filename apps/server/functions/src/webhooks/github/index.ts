@@ -1,3 +1,3 @@
-import { analyzeUser, sendTaskUpdate } from './github';
+import { analyzeUser } from './github';
 
-export { analyzeUser, sendTaskUpdate };
+export { analyzeUser };

@@ -26,11 +26,3 @@ export async function analyzeUser({
 
   return result;
 }
-
-export async function sendTaskUpdate({ id, result }: { id: string; result: AnalyzeResult }): Promise<void> {
-  await fetch('https://api.zerovoyage.com/v1/internal/task/complete', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id, result }),
-  });
-}
