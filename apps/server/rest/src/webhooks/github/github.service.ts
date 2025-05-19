@@ -23,15 +23,12 @@ export class WebhooksGithubService {
       if (existingTask && existingTask.status === 'pending') {
         throw new HttpException('Task already exists', HttpStatus.CONFLICT);
       }
-      const result = await this.serverlessProxyService.proxyToServerless({
+
+      this.serverlessProxyService.proxyToServerless({
         path: 'webhooks/github',
         data: { username, limit, taskId },
         cacheKey: `analyzeUserRepo-${username}`,
       });
-
-      if (result.data !== 'success') {
-        throw new HttpException('Failed to analyze user repo', HttpStatus.INTERNAL_SERVER_ERROR);
-      }
 
       const createdTask = await this.prismaService.task.create({
         data: {

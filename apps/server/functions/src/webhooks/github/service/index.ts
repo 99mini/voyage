@@ -1,10 +1,10 @@
-import { EXTENSION_TO_LANGUAGE, GITHUB_API, headers } from '../constants';
+import { EXTENSION_TO_LANGUAGE, EXTENSION_TO_LANGUAGE_KEY, GITHUB_API, headers } from '../constants';
 import { LangDetail, Repo } from '../types';
 
-function getLangFromExt(path: string): string | null {
+function getLangFromExt(path: string): EXTENSION_TO_LANGUAGE_KEY {
   const match = path.match(/\.(\w+)$/);
-  if (!match) return null;
-  return EXTENSION_TO_LANGUAGE[match[1]] || null;
+  if (!match) return 'etc';
+  return EXTENSION_TO_LANGUAGE[match[1]] || 'etc';
 }
 
 async function countLinesInRawContent(url: string): Promise<number> {
@@ -28,12 +28,10 @@ export async function processRepo(username: string, repo: Repo, langDetail: Lang
   const blobs = (tree.tree as any[]).filter((item) => item.type === 'blob');
 
   // 2. 언어 확장자 필터링 및 정보 생성
-  const blobLangs = blobs
-    .map((item) => ({
-      ...item,
-      lang: getLangFromExt(item.path),
-    }))
-    .filter((item) => !!item.lang);
+  const blobLangs: { lang: EXTENSION_TO_LANGUAGE_KEY; path: string }[] = blobs.map((item) => ({
+    ...item,
+    lang: getLangFromExt(item.path),
+  }));
 
   // 3. 비동기적으로 각 파일의 라인 수 계산
   const results = await Promise.all(
@@ -41,7 +39,7 @@ export async function processRepo(username: string, repo: Repo, langDetail: Lang
       const rawUrl = `https://raw.githubusercontent.com/${username}/${repo.name}/${repo.default_branch}/${item.path}`;
       try {
         const lines = await countLinesInRawContent(rawUrl);
-        return { lang: item.lang as string, lines };
+        return { lang: item.lang, lines };
       } catch {
         return null;
       }
@@ -49,10 +47,10 @@ export async function processRepo(username: string, repo: Repo, langDetail: Lang
   );
 
   // 4. 유효한 결과만 추출
-  const validResults = results.filter((r): r is { lang: string; lines: number } => !!r);
+  const validResults = results.filter((r): r is { lang: EXTENSION_TO_LANGUAGE_KEY; lines: number } => !!r);
 
   // 5. 라인 합산 및 언어별 정보 갱신
-  const repoLanguages = new Set<string>();
+  const repoLanguages = new Set<EXTENSION_TO_LANGUAGE_KEY>();
   validResults.forEach(({ lang, lines }) => {
     if (!langDetail[lang]) {
       langDetail[lang] = { line: 0, repo: 0 };
