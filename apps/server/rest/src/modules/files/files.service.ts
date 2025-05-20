@@ -8,15 +8,14 @@ import { ReadFileEntity, UploadFileEntity } from './entities';
 
 import { RenameFileDto } from './dto';
 
-import { isSafePath } from './utils';
+import { isSafePath } from './utils/is-safe-path';
+
+import { BASE_FILE_PATH } from './constants/files.constant';
 
 // TODO: 에러 상태를 모듈화하여 관리
 @Injectable()
 export class FilesService {
-  private readonly basePath =
-    process.env.NODE_ENV === 'production'
-      ? '/mnt/volume_sgp1_01/static' // 실제 서버 환경
-      : './test/uploads'; // 로컬 개발 환경
+  private readonly basePath = BASE_FILE_PATH;
 
   private async _stat(path: string) {
     try {
