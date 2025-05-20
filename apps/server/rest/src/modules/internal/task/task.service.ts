@@ -54,13 +54,7 @@ export class TaskService {
         where: {
           username: githubRepoResult.username,
         },
-        create: {
-          username: githubRepoResult.username,
-          totalLine: githubRepoResult.totalLine,
-          languageCount: githubRepoResult.languageCount,
-          repoCount: githubRepoResult.repoCount,
-          languageDetail: githubRepoResult.languageDetail,
-        },
+        create: githubRepoResult,
         update: {
           totalLine: githubRepoResult.totalLine,
           languageCount: githubRepoResult.languageCount,
