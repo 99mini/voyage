@@ -19,7 +19,14 @@ echo "✅ Build completed"
 echo "🚀 Deploying to $PUBLIC_IP server..."
 
 rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./dist root@$PUBLIC_IP:$REMOTE_DIR
-rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./ecosystem.config.js root@$PUBLIC_IP:$REMOTE_DIR
+
+echo "🚀 copy package.json, env.production..."
+
+rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./package.json root@$PUBLIC_IP:$REMOTE_DIR
+rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./.env.production root@$PUBLIC_IP:$REMOTE_DIR
+
+echo "🚀 copy prisma/schema.prisma"
+rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./prisma root@$PUBLIC_IP:$REMOTE_DIR
 
 echo "✅ Deploy completed"
 
@@ -30,10 +37,14 @@ ssh $REMOTE_USER@$PUBLIC_IP << EOF
   cd $REMOTE_DIR
   mkdir -p logs
 
+  NODE_OPTIONS="--max-old-space-size=1024" pnpm install --prod
+
   if pm2 list | grep -q "$APP_NAME"; then
-    pm2 restart ecosystem.config.js --env production
+    echo "✅ $APP_NAME is running"
+    pnpm run restart
   else
-    pm2 start ecosystem.config.js --env production
+    echo "✅ $APP_NAME is not running"
+    pnpm run start
   fi
 
   pm2 save  # 서버 재부팅 후에도 실행 유지

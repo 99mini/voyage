@@ -6,7 +6,28 @@ export const headers: Record<string, string> = {
   'User-Agent': 'LineCounter',
 };
 
-export const EXTENSION_TO_LANGUAGE: Record<string, string> = {
+export type EXTENSION_TO_LANGUAGE_KEY =
+  | 'javascript'
+  | 'typescript'
+  | 'python'
+  | 'java'
+  | 'ruby'
+  | 'go'
+  | 'rust'
+  | 'c/c++'
+  | 'objective-c'
+  | 'c#'
+  | 'php'
+  | 'html'
+  | 'css'
+  | 'json'
+  | 'yaml'
+  | 'markdown'
+  | 'mdx'
+  | 'shell'
+  | 'etc';
+
+export const EXTENSION_TO_LANGUAGE: Record<string, EXTENSION_TO_LANGUAGE_KEY> = {
   js: 'javascript',
   jsx: 'javascript',
   mjs: 'javascript',
@@ -18,9 +39,12 @@ export const EXTENSION_TO_LANGUAGE: Record<string, string> = {
   rb: 'ruby',
   go: 'go',
   rs: 'rust',
-  cpp: 'cpp',
-  c: 'c',
-  cs: 'csharp',
+  cpp: 'c/c++',
+  c: 'c/c++',
+  m: 'objective-c',
+  mm: 'objective-c',
+  h: 'objective-c',
+  cs: 'c#',
   php: 'php',
   html: 'html',
   css: 'css',
@@ -30,6 +54,7 @@ export const EXTENSION_TO_LANGUAGE: Record<string, string> = {
   yml: 'yaml',
   yaml: 'yaml',
   md: 'markdown',
+  mdx: 'mdx',
   sh: 'shell',
   bash: 'shell',
 };

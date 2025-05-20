@@ -31,6 +31,7 @@ export class WebhooksHealthController {
             timestamp: { type: 'string', example: '2025-03-09T03:05:26+09:00' },
             service: { type: 'string', example: 'functions' },
             env: { type: 'string', example: 'development' },
+            version: { type: 'string', example: '1.0.0' },
           },
         },
       },

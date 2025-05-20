@@ -2,10 +2,12 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "strictPropertyInitialization": false,
+    "resolveJsonModule": true,
     "types": ["jest"],
     "rootDir": "./src",
     "outDir": "./dist",
-    "module": "ESNext",
+    "module": "CommonJS",
+    "target": "ES2020",
     "baseUrl": ".",
     "paths": {
       "@server-rest/*": ["./src/*"]

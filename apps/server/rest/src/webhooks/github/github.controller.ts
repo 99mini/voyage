@@ -1,45 +1,44 @@
 import { Response } from 'express';
 
 import { Body, Controller, Get, HttpCode, HttpStatus, Inject, Post, Res } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { WebhooksGithubService } from './github.service';
 
 @ApiTags('Webhooks')
-@Controller('v1/webhooks')
+@Controller('v1/webhooks/github')
 export class WebhooksGithubController {
   constructor(@Inject(WebhooksGithubService) private readonly webhooksGithubService: WebhooksGithubService) {}
 
-  @Post('github/analyze-user-repo')
+  @Post('analyze-user-repo')
+  @HttpCode(HttpStatus.ACCEPTED)
   @ApiOperation({
     summary: 'Analyze User Repository',
     description: 'Analyze the repository of the user and return the result.',
   })
-  @HttpCode(HttpStatus.OK)
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        username: { type: 'string', example: 'username' },
+        limit: { type: 'number', example: 10 },
+      },
+    },
+  })
   @ApiOkResponse({
     description: 'The Webhooks Github analyze user repository.',
     schema: {
       type: 'object',
       properties: {
-        status: { type: 'number', example: 200 },
-        message: { type: 'string', example: 'success' },
+        status: { type: 'number', example: 202 },
+        message: { type: 'string', example: 'accepted' },
         data: {
           type: 'object',
           properties: {
-            totalLine: { type: 'number', example: 100 },
-            languageCount: { type: 'number', example: 10 },
-            repoCount: { type: 'number', example: 10 },
-            languageDetail: {
-              type: 'object',
-              properties: {
-                javascript: {
-                  type: 'object',
-                  properties: {
-                    line: { type: 'number', example: 100 },
-                    repo: { type: 'number', example: 10 },
-                  },
-                },
-              },
+            taskId: {
+              type: 'string',
+              example: 'v1--webhooks--github--analyze-user-repo-1720566766666',
+              description: 'Task ID (Format: [endpoint--]*-[number])',
             },
           },
         },
@@ -47,10 +46,6 @@ export class WebhooksGithubController {
     },
   })
   async analyzeUserRepo(@Res() res: Response, @Body() body: { username: string; limit?: number }) {
-    return res.status(HttpStatus.OK).json({
-      status: HttpStatus.OK,
-      message: 'success',
-      data: await this.webhooksGithubService.analyzeUserRepo(body),
-    });
+    return res.status(HttpStatus.ACCEPTED).json(await this.webhooksGithubService.analyzeUserRepo(body));
   }
 }

@@ -3,6 +3,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 
+import pkg from '../package.json';
+import { PrismaService } from './prisma/prisma.service';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -13,12 +16,16 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // Prisma shutdown hooks
+  const prismaService = app.get(PrismaService);
+  await prismaService.enableShutdownHooks(app);
+
   // TODO: swagger production 환경에서 적용
   // 스웨거 설정
   const config = new DocumentBuilder()
-    .setTitle('zerovoyage API')
-    .setDescription('The zerovoyage API')
-    .setVersion('1.0')
+    .setTitle(pkg.name)
+    .setDescription(pkg.description)
+    .setVersion(pkg.version)
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

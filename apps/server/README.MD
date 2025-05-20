@@ -5,6 +5,7 @@
 - [Functions](#functions)
 - [Rest](#rest)
 - [Batch](#batch)
+- [Shared](#shared)
 
 # Functions
 
@@ -17,3 +18,7 @@
 # Batch
 
 - github: https://github.com/99mini/voyage/tree/main/apps/server/batch
+
+# Shared
+
+- github: https://github.com/99mini/voyage/tree/main/apps/server/shared
