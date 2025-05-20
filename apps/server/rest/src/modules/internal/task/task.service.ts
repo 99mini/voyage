@@ -56,7 +56,7 @@ export class TaskService {
         },
         create: githubRepoResult,
         update: {
-          totalLine: githubRepoResult.totalLine,
+          totalSize: githubRepoResult.totalSize,
           languageCount: githubRepoResult.languageCount,
           repoCount: githubRepoResult.repoCount,
           languageDetail: githubRepoResult.languageDetail,

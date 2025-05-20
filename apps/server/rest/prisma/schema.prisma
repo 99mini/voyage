@@ -23,7 +23,7 @@ model Task {
 
 model GithubRepo {
   username String @id
-  totalLine Int
+  totalSize Int
   languageCount Int
   repoCount Int
   languageDetail Json @db.Json

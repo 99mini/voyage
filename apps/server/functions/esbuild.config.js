@@ -23,7 +23,7 @@ async function buildFunctions() {
   /** @example ['webhooks'] */
   const namespaces = getNamespace(functionsDir);
 
-  console.debug(`📂 namespaces\n${JSON.stringify(namespaces)}`);
+  console.debug(`📂 namespaces\n${namespaces.map((namespace, i) => `${i}\t${namespace}`).join('\n')}\n`);
 
   for (const namespace of namespaces) {
     console.debug(`📂 ${namespace}`);
@@ -35,7 +35,7 @@ async function buildFunctions() {
 
     for (const func of functions) {
       console.debug(`${' '.repeat(2)}📕${func}`);
-      console.debug(`${' '.repeat(2)}🚀 Building ${namespace}/${func}/${func}.js`);
+      console.debug(`${' '.repeat(4)}🚀 Building\t${namespace}/${func}/${func}.js`);
 
       await esbuild.build({
         entryPoints: [`${functionPath}/${func}/${func}.ts`],
@@ -51,7 +51,7 @@ async function buildFunctions() {
         external: [], // 외부 모듈을 포함하도록 설정
       });
 
-      console.debug(`${' '.repeat(2)}✅ Built ${namespace}/${func}/${func}.js`);
+      console.debug(`${' '.repeat(4)}✅ Built\t${namespace}/${func}/${func}.js`);
     }
   }
 }
