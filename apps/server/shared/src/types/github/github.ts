@@ -2,13 +2,14 @@ export type Repo = {
   name: string;
   fork: boolean;
   default_branch: string;
+  languages_url: string;
 };
 
-export type LangDetail = Record<string, { line: number; repo: number }>;
+export type LangDetail = Record<string, { size: number; repo: number }>;
 
 export type AnalyzeResult = {
   username: string;
-  totalLine: number;
+  totalSize: number;
   languageCount: number;
   repoCount: number;
   languageDetail: LangDetail;

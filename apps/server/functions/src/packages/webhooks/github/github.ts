@@ -22,13 +22,13 @@ export async function main(event: any, context: any) {
     };
   }
 
-  if (limit && limit > 20) {
-    console.error(`[ERR] limit is too large: ${limit}`);
-    return {
-      status: 403,
-      data: 'limit is too large',
-    };
-  }
+  // if (limit && limit > 20) {
+  //   console.error(`[ERR] limit is too large: ${limit}`);
+  //   return {
+  //     status: 403,
+  //     data: 'limit is too large',
+  //   };
+  // }
 
   console.info(`[INFO] Analyzing user: ${username} with limit ${limit ?? 10}`);
 
