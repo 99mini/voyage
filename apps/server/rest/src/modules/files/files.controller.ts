@@ -24,7 +24,7 @@ import { FilesService } from './files.service';
 
 import { DeleteFileEntity, ReadFileEntity, UpdateFileEntity, UploadFileEntity } from './entities';
 
-import { RenameFileDto } from './dto';
+import { CreateDirectoryDto, DeleteFileQueryDto, ReadFilesQueryDto, RenameFileDto, UploadFileDto } from './dto';
 
 @ApiTags('Files')
 @Controller('v1/files')
@@ -83,7 +83,7 @@ export class FilesController {
   async uploadFile(
     @Res() res: Response,
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: { path: string },
+    @Body() body: UploadFileDto,
   ): Promise<
     Response<{
       status: number;
@@ -140,7 +140,7 @@ export class FilesController {
   })
   async createDirectory(
     @Res() res: Response,
-    @Body() body: { path: string },
+    @Body() body: CreateDirectoryDto,
   ): Promise<
     Response<{
       status: number;
@@ -205,9 +205,9 @@ export class FilesController {
       },
     },
   })
-  async listFiles(
+  async readFiles(
     @Res() res: Response,
-    @Query('path') path?: string,
+    @Query() query: ReadFilesQueryDto,
   ): Promise<
     Response<{
       status: number;
@@ -215,6 +215,8 @@ export class FilesController {
       data: ReadFileEntity[];
     }>
   > {
+    const { path } = query;
+
     const files = await this.filesService.readList(path);
     return res.status(HttpStatus.OK).json({
       status: HttpStatus.OK,
@@ -311,6 +313,7 @@ export class FilesController {
       message: 'Not implemented',
     });
   }
+
   @Delete()
   @ApiOperation({
     summary: 'Delete file or directory',
@@ -341,7 +344,7 @@ export class FilesController {
   })
   async deleteFile(
     @Res() res: Response,
-    @Query('path') path: string,
+    @Query() query: DeleteFileQueryDto,
   ): Promise<
     Response<{
       status: number;
@@ -349,6 +352,8 @@ export class FilesController {
       data: DeleteFileEntity;
     }>
   > {
+    const { path } = query;
+
     if (!path) {
       throw new HttpException('Path must be specified', HttpStatus.BAD_REQUEST);
     }
