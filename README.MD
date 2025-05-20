@@ -25,6 +25,8 @@
       - [Functions API](#functions-api)
     - [Batch](#batch-todo)
       - [Batch API](#batch-api)
+    - [Shared](#shared)
+      - [Shared API](#shared-api)
   - [CLI](#cli-todo)
 - [Packages](#packages)
   - [api-client](#api-client)
@@ -101,6 +103,7 @@ just for fun :) interactive ui
 ### Rest
 
 - production: https://api.zerovoyage.com
+- docs: https://api.zerovoyage.com/docs
 - github: https://github.com/99mini/voyage/tree/main/apps/server/rest
 - tech stack: `typescript`, `nestjs`
 
@@ -128,6 +131,15 @@ provide serverless functions
 #### Batch API
 
 1. provide batch api
+
+### Shared
+
+- github: https://github.com/99mini/voyage/tree/main/apps/server/shared
+
+#### Shared API
+
+1. internal network call
+2. types
 
 ## CLI `TODO`
 
