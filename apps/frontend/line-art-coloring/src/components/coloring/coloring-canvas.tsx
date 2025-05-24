@@ -32,6 +32,8 @@ function hexToRgba(hex: string): [number, number, number, number] {
 const ColoringCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [color, setColor] = useState<string>(DEFAULT_PALETTE[0]); // 현재 선택 색상
+  const [undoStack, setUndoStack] = useState<ImageData[]>([]);
+  const [redoStack, setRedoStack] = useState<ImageData[]>([]);
 
   // 이미지 로드 및 캔버스 초기화
   useEffect(() => {
@@ -108,6 +110,11 @@ const ColoringCanvas = () => {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+    // FloodFill 실행 전 상태 저장 (undo)
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    setUndoStack((prev) => [...prev.slice(-19), imageData]); // 최대 20개 제한
+    setRedoStack([]); // 새 작업 시 redo 초기화
+
     const rect = canvas.getBoundingClientRect();
     // 화면상의 좌표 → 실제 캔버스 해상도 기준 좌표로 변환
     const x = Math.floor((e.clientX - rect.left) * (canvas.width / rect.width));
@@ -116,8 +123,64 @@ const ColoringCanvas = () => {
     floodFill(ctx, x, y, hexToRgba(color));
   };
 
+  // Undo
+  const handleUndo = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    setUndoStack((prev) => {
+      if (prev.length === 0) return prev;
+      const newUndo = [...prev];
+      const last = newUndo.pop()!;
+      // 현재 상태를 redo에 저장
+      const currData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      setRedoStack((redo) => [...redo, currData]);
+      ctx.putImageData(last, 0, 0);
+      return newUndo;
+    });
+  };
+
+  // Redo
+  const handleRedo = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    setRedoStack((prev) => {
+      if (prev.length === 0) return prev;
+      const newRedo = [...prev];
+      const last = newRedo.pop()!;
+      // 현재 상태를 undo에 저장
+      const currData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      setUndoStack((undo) => [...undo, currData]);
+      ctx.putImageData(last, 0, 0);
+      return newRedo;
+    });
+  };
+
+
   return (
     <div className="flex flex-col items-center w-full">
+      {/* Undo/Redo 버튼 */}
+      <div className="flex gap-2 mb-2">
+        <button
+          type="button"
+          onClick={handleUndo}
+          disabled={undoStack.length === 0}
+          className="px-3 py-1 rounded border bg-white disabled:opacity-40"
+        >
+          Undo
+        </button>
+        <button
+          type="button"
+          onClick={handleRedo}
+          disabled={redoStack.length === 0}
+          className="px-3 py-1 rounded border bg-white disabled:opacity-40"
+        >
+          Redo
+        </button>
+      </div>
       {/* 색상 팔레트 UI */}
       <div className="flex flex-wrap gap-2 mb-4 items-center justify-center">
         {DEFAULT_PALETTE.map((c) => (
