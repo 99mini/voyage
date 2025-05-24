@@ -1,9 +1,8 @@
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router';
 
 import { useReadSourceFileQuery } from '@/apis/file/query';
 
 const SourcePage = () => {
-  const navigate = useNavigate();
   const { data, isLoading, error } = useReadSourceFileQuery();
 
   if (isLoading) return <div className="p-8 text-center">로딩 중...</div>;
@@ -16,11 +15,10 @@ const SourcePage = () => {
       <h1 className="text-2xl font-bold mb-6">라인아트 이미지 선택</h1>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {data.map((item: any, idx: number) => (
-          <button
+          <Link
             key={item.id || idx}
             className="flex flex-col items-center bg-white rounded shadow p-2 hover:ring-2 hover:ring-blue-400 transition"
-            onClick={() => navigate('/')}
-            type="button"
+            to={`/coloring?src=${encodeURIComponent(item.path || item)}`}
           >
             <img
               src={item.path || item}
@@ -32,7 +30,7 @@ const SourcePage = () => {
             <span className="text-xs text-gray-500 truncate w-full text-center">
               {item.name || `라인아트 이미지 ${idx + 1}`}
             </span>
-          </button>
+          </Link>
         ))}
       </div>
     </div>
