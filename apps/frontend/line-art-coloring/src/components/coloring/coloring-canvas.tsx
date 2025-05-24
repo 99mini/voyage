@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
+import DownloadButton from '../common/download-button';
+
 const IMAGE_URI = 'https://static.zerovoyage.com/coloring/puppy.jpeg';
+const [IMAGE_NAME, IMAGE_EXTENSION] = (IMAGE_URI.split('/').pop() ?? 'untitled.png').split('.');
 
 /**
  * 라인아트 컬러링 캔버스
@@ -199,6 +202,13 @@ const ColoringCanvas = () => {
         >
           Redo
         </button>
+        <DownloadButton
+          imageUrlList={[canvasRef.current?.toDataURL('image/png')!]}
+          outputFileName={IMAGE_NAME}
+          extension={IMAGE_EXTENSION}
+        >
+          Download
+        </DownloadButton>
       </div>
       {/* 색상 팔레트 UI */}
       <div className="flex flex-wrap gap-2 mb-4 items-center justify-center">
