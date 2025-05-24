@@ -1,0 +1,53 @@
+{
+  "name": "line-art-coloring",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "homepage": "https://line-art-coloring.zerovoyage.com",
+  "packageManager": "pnpm@10.4.1",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "sh ./.scripts/build.sh",
+    "deploy": "sh ./.scripts/deploy.sh",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "prod": "pnpm run build && vite preview"
+  },
+  "dependencies": {
+    "@packages/api-client": "workspace:*",
+    "@packages/vds": "workspace:*",
+    "clsx": "^2.1.1",
+    "d3": "^7.9.0",
+    "lucide-react": "^0.469.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-query": "^3.39.3",
+    "react-router": "^7.5.2",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/d3": "^7.4.3",
+    "@types/node": "^22.10.5",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "globals": "^15.14.0",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.6.2",
+    "typescript-eslint": "^8.18.2",
+    "vite": "^6.0.13",
+    "vitest": "^2.1.8"
+  }
+}
