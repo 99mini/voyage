@@ -4,9 +4,9 @@ import { STATIC_PATH } from '@/lib/constants/static.constant';
 
 import { readResultFile, readSourceFile, uploadFile } from './client';
 
-export const useUploadFileMutation = (file: File) =>
+export const useUploadFileMutation = () =>
   useMutation({
-    mutationFn: () => uploadFile(file),
+    mutationFn: (file: File) => uploadFile(file),
   });
 
 export const useReadSourceFileQuery = () =>

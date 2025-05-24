@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { useToast } from '@packages/vds';
+
+import { useUploadFileMutation } from '@/apis/file/query';
+
 import DownloadButton from '../common/download-button';
 
 const IMAGE_URI = 'https://static.zerovoyage.com/coloring/src/puppy.jpeg';
@@ -41,6 +45,10 @@ const ColoringCanvas = ({ imageUrl }: ColoringCanvasProps) => {
   const [color, setColor] = useState<string>(DEFAULT_PALETTE[0]); // 현재 선택 색상
   const [undoStack, setUndoStack] = useState<ImageData[]>([]);
   const [redoStack, setRedoStack] = useState<ImageData[]>([]);
+
+  // 업로드 mutation 준비
+  const uploadMutation = useUploadFileMutation();
+  const { toast } = useToast();
 
   // 이미지 로드 및 캔버스 초기화
   useEffect(() => {
@@ -213,6 +221,38 @@ const ColoringCanvas = ({ imageUrl }: ColoringCanvasProps) => {
         >
           Download
         </DownloadButton>
+        <button
+          type="button"
+          className="px-3 py-1 rounded border bg-blue-500 text-white hover:bg-blue-600"
+          onClick={async () => {
+            const canvas = canvasRef.current;
+            if (!canvas) return;
+            canvas.toBlob(async (blob) => {
+              if (!blob) {
+                toast({
+                  description: '이미지 변환에 실패했습니다.',
+                });
+                return;
+              }
+              const file = new File([blob], `coloring-${Date.now()}.png`, { type: 'image/png' });
+              uploadMutation.mutate(file, {
+                onSuccess: () => {
+                  toast({
+                    description: '공유(업로드) 성공! 결과 페이지에서 확인할 수 있습니다.',
+                  });
+                },
+                onError: () => {
+                  toast({
+                    description: '업로드에 실패했습니다.',
+                  });
+                },
+              });
+            }, 'image/png');
+          }}
+          disabled={uploadMutation.isLoading}
+        >
+          {uploadMutation.isLoading ? '공유 중...' : '공유하기'}
+        </button>
       </div>
       {/* 색상 팔레트 UI */}
       <div className="flex flex-wrap gap-2 mb-4 items-center justify-center">
