@@ -19,6 +19,7 @@ const ResultPage = () => {
               alt={item.name || `컬러링 이미지 ${idx + 1}`}
               className="w-full aspect-square object-contain rounded mb-2 border"
               loading="lazy"
+              crossOrigin="anonymous"
             />
             <span className="text-xs text-gray-500 truncate w-full text-center">
               {item.name || `컬러링 이미지 ${idx + 1}`}

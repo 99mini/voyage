@@ -4,6 +4,7 @@ import { Toaster } from '@packages/vds';
 
 import HomePage from '@/pages/home';
 import ResultPage from '@/pages/result';
+import SourcePage from '@/pages/source';
 
 import Footer from '@/components/common/footer';
 import Header from '@/components/common/header';
@@ -20,6 +21,7 @@ function RootRouter() {
             {/* 공개 라우트 */}
             <Route path={PAGE_PATH.ROOT} element={<HomePage />} />
             <Route path="/result" element={<ResultPage />} />
+            <Route path="/source" element={<SourcePage />} />
 
             {/* 프리뷰 라우트 */}
             <Route path={`preview${PAGE_PATH.ROOT}`} element={<HomePage />} />
