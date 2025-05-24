@@ -54,6 +54,26 @@ const ColoringCanvas = () => {
     };
   }, []);
 
+  // Undo/Redo 단축키 지원
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+      const ctrlKey = isMac ? e.metaKey : e.ctrlKey;
+      // Undo: Ctrl/Cmd+Z (Shift 미포함)
+      if (ctrlKey && e.key.toLowerCase() === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        handleUndo();
+      }
+      // Redo: Ctrl/Cmd+Shift+Z 또는 Ctrl/Cmd+Y
+      if (ctrlKey && ((e.key.toLowerCase() === 'z' && e.shiftKey) || e.key.toLowerCase() === 'y')) {
+        e.preventDefault();
+        handleRedo();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [undoStack, redoStack]);
+
   // Flood Fill (버킷) 알고리즘
   function floodFill(ctx: CanvasRenderingContext2D, x: number, y: number, fillColor: [number, number, number, number]) {
     const width = ctx.canvas.width;
@@ -158,7 +178,6 @@ const ColoringCanvas = () => {
       return newRedo;
     });
   };
-
 
   return (
     <div className="flex flex-col items-center w-full">
