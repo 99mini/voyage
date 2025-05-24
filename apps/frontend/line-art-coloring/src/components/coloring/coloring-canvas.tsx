@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const IMAGE_URI = 'https://static.zerovoyage.com/coloring/puppy.jpeg';
 
@@ -6,10 +6,32 @@ const IMAGE_URI = 'https://static.zerovoyage.com/coloring/puppy.jpeg';
  * 라인아트 컬러링 캔버스
  * - 배경에 라인아트 이미지를 띄우고, 위에 색칠할 수 있도록 함
  */
+// 시스템 기본 색상 팔레트
+const DEFAULT_PALETTE = [
+  '#f87171', // 빨강
+  '#fbbf24', // 노랑
+  '#34d399', // 연두
+  '#60a5fa', // 파랑
+  '#a78bfa', // 보라
+  '#f472b6', // 핑크
+  '#000000', // 검정
+  '#ffffff', // 흰색
+];
+
+function hexToRgba(hex: string): [number, number, number, number] {
+  let c = hex.replace('#', '');
+  if (c.length === 3)
+    c = c
+      .split('')
+      .map((x) => x + x)
+      .join('');
+  const num = parseInt(c, 16);
+  return [(num >> 16) & 255, (num >> 8) & 255, num & 255, 255];
+}
+
 const ColoringCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const isDrawing = useRef(false);
-  const lastPoint = useRef<{ x: number; y: number } | null>(null);
+  const [color, setColor] = useState<string>(DEFAULT_PALETTE[0]); // 현재 선택 색상
 
   // 이미지 로드 및 캔버스 초기화
   useEffect(() => {
@@ -90,12 +112,34 @@ const ColoringCanvas = () => {
     // 화면상의 좌표 → 실제 캔버스 해상도 기준 좌표로 변환
     const x = Math.floor((e.clientX - rect.left) * (canvas.width / rect.width));
     const y = Math.floor((e.clientY - rect.top) * (canvas.height / rect.height));
-    // 기본 색상: 빨간색
-    floodFill(ctx, x, y, [248, 113, 113, 255]); // #f87171
+    // 선택된 색상으로 채우기
+    floodFill(ctx, x, y, hexToRgba(color));
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-full">
+      {/* 색상 팔레트 UI */}
+      <div className="flex flex-wrap gap-2 mb-4 items-center justify-center">
+        {DEFAULT_PALETTE.map((c) => (
+          <button
+            key={c}
+            type="button"
+            className={`w-7 h-7 rounded-full border-2 ${color === c ? 'border-blue-500' : 'border-gray-200'}`}
+            style={{ background: c }}
+            onClick={() => setColor(c)}
+            aria-label={c}
+          />
+        ))}
+        {/* 임의 색상 선택 */}
+        <input
+          type="color"
+          value={color}
+          onChange={(e) => setColor(e.target.value)}
+          className="w-7 h-7 p-0 border-0 bg-transparent cursor-pointer"
+          aria-label="색상 선택"
+          style={{ verticalAlign: 'middle' }}
+        />
+      </div>
       <canvas
         ref={canvasRef}
         style={{
