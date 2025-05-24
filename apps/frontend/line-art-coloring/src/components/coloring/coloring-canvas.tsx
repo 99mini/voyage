@@ -44,13 +44,20 @@ const ColoringCanvas = () => {
     // 이미 같은 색이면 종료
     if (baseColor[0] === fillColor[0] && baseColor[1] === fillColor[1] && baseColor[2] === fillColor[2] && baseColor[3] === fillColor[3]) return;
 
-    // 색상 비교 함수 (허용 오차 있음)
+    // 색상 비교 함수 (허용 오차 있음) + 라인(검정색) 보호
     const colorMatch = (pos: number) => {
+      // 라인(검정색) 픽셀은 색칠하지 않음
+      const r = data[pos];
+      const g = data[pos + 1];
+      const b = data[pos + 2];
+      if (r < 40 && g < 40 && b < 40) return false;
+      // 기존 색상 비교
       for (let i = 0; i < 4; i++) {
         if (Math.abs(data[pos + i] - baseColor[i]) > 32) return false;
       }
       return true;
     };
+
 
     while (stack.length) {
       const [cx, cy] = stack.pop()!;
