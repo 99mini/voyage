@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import DownloadButton from '../common/download-button';
 
-const IMAGE_URI = 'https://static.zerovoyage.com/coloring/puppy.jpeg';
+const IMAGE_URI = 'https://static.zerovoyage.com/coloring/src/puppy.jpeg';
 const [IMAGE_NAME, IMAGE_EXTENSION] = (IMAGE_URI.split('/').pop() ?? 'untitled.png').split('.');
 
 /**
