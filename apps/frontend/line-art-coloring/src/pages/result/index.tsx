@@ -1,3 +1,5 @@
+import { Link } from 'react-router';
+
 import { useReadResultFileQuery } from '@/apis/file/query';
 
 const ResultPage = () => {
@@ -13,7 +15,12 @@ const ResultPage = () => {
       <h1 className="text-2xl font-bold mb-6">완성된 컬러링 북</h1>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {data.map((item: any, idx: number) => (
-          <div key={item.id || idx} className="flex flex-col items-center bg-white rounded shadow p-2">
+          <Link
+            key={item.id || idx}
+            to={`/result/${item.id ?? idx}`}
+            className="flex flex-col items-center bg-white rounded shadow p-2 hover:ring-2 hover:ring-blue-400 transition cursor-pointer"
+            style={{ textDecoration: 'none' }}
+          >
             <img
               src={item.path || item}
               alt={item.name || `컬러링 이미지 ${idx + 1}`}
@@ -24,7 +31,7 @@ const ResultPage = () => {
             <span className="text-xs text-gray-500 truncate w-full text-center">
               {item.name || `컬러링 이미지 ${idx + 1}`}
             </span>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
