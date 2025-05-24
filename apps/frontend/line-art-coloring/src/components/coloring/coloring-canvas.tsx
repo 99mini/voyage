@@ -42,7 +42,13 @@ const ColoringCanvas = () => {
     const pixelPos = (y * width + x) * 4;
     const baseColor = data.slice(pixelPos, pixelPos + 4);
     // 이미 같은 색이면 종료
-    if (baseColor[0] === fillColor[0] && baseColor[1] === fillColor[1] && baseColor[2] === fillColor[2] && baseColor[3] === fillColor[3]) return;
+    if (
+      baseColor[0] === fillColor[0] &&
+      baseColor[1] === fillColor[1] &&
+      baseColor[2] === fillColor[2] &&
+      baseColor[3] === fillColor[3]
+    )
+      return;
 
     // 색상 비교 함수 (허용 오차 있음) + 라인(검정색) 보호
     const colorMatch = (pos: number) => {
@@ -57,7 +63,6 @@ const ColoringCanvas = () => {
       }
       return true;
     };
-
 
     while (stack.length) {
       const [cx, cy] = stack.pop()!;
@@ -82,8 +87,9 @@ const ColoringCanvas = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     const rect = canvas.getBoundingClientRect();
-    const x = Math.floor(e.clientX - rect.left);
-    const y = Math.floor(e.clientY - rect.top);
+    // 화면상의 좌표 → 실제 캔버스 해상도 기준 좌표로 변환
+    const x = Math.floor((e.clientX - rect.left) * (canvas.width / rect.width));
+    const y = Math.floor((e.clientY - rect.top) * (canvas.height / rect.height));
     // 기본 색상: 빨간색
     floodFill(ctx, x, y, [248, 113, 113, 255]); // #f87171
   };
