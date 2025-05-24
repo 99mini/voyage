@@ -36,28 +36,32 @@ const Footer = () => {
         </div>
 
         {/* LINKS */}
-        <div className="w-full flex flex-row justify-center items-center gap-4">
-          {Object.entries(PAGE_PATH).map(([key, value]) => (
-            <Link
-              key={value}
-              to={value}
-              className={cn(
-                'text-sm text-gray-600 hover:text-gray-900',
-                path === value && 'text-gray-900 font-semibold',
-              )}
+        <div className="w-full flex flex-col justify-end items-center gap-4">
+          <div className="w-full flex flex-row justify-end items-center gap-4">
+            {Object.entries(PAGE_PATH).map(([key, value]) => (
+              <Link
+                key={value}
+                to={value}
+                className={cn(
+                  'text-sm text-gray-600 hover:text-gray-900',
+                  path === value && 'text-gray-900 font-semibold',
+                )}
+              >
+                {PAGE_TITLE[key as keyof typeof PAGE_TITLE]}
+              </Link>
+            ))}
+          </div>
+          <div className="w-full flex justify-end items-center">
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-gray-600 hover:text-gray-900 "
             >
-              {PAGE_TITLE[key as keyof typeof PAGE_TITLE]}
-            </Link>
-          ))}
+              {`GitHub`}
+            </a>
+          </div>
         </div>
-        <a
-          href={githubUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm text-gray-600 hover:text-gray-900"
-        >
-          {`GitHub`}
-        </a>
       </div>
     </footer>
   );
