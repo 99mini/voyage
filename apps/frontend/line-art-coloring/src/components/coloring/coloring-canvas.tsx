@@ -32,7 +32,11 @@ function hexToRgba(hex: string): [number, number, number, number] {
   return [(num >> 16) & 255, (num >> 8) & 255, num & 255, 255];
 }
 
-const ColoringCanvas = () => {
+interface ColoringCanvasProps {
+  imageUrl?: string;
+}
+
+const ColoringCanvas = ({ imageUrl }: ColoringCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [color, setColor] = useState<string>(DEFAULT_PALETTE[0]); // 현재 선택 색상
   const [undoStack, setUndoStack] = useState<ImageData[]>([]);
@@ -47,7 +51,7 @@ const ColoringCanvas = () => {
 
     const image = new window.Image();
     image.crossOrigin = 'anonymous';
-    image.src = IMAGE_URI;
+    image.src = imageUrl || IMAGE_URI;
     image.onload = () => {
       // 캔버스 크기 조정
       canvas.width = image.width;

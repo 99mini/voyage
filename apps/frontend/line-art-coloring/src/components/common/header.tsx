@@ -12,6 +12,7 @@ const Header = () => {
         <div className="flex gap-4">
           {Object.entries(PAGE_PATH)
             .slice(1)
+            .filter(([key]) => key !== 'COLORING')
             .map(([key, value]) => (
               <Link key={value} to={value} className="text-blue-400 underline hover:text-blue-600">
                 {PAGE_TITLE[key as keyof typeof PAGE_TITLE]}

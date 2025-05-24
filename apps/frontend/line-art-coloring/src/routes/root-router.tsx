@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 
 import { Toaster } from '@packages/vds';
 
+import ColoringPage from '@/pages/coloring';
 import HomePage from '@/pages/home';
 import ResultPage from '@/pages/result';
 import SourcePage from '@/pages/source';
@@ -22,9 +23,7 @@ function RootRouter() {
             <Route path={PAGE_PATH.ROOT} element={<HomePage />} />
             <Route path="/result" element={<ResultPage />} />
             <Route path="/source" element={<SourcePage />} />
-
-            {/* 프리뷰 라우트 */}
-            <Route path={`preview${PAGE_PATH.ROOT}`} element={<HomePage />} />
+            <Route path="/coloring" element={<ColoringPage />} />
           </Routes>
         </main>
         <Footer />
