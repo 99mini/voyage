@@ -12,9 +12,8 @@ const ResultDetailPage = () => {
   if (!data || data.length === 0)
     return <div className="p-8 text-center text-gray-500">이미지를 찾을 수 없습니다.</div>;
 
-  // id로 해당 이미지 찾기 (id가 없으면 idx로 대체)
   const idx = Number(id);
-  const item = data.find((d: any) => d.id?.toString() === id) || data[idx];
+  const item = data[idx];
 
   if (!item) return <div className="p-8 text-center text-gray-500">이미지를 찾을 수 없습니다.</div>;
 
@@ -27,7 +26,6 @@ const ResultDetailPage = () => {
         crossOrigin="anonymous"
       />
       <div className="text-center text-gray-700 font-bold text-lg mb-2">{item.name || '컬러링 이미지'}</div>
-      {/* 필요시 다운로드, 공유 등 부가 기능 확장 가능 */}
     </div>
   );
 };

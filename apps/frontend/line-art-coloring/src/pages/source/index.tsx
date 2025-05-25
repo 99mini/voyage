@@ -14,14 +14,14 @@ const SourcePage = () => {
     <div className="max-w-4xl mx-auto p-8">
       <h1 className="text-2xl font-bold mb-6">라인아트 이미지 선택</h1>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {data.map((item: any, idx: number) => (
+        {data.map((item, idx: number) => (
           <Link
-            key={item.id || idx}
+            key={item.path}
             className="flex flex-col items-center bg-white rounded shadow p-2 hover:ring-2 hover:ring-blue-400 transition"
-            to={`/coloring?src=${encodeURIComponent(item.path || item)}`}
+            to={`/coloring?src=${encodeURIComponent(item.path)}`}
           >
             <img
-              src={item.path || item}
+              src={item.path}
               alt={item.name || `라인아트 이미지 ${idx + 1}`}
               className="w-full aspect-square object-contain rounded mb-2 border"
               loading="lazy"
