@@ -1,0 +1,3 @@
+Sitemap: https://line-art-coloring.zerovoyage.com/sitemap.xml
+User-agent: *   
+Allow: /        

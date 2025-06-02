@@ -31,6 +31,7 @@
     "build:tool": "pnpm --filter tool run build",
     "build:admin": "pnpm --filter admin run build",
     "build:awesome": "pnpm --filter awesome run build",
+    "build:line-art": "pnpm --filter line-art-coloring run build",
     "build:fe": "pnpm --filter tech run build && pnpm --filter tool run build && pnpm --filter admin run build && pnpm --filter awesome run build",
     "build:func": "pnpm --filter server-functions run build",
     "build:rest": "pnpm --filter server-rest run build",
@@ -38,6 +39,7 @@
     "deploy:tech": "pnpm --filter tech run deploy",
     "deploy:admin": "pnpm --filter admin run deploy",
     "deploy:awesome": "pnpm --filter awesome run deploy",
+    "deploy:line-art": "pnpm --filter line-art-coloring run deploy",
     "deploy:fe": "pnpm --filter tech run deploy && pnpm --filter tool run deploy && pnpm --filter admin run deploy && pnpm --filter awesome run deploy",
     "deploy:func": "pnpm --filter server-functions run deploy",
     "deploy:rest": "pnpm --filter server-rest run deploy"
