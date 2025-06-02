@@ -17,7 +17,9 @@ export const useUploadFileMutation = () => {
       let history: number[] = [];
       try {
         history = JSON.parse(localStorage.getItem(KEY) || '[]');
-      } catch {}
+      } catch {
+        history = [];
+      }
       // 1시간 내 기록만 필터링
       history = history.filter((t) => now - t < HOUR);
       if (history.length >= 5) {

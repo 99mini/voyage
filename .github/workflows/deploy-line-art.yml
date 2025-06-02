@@ -32,6 +32,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Load environment variables
+        run: |
+          cd apps/frontend/line-art-coloring
+          echo "VITE_VOYAGE_API_KEY=${{ secrets.VOYAGE_API_KEY }}" > .env
+          cd -
+
       - name: Build React app
         run: |
           pnpm run build:line-art
