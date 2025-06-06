@@ -11,6 +11,9 @@ const WakaTimeGraph = () => {
 
   const { data: wakaData, isLoading, error } = useContributeQuery('wakatime');
 
+  /**
+   * 누적합 데이터 생성
+   */
   const data: ChartData[] = useMemo(() => {
     if (!wakaData) return [];
 

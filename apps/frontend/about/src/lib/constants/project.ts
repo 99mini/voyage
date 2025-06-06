@@ -1,7 +1,7 @@
 export const projects = [
   {
     title: 'Crypto Analytics',
-    href: 'https://coin.zerovoyage.com/',
+    href: 'https://crypto-monitor-swart.vercel.app/zerovoyage.com/',
     items: ['daily technical analysis', 'mailing service'],
   },
   {
@@ -27,6 +27,6 @@ export const projects = [
   {
     title: 'Line Art Coloring',
     href: 'https://line-art-coloring.zerovoyage.com',
-    items: ['Just for fun', 'Fill line art'],
+    items: ['Fill line art'],
   },
 ];
