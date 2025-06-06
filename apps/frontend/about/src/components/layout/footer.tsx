@@ -1,7 +1,6 @@
-import React from 'react';
-
 import { SquareArrowOutUpRight } from 'lucide-react';
 
+import { projects } from '@/lib/constants/project';
 import { BASE_URL } from '@/lib/constants/url';
 
 const metadata = {
@@ -17,37 +16,11 @@ const siteMap: {
   { href: `${BASE_URL}/sitemap.xml`, text: 'sitemap' },
 ];
 
-const projects: {
-  href: string;
-  text: string;
-  icon: React.ReactNode;
-}[] = [
-  {
-    href: 'https://coin.zerovoyage.com',
-    text: 'Crypto Analytics',
-    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
-  },
-  {
-    href: 'https://tool.zerovoyage.com',
-    text: 'Web Tools',
-    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
-  },
-  {
-    href: 'https://tech.zerovoyage.com',
-    text: 'Technical Blog',
-    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
-  },
-  {
-    href: 'https://design.zerovoyage.com',
-    text: 'vds',
-    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
-  },
-  {
-    href: 'https://awesome.zerovoyage.com',
-    text: 'Awesome',
-    icon: <SquareArrowOutUpRight className="w-4 h-4" />,
-  },
-];
+const footerProjects = projects.map((project) => ({
+  href: project.href,
+  text: project.title,
+  icon: <SquareArrowOutUpRight className="w-4 h-4" />,
+}));
 
 const Footer = () => {
   return (
@@ -64,7 +37,7 @@ const Footer = () => {
           </div>
           <div className="flex flex-col space-y-2">
             <h4 className="text-base font-bold">{'Projects'}</h4>
-            {projects.map((project, index) => (
+            {footerProjects.map((project, index) => (
               <a
                 key={index}
                 href={project.href}

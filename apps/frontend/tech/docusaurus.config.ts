@@ -155,7 +155,7 @@ const config: Config = {
             },
             {
               label: 'Crypto Monitor',
-              href: 'https://coin.zerovoyage.com',
+              href: 'https://crypto-monitor-swart.vercel.app/zerovoyage.com',
             },
             {
               label: 'Tool',
