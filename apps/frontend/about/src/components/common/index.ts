@@ -1,3 +1,5 @@
-import Footer from './footer';
+import HorizontalLine from './horizontal-line';
+import type { HorizontalLineProps } from './horizontal-line';
 
-export { Footer };
+export { HorizontalLine };
+export type { HorizontalLineProps };

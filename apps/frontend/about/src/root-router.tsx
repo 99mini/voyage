@@ -4,7 +4,7 @@ import { Toaster } from '@packages/vds';
 
 import { Home } from '@/pages';
 
-import Footer from '@/components/common/footer';
+import Footer from '@/components/layout/footer';
 
 import { ROUTE_PATH } from '@/lib/constants/url';
 
