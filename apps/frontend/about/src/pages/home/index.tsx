@@ -1,3 +1,5 @@
+import React from 'react';
+
 import HorizontalLine from '@/components/common/horizontal-line';
 import Hero from '@/components/hero/hero';
 import ProjectSection from '@/components/hero/project-section';
@@ -10,10 +12,10 @@ export default function Home() {
       <Hero />
       <div className="w-full">
         {projects.map((project, index) => (
-          <>
-            <ProjectSection key={project.title} {...project} />
+          <React.Fragment key={project.title}>
+            <ProjectSection {...project} />
             {index < projects.length - 1 && <HorizontalLine />}
-          </>
+          </React.Fragment>
         ))}
       </div>
     </>
