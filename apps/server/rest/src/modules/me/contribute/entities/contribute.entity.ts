@@ -25,6 +25,11 @@ export class ContributeEntity {
    * 컨트리뷰트 데이터
    */
   data: DateData[];
+
+  /**
+   * 사용자 ID
+   */
+  userId: string;
 }
 
 export class DateData {
