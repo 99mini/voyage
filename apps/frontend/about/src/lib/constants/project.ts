@@ -5,6 +5,11 @@ export const projects = [
     items: ['daily technical analysis', 'mailing service'],
   },
   {
+    title: 'Api',
+    href: 'https://api.zerovoyage.com/docs',
+    items: ['Rest API', 'Webhooks', 'NestJS'],
+  },
+  {
     title: 'Web Tools',
     href: 'https://tool.zerovoyage.com/',
     items: ['Image merge', 'video to gif'],
