@@ -2,11 +2,13 @@ import { Response } from 'express';
 
 import { Body, Controller, Get, HttpStatus, Inject, Post, Res } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { LogMetadata, LogRoute } from '@server-rest/common/decorators';
 
 import { HealthService } from './health.service';
 
 @ApiTags('Health')
 @Controller('v1/health')
+@LogMetadata({ module: 'health', importance: 'high' })
 export class HealthController {
   constructor(@Inject(HealthService) private readonly healthService: HealthService) {}
 

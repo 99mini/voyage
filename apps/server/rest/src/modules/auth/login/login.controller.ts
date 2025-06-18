@@ -2,6 +2,7 @@ import { Response } from 'express';
 
 import { Body, Controller, HttpStatus, Inject, Post, Res } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { LogMetadata } from '@server-rest/common';
 
 import { LoginService } from './login.service';
 
@@ -10,6 +11,7 @@ import { LoginEntity } from './entities';
 import { LoginDto } from './dto';
 
 @Controller('v1/auth/login')
+@LogMetadata({ module: 'login', importance: 'high' })
 export class LoginController {
   constructor(@Inject(LoginService) private readonly loginService: LoginService) {}
 

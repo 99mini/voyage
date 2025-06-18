@@ -1,3 +1,4 @@
+import { info, error as logError } from '@99mini/console-logger';
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '@server-rest/prisma/prisma.service';
 import { WebSocketGatewayService } from '@server-rest/ws/ws.gateway';
@@ -15,16 +16,16 @@ export class TaskService {
     const { id, result, t, error, status } = taskDto;
 
     if (status === 'failed') {
-      console.error(`[ERR] task status: ${status}`);
-      console.error(`[ERR] task id: ${id}`);
-      console.error(`[ERR] task error: ${JSON.stringify(error)}`);
+      logError(`task status: ${status}`);
+      logError(`task id: ${id}`);
+      logError(`task error: ${JSON.stringify(error)}`);
 
       throw new HttpException(error?.message ?? 'Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    console.info(`[INFO] task id: ${id}`);
-    console.info(`[INFO] task result: ${JSON.stringify(result)}`);
-    console.info(`[INFO] task type: ${t}`);
+    info(`task id: ${id}`);
+    info(`task result: ${JSON.stringify(result)}`);
+    info(`task type: ${t}`);
 
     const res = await this.prismaService.task.update({
       where: {
@@ -35,10 +36,10 @@ export class TaskService {
       },
     });
 
-    console.info(`[INFO] update task status to completed: ${JSON.stringify(res)}`);
+    info(`update task status to completed: ${JSON.stringify(res)}`);
 
     if (res === null) {
-      console.error(`[ERR] update task status to completed failed`);
+      logError(`update task status to completed failed`);
       throw new HttpException('Failed to update task status to completed', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -63,10 +64,10 @@ export class TaskService {
         },
       });
 
-      console.info(`[INFO] upsert github repo: ${JSON.stringify(res)}`);
+      info(`upsert github repo: ${JSON.stringify(res)}`);
 
       if (res === null) {
-        console.error(`[ERR] upsert github repo failed`);
+        logError(`upsert github repo failed`);
         throw new HttpException('Failed to upsert github repo', HttpStatus.INTERNAL_SERVER_ERROR);
       }
     }

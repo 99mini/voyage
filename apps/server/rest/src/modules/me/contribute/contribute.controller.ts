@@ -1,11 +1,13 @@
 import { Controller, Get, HttpStatus, Inject, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { LogMetadata } from '@server-rest/common';
 
 import { ContributeService } from './contribute.service';
 
 import { ContributeDto } from './dto/contribute.dto';
 
 @Controller('v1/me/contribute')
+@LogMetadata({ module: 'contribute', importance: 'high' })
 export class ContributeController {
   constructor(@Inject(ContributeService) private readonly contributeService: ContributeService) {
     this.contributeService = contributeService;

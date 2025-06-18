@@ -19,6 +19,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiHeader, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ApiKeyGuard } from '@server-rest/auth/guards/api-key.guard';
+import { LogMetadata } from '@server-rest/common';
 
 import { FilesService } from './files.service';
 
@@ -28,6 +29,7 @@ import { CreateDirectoryDto, DeleteFileQueryDto, ReadFilesQueryDto, RenameFileDt
 
 @ApiTags('Files')
 @Controller('v1/files')
+@LogMetadata({ module: 'files', importance: 'high' })
 @UseGuards(ApiKeyGuard)
 @ApiHeader({
   name: 'x-api-key',
