@@ -1,6 +1,6 @@
 {
   "name": "server-rest",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": true,
   "type": "commonjs",
   "packageManager": "pnpm@10.4.1",
