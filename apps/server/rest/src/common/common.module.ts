@@ -2,12 +2,14 @@ import { HttpModule } from '@nestjs/axios';
 import { Global, Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
+import { ApiModule } from './services/api.module';
+
 import { LoggingInterceptor } from './interceptors';
-import { ServerlessProxyService } from './services';
+import { ApiCacheService, GithubApiService, ServerlessProxyService } from './services';
 
 @Global()
 @Module({
-  imports: [HttpModule],
+  imports: [HttpModule, ApiModule],
   providers: [
     ServerlessProxyService,
     {
@@ -18,7 +20,9 @@ import { ServerlessProxyService } from './services';
       provide: 'LOGGING_OPTIONS',
       useValue: { logResponse: false },
     },
+    ApiCacheService,
+    GithubApiService,
   ],
-  exports: [ServerlessProxyService],
+  exports: [ServerlessProxyService, ApiModule],
 })
 export class CommonModule {}

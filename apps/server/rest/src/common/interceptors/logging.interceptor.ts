@@ -1,8 +1,9 @@
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { log } from '@99mini/console-logger';
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+
+import { log } from '@99mini/console-logger';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {

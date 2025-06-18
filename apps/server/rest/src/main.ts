@@ -1,6 +1,7 @@
-import { configure, info } from '@99mini/console-logger';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+import { configure, info } from '@99mini/console-logger';
 
 import { AppModule } from './app.module';
 

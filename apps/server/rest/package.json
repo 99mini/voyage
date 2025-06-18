@@ -27,8 +27,8 @@
     "pm2:logs": "pm2 logs",
     "kill": "pm2 kill",
     "deploy": "pnpm run ci && sh ./.scripts/deploy.sh",
-    "format": "prettier --write .",
-    "lint": "eslint ."
+    "format": "prettier --write src",
+    "lint": "eslint src"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.0",
