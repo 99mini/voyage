@@ -706,6 +706,9 @@ importers:
 
   apps/server/rest:
     dependencies:
+      '@99mini/console-logger':
+        specifier: ^1.0.1
+        version: 1.0.1
       '@nestjs/axios':
         specifier: ^4.0.0
         version: 4.0.0(@nestjs/common@11.0.16(class-transformer@0.5.1)(class-validator@0.14.1)(file-type@20.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.9)(rxjs@7.8.1)
@@ -764,9 +767,6 @@ importers:
         specifier: ^4.8.1
         version: 4.8.1
     devDependencies:
-      '@99mini/console-logger':
-        specifier: ^1.0.1
-        version: 1.0.1
       '@nestjs/testing':
         specifier: ^11.1.0
         version: 11.1.0(@nestjs/common@11.0.16(class-transformer@0.5.1)(class-validator@0.14.1)(file-type@20.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.7)(@nestjs/microservices@11.0.7)(@nestjs/platform-express@11.0.7)
@@ -23520,7 +23520,7 @@ snapshots:
 
   unload@2.2.0:
     dependencies:
-      '@babel/runtime': 7.27.1
+      '@babel/runtime': 7.27.4
       detect-node: 2.1.0
 
   unpipe@1.0.0: {}

@@ -23,18 +23,21 @@ export class ContributeController {
     description: 'User id',
     example: '32601717-9798-42b7-a297-7ec7581ff7c8',
     required: false,
+    type: 'string',
   })
   @ApiQuery({
     name: 'startDate',
     description: 'Start date',
     example: '2025-05-01',
     required: false,
+    type: 'string',
   })
   @ApiQuery({
     name: 'endDate',
     description: 'End date',
     example: '2025-05-09',
     required: false,
+    type: 'string',
   })
   @ApiOkResponse({
     description: 'Get wakatime',
@@ -74,18 +77,21 @@ export class ContributeController {
     description: 'User id',
     example: '99mini',
     required: false,
+    type: 'string',
   })
   @ApiQuery({
     name: 'startDate',
     description: 'Start date',
     example: '2025-05-01',
     required: false,
+    type: 'string',
   })
   @ApiQuery({
     name: 'endDate',
     description: 'End date',
     example: '2025-05-09',
     required: false,
+    type: 'string',
   })
   @ApiOkResponse({
     description: 'Get github',

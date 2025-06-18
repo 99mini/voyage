@@ -11,6 +11,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   configure({
+    enabled: true,
     format: {
       timestamp: true,
     },
