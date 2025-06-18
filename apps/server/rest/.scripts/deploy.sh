@@ -2,6 +2,9 @@
 
 set -e  # 에러 발생 시 즉시 종료
 
+# 배포 시간 측정
+START_TIME=$(date +%s)
+
 # DigitalOcean 서버 정보
 PUBLIC_IP="206.189.36.207"
 REMOTE_USER="root"
@@ -51,3 +54,5 @@ ssh $REMOTE_USER@$PUBLIC_IP << EOF
 EOF
 
 echo "✅ Restarts completed!"
+TIME_TAKEN=$(($(date +%s) - $START_TIME))
+echo "🚀 Deploy completed! $TIME_TAKEN seconds"

@@ -3,7 +3,7 @@ import { WakaTime } from '../types/waka-response.type';
 import { ContributeEntity, DateData } from '../entities/contribute.entity';
 
 const formatWakatime = (days: WakaTime.Day[]) => {
-  const ret: ContributeEntity = {
+  const ret: Omit<ContributeEntity, 'userId'> = {
     data: [],
     currentStreak: 0,
     maxStreak: 0,
