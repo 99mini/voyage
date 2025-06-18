@@ -9,9 +9,18 @@ export type CacheKey = `github_contributions_${string}` | `wakatime_contribution
 @Injectable()
 export class ApiCacheService {
   private cache: NodeCache;
-  private readonly DEFAULT_CACHE_TTL = 3600; // 기본 캐시 유효 시간 (초 단위, 1시간)
-  private lastRequestTimes: Record<string, number> = {}; // API별 마지막 요청 시간
-  private readonly DEFAULT_REQUEST_DELAY = 1000; // 기본 요청 간 최소 간격 (1초)
+  /**
+   * 기본 캐시 유효 시간 (초 단위, 1시간)
+   */
+  private readonly DEFAULT_CACHE_TTL = 3_600;
+  /**
+   * API별 마지막 요청 시간
+   */
+  private lastRequestTimes: Record<string, number> = {};
+  /**
+   * 기본 요청 간 최소 간격 (1초)
+   */
+  private readonly DEFAULT_REQUEST_DELAY = 1_000;
 
   constructor() {
     this.cache = new NodeCache({ stdTTL: this.DEFAULT_CACHE_TTL, checkperiod: 600 });
@@ -119,15 +128,17 @@ export class ApiCacheService {
 
   /**
    * 캐시된 데이터 반환 또는 없을 경우 함수 실행 후 캐싱
-   * @param key 캐시 키
+   * @param options {key: CacheKey, ttl: 캐시 유효 시간 (초), force: 캐시 무시 }
    * @param fetchFn 데이터 가져오는 비동기 함수
-   * @param ttl 캐시 유효 시간 (초)
    * @returns 데이터
    */
-  async getOrFetch<T>(key: CacheKey, fetchFn: () => Promise<T>, ttl?: number): Promise<T> {
-    // 캐시에서 데이터 확인
+  async getOrFetch<T>(
+    options: { key: CacheKey; ttl?: number; force?: boolean },
+    fetchFn: () => Promise<T>,
+  ): Promise<T> {
+    const { key, ttl, force } = options;
     const cachedData = this.get<T>(key);
-    if (cachedData) {
+    if (cachedData && !force) {
       info(`캐시된 데이터 반환: ${key}`);
       return cachedData;
     }

@@ -23,14 +23,14 @@ export class ContributeService {
   ) {}
 
   async getWakatime(param: ContributeDto): Promise<ContributeEntity> {
-    const { userId } = param;
+    const { userId, force } = param;
     const wakaUserId = userId ?? '32601717-9798-42b7-a297-7ec7581ff7c8';
 
     // 캐시 키 생성
     const cacheKey: CacheKey = `wakatime_contributions_${wakaUserId}`;
 
     // 캐시에서 데이터 확인 또는 새로 가져오기
-    return this.apiCacheService.getOrFetch<ContributeEntity>(cacheKey, async () => {
+    return this.apiCacheService.getOrFetch<ContributeEntity>({ key: cacheKey, force }, async () => {
       // API 요청 간격 조절
       await this.apiCacheService.delayRequest('wakatime');
 
@@ -53,14 +53,14 @@ export class ContributeService {
   }
 
   async getGithub(param: ContributeDto): Promise<ContributeEntity> {
-    const { userId } = param;
+    const { userId, force } = param;
     const username = userId ?? '99mini';
 
     // 캐시 키 생성
     const cacheKey: CacheKey = `github_contributions_${username}`;
 
     // 캐시에서 데이터 확인 또는 새로 가져오기
-    return this.apiCacheService.getOrFetch<ContributeEntity>(cacheKey, async () => {
+    return this.apiCacheService.getOrFetch<ContributeEntity>({ key: cacheKey, force }, async () => {
       // API 요청 제한 확인
       const rateLimit = await this.githubApiService.checkRateLimit();
       if (rateLimit.remaining <= 5) {

@@ -40,6 +40,13 @@ export class ContributeController {
     required: false,
     type: 'string',
   })
+  @ApiQuery({
+    name: 'force',
+    description: 'Force update',
+    example: false,
+    required: false,
+    type: 'boolean',
+  })
   @ApiOkResponse({
     description: 'Get wakatime',
     schema: {
@@ -93,6 +100,13 @@ export class ContributeController {
     example: '2025-05-09',
     required: false,
     type: 'string',
+  })
+  @ApiQuery({
+    name: 'force',
+    description: 'Force update',
+    example: false,
+    required: false,
+    type: 'boolean',
   })
   @ApiOkResponse({
     description: 'Get github',
