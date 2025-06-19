@@ -4,6 +4,8 @@ import { firstValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
+import { info, error as logError } from '@99mini/console-logger';
+
 @Injectable()
 export class ServerlessProxyService {
   private cache = new NodeCache({ stdTTL: 60 });
@@ -23,7 +25,7 @@ export class ServerlessProxyService {
     if (cacheKey) {
       const cachedResponse: { data: any; cacheHit: boolean; status: number } | undefined = this.cache.get(cacheKey);
       if (cachedResponse) {
-        console.log(`Hit cache for ${cacheKey}`);
+        info(`Hit cache for ${cacheKey}`);
         return { ...cachedResponse, cacheHit: true };
       }
     }
@@ -44,7 +46,7 @@ export class ServerlessProxyService {
 
       return { ...response.data, cacheHit: false };
     } catch (error) {
-      console.error(error);
+      logError(error);
       throw new HttpException('Failed to call serverless function', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }

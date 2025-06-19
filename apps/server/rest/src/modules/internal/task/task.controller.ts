@@ -3,12 +3,15 @@ import { Response } from 'express';
 import { Body, Controller, HttpStatus, Inject, Post, Query, Res } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
+import { LogMetadata } from '@server-rest/common';
+
 import { TaskService } from './task.service';
 
 import { TaskDto } from './dto';
 import { TaskDtoWithT } from './dto/task.dto';
 
 @Controller('v1/internal/task')
+@LogMetadata({ module: 'task', importance: 'high' })
 export class TaskController {
   constructor(@Inject(TaskService) private readonly taskService: TaskService) {}
 

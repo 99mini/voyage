@@ -2,7 +2,9 @@ import { PathLike, RmOptions, promises as fs } from 'fs';
 import * as multer from 'multer';
 import { join } from 'path';
 
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+
+import { error as logError } from '@99mini/console-logger';
 
 import { ReadFileEntity, UploadFileEntity } from './entities';
 
@@ -21,7 +23,7 @@ export class FilesService {
     try {
       return await fs.stat(path);
     } catch (error) {
-      Logger.error(error);
+      logError(error);
       throw new HttpException('Failed to retrieve file stat', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
@@ -39,7 +41,7 @@ export class FilesService {
     try {
       await fs.mkdir(path, { recursive: true });
     } catch (error) {
-      Logger.error(error);
+      logError(error);
       throw new HttpException('Failed to create directory', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
@@ -48,7 +50,7 @@ export class FilesService {
     try {
       await fs.copyFile(src, dest);
     } catch (error) {
-      Logger.error(error);
+      logError(error);
       throw new HttpException('Failed to copy file', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
@@ -57,7 +59,7 @@ export class FilesService {
     try {
       await fs.rm(path, options);
     } catch (error) {
-      Logger.error(error);
+      logError(error);
       throw new HttpException('Failed to delete file', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
@@ -70,7 +72,7 @@ export class FilesService {
     try {
       await fs.mkdir(join(this.basePath, path));
     } catch (error) {
-      Logger.error(error);
+      logError(error);
       throw new HttpException('Failed to create directory', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
@@ -145,7 +147,7 @@ export class FilesService {
         mode: statList[index].mode,
       }));
     } catch (error) {
-      Logger.error(error);
+      logError(error);
       throw new HttpException('Failed to retrieve file list', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }

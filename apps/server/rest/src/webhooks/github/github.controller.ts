@@ -1,12 +1,15 @@
 import { Response } from 'express';
 
-import { Body, Controller, Get, HttpCode, HttpStatus, Inject, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Inject, Post, Res } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+
+import { LogMetadata } from '@server-rest/common';
 
 import { WebhooksGithubService } from './github.service';
 
 @ApiTags('Webhooks')
 @Controller('v1/webhooks/github')
+@LogMetadata({ module: 'webhooks-github', importance: 'high' })
 export class WebhooksGithubController {
   constructor(@Inject(WebhooksGithubService) private readonly webhooksGithubService: WebhooksGithubService) {}
 

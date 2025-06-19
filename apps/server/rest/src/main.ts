@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+import { configure, info } from '@99mini/console-logger';
+
 import { AppModule } from './app.module';
 
 import pkg from '../package.json';
@@ -9,9 +11,16 @@ import { PrismaService } from './prisma/prisma.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  configure({
+    enabled: true,
+    format: {
+      timestamp: true,
+    },
+  });
+
   // CORS 설정 추가
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:5173'],
+    origin: ['http://localhost:3000', 'http://localhost:5173', 'chrome-extension://nanpghcgbejnbbhmkcbgimbhfjpagnje'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
@@ -32,8 +41,9 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   await app.listen(3000);
-  console.log(`Application is running on: ${await app.getUrl()}`);
-  console.log(`Environment: ${process.env.NODE_ENV}`);
-  console.log(`Swagger docs available at: ${await app.getUrl()}/docs`);
+
+  info(`Application is running on: ${await app.getUrl()}`);
+  info(`Environment: ${process.env.NODE_ENV}`);
+  info(`Swagger docs available at: ${await app.getUrl()}/docs`);
 }
 bootstrap();

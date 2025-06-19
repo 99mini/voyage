@@ -706,6 +706,9 @@ importers:
 
   apps/server/rest:
     dependencies:
+      '@99mini/console-logger':
+        specifier: ^1.0.1
+        version: 1.0.1
       '@nestjs/axios':
         specifier: ^4.0.0
         version: 4.0.0(@nestjs/common@11.0.16(class-transformer@0.5.1)(class-validator@0.14.1)(file-type@20.5.0)(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.9)(rxjs@7.8.1)
@@ -912,6 +915,9 @@ importers:
         version: 2.1.9(@types/node@22.13.0)(lightningcss@1.29.1)(terser@5.37.0)
 
 packages:
+
+  '@99mini/console-logger@1.0.1':
+    resolution: {integrity: sha512-HX8RH2wgS/gJ8uWCStQh1BO/ffqWQHKtevtiTAPfSE05rcKK+8ysKQEEaccSD5Dw5aMmAF41l+aiXmoqj340AA==}
 
   '@adobe/css-tools@4.4.1':
     resolution: {integrity: sha512-12WGKBQzjUAI4ayyF4IAtfw2QR/IDoqk6jTddXDhtYTJF9ASmoE1zst7cVtP0aL/F1jUJL5r+JxKXKEgHNbEUQ==}
@@ -11296,6 +11302,8 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
 snapshots:
+
+  '@99mini/console-logger@1.0.1': {}
 
   '@adobe/css-tools@4.4.1': {}
 
@@ -23511,7 +23519,7 @@ snapshots:
 
   unload@2.2.0:
     dependencies:
-      '@babel/runtime': 7.27.1
+      '@babel/runtime': 7.27.6
       detect-node: 2.1.0
 
   unpipe@1.0.0: {}
