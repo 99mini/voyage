@@ -3,7 +3,7 @@ import { tap } from 'rxjs/operators';
 
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 
-import { log } from '@99mini/console-logger';
+import { info } from '@99mini/console-logger';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -16,7 +16,7 @@ export class LoggingInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap(() => {
         const responseTime = Date.now() - now;
-        log(`${method} ${url} +${responseTime}ms`);
+        info(`${method} ${url} +${responseTime}ms`);
       }),
     );
   }

@@ -20,12 +20,7 @@ async function bootstrap() {
 
   // CORS 설정 추가
   app.enableCors({
-    origin: [
-      'https://*.zerovoyage.com',
-      'http://localhost:3000',
-      'http://localhost:5173',
-      'chrome-extension://nanpghcgbejnbbhmkcbgimbhfjpagnje',
-    ],
+    origin: ['http://localhost:3000', 'http://localhost:5173', 'chrome-extension://nanpghcgbejnbbhmkcbgimbhfjpagnje'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
