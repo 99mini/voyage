@@ -33,6 +33,16 @@ sqld:
   permalink: /운영체제
   description: 운영체제
 
+알고리즘:
+  label: 알고리즘
+  permalink: /알고리즘
+  description: 알고리즘
+
+정렬:
+  label: 정렬
+  permalink: /정렬
+  description: 정렬
+
 http:
   label: HTTP
   permalink: /http
