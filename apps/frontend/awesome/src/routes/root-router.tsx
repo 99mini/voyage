@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { BrowserRouter, Route, Routes, StaticRouter } from 'react-router';
 
 import { Toaster } from '@packages/vds';
 
@@ -13,9 +13,17 @@ import { PAGE_PATH } from '@/lib/constants/route.constant';
 const ClockPage = lazy(() => import('@/pages/clock'));
 const GraphPage = lazy(() => import('@/pages/graph'));
 
+const DynamicRouter = ({ children }: React.PropsWithChildren) => {
+  if (typeof window !== 'undefined') {
+    return <BrowserRouter>{children}</BrowserRouter>;
+  }
+
+  return <StaticRouter location={PAGE_PATH.ROOT}>{children}</StaticRouter>;
+};
+
 function RootRouter() {
   return (
-    <BrowserRouter>
+    <DynamicRouter>
       <div className="flex flex-col min-h-screen">
         <Header />
         <main className="container mx-auto p-4 flex-grow">
@@ -34,7 +42,7 @@ function RootRouter() {
         <Footer />
       </div>
       <Toaster />
-    </BrowserRouter>
+    </DynamicRouter>
   );
 }
 

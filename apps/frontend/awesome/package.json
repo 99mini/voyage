@@ -12,9 +12,12 @@
   "scripts": {
     "dev": "vite",
     "build": "sh ./.scripts/build.sh",
+    "build:ssg": "pnpm tsx --tsconfig tsconfig.static.json ./.scripts/build-html.ts",
+    "build:static": "pnpm run build && pnpm run build:ssg",
     "deploy": "sh ./.scripts/deploy.sh",
     "lint": "eslint .",
     "preview": "vite preview",
+    "preview:static": "serve ./dist",
     "format": "prettier --write .",
     "prod": "pnpm run build && vite preview"
   },
@@ -39,6 +42,8 @@
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "dotenv": "^16.4.7",
+    "serve": "^14.2.4",
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",

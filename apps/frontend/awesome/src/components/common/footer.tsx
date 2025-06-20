@@ -8,8 +8,7 @@ const author = 'Zerovoyage';
 const year = new Date().getFullYear();
 const githubUrl = 'https://github.com/99mini/voyage';
 
-// @ts-ignore
-const version = VITE_APP_VERSION;
+const version = JSON.stringify(process.env.npm_package_version);
 
 const Footer = () => {
   const location = useLocation();
