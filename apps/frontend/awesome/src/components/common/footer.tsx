@@ -7,20 +7,14 @@ import { PAGE_PATH, PAGE_TITLE } from '@/lib/constants/route.constant';
 const author = 'Zerovoyage';
 const year = new Date().getFullYear();
 const githubUrl = 'https://github.com/99mini/voyage';
-
-const version = import.meta.env ? import.meta.env.VITE_APP_VERSION : process.env.VITE_APP_VERSION;
+const version = '0.2.1';
 
 const Footer = () => {
   const location = useLocation();
   const path = location.pathname;
-  const isPreview = path.startsWith('/preview');
-
-  if (isPreview) {
-    return null;
-  }
 
   return (
-    <footer className={cn('bg-white border-t border-gray-200 py-4 px-6', isPreview && 'bg-gray-100 border-gray-300')}>
+    <footer className={cn('bg-white border-t border-gray-200 py-4 px-6')}>
       <div className="container mx-auto flex flex-col justify-center items-center gap-4">
         {/* SITE INFO */}
         <div className="w-full flex flex-col md:flex-row justify-between items-center">
