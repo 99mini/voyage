@@ -7,7 +7,6 @@
   "endOfLine": "auto",
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "importOrder": [
-    "^./load-env",
     "^react",
     "^react-dom",
     "^react-query",
