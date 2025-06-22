@@ -61,3 +61,10 @@
     --chart-5: 340 75% 55%;
   }
 }
+
+/* animation */
+@keyframes draw-animation {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}

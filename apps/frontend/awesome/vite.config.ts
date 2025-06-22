@@ -14,6 +14,15 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    manifest: true,
+    outDir: 'dist',
+    rollupOptions: {
+      input: {
+        main: './src/entry-client.tsx',
+      },
+    },
+  },
   server: {
     headers: {
       'Cross-Origin-Opener-Policy': 'same-origin',

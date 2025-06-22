@@ -2,6 +2,9 @@
 
 set -e 
 
+# build
+pnpm --filter awesome run build:static
+
 # DigitalOcean 서버 정보
 PUBLIC_IP="206.189.36.207"
 REMOTE_USER="root"
