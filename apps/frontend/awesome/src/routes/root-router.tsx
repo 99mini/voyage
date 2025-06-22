@@ -32,11 +32,6 @@ function RootRouter() {
             <Route path={PAGE_PATH.ROOT} element={<HomePage />} />
             <Route path={PAGE_PATH.CLOCK} element={<ClockPage />} />
             <Route path={PAGE_PATH.GRAPH} element={<GraphPage />} />
-
-            {/* 프리뷰 라우트 */}
-            <Route path={`preview${PAGE_PATH.ROOT}`} element={<HomePage />} />
-            <Route path={`preview${PAGE_PATH.CLOCK}`} element={<ClockPage />} />
-            <Route path={`preview${PAGE_PATH.GRAPH}`} element={<GraphPage />} />
           </Routes>
         </main>
         <Footer />

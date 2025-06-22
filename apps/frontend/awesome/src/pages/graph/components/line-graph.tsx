@@ -4,8 +4,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@packages/vds';
 
-import './animation.css';
-
 const generateColorPalette = ({ base, count }: { base: string; count: number }) => {
   let hue: number = 0;
   let saturation: number = 0;

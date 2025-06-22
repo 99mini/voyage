@@ -5,8 +5,22 @@ import { cn } from '@packages/vds';
 import Preview from '@/components/layout/preview';
 import RootLayout from '@/components/layout/root-layout';
 
-import { PAGE_PATH, PAGE_TITLE } from '@/lib/constants/route.constant';
+import { PAGE_PATH, PAGE_TITLE, RoutePath } from '@/lib/constants/route.constant';
 import { generateSafeHash } from '@/lib/utils/string';
+
+import ClockSection from '../clock/components/clock-section';
+import LineGraphSection from '../graph/components/line-graph-section';
+
+const PreviewSection = (path: Omit<RoutePath, '/'>) => {
+  switch (path) {
+    case PAGE_PATH.CLOCK:
+      return <ClockSection />;
+    case PAGE_PATH.GRAPH:
+      return <LineGraphSection />;
+    default:
+      return null;
+  }
+};
 
 const HomePage = () => {
   return (
@@ -30,7 +44,7 @@ const HomePage = () => {
             <Link to={path} className="text-blue-400 hover:text-blue-600 hover:underline mb-2">
               {`Go to ${PAGE_TITLE[key as keyof typeof PAGE_TITLE]}`}
             </Link>
-            <Preview src={`preview${path}`} />
+            <Preview>{PreviewSection(path)}</Preview>
           </div>
         ))}
     </RootLayout>

@@ -10,7 +10,7 @@
     "pnpm": ">=9.0.0"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --config vite.config.ts",
     "build": "sh ./.scripts/build.sh",
     "build:ssg": "pnpm tsx --tsconfig tsconfig.static.json ./.scripts/build-html.ts",
     "build:static": "pnpm run build && pnpm run build:ssg",
