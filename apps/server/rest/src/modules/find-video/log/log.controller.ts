@@ -15,6 +15,8 @@ import { LogMetadata } from '@server-rest/common';
 
 import { LogService } from './log.service';
 
+import { LogResponseEntity } from './entities/log.entity';
+
 import { LogDto } from './dto/log.dto';
 
 @Controller('v1/find-video/log')
@@ -26,9 +28,7 @@ export class LogController {
   }
 
   @Post()
-  @ApiBody({
-    schema: { type: 'object', properties: { body: { type: 'object', $ref: '#/components/schemas/LogDto' } } },
-  })
+  @ApiBody({})
   @ApiOperation({ summary: 'Log create' })
   @ApiResponse({ status: HttpStatus.OK, type: LogDto })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
@@ -50,14 +50,18 @@ export class LogController {
   @Get()
   @ApiOperation({ summary: 'Log get' })
   @ApiParam({ name: 'userId', required: true })
-  @ApiResponse({ status: HttpStatus.OK, type: LogDto })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: LogResponseEntity,
+  })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @ApiBadRequestResponse({ description: 'Bad request userId is required' })
-  async getLogs(@Res() res: Response, @Query('userId') userId: string) {
+  async getLogs(@Res() res: Response, @Query() param: { userId: string; limit?: number; page?: number }) {
+    const { userId, limit, page } = param;
     if (!userId) {
       throw new HttpException('userId is required', HttpStatus.BAD_REQUEST);
     }
-    const result = await this.logService.getLogs({ userId });
+    const result = await this.logService.getLogs({ userId, limit, page });
 
     return res.status(HttpStatus.OK).json({
       status: HttpStatus.OK,
