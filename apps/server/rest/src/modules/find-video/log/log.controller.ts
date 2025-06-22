@@ -1,9 +1,22 @@
 import { Response } from 'express';
 
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Inject, Post, Query, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Post,
+  Query,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiHeader,
   ApiInternalServerErrorResponse,
   ApiOperation,
   ApiParam,
@@ -11,6 +24,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import { ApiKeyGuard } from '@server-rest/auth/guards/api-key.guard';
 import { LogMetadata } from '@server-rest/common';
 
 import { LogService } from './log.service';
@@ -21,6 +35,13 @@ import { LogDto } from './dto/log.dto';
 
 @Controller('v1/find-video/log')
 @ApiTags('Find Video')
+@UseGuards(ApiKeyGuard)
+@ApiHeader({
+  name: 'x-api-key',
+  description: 'API key',
+  required: true,
+  schema: { type: 'string' },
+})
 @LogMetadata({ module: 'log', importance: 'high' })
 export class LogController {
   constructor(@Inject(LogService) private readonly logService: LogService) {
@@ -28,7 +49,9 @@ export class LogController {
   }
 
   @Post()
-  @ApiBody({})
+  @ApiBody({
+    type: LogDto,
+  })
   @ApiOperation({ summary: 'Log create' })
   @ApiResponse({ status: HttpStatus.OK, type: LogDto })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
