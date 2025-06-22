@@ -14,7 +14,7 @@
     "prisma:generate": "prisma generate",
     "prisma:studio": "prisma studio",
     "prisma:seed": "prisma db seed",
-    "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:migrate": "prisma migrate dev",
     "prebuild": "rm -rf dist && mkdir -p logs",
     "postinstall": "mkdir -p dist/generated && prisma generate && cp -r src/generated dist",
     "ci": "pnpm run test",
