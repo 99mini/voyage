@@ -1,18 +1,6 @@
 import { Response } from 'express';
 
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpException,
-  HttpStatus,
-  Inject,
-  Param,
-  Post,
-  Query,
-  Res,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Inject, Post, Query, Res } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -20,6 +8,7 @@ import {
   ApiOperation,
   ApiParam,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 
 import { LogMetadata } from '@server-rest/common';
@@ -29,6 +18,7 @@ import { LogService } from './log.service';
 import { LogDto } from './dto/log.dto';
 
 @Controller('v1/find-video/log')
+@ApiTags('Find Video')
 @LogMetadata({ module: 'log', importance: 'high' })
 export class LogController {
   constructor(@Inject(LogService) private readonly logService: LogService) {
