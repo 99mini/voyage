@@ -21,7 +21,7 @@ echo "✅ Build completed"
 # 2. deploy copy dist/main.cjs
 echo "🚀 Deploying to $PUBLIC_IP server..."
 
-rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./dist root@$PUBLIC_IP:$REMOTE_DIR
+rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./dist root@$PUBLIC_IP:$REMOTE_DIR/dist
 
 echo "🚀 copy package.json, env.production..."
 
@@ -29,7 +29,7 @@ rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./package.json root@$PU
 rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./.env.production root@$PUBLIC_IP:$REMOTE_DIR
 
 echo "🚀 copy prisma/schema.prisma"
-rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./prisma root@$PUBLIC_IP:$REMOTE_DIR
+rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./prisma root@$PUBLIC_IP:$REMOTE_DIR/prisma
 
 echo "✅ Deploy completed"
 
@@ -42,12 +42,16 @@ ssh $REMOTE_USER@$PUBLIC_IP << EOF
 
   NODE_OPTIONS="--max-old-space-size=1024" pnpm install --prod
 
+  echo "🚀 move src/generated to dist/generated"
+  mv src/generated dist/generated
+  rm -rf src
+
   if pm2 list | grep -q "$APP_NAME"; then
     echo "✅ $APP_NAME is running"
-    pnpm run restart
+    pm2 restart server-rest
   else
     echo "✅ $APP_NAME is not running"
-    pnpm run start
+    pm2 start dist/main.js --name server-rest
   fi
 
   pm2 save  # 서버 재부팅 후에도 실행 유지

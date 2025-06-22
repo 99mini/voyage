@@ -20,7 +20,7 @@
     "ci": "pnpm run test",
     "build": "nest build",
     "start:local": "NODE_ENV=production node dist/main.js",
-    "start:dev": "nest start",
+    "start:dev": "pnpm run build && cp -r src/generated dist && nest start --config nest-cli.dev.json --watch",
     "start": "NODE_ENV=production pm2 start dist/main.js --name server-rest",
     "restart": "pm2 restart server-rest",
     "pm2:list": "pm2 list",
