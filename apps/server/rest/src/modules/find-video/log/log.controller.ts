@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { Request } from 'express';
 
 import {
   Body,
@@ -10,6 +11,7 @@ import {
   Inject,
   Post,
   Query,
+  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -24,7 +26,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { ApiKeyGuard } from '@server-rest/auth/guards/api-key.guard';
+import { ChromeExtensionGuard } from '@server-rest/auth/guards/chrome-extension.guard';
 import { LogMetadata } from '@server-rest/common';
 
 import { LogService } from './log.service';
@@ -35,10 +37,10 @@ import { LogDto } from './dto/log.dto';
 
 @Controller('v1/find-video/log')
 @ApiTags('Find Video')
-@UseGuards(ApiKeyGuard)
+@UseGuards(ChromeExtensionGuard)
 @ApiHeader({
-  name: 'x-api-key',
-  description: 'API key',
+  name: 'Origin',
+  description: '크롬 익스텐션 도메인 (chrome-extension://extensionId)',
   required: true,
   schema: { type: 'string' },
 })
@@ -79,11 +81,16 @@ export class LogController {
   })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @ApiBadRequestResponse({ description: 'Bad request userId is required' })
-  async getLogs(@Res() res: Response, @Query() param: { userId: string; limit?: number; page?: number }) {
+  async getLogs(
+    @Res() res: Response,
+    @Query() param: { userId: string; limit?: number; page?: number },
+  ) {
     const { userId, limit, page } = param;
+    
     if (!userId) {
       throw new HttpException('userId is required', HttpStatus.BAD_REQUEST);
     }
+    
     const result = await this.logService.getLogs({ userId, limit, page });
 
     return res.status(HttpStatus.OK).json({
@@ -99,15 +106,16 @@ export class LogController {
   @ApiParam({ name: 'userId', required: true })
   @ApiResponse({ status: HttpStatus.OK, type: LogDto })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-  @ApiBadRequestResponse({ description: 'Bad request historyId and userId are required' })
+  @ApiBadRequestResponse({ description: 'Bad request userId is required' })
   async deleteLog(@Res() res: Response, @Query() param: { historyId?: string; userId: string }) {
     const { historyId, userId } = param;
-
+    
     if (!userId) {
       throw new HttpException('userId is required', HttpStatus.BAD_REQUEST);
     }
 
     if (!historyId) {
+      // 특정 유저의 모든 로그 삭제
       const result = await this.logService.deleteLogs(userId);
 
       return res.status(HttpStatus.OK).json({
@@ -116,6 +124,7 @@ export class LogController {
         data: result,
       });
     } else {
+      // 특정 유저의 특정 로그만 삭제
       const result = await this.logService.deleteLog({ historyId, userId });
 
       return res.status(HttpStatus.OK).json({
