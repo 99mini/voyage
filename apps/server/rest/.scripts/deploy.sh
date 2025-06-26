@@ -1,6 +1,12 @@
 #!/bin/bash
 
+# Usage: ./deploy.sh [--clean]
+# --clean: remote dist directory clean
+# sh ./deploy.sh --clean
+
 set -e  # 에러 발생 시 즉시 종료
+
+CLEAN_FLAG=$1
 
 # 배포 시간 측정
 START_TIME=$(date +%s)
@@ -21,7 +27,13 @@ echo "✅ Build completed"
 # 2. deploy copy dist/main.cjs
 echo "🚀 Deploying to $PUBLIC_IP server..."
 
-rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./dist root@$PUBLIC_IP:$REMOTE_DIR/dist
+if [ "$CLEAN_FLAG" = "--clean" ]; then
+  echo "🚀 Clean remote dist directory"
+  ssh $REMOTE_USER@$PUBLIC_IP "rm -rf $REMOTE_DIR/dist"
+  echo "✅ Clean remote dist directory completed"
+fi
+
+rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./dist root@$PUBLIC_IP:$REMOTE_DIR
 
 echo "🚀 copy package.json, env.production..."
 
@@ -29,7 +41,7 @@ rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./package.json root@$PU
 rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./.env.production root@$PUBLIC_IP:$REMOTE_DIR
 
 echo "🚀 copy prisma/schema.prisma"
-rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./prisma root@$PUBLIC_IP:$REMOTE_DIR/prisma
+rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./prisma root@$PUBLIC_IP:$REMOTE_DIR
 
 echo "✅ Deploy completed"
 
@@ -42,8 +54,8 @@ ssh $REMOTE_USER@$PUBLIC_IP << EOF
 
   NODE_OPTIONS="--max-old-space-size=1024" pnpm install --prod
 
-  echo "🚀 move src/generated to dist/generated"
-  mv src/generated dist/generated
+  echo "🚀 move src/generated to dist"
+  mv src/generated dist
   rm -rf src
 
   if pm2 list | grep -q "$APP_NAME"; then

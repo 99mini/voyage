@@ -13,6 +13,11 @@ export class ChromeExtensionGuard implements CanActivate {
     // 크롬 익스텐션 도메인 확인 (chrome-extension://)
     const isChromeExtension = origin && origin.startsWith('chrome-extension://');
 
+    if (process.env.NODE_ENV === 'development' || origin === 'http://localhost:5173') {
+      log(`[${process.env.NODE_ENV?.toUpperCase().slice(0, 3)}] Allowed chrome extension`, origin);
+      return true;
+    }
+
     if (!isChromeExtension) {
       log('Not allowed chrome extension', origin);
       throw new ForbiddenException('Allowed only chrome extension');

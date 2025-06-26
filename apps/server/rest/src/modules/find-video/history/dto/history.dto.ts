@@ -1,5 +1,38 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
+class DownloadSetting {
+  /**
+   * 파일명 prefix
+   */
+  @IsString()
+  @IsOptional()
+  filePrefix?: string;
+  /**
+   * 저장할 폴더 이름
+   */
+  @IsString()
+  @IsOptional()
+  folderName?: string;
+  /**
+   * 파일 번호 시작값
+   */
+  @IsNumber()
+  @IsOptional()
+  startNumber?: number;
+  /**
+   * 파일 번호 자릿수
+   */
+  @IsNumber()
+  @IsOptional()
+  digitCount?: number;
+  /**
+   * 파일명 접미사 (확장자 포함)
+   */
+  @IsString()
+  @IsOptional()
+  postfix?: string;
+}
+
 export class HistoryDto {
   /**
    * 사용자 ID
@@ -32,37 +65,4 @@ export class HistoryDto {
    */
   @IsOptional()
   downloadSetting?: DownloadSetting;
-}
-
-class DownloadSetting {
-  /**
-   * 파일명 prefix
-   */
-  @IsString()
-  @IsOptional()
-  filePrefix?: string;
-  /**
-   * 저장할 폴더 이름
-   */
-  @IsString()
-  @IsOptional()
-  folderName?: string;
-  /**
-   * 파일 번호 시작값
-   */
-  @IsNumber()
-  @IsOptional()
-  startNumber?: number;
-  /**
-   * 파일 번호 자릿수
-   */
-  @IsNumber()
-  @IsOptional()
-  digitCount?: number;
-  /**
-   * 파일명 접미사 (확장자 포함)
-   */
-  @IsString()
-  @IsOptional()
-  postfix?: string;
 }
