@@ -18,18 +18,10 @@ async function bootstrap() {
     },
   });
 
-  // CORS 설정 추가
-  app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:5173', 'chrome-extension://nanpghcgbejnbbhmkcbgimbhfjpagnje'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
-  });
-
   // Prisma shutdown hooks
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
 
-  // TODO: swagger production 환경에서 적용
   // 스웨거 설정
   const config = new DocumentBuilder()
     .setTitle(pkg.name)

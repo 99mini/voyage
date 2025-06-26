@@ -9,17 +9,26 @@ export class ChromeExtensionGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
     const origin = request.headers.origin;
+    const referrer = request.headers.referrer;
 
     // 크롬 익스텐션 도메인 확인 (chrome-extension://)
-    const isChromeExtension = origin && origin.startsWith('chrome-extension://');
+    const isChromeExtension =
+      (origin && origin.startsWith('chrome-extension://')) || (referrer && referrer.startsWith('chrome-extension://'));
 
-    if (process.env.NODE_ENV === 'development' || origin === 'http://localhost:5173') {
-      log(`[${process.env.NODE_ENV?.toUpperCase().slice(0, 3)}] Allowed chrome extension`, origin);
+    log('origin', origin);
+    log('referrer', referrer);
+
+    if (
+      process.env.NODE_ENV === 'development' ||
+      origin === 'http://localhost:5173' ||
+      referrer === 'http://localhost:5173'
+    ) {
+      log(`[${process.env.NODE_ENV?.toUpperCase().slice(0, 3)}] Allowed chrome extension`, origin, referrer);
       return true;
     }
 
     if (!isChromeExtension) {
-      log('Not allowed chrome extension', origin);
+      log(`Not allowed chrome extension origin: ${origin}, referrer: ${referrer}`);
       throw new ForbiddenException('Allowed only chrome extension');
     }
 
@@ -31,7 +40,7 @@ export class ChromeExtensionGuard implements CanActivate {
 
     // 모든 익스텐션을 허용하는 와일드카드가 아니라면 실제로 ID를 검증
     if (!ALLOWED_EXTENSION_IDS.includes('*') && !ALLOWED_EXTENSION_IDS.includes(extensionId)) {
-      log('Not allowed chrome extension', extensionId);
+      log(`Not allowed chrome extension id: ${extensionId}`);
       throw new ForbiddenException('Not allowed chrome extension');
     }
 
