@@ -13,6 +13,25 @@ import { HistoryDto } from './dto/history.dto';
 export class HistoryService {
   constructor(@Inject(PrismaService) private readonly prismaService: PrismaService) {}
 
+  async createHistoryBulk({ historys }: { historys: HistoryDto[] }) {
+    try {
+      const res = await this.prismaService.findVideoLog.createMany({
+        data: historys.map((history) => ({
+          userId: history.userId,
+          sourceUrl: history.sourceUrl,
+          type: history.type,
+          src: history.src,
+          downloadSetting: history.downloadSetting ? JSON.stringify(history.downloadSetting) : undefined,
+        })),
+      });
+
+      return res;
+    } catch (error) {
+      logError(error);
+      throw new HttpException('Failed to create log', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   async createHistory({ sourceUrl, type, src, downloadSetting, userId }: HistoryDto) {
     try {
       const res = await this.prismaService.findVideoLog.create({
@@ -40,7 +59,7 @@ export class HistoryService {
     }
   }
 
-  async getHistory({ userId, page = 1, limit = 100 }: GetHistoryDto): Promise<HistoryResponseEntity | null> {
+  async getHistory({ userId, page, limit }: GetHistoryDto): Promise<HistoryResponseEntity | null> {
     try {
       const logsRes = await this.prismaService.findVideoLog.findMany({
         where: {

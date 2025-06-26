@@ -33,6 +33,8 @@ import { HistoryResponseEntity } from './entities/history.entity';
 
 import { HistoryDto } from './dto/history.dto';
 
+const isBulk = (bulk: boolean, body: HistoryDto[] | HistoryDto): body is HistoryDto[] => bulk && Array.isArray(body);
+
 @Controller('v1/find-video/history')
 @ApiTags('Find Video')
 @UseGuards(ChromeExtensionGuard)
@@ -56,12 +58,20 @@ export class HistoryController {
   @ApiResponse({ status: HttpStatus.OK, type: HistoryDto })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @ApiBadRequestResponse({ description: 'Bad request body is required' })
-  async createHistory(@Res() res: Response, @Body() body: HistoryDto) {
+  async createHistory(@Res() res: Response, @Body() body: HistoryDto[] | HistoryDto, @Query('bulk') bulk: boolean) {
     if (!body) {
       throw new HttpException('body is required', HttpStatus.BAD_REQUEST);
     }
 
-    const result = await this.historyService.createHistory(body);
+    let result: Awaited<
+      ReturnType<typeof this.historyService.createHistoryBulk> | ReturnType<typeof this.historyService.createHistory>
+    >;
+
+    if (isBulk(bulk, body)) {
+      result = await this.historyService.createHistoryBulk({ historys: body });
+    } else {
+      result = await this.historyService.createHistory(body);
+    }
 
     return res.status(HttpStatus.CREATED).json({
       status: HttpStatus.CREATED,
@@ -79,14 +89,14 @@ export class HistoryController {
   })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @ApiBadRequestResponse({ description: 'Bad request userId is required' })
-  async getHistorys(@Res() res: Response, @Query() param: { userId: string; limit?: number; page?: number }) {
-    const { userId, limit, page } = param;
+  async getHistorys(@Res() res: Response, @Query() param: { userId: string; limit?: string; page?: string }) {
+    const { userId, limit = '100', page = '1' } = param;
 
     if (!userId) {
       throw new HttpException('userId is required', HttpStatus.BAD_REQUEST);
     }
 
-    const result = await this.historyService.getHistory({ userId, limit, page });
+    const result = await this.historyService.getHistory({ userId, limit: Number(limit), page: Number(page) });
 
     return res.status(HttpStatus.OK).json({
       status: HttpStatus.OK,

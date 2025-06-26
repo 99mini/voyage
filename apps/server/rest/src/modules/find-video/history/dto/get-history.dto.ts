@@ -7,10 +7,10 @@ export class GetHistoryDto {
   /**
    * 페이지
    */
-  page?: number;
+  page: number;
 
   /**
    * 페이지당 로그 수
    */
-  limit?: number;
+  limit: number;
 }
