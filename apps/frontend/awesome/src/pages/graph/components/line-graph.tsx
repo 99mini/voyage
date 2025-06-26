@@ -1,8 +1,10 @@
 import * as d3 from 'd3';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback } from 'react';
 
 import { cn } from '@packages/vds';
+
+import { useElementVisibility } from '@/hooks/use-element-visibility';
 
 const generateColorPalette = ({ base, count }: { base: string; count: number }) => {
   let hue: number = 0;
@@ -91,8 +93,7 @@ const LineGraph = ({
   animationEasing = 'linear',
   animationFillMode = 'forwards',
 }: LineGraphProps) => {
-  const [isView, setIsView] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const { ref, isVisible } = useElementVisibility({ threshold: 0.1 });
 
   const draw = useCallback(
     (ref: SVGElement | null) => {
@@ -199,32 +200,13 @@ const LineGraph = ({
     ],
   );
 
-  useEffect(() => {
-    if (!ref.current) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setIsView(true);
-        }
-      },
-      {
-        threshold: 0.1,
-      },
-    );
-
-    observer.observe(ref.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
   return (
-    <div className={cn(className, !isView && 'opacity-0')} style={style} ref={ref}>
-      {isView ? (
+    <div
+      className={cn(className, !isVisible && 'opacity-0')}
+      style={style}
+      ref={ref as React.RefObject<HTMLDivElement>}
+    >
+      {isVisible ? (
         <svg width={width} height={height} aria-description={title} ref={draw} />
       ) : (
         <svg width={width} height={height} aria-hidden />
