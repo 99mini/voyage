@@ -1,5 +1,7 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
 
+import { log } from '@99mini/console-logger';
+
 const ALLOWED_EXTENSION_IDS = process.env.VALID_EXTENSION_IDS ? process.env.VALID_EXTENSION_IDS.split(',') : ['*'];
 
 @Injectable()
@@ -12,6 +14,7 @@ export class ChromeExtensionGuard implements CanActivate {
     const isChromeExtension = origin && origin.startsWith('chrome-extension://');
 
     if (!isChromeExtension) {
+      log('Not allowed chrome extension', origin);
       throw new ForbiddenException('Allowed only chrome extension');
     }
 
@@ -23,6 +26,7 @@ export class ChromeExtensionGuard implements CanActivate {
 
     // 모든 익스텐션을 허용하는 와일드카드가 아니라면 실제로 ID를 검증
     if (!ALLOWED_EXTENSION_IDS.includes('*') && !ALLOWED_EXTENSION_IDS.includes(extensionId)) {
+      log('Not allowed chrome extension', extensionId);
       throw new ForbiddenException('Not allowed chrome extension');
     }
 
