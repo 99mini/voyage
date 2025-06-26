@@ -2,9 +2,9 @@ import { IsNumber, IsString } from 'class-validator';
 
 import { OmitType } from '@nestjs/mapped-types';
 
-import { LogDto } from '../dto/log.dto';
+import { HistoryDto } from '../dto/history.dto';
 
-export class LogEntity extends OmitType(LogDto, ['userId']) {
+export class HistoryEntity extends OmitType(HistoryDto, ['userId']) {
   /**
    * 요청시간
    * @format timestamp (ms)
@@ -13,8 +13,8 @@ export class LogEntity extends OmitType(LogDto, ['userId']) {
   requestTime: number;
 }
 
-export class LogResponseEntity {
-  history: LogEntity[];
+export class HistoryResponseEntity {
+  history: HistoryEntity[];
   /**
    * user id
    */

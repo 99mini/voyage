@@ -1,6 +1,6 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class LogDto {
+export class HistoryDto {
   /**
    * 사용자 ID
    */

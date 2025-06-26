@@ -4,16 +4,16 @@ import { PrismaService } from '@server-rest/prisma/prisma.service';
 
 import { error as logError } from '@99mini/console-logger';
 
-import { LogEntity, LogResponseEntity } from './entities/log.entity';
+import { HistoryResponseEntity } from './entities/history.entity';
 
-import { GetLogDto } from './dto/get-log.dto';
-import { LogDto } from './dto/log.dto';
+import { GetHistoryDto } from './dto/get-history.dto';
+import { HistoryDto } from './dto/history.dto';
 
 @Injectable()
-export class LogService {
+export class HistoryService {
   constructor(@Inject(PrismaService) private readonly prismaService: PrismaService) {}
 
-  async createLog({ sourceUrl, type, src, downloadSetting, userId }: LogDto) {
+  async createHistory({ sourceUrl, type, src, downloadSetting, userId }: HistoryDto) {
     try {
       const res = await this.prismaService.findVideoLog.create({
         data: {
@@ -40,7 +40,7 @@ export class LogService {
     }
   }
 
-  async getLogs({ userId, page = 1, limit = 100 }: GetLogDto): Promise<LogResponseEntity | null> {
+  async getHistory({ userId, page = 1, limit = 100 }: GetHistoryDto): Promise<HistoryResponseEntity | null> {
     try {
       const logsRes = await this.prismaService.findVideoLog.findMany({
         where: {
@@ -58,7 +58,7 @@ export class LogService {
         return null;
       }
 
-      const ret: LogResponseEntity = {
+      const ret: HistoryResponseEntity = {
         history: logsRes.map((log) => {
           const { id, createdAt: requestTime, type, sourceUrl, src, downloadSetting, isDeleted, deletedAt } = log;
           return {
@@ -90,7 +90,7 @@ export class LogService {
    * @param userId
    * @param historyId
    */
-  async deleteLog({ userId, historyId }: { userId: string; historyId: string }) {
+  async deleteHistory({ userId, historyId }: { userId: string; historyId: string }) {
     try {
       await this.prismaService.findVideoLog.update({
         where: {
@@ -112,7 +112,7 @@ export class LogService {
    * @description 모든 사용자 로그 삭제
    * @param userId
    */
-  async deleteLogs(userId: string) {
+  async deleteHistorys(userId: string) {
     try {
       await this.prismaService.findVideoLog.updateMany({
         where: {

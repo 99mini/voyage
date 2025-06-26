@@ -1,5 +1,4 @@
 import { Response } from 'express';
-import { Request } from 'express';
 
 import {
   Body,
@@ -11,7 +10,6 @@ import {
   Inject,
   Post,
   Query,
-  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -29,13 +27,13 @@ import {
 import { ChromeExtensionGuard } from '@server-rest/auth/guards/chrome-extension.guard';
 import { LogMetadata } from '@server-rest/common';
 
-import { LogService } from './log.service';
+import { HistoryService } from './history.service';
 
-import { LogResponseEntity } from './entities/log.entity';
+import { HistoryResponseEntity } from './entities/history.entity';
 
-import { LogDto } from './dto/log.dto';
+import { HistoryDto } from './dto/history.dto';
 
-@Controller('v1/find-video/log')
+@Controller('v1/find-video/history')
 @ApiTags('Find Video')
 @UseGuards(ChromeExtensionGuard)
 @ApiHeader({
@@ -45,25 +43,25 @@ import { LogDto } from './dto/log.dto';
   schema: { type: 'string' },
 })
 @LogMetadata({ module: 'log', importance: 'high' })
-export class LogController {
-  constructor(@Inject(LogService) private readonly logService: LogService) {
-    this.logService = logService;
+export class HistoryController {
+  constructor(@Inject(HistoryService) private readonly historyService: HistoryService) {
+    this.historyService = historyService;
   }
 
   @Post()
   @ApiBody({
-    type: LogDto,
+    type: HistoryDto,
   })
-  @ApiOperation({ summary: 'Log create' })
-  @ApiResponse({ status: HttpStatus.OK, type: LogDto })
+  @ApiOperation({ summary: 'History create' })
+  @ApiResponse({ status: HttpStatus.OK, type: HistoryDto })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @ApiBadRequestResponse({ description: 'Bad request body is required' })
-  async createLog(@Res() res: Response, @Body() body: LogDto) {
+  async createHistory(@Res() res: Response, @Body() body: HistoryDto) {
     if (!body) {
       throw new HttpException('body is required', HttpStatus.BAD_REQUEST);
     }
 
-    const result = await this.logService.createLog(body);
+    const result = await this.historyService.createHistory(body);
 
     return res.status(HttpStatus.CREATED).json({
       status: HttpStatus.CREATED,
@@ -73,25 +71,22 @@ export class LogController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Log get' })
+  @ApiOperation({ summary: 'History get' })
   @ApiParam({ name: 'userId', required: true })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: LogResponseEntity,
+    type: HistoryResponseEntity,
   })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @ApiBadRequestResponse({ description: 'Bad request userId is required' })
-  async getLogs(
-    @Res() res: Response,
-    @Query() param: { userId: string; limit?: number; page?: number },
-  ) {
+  async getHistorys(@Res() res: Response, @Query() param: { userId: string; limit?: number; page?: number }) {
     const { userId, limit, page } = param;
-    
+
     if (!userId) {
       throw new HttpException('userId is required', HttpStatus.BAD_REQUEST);
     }
-    
-    const result = await this.logService.getLogs({ userId, limit, page });
+
+    const result = await this.historyService.getHistory({ userId, limit, page });
 
     return res.status(HttpStatus.OK).json({
       status: HttpStatus.OK,
@@ -101,22 +96,22 @@ export class LogController {
   }
 
   @Delete()
-  @ApiOperation({ summary: 'Log delete' })
+  @ApiOperation({ summary: 'History delete' })
   @ApiParam({ name: 'historyId', required: false })
   @ApiParam({ name: 'userId', required: true })
-  @ApiResponse({ status: HttpStatus.OK, type: LogDto })
+  @ApiResponse({ status: HttpStatus.OK, type: HistoryDto })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @ApiBadRequestResponse({ description: 'Bad request userId is required' })
-  async deleteLog(@Res() res: Response, @Query() param: { historyId?: string; userId: string }) {
+  async deleteHistory(@Res() res: Response, @Query() param: { historyId?: string; userId: string }) {
     const { historyId, userId } = param;
-    
+
     if (!userId) {
       throw new HttpException('userId is required', HttpStatus.BAD_REQUEST);
     }
 
     if (!historyId) {
       // 특정 유저의 모든 로그 삭제
-      const result = await this.logService.deleteLogs(userId);
+      const result = await this.historyService.deleteHistorys(userId);
 
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,
@@ -125,7 +120,7 @@ export class LogController {
       });
     } else {
       // 특정 유저의 특정 로그만 삭제
-      const result = await this.logService.deleteLog({ historyId, userId });
+      const result = await this.historyService.deleteHistory({ historyId, userId });
 
       return res.status(HttpStatus.OK).json({
         status: HttpStatus.OK,

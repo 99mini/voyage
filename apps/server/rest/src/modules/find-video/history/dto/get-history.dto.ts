@@ -1,4 +1,4 @@
-export class GetLogDto {
+export class GetHistoryDto {
   /**
    * 사용자 ID
    */

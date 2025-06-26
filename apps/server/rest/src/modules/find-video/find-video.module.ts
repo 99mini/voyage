@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { LogModule } from './log/log.module';
 import { FindVideoBatchModule } from './batch/find-video-batch.module';
+import { HistoryModule } from './history/history.module';
 
 @Module({
-  imports: [LogModule, FindVideoBatchModule],
+  imports: [HistoryModule, FindVideoBatchModule],
 })
 export class FindVideoModule {}
