@@ -18,6 +18,19 @@ async function bootstrap() {
     },
   });
 
+  app.enableCors({
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:5173',
+      'chrome-extension://nanpghcgbejnbbhmkcbgimbhfjpagnje',
+      'chrome-extension://gjilkemeanfkojdohjhkafdcgcpikafk',
+      'chrome-extension://kfffmoakdjkmlmeooekoklheboaagfde',
+      'chrome-extension://eopjfnfchlnfeaglcplmblfagdoghbpc',
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
+
   // Prisma shutdown hooks
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
