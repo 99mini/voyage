@@ -4,9 +4,9 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from '@server-rest/prisma/prisma.service';
 
 const now = new Date();
-const oneMonthAgo = now;
+const oneMonthAgo = new Date(now);
 oneMonthAgo.setMonth(now.getMonth() - 1);
-const fifteenDaysAgo = now;
+const fifteenDaysAgo = new Date(now);
 fifteenDaysAgo.setDate(now.getDate() - 15);
 
 @Injectable()

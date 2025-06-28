@@ -73,6 +73,13 @@ export class HistoryService {
         },
       });
 
+      const totalCount = await this.prismaService.findVideoLog.count({
+        where: {
+          userId,
+          isDeleted: false,
+        },
+      });
+
       if (!logsRes) {
         return null;
       }
@@ -92,7 +99,7 @@ export class HistoryService {
           };
         }),
         userId,
-        total: logsRes.length,
+        total: totalCount,
         page,
         limit,
       };
