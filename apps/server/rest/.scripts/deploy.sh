@@ -1,6 +1,12 @@
 #!/bin/bash
 
+# Usage: ./deploy.sh [--clean]
+# --clean: remote dist directory clean
+# sh ./deploy.sh --clean
+
 set -e  # 에러 발생 시 즉시 종료
+
+CLEAN_FLAG=$1
 
 # 배포 시간 측정
 START_TIME=$(date +%s)
@@ -20,6 +26,12 @@ echo "✅ Build completed"
 
 # 2. deploy copy dist/main.cjs
 echo "🚀 Deploying to $PUBLIC_IP server..."
+
+if [ "$CLEAN_FLAG" = "--clean" ]; then
+  echo "🚀 Clean remote dist directory"
+  ssh $REMOTE_USER@$PUBLIC_IP "rm -rf $REMOTE_DIR/dist"
+  echo "✅ Clean remote dist directory completed"
+fi
 
 rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./dist root@$PUBLIC_IP:$REMOTE_DIR
 
@@ -42,12 +54,16 @@ ssh $REMOTE_USER@$PUBLIC_IP << EOF
 
   NODE_OPTIONS="--max-old-space-size=1024" pnpm install --prod
 
+  echo "🚀 move src/generated to dist"
+  mv src/generated dist
+  rm -rf src
+
   if pm2 list | grep -q "$APP_NAME"; then
     echo "✅ $APP_NAME is running"
-    pnpm run restart
+    pm2 restart server-rest
   else
     echo "✅ $APP_NAME is not running"
-    pnpm run start
+    pm2 start dist/main.js --name server-rest
   fi
 
   pm2 save  # 서버 재부팅 후에도 실행 유지

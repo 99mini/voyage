@@ -30,3 +30,24 @@ model GithubRepo {
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @default(now()) @db.Timestamptz(3)
 }
+
+model FindVideoUser {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  logs      FindVideoLog[]
+}
+
+model FindVideoLog {
+  id        String   @id @default(uuid())
+  userId    String
+  user      FindVideoUser @relation(fields: [userId], references: [id])
+  sourceUrl String
+  type      String
+  src       String?
+  downloadSetting Json?
+  isDeleted Boolean @default(false)
+  deletedAt DateTime?
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([userId])
+}
