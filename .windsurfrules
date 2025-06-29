@@ -14,7 +14,7 @@
 - packages 하위에 vds(Voyage Design System), utils.
 - 기술 스택
   - 공통: Node.js, TypeScript, pnpm, prettier, eslint, pocketbase.
-  - frontend: React(혹은 Next.js, Remix.js), Vite, Tailwind, Shadcn.
+  - frontend: React(혹은 Next.js, Remix.js), Vite, Tailwind, Shadcn, react-router.
   - server: Nestjs, Express.
 
 # 응답 규칙
@@ -28,6 +28,7 @@
 - 상태 관리 라이브러리로 zustand, @tanstack/react-query를 활용하여라
 - Page Driven Development. 페이지를 기준으로 폴더를 구성하라
 - jsx component의 타입에 React.FC를 사용하지 않는다
+- react-router를 사용하여라 (react-router-dom이 아닌 react-router)
 예시
 src/pages/home/[components|hooks|utils]: home page에 관련된 소스 코드 폴더 
 src/[components|hooks|utils]: 공통 소스 코드 폴더
