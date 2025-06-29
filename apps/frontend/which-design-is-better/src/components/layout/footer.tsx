@@ -15,11 +15,10 @@ const siteMap: {
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white py-6 px-4">
+    <footer className="text-slate-500 py-6 px-4 border-t border-slate-200">
       <div className="container mx-auto">
         <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-start md:gap-0">
           <div className="flex flex-col space-y-2">
-            <h4 className="text-base font-bold">{'Site map'}</h4>
             {siteMap.map((site) => (
               <a key={site.href} href={site.href} className="text-sm hover:underline hover:text-blue-400">
                 {site.text}
