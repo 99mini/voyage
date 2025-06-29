@@ -24,20 +24,20 @@ const html = `<!doctype html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>zerovoyage</title>
-    <meta property="og:title" content="zerovoyage" />
-    <meta property="og:description" content="zerovoyage" />
-    <meta property="og:url" content="https://about.zerovoyage.com/" />
-    <meta name="description" content="zerovoyage" />
+    <title>Which Design is Better?</title>
+    <meta property="og:title" content="Which Design is Better?" />
+    <meta property="og:description" content="Which Design is Better?" />
+    <meta property="og:url" content="https://which-design-is-better.zerovoyage.com/" />
+    <meta name="description" content="Which Design is Better?" />
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2L0YWL45W7"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PX5KNDJ4EG"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
       gtag('js', new Date());
-      gtag('config', 'G-2L0YWL45W7');
+      gtag('config', 'G-PX5KNDJ4EG');
     </script>
     ${cssLinks}
   </head>
