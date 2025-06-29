@@ -1,5 +1,7 @@
 # Which Design is Better? PRD (Product Requirements Document)
 
+> [PRD](../../../../.docs/idea/which-design-is-better.md)
+
 ## 1. 개요
 
 이 문서는 which-design-is-better.zerovoyage.com 페이지의 제품 요구사항을 정의합니다.
