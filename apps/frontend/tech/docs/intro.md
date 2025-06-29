@@ -4,7 +4,7 @@ sidebar_position: 0
 
 # 소개
 
-컴퓨터 과학 분야 학습 내용을 정리합니다.
+컴퓨터 과학 분야 & 독서 내용을 정리합니다.
 
 ## 자격증 공부
 
@@ -35,3 +35,7 @@ sidebar_position: 0
 <!-- 301 ~ 400 -->
 
 1. [rest with express](/docs/category/rest-with-express)
+
+## Tech Blog
+
+[블로그 글 보러가기](/blog)

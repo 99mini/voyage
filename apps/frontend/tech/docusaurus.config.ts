@@ -174,6 +174,10 @@ const config: Config = {
               label: 'sitemap',
               href: 'https://tech.zerovoyage.com/sitemap.xml',
             },
+            {
+              label: 'tags',
+              to: 'docs/tags',
+            },
           ],
         },
       ],
