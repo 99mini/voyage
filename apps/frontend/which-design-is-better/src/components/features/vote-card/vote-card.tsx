@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { VoteItemResponse, VoteRequest } from '@/apis/vote/model';
 
@@ -12,7 +12,8 @@ interface VoteCardProps {
 
 export function VoteCard({ voteItem }: VoteCardProps) {
   const [selectedOption, setSelectedOption] = useState<VoteRequest['selectedOption'] | null>(null);
-  const [hasVoted, setHasVoted] = useState(false);
+  const [hasVoted, setHasVoted] = useState(voteItem.hasVoted);
+
   const { castVote } = useVoteStore();
 
   const handleOptionClick = (option: VoteRequest['selectedOption']) => {
@@ -28,8 +29,8 @@ export function VoteCard({ voteItem }: VoteCardProps) {
         selectedOption,
       };
 
-      await castVote(payload);
       setHasVoted(true);
+      await castVote(payload);
     }
   };
 
@@ -73,7 +74,9 @@ export function VoteCard({ voteItem }: VoteCardProps) {
           </button>
         </div>
       ) : (
-        <div className="text-center py-2 text-green-600 font-medium">투표해주셔서 감사합니다!</div>
+        <div>
+          <div className="text-center py-2 text-green-600 font-medium">투표해주셔서 감사합니다!</div>
+        </div>
       )}
 
       <div className="mt-4 text-center text-sm text-gray-500">총 {voteItem.totalVotes}명이 투표했습니다</div>

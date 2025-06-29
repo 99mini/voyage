@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes, StaticRouter } from 'react-router';
 
 import { Toaster } from '@packages/vds';
 
-import { Home } from '@/pages';
+import { Home, NotFound, Vote, VoteDetail } from '@/pages';
 
 import Footer from '@/components/layout/footer';
 
@@ -14,6 +14,9 @@ const Layout = () => {
       <main className="container mx-auto p-4 flex-grow">
         <Routes>
           <Route path={ROUTE_PATH.ROOT} element={<Home />} />
+          <Route path={ROUTE_PATH.VOTE_DETAIL} element={<VoteDetail />} />
+          <Route path={ROUTE_PATH.VOTE} element={<Vote />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster />
       </main>

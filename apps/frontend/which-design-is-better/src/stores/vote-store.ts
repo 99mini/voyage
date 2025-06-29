@@ -6,6 +6,7 @@ import { VoteItemResponse, VoteRequest, useSubmitVoteMutation, useVoteListQuery,
 export const useVoteStore = () => {
   const queryClient = useQueryClient();
   const { data: voteItems = [], isLoading, error, refetch: fetchVotes } = useVoteListQuery();
+
   const submitVoteMutation = useSubmitVoteMutation();
 
   // 현재 선택된 투표 항목 상태
@@ -13,6 +14,14 @@ export const useVoteStore = () => {
 
   // 현재 투표 항목 설정
   const setCurrentVote = useCallback(
+    (voteId: string) => {
+      const vote = voteItems.find((item) => item.id === voteId) || null;
+      setCurrentVoteState(vote);
+    },
+    [voteItems],
+  );
+
+  const fetchVote = useCallback(
     (voteId: string) => {
       const vote = voteItems.find((item) => item.id === voteId) || null;
       setCurrentVoteState(vote);
@@ -48,5 +57,6 @@ export const useVoteStore = () => {
     setCurrentVote,
     castVote,
     fetchVotes,
+    fetchVote,
   };
 };

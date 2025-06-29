@@ -26,7 +26,9 @@ const testCases: VoteItemResponse[] = [
     votesA: 128,
     votesB: 85,
     totalVotes: 213,
+    nextVoteId: '2',
     type: 'checkbox',
+    hasVoted: false,
   },
   {
     id: '2',
@@ -53,7 +55,9 @@ const testCases: VoteItemResponse[] = [
     votesA: 95,
     votesB: 112,
     totalVotes: 207,
+    nextVoteId: null,
     type: 'radio',
+    hasVoted: false,
   },
 ];
 
@@ -94,6 +98,8 @@ export const submitVote = async (req: VoteRequest): Promise<VoteItemResponse> =>
       }
 
       updatedItem.totalVotes += 1;
+
+      updatedItem.hasVoted = true;
 
       resolve(updatedItem);
     }, 700);

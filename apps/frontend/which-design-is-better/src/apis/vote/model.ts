@@ -21,5 +21,7 @@ export interface VoteItemResponse {
   votesA: number;
   votesB: number;
   totalVotes: number;
+  hasVoted: boolean;
+  nextVoteId: string | null;
   type: 'checkbox' | 'radio'; // 테스트 케이스 유형
 }
