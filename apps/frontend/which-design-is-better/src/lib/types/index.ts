@@ -1,3 +1,3 @@
-import type { ChartData, ChartOptions } from './graph.type';
+import type { DesignOptionType } from './design-option.type';
 
-export type { ChartData, ChartOptions };
+export type { DesignOptionType };

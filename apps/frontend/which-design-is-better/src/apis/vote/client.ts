@@ -1,0 +1,85 @@
+import type { VoteItemResponse, VoteRequest } from './model';
+
+const testCases: VoteItemResponse[] = [
+  {
+    id: '1',
+    title: '체크박스 디자인',
+    description: '다음 중 어떤 체크박스 디자인이 더 좋다고 생각하시나요?',
+    optionA: {
+      id: 'a1',
+      imageUrl: 'https://via.placeholder.com/300x200?text=Checkbox+Design+A',
+      description: '라운드 스타일 체크박스',
+    },
+    optionB: {
+      id: 'b1',
+      imageUrl: 'https://via.placeholder.com/300x200?text=Checkbox+Design+B',
+      description: '스퀘어 스타일 체크박스',
+    },
+    votesA: 128,
+    votesB: 85,
+    totalVotes: 213,
+    type: 'checkbox',
+  },
+  {
+    id: '2',
+    title: '라디오 버튼 디자인',
+    description: '다음 중 어떤 라디오 버튼 디자인이 더 좋다고 생각하시나요?',
+    optionA: {
+      id: 'a2',
+      imageUrl: 'https://via.placeholder.com/300x200?text=Radio+Design+A',
+      description: '미니멀 스타일 라디오 버튼',
+    },
+    optionB: {
+      id: 'b2',
+      imageUrl: 'https://via.placeholder.com/300x200?text=Radio+Design+B',
+      description: '하이라이트 스타일 라디오 버튼',
+    },
+    votesA: 95,
+    votesB: 112,
+    totalVotes: 207,
+    type: 'radio',
+  },
+];
+
+export const getVoteList = async (): Promise<VoteItemResponse[]> => {
+  // 실제 API 호출 대신 목업 데이터 반환
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(testCases);
+    }, 500); // 0.5초 지연
+  });
+};
+
+// 단일 투표 항목 가져오기 API
+export const getVote = async (id: string): Promise<VoteItemResponse | undefined> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(testCases.find((item) => item.id === id));
+    }, 300);
+  });
+};
+
+export const submitVote = async (req: VoteRequest): Promise<VoteItemResponse> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const voteItem = testCases.find((item) => item.id === req.voteId);
+
+      if (!voteItem) {
+        throw new Error('Vote item not found');
+      }
+
+      // 투표 결과 업데이트 (목업이므로 실제 데이터는 변경되지 않음)
+      const updatedItem = { ...voteItem };
+
+      if (req.selectedOption === 'A') {
+        updatedItem.votesA += 1;
+      } else {
+        updatedItem.votesB += 1;
+      }
+
+      updatedItem.totalVotes += 1;
+
+      resolve(updatedItem);
+    }, 700);
+  });
+};
