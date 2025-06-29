@@ -18,6 +18,8 @@
       - [Feature Admin](#feature-admin)
     - [Awesome](#awesome)
       - [Feature Awesome](#feature-awesome)
+    - [Which Design is Better?](#which-design-is-better)
+      - [Feature Which Design is Better?](#feature-which-design-is-better)
   - [Server](#server)
     - [Rest](#rest)
       - [Rest API](#rest-api)
@@ -97,6 +99,16 @@ just for fun :) interactive ui
   - analog clock
   - digital clock
   - text clock
+
+### Which Design is Better?
+
+- production: https://which-design-is-better.zerovoyage.com
+- github: https://github.com/99mini/voyage/tree/main/apps/frontend/which-design-is-better
+- tech stack: `typescript`, `reactjs`, `tailwindcss`, `shadcn/ui`
+
+#### Feature Which Design is Better?
+
+- provide which design is better by voting
 
 ## Server
 
