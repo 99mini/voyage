@@ -2,7 +2,6 @@
   "name": "@packages/pb-api",
   "private": true,
   "version": "0.1.0",
-  "packageManager": "pnpm@10.4.1",
   "type": "module",
   "sideEffects": false,
   "exports": {

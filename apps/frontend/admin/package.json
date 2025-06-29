@@ -4,7 +4,6 @@
   "version": "0.1.0",
   "type": "module",
   "homepage": "https://admin.zerovoyage.com",
-  "packageManager": "pnpm@10.4.1",
   "engines": {
     "node": ">=20.0.0",
     "pnpm": ">=9.0.0"
