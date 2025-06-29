@@ -15,8 +15,6 @@ export default function VoteDetail() {
 
   const nextVoteId = currentVote?.nextVoteId;
 
-  console.log(currentVote);
-
   useEffect(() => {
     if (!voteId) {
       navigate('/404.html');

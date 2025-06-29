@@ -27,7 +27,6 @@ const testCases: VoteItemResponse[] = [
     votesB: 85,
     totalVotes: 213,
     nextVoteId: '2',
-    type: 'checkbox',
     hasVoted: false,
   },
   {
@@ -56,7 +55,6 @@ const testCases: VoteItemResponse[] = [
     votesB: 112,
     totalVotes: 207,
     nextVoteId: null,
-    type: 'radio',
     hasVoted: false,
   },
 ];

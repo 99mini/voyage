@@ -6,6 +6,7 @@ import { VoteItemResponse, VoteRequest, useSubmitVoteMutation, useVoteListQuery,
 export const useVoteStore = () => {
   const queryClient = useQueryClient();
   const { data: voteItems = [], isLoading, error, refetch: fetchVotes } = useVoteListQuery();
+  const { mutateAsync: fetchVoteDetail } = useVoteQuery();
 
   const submitVoteMutation = useSubmitVoteMutation();
 
@@ -22,8 +23,17 @@ export const useVoteStore = () => {
   );
 
   const fetchVote = useCallback(
-    (voteId: string) => {
-      const vote = voteItems.find((item) => item.id === voteId) || null;
+    async (voteId: string) => {
+      let vote: VoteItemResponse | undefined = voteItems.find((item) => item.id === voteId);
+
+      if (!vote) {
+        vote = await fetchVoteDetail(voteId);
+      }
+
+      if (!vote) {
+        throw new Error('Vote not found');
+      }
+
       setCurrentVoteState(vote);
     },
     [voteItems],

@@ -2,10 +2,9 @@ import { useMutation, useQuery } from 'react-query';
 
 import { getVote, getVoteList, submitVote } from './client';
 
-export function useVoteQuery(id: string) {
-  return useQuery({
-    queryKey: ['vote', id],
-    queryFn: () => getVote(id),
+export function useVoteQuery() {
+  return useMutation({
+    mutationFn: (id: string) => getVote(id),
   });
 }
 
