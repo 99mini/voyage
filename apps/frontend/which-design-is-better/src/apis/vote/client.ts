@@ -9,11 +9,19 @@ const testCases: VoteItemResponse[] = [
       id: 'a1',
       imageUrl: 'https://static.zerovoyage.com/logo512x512.jpg',
       description: '라운드 스타일 체크박스',
+      size: {
+        width: 512,
+        height: 512,
+      },
     },
     optionB: {
       id: 'b1',
       imageUrl: 'https://static.zerovoyage.com/logo512x512.jpg',
       description: '스퀘어 스타일 체크박스',
+      size: {
+        width: 512,
+        height: 512,
+      },
     },
     votesA: 128,
     votesB: 85,
@@ -28,11 +36,19 @@ const testCases: VoteItemResponse[] = [
       id: 'a2',
       imageUrl: 'https://static.zerovoyage.com/logo512x512.jpg',
       description: '미니멀 스타일 라디오 버튼',
+      size: {
+        width: 512,
+        height: 512,
+      },
     },
     optionB: {
       id: 'b2',
       imageUrl: 'https://static.zerovoyage.com/logo512x512.jpg',
       description: '하이라이트 스타일 라디오 버튼',
+      size: {
+        width: 512,
+        height: 512,
+      },
     },
     votesA: 95,
     votesB: 112,

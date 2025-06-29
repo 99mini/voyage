@@ -1,7 +1,7 @@
-import type { DesignOptionType } from '../../lib/types';
+import type { DesignOptionSchema } from '@/apis/vote/model';
 
 interface DesignOptionProps {
-  option: DesignOptionType;
+  option: DesignOptionSchema;
   votes: number;
   totalVotes: number;
   selected?: boolean;
@@ -20,7 +20,13 @@ const DesignOption = ({ option, votes, totalVotes, selected = false, onClick, sh
       onClick={onClick}
     >
       <div className="relative">
-        <img src={option.imageUrl} alt={option.description} className="w-full h-auto rounded" />
+        <img
+          src={option.imageUrl}
+          alt={option.description}
+          className="w-full h-auto rounded"
+          width={option.size.width}
+          height={option.size.height}
+        />
 
         {showResults && (
           <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white">

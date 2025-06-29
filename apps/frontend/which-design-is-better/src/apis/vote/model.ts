@@ -1,5 +1,12 @@
 import { DesignOptionType } from '@/lib/types';
 
+export interface DesignOptionSchema extends DesignOptionType {
+  size: {
+    width: number;
+    height: number;
+  };
+}
+
 export interface VoteRequest {
   voteId: string;
   selectedOption: 'A' | 'B';
@@ -9,8 +16,8 @@ export interface VoteItemResponse {
   id: string;
   title: string;
   description: string;
-  optionA: DesignOptionType;
-  optionB: DesignOptionType;
+  optionA: DesignOptionSchema;
+  optionB: DesignOptionSchema;
   votesA: number;
   votesB: number;
   totalVotes: number;

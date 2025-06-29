@@ -11,11 +11,11 @@ interface VoteCardProps {
 }
 
 export function VoteCard({ voteItem }: VoteCardProps) {
-  const [selectedOption, setSelectedOption] = useState<'A' | 'B' | null>(null);
+  const [selectedOption, setSelectedOption] = useState<VoteRequest['selectedOption'] | null>(null);
   const [hasVoted, setHasVoted] = useState(false);
   const { castVote } = useVoteStore();
 
-  const handleOptionClick = (option: 'A' | 'B') => {
+  const handleOptionClick = (option: VoteRequest['selectedOption']) => {
     if (!hasVoted) {
       setSelectedOption(option);
     }

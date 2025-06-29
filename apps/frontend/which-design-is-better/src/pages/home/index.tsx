@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
-import { VoteCard } from '@/components/vote-card/vote-card';
+import { Spinner } from '@/components/common/feedback';
+import { VoteCard } from '@/components/features';
 
 import { useVoteStore } from '@/stores/vote-store';
 
@@ -20,8 +21,7 @@ export default function Home() {
 
       {isLoading && (
         <div className="text-center py-10">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
-          <p className="mt-2">불러오는 중...</p>
+          <Spinner />
         </div>
       )}
 
