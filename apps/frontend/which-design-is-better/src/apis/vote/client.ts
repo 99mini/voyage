@@ -7,12 +7,12 @@ const testCases: VoteItemResponse[] = [
     description: '다음 중 어떤 체크박스 디자인이 더 좋다고 생각하시나요?',
     optionA: {
       id: 'a1',
-      imageUrl: 'https://via.placeholder.com/300x200?text=Checkbox+Design+A',
+      imageUrl: 'https://static.zerovoyage.com/logo512x512.jpg',
       description: '라운드 스타일 체크박스',
     },
     optionB: {
       id: 'b1',
-      imageUrl: 'https://via.placeholder.com/300x200?text=Checkbox+Design+B',
+      imageUrl: 'https://static.zerovoyage.com/logo512x512.jpg',
       description: '스퀘어 스타일 체크박스',
     },
     votesA: 128,
@@ -26,12 +26,12 @@ const testCases: VoteItemResponse[] = [
     description: '다음 중 어떤 라디오 버튼 디자인이 더 좋다고 생각하시나요?',
     optionA: {
       id: 'a2',
-      imageUrl: 'https://via.placeholder.com/300x200?text=Radio+Design+A',
+      imageUrl: 'https://static.zerovoyage.com/logo512x512.jpg',
       description: '미니멀 스타일 라디오 버튼',
     },
     optionB: {
       id: 'b2',
-      imageUrl: 'https://via.placeholder.com/300x200?text=Radio+Design+B',
+      imageUrl: 'https://static.zerovoyage.com/logo512x512.jpg',
       description: '하이라이트 스타일 라디오 버튼',
     },
     votesA: 95,

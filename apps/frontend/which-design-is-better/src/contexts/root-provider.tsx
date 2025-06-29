@@ -1,9 +1,7 @@
-import { QueryClient, QueryClientProvider } from 'react-query';
-
-const queryClient = new QueryClient();
+import ReactQueryProvider from './react-query';
 
 const RootProvider = ({ children }: { children: React.ReactNode }) => {
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return <ReactQueryProvider>{children}</ReactQueryProvider>;
 };
 
 export default RootProvider;

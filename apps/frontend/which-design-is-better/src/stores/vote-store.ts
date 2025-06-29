@@ -1,53 +1,52 @@
-import { create } from 'zustand';
+import { useCallback, useState } from 'react';
+import { useQueryClient } from 'react-query';
 
-import { VoteItemResponse, VoteRequest, useSubmitVoteMutation, useVoteListQuery } from '@/apis/vote';
+import { VoteItemResponse, VoteRequest, useSubmitVoteMutation, useVoteListQuery, useVoteQuery } from '@/apis/vote';
 
-interface VoteState {
-  voteItems: VoteItemResponse[];
-  currentVote: VoteItemResponse | null;
-  isLoading: boolean;
-  error: string | null;
+export const useVoteStore = () => {
+  const queryClient = useQueryClient();
+  const { data: voteItems = [], isLoading, error, refetch: fetchVotes } = useVoteListQuery();
+  const submitVoteMutation = useSubmitVoteMutation();
 
-  fetchVotes: () => Promise<void>;
-  setCurrentVote: (voteId: string) => void;
-  castVote: (req: VoteRequest) => Promise<void>;
-}
+  // 현재 선택된 투표 항목 상태
+  const [currentVote, setCurrentVoteState] = useState<VoteItemResponse | null>(null);
 
-export const useVoteStore = create<VoteState>((set, get) => ({
-  voteItems: [],
-  currentVote: null,
-  isLoading: false,
-  error: null,
+  // 현재 투표 항목 설정
+  const setCurrentVote = useCallback(
+    (voteId: string) => {
+      const vote = voteItems.find((item) => item.id === voteId) || null;
+      setCurrentVoteState(vote);
+    },
+    [voteItems],
+  );
 
-  fetchVotes: async () => {
-    set({ isLoading: true, error: null });
-    try {
-      const votes = await getVoteList();
-      set({ voteItems: votes, isLoading: false });
-    } catch (error) {
-      set({ error: '투표 목록을 불러오는데 실패했습니다.', isLoading: false });
-    }
-  },
+  const castVote = useCallback(
+    async (req: VoteRequest) => {
+      try {
+        await submitVoteMutation.mutateAsync(req);
 
-  setCurrentVote: (voteId: string) => {
-    const { voteItems } = get();
-    const currentVote = voteItems.find((item) => item.id === voteId) || null;
-    set({ currentVote });
-  },
+        queryClient.invalidateQueries(['vote-list']);
 
-  castVote: async (req: VoteRequest) => {
-    set({ isLoading: true, error: null });
-    try {
-      const updatedVote = await submitVote(req);
+        queryClient.invalidateQueries(['vote', req.voteId]);
+      } catch (error) {
+        console.error('투표 제출 실패:', error);
+        throw error;
+      }
+    },
+    [submitVoteMutation, queryClient],
+  );
 
-      // 상태 업데이트
-      set((state) => ({
-        voteItems: state.voteItems.map((item) => (item.id === updatedVote.id ? updatedVote : item)),
-        currentVote: updatedVote,
-        isLoading: false,
-      }));
-    } catch (error) {
-      set({ error: '투표하는데 실패했습니다.', isLoading: false });
-    }
-  },
-}));
+  return {
+    voteItems,
+    currentVote,
+    isLoading: isLoading || submitVoteMutation.isLoading,
+    error: error
+      ? '투표 목록을 불러오는데 실패했습니다.'
+      : submitVoteMutation.error
+        ? '투표하는데 실패했습니다.'
+        : null,
+    setCurrentVote,
+    castVote,
+    fetchVotes,
+  };
+};

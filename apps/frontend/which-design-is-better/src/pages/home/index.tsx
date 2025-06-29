@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { VoteCard } from '@/components/vote-card/vote-card';
 
-import { useVoteStore } from '../stores/voteStore';
+import { useVoteStore } from '@/stores/vote-store';
 
 export default function Home() {
   const { voteItems, isLoading, error, fetchVotes } = useVoteStore();
