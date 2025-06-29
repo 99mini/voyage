@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
-import { Spinner } from '@/components/common/feedback';
 import { VoteCard } from '@/components/features';
+import { Spinner } from '@/components/feedback';
 
 import { useVoteStore } from '@/stores/vote-store';
 
