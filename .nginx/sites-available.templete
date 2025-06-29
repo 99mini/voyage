@@ -1,0 +1,41 @@
+# /etc/nginx/sites-available/<sub-domain>.zerovoyage.com
+
+server {
+    listen 80;
+    server_name <sub-domain>.zerovoyage.com;
+
+    # HTTP를 HTTPS로 자동 리디렉션
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl; # HTTPS 활성화
+    server_name <sub-domain>.zerovoyage.com;
+
+    # 앱이 위치한 디렉토리
+    root /mnt/volume_sgp1_01/<app-name>;
+    index index.html;
+
+    # SSL 인증서 설정 (Certbot 자동 관리)
+    ssl_certificate /etc/letsencrypt/live/zerovoyage.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/zerovoyage.com/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    # 라우팅 처리
+    location / {
+        try_files $uri /index.html;
+    }
+
+    # 보안 헤더 추가
+    add_header Cross-Origin-Opener-Policy same-origin;
+    add_header Cross-Origin-Embedder-Policy require-corp;
+    add_header Cross-Origin-Resource-Policy cross-origin;
+    add_header Access-Control-Allow-Origin *;
+
+    # 정적 파일 캐싱 설정 (최적화)
+    location /static/ {
+        expires 1y;
+        add_header Cache-Control "public, max-age=31536000";
+    }
+}
