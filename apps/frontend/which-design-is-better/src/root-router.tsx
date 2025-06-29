@@ -16,7 +16,6 @@ const Layout = () => {
           <Route path={ROUTE_PATH.ROOT} element={<Home />} />
           <Route path={ROUTE_PATH.VOTE_DETAIL} element={<VoteDetail />} />
           <Route path={ROUTE_PATH.VOTE} element={<Vote />} />
-          <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster />
       </main>
@@ -26,18 +25,23 @@ const Layout = () => {
 };
 
 function RootRouter() {
-  if (typeof window !== 'undefined') {
-    return (
-      <BrowserRouter>
-        <Layout />
-      </BrowserRouter>
-    );
-  }
+  const Router: any = typeof window !== 'undefined' ? BrowserRouter : StaticRouter;
+  const routerProps = typeof window !== 'undefined' ? {} : { location: ROUTE_PATH.ROOT };
 
   return (
-    <StaticRouter location={'/'}>
-      <Layout />
-    </StaticRouter>
+    <Router {...routerProps}>
+      <Routes>
+        {/* Routes wrapped with common layout */}
+        <Route element={<Layout />}>
+          <Route path={ROUTE_PATH.ROOT} element={<Home />} />
+          <Route path={ROUTE_PATH.VOTE_DETAIL} element={<VoteDetail />} />
+          <Route path={ROUTE_PATH.VOTE} element={<Vote />} />
+        </Route>
+
+        {/* 404 route outside of layout */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 }
 
