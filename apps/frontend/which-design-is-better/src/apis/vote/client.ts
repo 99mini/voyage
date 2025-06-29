@@ -1,6 +1,6 @@
 import type { VoteItemResponse, VoteRequest } from './model';
 
-const testCases: VoteItemResponse[] = [
+const MOCK_VOTES: VoteItemResponse[] = [
   {
     id: '1',
     title: '체크박스 디자인',
@@ -59,11 +59,19 @@ const testCases: VoteItemResponse[] = [
   },
 ];
 
+export const getPopularVoteList = async (): Promise<VoteItemResponse[]> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(MOCK_VOTES.sort((a, b) => b.totalVotes - a.totalVotes).slice(0, 5));
+    }, 500);
+  });
+};
+
 export const getVoteList = async (): Promise<VoteItemResponse[]> => {
   // 실제 API 호출 대신 목업 데이터 반환
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(testCases);
+      resolve(MOCK_VOTES);
     }, 500); // 0.5초 지연
   });
 };
@@ -72,7 +80,7 @@ export const getVoteList = async (): Promise<VoteItemResponse[]> => {
 export const getVote = async (id: string): Promise<VoteItemResponse | undefined> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(testCases.find((item) => item.id === id));
+      resolve(MOCK_VOTES.find((item) => item.id === id));
     }, 300);
   });
 };
@@ -80,7 +88,7 @@ export const getVote = async (id: string): Promise<VoteItemResponse | undefined>
 export const submitVote = async (req: VoteRequest): Promise<VoteItemResponse> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const voteItem = testCases.find((item) => item.id === req.voteId);
+      const voteItem = MOCK_VOTES.find((item) => item.id === req.voteId);
 
       if (!voteItem) {
         throw new Error('Vote item not found');

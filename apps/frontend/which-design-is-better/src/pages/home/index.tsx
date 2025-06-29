@@ -2,6 +2,8 @@ import { Link } from 'react-router';
 
 import { ROUTE_PATH } from '@/lib/constants/url';
 
+import Hero from './components/hero';
+
 export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
@@ -15,6 +17,8 @@ export default function Home() {
           투표하기
         </Link>
       </div>
+      {/* 인기 투표 결과 */}
+      <Hero />
     </div>
   );
 }
