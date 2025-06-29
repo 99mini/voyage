@@ -3,7 +3,6 @@
   "version": "1.4.2",
   "private": true,
   "type": "commonjs",
-  "packageManager": "pnpm@10.4.1",
   "description": "zerovoyage rest api",
   "scripts": {
     "dev": "NODE_ENV=development tsx watch src/main.ts",
