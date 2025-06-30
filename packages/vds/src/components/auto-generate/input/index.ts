@@ -1,5 +1,5 @@
-import Input from './input';
-import type { InputProps, InputSchema } from './input';
+import AutoGenerateInput from './input';
+import type { AutoGenerateInputProps, InputSchema } from './input';
 
-export default Input;
-export type { InputProps, InputSchema };
+export default AutoGenerateInput;
+export type { AutoGenerateInputProps, InputSchema };

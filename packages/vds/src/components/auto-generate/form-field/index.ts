@@ -1,5 +1,5 @@
-import FormField from './form-field';
-import type { FormFieldProps, FormFieldSchema } from './form-field';
+import AutoGenerateFormField from './form-field';
+import type { AutoGenerateFormFieldProps, FormFieldSchema } from './form-field';
 
-export default FormField;
-export type { FormFieldProps, FormFieldSchema };
+export default AutoGenerateFormField;
+export type { AutoGenerateFormFieldProps, FormFieldSchema };

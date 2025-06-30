@@ -1,9 +1,11 @@
-export interface InputSchema {}
+export interface InputSchema {
+  type: React.InputHTMLAttributes<HTMLInputElement>['type'];
+}
 
-export interface InputProps {}
+export interface AutoGenerateInputProps {}
 
-const Input = ({ ...args }: InputProps) => {
+const AutoGenerateInput = ({ ...args }: AutoGenerateInputProps) => {
   return <div>Input</div>;
 };
 
-export default Input;
+export default AutoGenerateInput;

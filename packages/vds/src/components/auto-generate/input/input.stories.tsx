@@ -1,15 +1,15 @@
 import type { Meta } from '@storybook/react';
 
-import Input, { type InputProps } from './input';
+import AutoGenerateInput, { type AutoGenerateInputProps } from './input';
 
-const meta: Meta<typeof Input> = {
+const meta: Meta<typeof AutoGenerateInput> = {
   title: 'autoGenerate/Input',
-  component: Input,
+  component: AutoGenerateInput,
   tags: ['autodocs'],
   args: {},
   argTypes: {},
-} satisfies Meta<typeof Input>;
+} satisfies Meta<typeof AutoGenerateInput>;
 
-export const Default = ({ ...args }: InputProps) => <Input {...args} />;
+export const Default = ({ ...args }: AutoGenerateInputProps) => <AutoGenerateInput {...args} />;
 
 export default meta;

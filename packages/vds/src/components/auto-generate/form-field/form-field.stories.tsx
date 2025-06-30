@@ -1,15 +1,15 @@
 import type { Meta } from '@storybook/react';
 
-import FormField, { type FormFieldProps } from './form-field';
+import AutoGenerateFormField, { type AutoGenerateFormFieldProps } from './form-field';
 
-const meta: Meta<typeof FormField> = {
+const meta: Meta<typeof AutoGenerateFormField> = {
   title: 'autoGenerate/FormField',
-  component: FormField,
+  component: AutoGenerateFormField,
   tags: ['autodocs'],
   args: {},
   argTypes: {},
-} satisfies Meta<typeof FormField>;
+} satisfies Meta<typeof AutoGenerateFormField>;
 
-export const Default = ({ ...args }: FormFieldProps) => <FormField {...args} />;
+export const Default = ({ ...args }: AutoGenerateFormFieldProps) => <AutoGenerateFormField {...args} />;
 
 export default meta;

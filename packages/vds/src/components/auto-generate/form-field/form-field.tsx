@@ -1,9 +1,9 @@
 export interface FormFieldSchema {}
 
-export interface FormFieldProps {}
+export interface AutoGenerateFormFieldProps {}
 
-const FormField = ({ ...args }: FormFieldProps) => {
-  return <div>FormField</div>;
+const AutoGenerateFormField = ({ ...args }: AutoGenerateFormFieldProps) => {
+  return <div>AutoGenerateFormField</div>;
 };
 
-export default FormField;
+export default AutoGenerateFormField;
