@@ -7,17 +7,31 @@ export interface DesignOptionSchema extends DesignOptionType {
   };
 }
 
-export interface VoteRequest {
+export interface GetVoteRequest {
+  /**
+   * @description meta 정보 포함 여부
+   */
+  m?: boolean;
+  /**
+   * @description 투표 결과 정보 포함 여부
+   */
+  v?: boolean;
+}
+
+export interface SubmitVoteRequest {
   voteId: string;
   selectedOption: 'A' | 'B';
 }
 
-export interface VoteItemResponse {
+export interface VoteMetaResponse {
   id: string;
   title: string;
   description: string;
   optionA: DesignOptionSchema;
   optionB: DesignOptionSchema;
+}
+
+export interface VoteItemResponse extends VoteMetaResponse {
   votesA: number;
   votesB: number;
   totalVotes: number;

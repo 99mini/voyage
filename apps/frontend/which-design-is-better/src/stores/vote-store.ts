@@ -1,7 +1,13 @@
 import { useCallback, useState } from 'react';
 import { useQueryClient } from 'react-query';
 
-import { VoteItemResponse, VoteRequest, useSubmitVoteMutation, useVoteListQuery, useVoteQuery } from '@/apis/vote';
+import {
+  SubmitVoteRequest,
+  VoteItemResponse,
+  useSubmitVoteMutation,
+  useVoteListQuery,
+  useVoteQuery,
+} from '@/apis/vote';
 
 export const useVoteStore = () => {
   const queryClient = useQueryClient();
@@ -31,16 +37,18 @@ export const useVoteStore = () => {
       }
 
       if (!vote) {
-        throw new Error('Vote not found');
+        return false;
       }
 
       setCurrentVoteState(vote);
+
+      return true;
     },
     [voteItems],
   );
 
   const castVote = useCallback(
-    async (req: VoteRequest) => {
+    async (req: SubmitVoteRequest) => {
       try {
         await submitVoteMutation.mutateAsync(req);
 

@@ -1,36 +1,49 @@
-import { useMutation, useQuery } from 'react-query';
+import { UseMutationResult, UseQueryResult, useMutation, useQuery } from 'react-query';
 
-import { getPopularVoteList, getVote, getVoteList, submitVote } from './client';
+import { getPopularVoteList, getVote, getVoteList, getVoteMetaList, submitVote } from './client';
+import type { SubmitVoteRequest, VoteItemResponse, VoteMetaResponse } from './model';
 
 const ONE_HOUR = 60 * 60 * 1000;
 
-export function usePopularVoteListQuery() {
+export function usePopularVoteListQuery(): UseQueryResult<VoteItemResponse[]> {
   return useQuery({
     queryKey: ['popular-vote-list'],
     queryFn: () => getPopularVoteList(),
     refetchOnWindowFocus: false,
-    staleTime: 6 * ONE_HOUR,
-    cacheTime: 6 * ONE_HOUR,
   });
 }
 
-export function useVoteQuery() {
+export function useVoteMetaQuery(): UseMutationResult<VoteMetaResponse[]> {
+  return useMutation({
+    mutationFn: () => getVoteMetaList(),
+  });
+}
+
+export function useVoteQuery(): UseMutationResult<VoteItemResponse | undefined, unknown, string, unknown> {
   return useMutation({
     mutationFn: (id: string) => getVote(id),
   });
 }
 
-export function useVoteListQuery() {
+export function useVoteMetaListQuery(): UseQueryResult<VoteMetaResponse[]> {
   return useQuery({
-    queryKey: ['vote-list'],
-    queryFn: () => getVoteList(),
+    queryKey: ['vote-meta-list'],
+    queryFn: () => getVoteMetaList(),
     refetchOnWindowFocus: false,
     staleTime: ONE_HOUR,
     cacheTime: ONE_HOUR,
   });
 }
 
-export function useSubmitVoteMutation() {
+export function useVoteListQuery(): UseQueryResult<VoteItemResponse[]> {
+  return useQuery({
+    queryKey: ['vote-list'],
+    queryFn: () => getVoteList(),
+    refetchOnWindowFocus: false,
+  });
+}
+
+export function useSubmitVoteMutation(): UseMutationResult<VoteItemResponse, unknown, SubmitVoteRequest, unknown> {
   return useMutation({
     mutationFn: submitVote,
   });

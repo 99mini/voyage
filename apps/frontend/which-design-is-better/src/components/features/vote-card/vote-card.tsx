@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { VoteItemResponse, VoteRequest } from '@/apis/vote/model';
+import { SubmitVoteRequest, VoteItemResponse } from '@/apis/vote/model';
 
 import { useVoteStore } from '@/stores/vote-store';
 
@@ -11,12 +11,12 @@ interface VoteCardProps {
 }
 
 export function VoteCard({ voteItem }: VoteCardProps) {
-  const [selectedOption, setSelectedOption] = useState<VoteRequest['selectedOption'] | null>(null);
+  const [selectedOption, setSelectedOption] = useState<SubmitVoteRequest['selectedOption'] | null>(null);
   const [hasVoted, setHasVoted] = useState(voteItem.hasVoted);
 
   const { castVote } = useVoteStore();
 
-  const handleOptionClick = (option: VoteRequest['selectedOption']) => {
+  const handleOptionClick = (option: SubmitVoteRequest['selectedOption']) => {
     if (!hasVoted) {
       setSelectedOption(option);
     }
@@ -24,7 +24,7 @@ export function VoteCard({ voteItem }: VoteCardProps) {
 
   const handleVote = async () => {
     if (selectedOption) {
-      const payload: VoteRequest = {
+      const payload: SubmitVoteRequest = {
         voteId: voteItem.id,
         selectedOption,
       };

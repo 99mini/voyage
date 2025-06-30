@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 
 import { VoteCard } from '@/components/features';
@@ -9,24 +9,33 @@ import { useVoteStore } from '@/stores/vote-store';
 
 export default function VoteDetail() {
   const { voteId } = useParams<{ voteId: string }>();
+
   const navigate = useNavigate();
 
   const { currentVote, isLoading, error, fetchVote } = useVoteStore();
 
   const nextVoteId = currentVote?.nextVoteId;
 
+  const fetchVoteDetail = useCallback(
+    async (voteId: string) => {
+      try {
+        const result = await fetchVote(voteId);
+        if (!result) {
+          navigate('/404.html');
+        }
+      } catch (error) {
+        navigate('/404.html');
+      }
+    },
+    [fetchVote, navigate],
+  );
+
   useEffect(() => {
     if (!voteId) {
-      navigate('/404.html');
       return;
     }
-    fetchVote(voteId);
-  }, [voteId, fetchVote]);
-
-  if (!currentVote || !voteId) {
-    navigate('/404.html');
-    return null;
-  }
+    fetchVoteDetail(voteId);
+  }, [voteId, fetchVoteDetail]);
 
   if (isLoading || !currentVote) {
     return (

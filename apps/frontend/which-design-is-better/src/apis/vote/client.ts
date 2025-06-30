@@ -1,4 +1,4 @@
-import type { VoteItemResponse, VoteRequest } from './model';
+import type { SubmitVoteRequest, VoteItemResponse, VoteMetaResponse } from './model';
 
 const MOCK_VOTES: VoteItemResponse[] = [
   {
@@ -287,6 +287,22 @@ export const getPopularVoteList = async (): Promise<VoteItemResponse[]> => {
   });
 };
 
+export const getVoteMetaList = async (): Promise<VoteMetaResponse[]> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(
+        MOCK_VOTES.map((item) => ({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+          optionA: item.optionA,
+          optionB: item.optionB,
+        })),
+      );
+    }, 500);
+  });
+};
+
 export const getVoteList = async (): Promise<VoteItemResponse[]> => {
   // 실제 API 호출 대신 목업 데이터 반환
   return new Promise((resolve) => {
@@ -296,7 +312,38 @@ export const getVoteList = async (): Promise<VoteItemResponse[]> => {
   });
 };
 
-// 단일 투표 항목 가져오기 API
+/**
+ * 투표 메타 정보 가져오기
+ * @param id 투표 ID
+ * @returns 투표 메타 정보
+ */
+export const getVoteMeta = async (id: string): Promise<VoteMetaResponse | undefined> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const vote = MOCK_VOTES.find((item) => item.id === id);
+
+      if (!vote) {
+        return;
+      }
+
+      const voteMeta: VoteMetaResponse = {
+        id: vote.id,
+        title: vote.title,
+        description: vote.description,
+        optionA: vote.optionA,
+        optionB: vote.optionB,
+      };
+
+      resolve(voteMeta);
+    }, 300);
+  });
+};
+
+/**
+ * 투표 항목 가져오기
+ * @param id 투표 ID
+ * @returns 투표 항목
+ */
 export const getVote = async (id: string): Promise<VoteItemResponse | undefined> => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -305,7 +352,7 @@ export const getVote = async (id: string): Promise<VoteItemResponse | undefined>
   });
 };
 
-export const submitVote = async (req: VoteRequest): Promise<VoteItemResponse> => {
+export const submitVote = async (req: SubmitVoteRequest): Promise<VoteItemResponse> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       const voteItem = MOCK_VOTES.find((item) => item.id === req.voteId);
