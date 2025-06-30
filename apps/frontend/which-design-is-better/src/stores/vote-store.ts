@@ -4,28 +4,66 @@ import { useQueryClient } from 'react-query';
 import {
   SubmitVoteRequest,
   VoteItemResponse,
+  VoteMetaResponse,
+  VoteResultResponse,
   useSubmitVoteMutation,
   useVoteListQuery,
+  useVoteMetaQuery,
   useVoteQuery,
+  useVoteResultQuery,
 } from '@/apis/vote';
 
 export const useVoteStore = () => {
   const queryClient = useQueryClient();
   const { data: voteItems = [], isLoading, error, refetch: fetchVotes } = useVoteListQuery();
+
   const { mutateAsync: fetchVoteDetail } = useVoteQuery();
+  const { mutateAsync: fetchVoteMetaDetail } = useVoteMetaQuery();
+  const { mutateAsync: fetchVoteResultDetail } = useVoteResultQuery();
 
   const submitVoteMutation = useSubmitVoteMutation();
 
-  // 현재 선택된 투표 항목 상태
-  const [currentVote, setCurrentVoteState] = useState<VoteItemResponse | null>(null);
+  const [currentVoteMeta, setCurrentVoteMetaState] = useState<VoteMetaResponse | null>(null);
+  const [currentVoteResult, setCurrentVoteResultState] = useState<VoteResultResponse | null>(null);
+  const currentVote =
+    currentVoteMeta && currentVoteResult
+      ? {
+          ...currentVoteMeta,
+          ...currentVoteResult,
+        }
+      : null;
 
-  // 현재 투표 항목 설정
   const setCurrentVote = useCallback(
     (voteId: string) => {
       const vote = voteItems.find((item) => item.id === voteId) || null;
-      setCurrentVoteState(vote);
+
+      if (!vote) {
+        return false;
+      }
+
+      const voteMeta = {
+        id: vote.id,
+        title: vote.title,
+        description: vote.description,
+        optionA: vote.optionA,
+        optionB: vote.optionB,
+      };
+
+      const voteResult = {
+        id: vote.id,
+        votesA: vote.votesA,
+        votesB: vote.votesB,
+        totalVotes: vote.totalVotes,
+        hasVoted: vote.hasVoted,
+        nextVoteId: vote.nextVoteId,
+      };
+
+      setCurrentVoteMetaState(voteMeta);
+      setCurrentVoteResultState(voteResult);
+
+      return true;
     },
-    [voteItems],
+    [voteItems, setCurrentVoteMetaState, setCurrentVoteResultState],
   );
 
   const fetchVote = useCallback(
@@ -40,11 +78,67 @@ export const useVoteStore = () => {
         return false;
       }
 
-      setCurrentVoteState(vote);
+      const voteMeta = {
+        id: vote.id,
+        title: vote.title,
+        description: vote.description,
+        optionA: vote.optionA,
+        optionB: vote.optionB,
+      };
+
+      const voteResult = {
+        id: vote.id,
+        votesA: vote.votesA,
+        votesB: vote.votesB,
+        totalVotes: vote.totalVotes,
+        hasVoted: vote.hasVoted,
+        nextVoteId: vote.nextVoteId,
+      };
+
+      setCurrentVoteMetaState(voteMeta);
+      setCurrentVoteResultState(voteResult);
 
       return true;
     },
-    [voteItems],
+    [voteItems, setCurrentVoteMetaState, setCurrentVoteResultState],
+  );
+
+  const fetchVoteMeta = useCallback(
+    async (voteId: string) => {
+      let voteMeta: VoteMetaResponse | undefined = voteItems.find((item) => item.id === voteId);
+
+      if (!voteMeta) {
+        voteMeta = await fetchVoteMetaDetail(voteId);
+      }
+
+      if (!voteMeta) {
+        return false;
+      }
+
+      setCurrentVoteMetaState(voteMeta);
+
+      return true;
+    },
+    [voteItems, setCurrentVoteMetaState],
+  );
+
+  const fetchVoteResult = useCallback(
+    async (voteId: string) => {
+      let voteResult: VoteResultResponse | undefined = voteItems.find((item) => item.id === voteId);
+
+      if (!voteResult) {
+        voteResult = await fetchVoteResultDetail(voteId);
+      }
+
+      if (!voteResult) {
+        return false;
+      }
+
+      setCurrentVoteResultState(voteResult);
+
+      return true;
+    },
+    [voteItems, setCurrentVoteResultState],
   );
 
   const castVote = useCallback(
@@ -76,5 +170,7 @@ export const useVoteStore = () => {
     castVote,
     fetchVotes,
     fetchVote,
+    fetchVoteMeta,
+    fetchVoteResult,
   };
 };

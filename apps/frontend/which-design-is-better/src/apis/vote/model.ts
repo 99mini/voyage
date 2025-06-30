@@ -31,10 +31,13 @@ export interface VoteMetaResponse {
   optionB: DesignOptionSchema;
 }
 
-export interface VoteItemResponse extends VoteMetaResponse {
+export interface VoteResultResponse {
+  id: string;
   votesA: number;
   votesB: number;
   totalVotes: number;
   hasVoted: boolean;
   nextVoteId: string | null;
 }
+
+export interface VoteItemResponse extends VoteMetaResponse, VoteResultResponse {}

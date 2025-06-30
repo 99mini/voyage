@@ -1,7 +1,15 @@
 import { UseMutationResult, UseQueryResult, useMutation, useQuery } from 'react-query';
 
-import { getPopularVoteList, getVote, getVoteList, getVoteMetaList, submitVote } from './client';
-import type { SubmitVoteRequest, VoteItemResponse, VoteMetaResponse } from './model';
+import {
+  getPopularVoteList,
+  getVote,
+  getVoteList,
+  getVoteMeta,
+  getVoteMetaList,
+  getVoteResult,
+  submitVote,
+} from './client';
+import type { SubmitVoteRequest, VoteItemResponse, VoteMetaResponse, VoteResultResponse } from './model';
 
 const ONE_HOUR = 60 * 60 * 1000;
 
@@ -13,9 +21,15 @@ export function usePopularVoteListQuery(): UseQueryResult<VoteItemResponse[]> {
   });
 }
 
-export function useVoteMetaQuery(): UseMutationResult<VoteMetaResponse[]> {
+export function useVoteMetaQuery(): UseMutationResult<VoteMetaResponse | undefined, unknown, string, unknown> {
   return useMutation({
-    mutationFn: () => getVoteMetaList(),
+    mutationFn: (id: string) => getVoteMeta(id),
+  });
+}
+
+export function useVoteResultQuery(): UseMutationResult<VoteResultResponse | undefined, unknown, string, unknown> {
+  return useMutation({
+    mutationFn: (id: string) => getVoteResult(id),
   });
 }
 

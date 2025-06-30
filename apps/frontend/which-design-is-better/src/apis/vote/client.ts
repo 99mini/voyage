@@ -1,4 +1,4 @@
-import type { SubmitVoteRequest, VoteItemResponse, VoteMetaResponse } from './model';
+import type { SubmitVoteRequest, VoteItemResponse, VoteMetaResponse, VoteResultResponse } from './model';
 
 const MOCK_VOTES: VoteItemResponse[] = [
   {
@@ -304,11 +304,10 @@ export const getVoteMetaList = async (): Promise<VoteMetaResponse[]> => {
 };
 
 export const getVoteList = async (): Promise<VoteItemResponse[]> => {
-  // 실제 API 호출 대신 목업 데이터 반환
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(MOCK_VOTES);
-    }, 500); // 0.5초 지연
+    }, 500);
   });
 };
 
@@ -335,6 +334,34 @@ export const getVoteMeta = async (id: string): Promise<VoteMetaResponse | undefi
       };
 
       resolve(voteMeta);
+    }, 300);
+  });
+};
+
+/**
+ * 투표 결과 가져오기
+ * @param id 투표 ID
+ * @returns 투표 결과
+ */
+export const getVoteResult = async (id: string): Promise<VoteResultResponse | undefined> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const vote = MOCK_VOTES.find((item) => item.id === id);
+
+      if (!vote) {
+        return;
+      }
+
+      const voteResult: VoteResultResponse = {
+        id: vote.id,
+        votesA: vote.votesA,
+        votesB: vote.votesB,
+        totalVotes: vote.totalVotes,
+        hasVoted: vote.hasVoted,
+        nextVoteId: vote.nextVoteId,
+      };
+
+      resolve(voteResult);
     }, 300);
   });
 };
