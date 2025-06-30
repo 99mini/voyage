@@ -1,3 +1,4 @@
+import FormField, { type FormFieldProps, type FormFieldSchema } from './auto-generate/form-field';
 import Button, { type ButtonProps } from './button';
 import FileInput, { type FileInputProps } from './file-input';
 import FileUploader, { type FileUploaderProps } from './file-uploader';
@@ -22,6 +23,7 @@ export {
   Grid,
   GridItem,
   PageProgress,
+  FormField,
 };
 
 // export all contexts
@@ -41,6 +43,8 @@ export type {
   GirdContextType,
   ProgressProps,
   GridItemMetaDataType,
+  FormFieldProps,
+  FormFieldSchema,
 };
 
 export * from './ui';
