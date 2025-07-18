@@ -1,3 +1,9 @@
+<div align="center">
+
+[![wakatime](https://wakatime.com/badge/user/32601717-9798-42b7-a297-7ec7581ff7c8/project/f40aa11e-85ba-42e4-9403-01cd240890ab.svg)](https://wakatime.com/badge/user/32601717-9798-42b7-a297-7ec7581ff7c8/project/f40aa11e-85ba-42e4-9403-01cd240890ab)
+
+</div>
+
 # Zero Voyage
 
 - @since 2025-02-03
