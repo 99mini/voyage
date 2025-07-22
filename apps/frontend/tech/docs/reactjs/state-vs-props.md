@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 slug: state-vs-props
 title: 'React에서 State와 Props의 차이'
 authors: [99mini]
