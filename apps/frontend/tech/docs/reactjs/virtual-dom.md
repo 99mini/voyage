@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 slug: virtual-dom
 title: 'Virtual DOM (with React)'
 authors: [99mini]
