@@ -11,6 +11,8 @@ date: 2025-07-27
 
 <!--truncate-->
 
+TODO
+
 ## UTF-8
 
 UTF-8(UCS Transformation Format 8)은 월드 와이드 웹의 가장 일반적인 문자 인코딩입니다. 각 문자는 1~4바이트로 표시됩니다. UTF-8은 ASCII와 역호환되며 표준 유니코드 문자를 나타낼 수 있습니다.
