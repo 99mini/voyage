@@ -10,24 +10,30 @@ sidebar_position: 0
 
 <!-- 1 ~ 100 -->
 
-1. [정보처리기사](/docs/category/정보처리기사)
-2. [SQLD](/docs/category/sqld)
+컴퓨터 과학 관련 자격증 학습 (1 ~ 100)
+
+1. [[001]정보처리기사](/docs/category/001정보처리기사)
+2. [[002]SQLD](/docs/category/002sqld)
 
 ## 컴퓨터 과학
 
 <!-- 101 ~ 200 -->
 
-1. [독서: code complete2](/docs/category/code-complete2)
-2. [네트워크](/docs/category/네트워크)
-3. [운영체제](/docs/category/운영체제)
-4. [웹](/docs/category/웹)
+컴퓨터 과학 분야 독서. 기본 개념 학습 (101 ~ 200)
+
+1. [[101][독서]code complete2](/docs/category/101code-complete2)
+2. [[102]네트워크](/docs/category/102네트워크)
+3. [[103]운영체제](/docs/category/103운영체제)
+4. [[104]웹](/docs/category/104웹)
 
 ## 프론트엔드
 
 <!-- 201 ~ 300 -->
 
-1. [독서: 이펙티브 타입스크립트](/docs/category/이펙티브-타입스크립트)
-2. [독서: 우아한 타입스크립트](/docs/category/우아한-타입스크립트)
+프론트엔드 기술 관련 구체적인 독서. 자바스크립트, 타입스크립트, react 등 언어 및 라이브러리, 프레임워크 학습 (201 ~ 300)
+
+1. [[독서]이펙티브 타입스크립트](/docs/category/이펙티브-타입스크립트)
+2. [[독서]우아한 타입스크립트](/docs/category/우아한-타입스크립트)
 3. [javascript](/docs/category/javascript)
 4. [Reactjs](/docs/category/reactjs)
 
@@ -35,8 +41,18 @@ sidebar_position: 0
 
 <!-- 301 ~ 400 -->
 
+실습 코드를 포함한 내용 (301 ~ 400)
+
 1. [rest with express](/docs/category/rest-with-express)
+
+## 독서
+
+<!-- 401 ~ 500 -->
+
+간단한 독서 정리 (401 ~ 500)
+
+1. [[독서] 프론트엔드 성능 최적화 가이드](/docs/독서/프론트엔드-성능-최적화-가이드)
 
 ## Tech Blog
 
-[블로그 글 보러가기](/blog)
+그 외 [블로그 글 보러가기](/blog)
