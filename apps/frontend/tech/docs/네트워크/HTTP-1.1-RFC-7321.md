@@ -478,3 +478,5 @@ Content-Location: /articles/123/ko
 ##### - [2] [HTTP-09-HTTP-30-까지-알아보는-통신-기술#http\_/_0.9](https://inpa.tistory.com/entry/WEB-🌐-HTTP-09-HTTP-30-까지-알아보는-통신-기술#http_/_0.9)
 
 ##### - [3] [MDN - MIME Type(IANA Media Type)](https://developer.mozilla.org/ko/docs/Web/HTTP/Guides/MIME_types)
+
+> 마지막 수정일: 2025-07-27

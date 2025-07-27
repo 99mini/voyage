@@ -1,5 +1,5 @@
 ---
-sidebar_position: 11
+sidebar_position: 3
 slug: execution-context-n-closure
 title: 'Execution Context & Closure'
 authors: [99mini]
