@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 0
 slug: hoisting
 title: 'Hoisting'
 authors: [99mini]

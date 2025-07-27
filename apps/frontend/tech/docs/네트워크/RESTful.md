@@ -113,4 +113,4 @@ URI 스키마에 대한 사전 지식 없이 전체 리소스 집합을 탐색
 
 ### Reference
 
-- ###### [Microsoft - RESTful API](https://learn.microsoft.com/ko-kr/azure/architecture/best-practices/api-design)
+- ###### [1] [Microsoft - RESTful API](https://learn.microsoft.com/ko-kr/azure/architecture/best-practices/api-design)

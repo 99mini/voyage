@@ -1,12 +1,14 @@
 ---
-sidebar_position: 0
+sidebar_position: 10
 slug: event-loop
 title: 'Event Loop'
 authors: [99mini]
 tags: [javascript]
 ---
 
-<!-- 자바스크립트 엔진 & 실행과 관련: 0 ~ 9 -->
+javascript에서 병렬 처리 (이벤트 루프)
+
+<!-- truncate -->
 
 ### 동시성(Concurrency)
 
@@ -217,3 +219,5 @@ undefined
 [3] 마이크로태스크 큐!
 [1] 마이크로태스크 큐!
 ```
+
+> 마지막 수정일: 2025-07-27

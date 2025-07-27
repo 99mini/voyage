@@ -1,5 +1,5 @@
 ---
-sidebar_position: 12
+sidebar_position: 2
 slug: prototype
 title: 'prototype'
 authors: [99mini]
