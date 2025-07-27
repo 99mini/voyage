@@ -73,7 +73,7 @@ call foo finish
 태스크 큐!
 ```
 
-#### 동일 레벨의 큐에서의 동시성
+### `mutax`와 `semaphore`
 
 ##### `mutax`
 
