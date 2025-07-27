@@ -11,6 +11,8 @@ date: 2025-07-27
 
 <!-- truncate -->
 
+TODO
+
 프로세스 간 통신(Inter-Process Communication, IPC)이란 프로세스들 사이에 서로 데이터를 주고받는 행위 또는 그에 대한 방법이나 경로를 뜻한다. [[1]](#1-wiki-ipc)
 
 ### 주요 IPC 방식
