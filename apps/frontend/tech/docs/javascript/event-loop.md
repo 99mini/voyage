@@ -72,3 +72,148 @@ call foo finish
 마이크로태스크 큐!
 태스크 큐!
 ```
+
+#### 동일 레벨의 큐에서의 동시성
+
+##### `mutax`
+
+0, 1로 이루어진 플래그 사용. mutext는 자원을 **소유**하는 개념.
+
+`callbackFactory`로 생성된 callback함수의 id가 캡슐화되어 다른 쓰레드(여기서는 함수)가 접근할 수 없도록 한다.
+
+> javascript는 싱글 스레드이므로, mutax는 사실상 필요하지 않음.
+
+```javascript title="mutex.js"
+const sleep = async function (ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+/**
+ * @type {string | undefined}
+ */
+let mutax = undefined;
+
+const callbackFactory = function (id, sleepTime = 1000) {
+  const mutaxLock = function (ownership) {
+    if (!mutax) {
+      mutax = ownership;
+      return true;
+    }
+
+    return false;
+  };
+
+  const mutaxUnlock = function (ownership) {
+    if (mutax === ownership) {
+      mutax = undefined;
+      return true;
+    }
+
+    return false;
+  };
+
+  return async function () {
+    if (!mutaxLock(id)) {
+      console.log(`[${id}] mutax lock!`);
+      return;
+    }
+    await sleep(sleepTime);
+    console.log(`[${id}] 마이크로태스크 큐!`);
+    mutaxUnlock(id);
+  };
+};
+
+var callback1 = callbackFactory('1');
+var callback2 = callbackFactory('2');
+```
+
+```javascript title="1번먼저 호출"
+var foo1 = function () {
+  Promise.resolve().then(callback1);
+  Promise.resolve().then(callback2);
+  console.log('콜 스택!');
+
+  return 'call foo finish';
+};
+
+console.log(foo1());
+```
+
+```bash title="output"
+콜 스택!
+call foo finish
+[2] mutax lock!
+undefined
+// 1초 후
+[1] 마이크로태스크 큐!
+```
+
+```javascript title="2번먼저 호출"
+var foo2 = function () {
+  Promise.resolve().then(callback2);
+  Promise.resolve().then(callback1);
+  console.log('콜 스택!');
+
+  return 'call foo finish';
+};
+
+console.log(foo2());
+```
+
+```bash title="output"
+콜 스택!
+call foo finish
+[1] mutax lock!
+undefined
+// 1초 후
+[2] 마이크로태스크 큐!
+```
+
+##### `semaphore`
+
+동기화 대상이 **공유**하는 개념. 세마포어는 자원을 **사용**하는 개념. 세마포어를 소유하지 않은 다른 스레드(여기서는 함수)가 해제 가능.
+
+```javascript title="semaphore.js"
+const MAX_SEMAPHORE = 3;
+var semaphore = MAX_SEMAPHORE;
+
+const callbackFactory = function (id, sleepTime = 1000) {
+  return async function () {
+    if (semaphore === 0) {
+      console.log(`[${id}] semaphore lock!`);
+      return;
+    }
+    semaphore--;
+    await sleep(sleepTime);
+    console.log(`[${id}] 마이크로태스크 큐!`);
+    semaphore++;
+  };
+};
+
+var callback1 = callbackFactory(1, 2000);
+var callback2 = callbackFactory(2, 500);
+var callback3 = callbackFactory(3, 1000);
+var callback4 = callbackFactory(4, 1500);
+
+var foo1 = function () {
+  Promise.resolve().then(callback1);
+  Promise.resolve().then(callback2);
+  Promise.resolve().then(callback3);
+  Promise.resolve().then(callback4);
+  console.log('콜 스택!');
+
+  return 'call foo finish';
+};
+
+console.log(foo1());
+```
+
+```bash title="output"
+콜 스택!
+call foo finish
+[4] semaphore lock!
+undefined
+[2] 마이크로태스크 큐!
+[3] 마이크로태스크 큐!
+[1] 마이크로태스크 큐!
+```
