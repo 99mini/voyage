@@ -120,9 +120,10 @@ Connection: close
 
 아래 내용부터는 **_rfc7231_** 문서의 목차와 동일하게 구성. 번역을 인용할 때는 [RFC 7231 - pdf](https://www.rfc-editor.org/rfc/pdfrfc/rfc7231.txt.pdf) 파일 기준 페이지를 함께 작성합니다.
 
-- "(참조)"는 RFC7231 문서에 포함되지 않은 추가적인 내용을 나타냅니다. [N]으로 참조 문서 링크를 포함합니다.
+- "(참조)"는 RFC7231 문서에 포함되지 않은 추가적인 내용을 나타냅니다. `[N]`으로 참조 문서 링크를 포함합니다. `[a-z]`는 해당 블로그의 내부 링크를 나타냅니다.
 - "(의견)"은 RFC7231 문서에 포함되지 않는 작성자 주관을 나타냅니다.
-- 회색 인용 박스의 영문은 RFC7231 문서의 내용 전문을 나타냅니다.
+- "(예시)"는 작성자 주관으로 작성된 예시를 나타냅니다.
+- 회색 인용 박스의 영문은 RFC7231 문서의 내용 전문을 나타냅니다. 인용구의 마지막 `[p.x]`는 RFC7231 문서의 `x페이지를 의미합니다.
 - 국문으로 번역하여 의미 전달이 어려운 경우 영문을 그대로 사용하고 필요시 소괄호로 국문과 영문을 모두 표시합니다.
 
 ## 1. Introduction
@@ -137,7 +138,7 @@ HTTP는 리소스 식별과 요청 의미를 분리하여 요청 의미를 요�
 
 ## 3. Representations
 
-> Considering that a resource could be anything, and that the uniform interface provided by HTTP is similar to a window through which one can observe and act upon such a thing only through the communication of messages to some independent actor on the other side, an abstraction is needed to represent ("take the place of") the current or desired state of that thing in our communications. That abstraction is called a representation [REST].
+> Considering that a resource could be anything, and that the uniform interface provided by HTTP is similar to a window through which one can observe and act upon such a thing only through the communication of messages to some independent actor on the other side, an abstraction is needed to represent ("take the place of") the current or desired state of that thing in our communications. That abstraction is called a representation [REST]. `[p.7]`
 
 통신에서 해당 리소스의 현재 또는 원하는 상태를 표현("대체")하기 위해서는 추상화가 필요하다. 이러한 추상화를 "representation"(표현)이라고 한다. [REST]
 
@@ -155,7 +156,7 @@ representation header field는 payload body(페이로드 바디)에 포함된 re
 
 ##### 3.1.1.1. Media Type
 
-> Media types define both a data format and various processing models: how to process that data in accordance with each context in which it is received.
+> Media types define both a data format and various processing models: how to process that data in accordance with each context in which it is received. `[p.8]`
 
 미디어 타입은 `데이터 형식`과 `다양한 처리 모델`을 정의한다. 미디어 타입은 `type`과 `subtype`으로 구성되며, `type`은 데이터의 종류를, `subtype`은 데이터의 구체적인 형식을 나타낸다.
 
@@ -180,13 +181,17 @@ text/html; charset="utf-8"
 
 :::info Note
 
-> Note: Unlike some similar constructs in other header fields, media type parameters do not allow whitespace (even "bad" whitespace) around the "=" character.
+> Note: Unlike some similar constructs in other header fields, media type parameters do not allow whitespace (even "bad" whitespace) around the "=" character. `[p.9]`
 
 미디어 타입 파라미터는 일부 다른 헤더 필드와는 다르게 "=" 문자 주변에 공백을 허용하지 않습니다.
 
 :::
 
 ##### 3.1.1.2. Charset
+
+```
+charset = token
+```
 
 HTTP는 character encoding scheme를 결정하기 위하여 `charset name`를 사용한다. charset name은 반드시 IANA의 "Charset Name"에 등록되어야 한다. [IANA - Charset Name](https://www.iana.org/assignments/character-sets/character-sets.xhtml)
 
@@ -250,40 +255,173 @@ MP4 영화(`video/mp4`)와 같은 비디오 데이터 또는 파일입니다.
 
 ##### 3.1.1.4. Multipart Types
 
-MIME은 여러 가지 multipart type을 제공한다. 이는 단일 메시지 본문 내에 하나 이상의 표현을 캡슐화한 것이다. 모든 multipart type은 common syntax를 공유하며 (Section 5.1.1 of [RFC2046]), 미디어 유형 값의 일부로 boundary parameter(경계 매개변수)를 포함한다. 발신자는 반드시(MUST) body(본문) 부분의 줄바꿈을 나타내기 위하여 CRLF만을 사용해야 한다.
+MIME은 여러 가지 multipart type을 제공한다. 이는 단일 메시지 본문 내에 하나 이상의 표현을 캡슐화한 것이다. 모든 multipart type은 common syntax를 공유하며 (Section 5.1.1 of [RFC2046]), 미디어 유형 값의 일부로 boundary parameter(경계 매개변수)를 포함한다. 발신자는 반드시(**MUST**) body(본문) 부분의 줄바꿈을 나타내기 위하여 CRLF만을 사용해야 한다.
 
 ##### 3.1.1.5. Content-Type
 
-페이로드 바디를 포함하는 메시지는 표현의 의도된 미디어 유형을 발신자가 알지 못하는 경우를 제외하고 Content-Type header field를 생성해야한다 (SHOULD).
+```
+Content-Type = media-type
+```
+
+페이로드 바디를 포함하는 메시지는 표현의 의도된 미디어 유형을 발신자가 알지 못하는 경우를 제외하고 Content-Type header field를 생성해야한다 (**SHOULD**).
 Content-Type 헤더 필드가 없는 경우 수신자는 "application/octet-stream"([RFC2046], Section 4.5.1) 미디어 유형을 가정하거나 데이터를 검사하여 유형을 확인할 수 있다.
 
 #### 3.1.2. Encoding for Compression or Integrity
 
 ##### 3.1.2.1. Content Codings
 
+Content coding 값은 표현에 적용할 수 있는 인코딩 변환을 나타낸다. 표현을 압축하거나 기본 미디어 유형의 정체성을 잃지 않고, 정보 손실 없이 유용하게 변활할 수 있도록 하는 데 사용한다.
+
+> Frequently, the representation is stored in coded form, transmitted directly, and only decoded by the final recipient. `[p.11]`
+
+표현은 종종 코딩된 형태(coded form)로 저장되고 직접 전송되며 오직 최종 수신자에 의해서만 디코딩된다.
+
+```
+content-coding = token
+```
+
 ##### 3.1.2.2. Content-Encoding
+
+Content-Encoding header field는 미디어 유형에 내재된 코딩 외에 표현에 적용된 콘텐츠 코딩을 나타낸다. 따라서 Content-Type header field에서 참조하는 미디어 유형의 데이터를 얻기 위해 적용해야 하는 디코딩 메커니즘을 나타낸다. 주로 표현의 데이터(Representation's data)를 기본 미디어 유형의 정체성을 잃지 않고 압축할 수 있도록 하는 데 사용한다.
+
+```
+Content-Encoding = 1#content-coding
+```
+
+```txt title="example of Content-Encoding"
+Content-Encoding: gzip
+```
 
 #### 3.1.3. Audience Language
 
 ##### 3.1.3.1. Language Tags
 
+language tag는 컴퓨터 언어를 명시적으로 제외하고, 인간의 언어를 나타낸다.
+
+```
+language-tag = <Language-Tag, see [RFC5646], Section 2.1>
+```
+
+```txt title="example of language-tag"
+language-tag: en
+```
+
 ##### 3.1.3.2. Content-Language
+
+Content-Language header field는 자연 언어(natural language(s))를 나타낸다.
+
+```
+Content-Language = 1#language-tag
+```
+
+```txt title="example of Content-Language"
+Content-Language: en
+```
+
+Multiple languages는 multiple audiences를 위하여 리스트될 수 있다. (**MAY**)
+
+```
+Content-Language: en, fr
+```
 
 #### 3.1.4. Identification
 
 ##### 3.1.4.1. Identifying a Representation
 
+> When a complete or partial representation is transferred in a message payload, it is often desirable for the sender to supply, or the recipient to determine, an identifier for a resource corresponding to that representation. `[p.14]`
+
+전체 또는 부분 표현이 메시지 페이로드로 전송 될 때 발신자가 해당 표현에 해당하는 리소스에 대한 식별자를 제공하거나 수진자가 해당 십결자를 확인하는 것이 종종(often) 바람직하다.
+
+##### 3.1.4.2. Content-Location
+
+> The "Content-Location" header field references a URI that can be used as an identifier for a specific resource corresponding to the representation in this message’s payload. `[p.15]`
+
+Content-Location header field는 메시지 페이로드의 특정 리소스 식별자로 사용할 수 있는 URI를 참조한다. 즉, 이 URI는 본문(payload)의 대표 주소이다.
+
+```
+Content-Location = absolute-URI / partial-URI
+```
+
+**요청 URI와 같을 때**
+
+- 요청한 URI와 `Content-Location` 값이 같다면 "지금 이 리소스의 최신 상태가 이 응답의 payload이다"라고 해석.
+- PUT이나 POST 요청처럼 리소스를 변경하는 요청에서 이 헤더가 사용되면, 서버가 새로운 리소스를 생성하거나 수정하고, 그것의 최신 상태를 응답에 포함했다는 의미.
+
+**요청 URI와 다를 때**
+
+- `Content-Location`이 요청한 URI와 다르면, 다른 리소스에 대한 정보를 응답 본문에 담았다는 의미.
+- 예: POST `/purchase` 요청에 대한 응답이 `/receipts/abc123.pdf` URI의 내용을 반환할 수도 있다.
+
+**클라이언트가 요청에 이 헤더를 넣을 경우**
+
+- 클라이언트가 Content-Location을 요청에 포함하면, "이 본문의 원래 출처는 여기입니다"라고 말하는 것.
+- 예: 사용자가 외부에서 가져온 이미지를 편집 후 업로드할 때, 원본 출처 URI를 명시할 수 있음.
+
+<br/>
+
+(예시)
+
+**예시 1: 이미지 리소스 조회**
+
+```http title="HTTP"
+GET /images/image123 HTTP/1.1
+Host: example.com
+```
+
+```http title="HTTP"
+HTTP/1.1 200 OK
+Content-Type: image/jpeg
+Content-Location: /resources/images/image123.jpg
+```
+
+`/images/image123` 는 추상적인 경로이고, 실제 이미지는 `/resources/images/image123.jpg` 에서 관리된다는 의미
+
+**예시 2: POST 요청 후 응답에 영수증 포함**
+
+```http title="HTTP"
+POST /purchase HTTP/1.1
+Host: shop.com
+```
+
+```http title="HTTP"
+HTTP/1.1 200 OK
+Content-Type: application/pdf
+Content-Location: /receipts/tx12345.pdf
+```
+
+본문(payload)은 `/receipts/tx12345.pdf` 리소스의 현재 상태입니다. 이 URI로 나중에 GET 요청하면 같은 receipts를 받을 수 있다.
+
+**예시 3: PUT 요청 후 콘텐츠 위치 명시**
+
+```http title="HTTP"
+PUT /articles/123 HTTP/1.1
+Host: news.com
+Content-Location: /articles/123/ko
+```
+
+서버는 `/articles/123`에 대한 요청을 받았지만, 클라이언트는 이 콘텐츠가 `/articles/123/ko`에서 유래했다고 명시함. 서버는 이를 단지 요청 문맥 정보로 활용할 수 있으며, 리소스 저장 방식에는 직접 반영하지 않아야 한다.
+
+### 3.2. Representation Data
+
+### 3.3. Payload Semantics
+
+### 3.4. Content Negotiation
+
+#### 3.4.1. Proactive Negotiation
+
+#### 3.4.2. Reactive Negotiation
+
 ## 4. Request Methods
 
-### Common Method Properties
+### 4.2. Common Method Properties
 
-#### Safe Methods
+#### 4.2.1. Safe Methods
 
-#### Idempotent Methods
+#### 4.2.2. Idempotent Methods
 
-#### Cacheable Methods
+#### 4.2.3. Cacheable Methods
 
-### Method Definitions
+### 4.3. Method Definitions
 
 | Method  | 설명                                             |
 | ------- | ------------------------------------------------ |
@@ -297,23 +435,23 @@ Content-Type 헤더 필드가 없는 경우 수신자는 "application/octet-stre
 | OPTIONS | 서버가 지원하는 HTTP 메서드를 조회하는 요청      |
 | TRACE   | 서버가 받은 요청을 그대로 응답하는 요청          |
 
-> [HTTP - GET vs POST](/blog/http-get-post)에 대한 개시글
+[[a]](#--a-http---get-vs-post)
 
-#### GET
+#### 4.3.1. GET
 
-#### HEAD
+#### 4.3.2. HEAD
 
-#### POST
+#### 4.3.3. POST
 
-#### PUT
+#### 4.3.4. PUT
 
-#### DELETE
+#### 4.3.5. DELETE
 
-#### CONNECT
+#### 4.3.6. CONNECT
 
-#### OPTIONS
+#### 4.3.7. OPTIONS
 
-#### TRACE
+#### 4.3.8. TRACE
 
 ## 5. Request Header Fields
 
@@ -331,7 +469,7 @@ Content-Type 헤더 필드가 없는 경우 수신자는 "application/octet-stre
 
 ### 내부 링크
 
-- [HTTP - GET vs POST](/blog/http-get-post)
+##### - [a] [HTTP - GET vs POST](/blog/http-get-post)
 
 ### 외부 링크
 
