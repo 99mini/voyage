@@ -32,8 +32,8 @@ sidebar_position: 0
 
 프론트엔드 기술 관련 구체적인 독서. 자바스크립트, 타입스크립트, react 등 언어 및 라이브러리, 프레임워크 학습 (201 ~ 300)
 
-1. [[201][독서]이펙티브 타입스크립트](/docs/category/201이펙티브-타입스크립트)
-2. [[202][독서]우아한 타입스크립트](/docs/category/202우아한-타입스크립트)
+1. [[201][독서]이펙티브 타입스크립트](/docs/category/201독서이펙티브-타입스크립트)
+2. [[202][독서]우아한 타입스크립트](/docs/category/202독서우아한-타입스크립트)
 3. [[203][javascript]](/docs/category/203javascript)
 4. [[204][reactjs]](/docs/category/204reactjs)
 
