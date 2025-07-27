@@ -32,10 +32,10 @@ sidebar_position: 0
 
 프론트엔드 기술 관련 구체적인 독서. 자바스크립트, 타입스크립트, react 등 언어 및 라이브러리, 프레임워크 학습 (201 ~ 300)
 
-1. [[독서]이펙티브 타입스크립트](/docs/category/이펙티브-타입스크립트)
-2. [[독서]우아한 타입스크립트](/docs/category/우아한-타입스크립트)
-3. [javascript](/docs/category/javascript)
-4. [Reactjs](/docs/category/reactjs)
+1. [[201][독서]이펙티브 타입스크립트](/docs/category/201이펙티브-타입스크립트)
+2. [[202][독서]우아한 타입스크립트](/docs/category/202우아한-타입스크립트)
+3. [[203][javascript]](/docs/category/203javascript)
+4. [[204][reactjs]](/docs/category/204reactjs)
 
 ## 실습
 
@@ -43,7 +43,7 @@ sidebar_position: 0
 
 실습 코드를 포함한 내용 (301 ~ 400)
 
-1. [rest with express](/docs/category/rest-with-express)
+1. [[301]rest with express](/docs/category/301rest-with-express)
 
 ## 독서
 
@@ -51,7 +51,7 @@ sidebar_position: 0
 
 간단한 독서 정리 (401 ~ 500)
 
-1. [[독서] 프론트엔드 성능 최적화 가이드](/docs/독서/프론트엔드-성능-최적화-가이드)
+1. [[401][독서] 프론트엔드 성능 최적화 가이드](/docs/독서/프론트엔드-성능-최적화-가이드)
 
 ## Tech Blog
 
