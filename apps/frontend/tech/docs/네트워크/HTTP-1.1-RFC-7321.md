@@ -403,7 +403,7 @@ Content-Location: /articles/123/ko
 
 ### 3.2. Representation Data
 
-TODO
+<!-- TODO -->
 
 ### 3.3. Payload Semantics
 
