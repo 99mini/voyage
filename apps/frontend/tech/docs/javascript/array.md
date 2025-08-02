@@ -99,7 +99,7 @@ Dictionary (해시 테이블)
 ### 동적 배열에서 push/pop 연산의 시간 복잡도
 
 v8엔진의 경우 cpp로 구현되었으며 배열의 push/pop 연산의 시간복잡도는 O(1)을 보장한다. 그러나 cpp의 경우 메모리 할당과 해제가 발생하기 때문에 O(1)을 보장하지 않을 수 있다. 이를 해결하기 위해 v8엔진은 배열을 선언할 때 초기 배열의 크기를 설정한다. JS 관점에서 push/pop은 amortized O(1)이며,
-V8은 capacity doubling + kMinAddedElementsCapacity 전략으로 이를 달성한다. [[2]](nodejs/node/deps/v8/src/objects/js-objects.h)
+V8은 capacity doubling + kMinAddedElementsCapacity 전략으로 이를 달성한다. [[2]](#2-github---nodejsnodedepsv8srcobjectsjs-objectsh)
 
 :::info
 
@@ -203,4 +203,4 @@ arr.forEach((v, i) => console.log(i, v));
 ### Reference
 
 - ###### [1] [MDN Web Docs - Array](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array)
-- ###### [2] [nodejs/node/deps/v8/src/objects/js-objects.h](https://github.com/nodejs/node/blob/49342fe6f2ca6cedd5219d835a0a810e6f03cdd7/deps/v8/src/objects/js-objects.h)
+- ###### [2] [Github - nodejs/node/deps/v8/src/objects/js-objects.h](https://github.com/nodejs/node/blob/49342fe6f2ca6cedd5219d835a0a810e6f03cdd7/deps/v8/src/objects/js-objects.h)
