@@ -17,42 +17,29 @@ tags: [javascript]
 
 <!-- 10 ~ 99 -->
 
-#### [this](docs/javascript/this)
+#### [[010] this](./this)
 
-<!-- 10 -->
+#### [[011] 프로토타입](./prototype)
 
-#### [프로토타입](docs/javascript/prototype)
+#### [[012] 실행 컨텍스트](./execution-context-n-closure)
 
-<!-- 11 -->
+#### [[013] 호이스팅](./hoisting)
 
-#### [실행 컨텍스트](docs/javascript/execution-context-n-closure)
+#### [[014] 클로저](./closure)
 
-<!-- 12 -->
+- [[013] 호이스팅](./hoisting)
+- [[012] 실행 컨텍스트](./execution-context-n-closure)
 
-#### [호이스팅](docs/javascript/hoisting)
-
-<!-- 13 -->
-
-#### 클로저
-
-- [hoisting](docs/javascript/hoisting)
-- [execution-context](docs/javascript/execution-context-n-closure)
-
-### 일급 객체 [first-class-object](docs/javascript/first-class-object)
-
-<!-- 14 -->
+#### [[014] 일급 객체](./first-class-object)
 
 #### 비동기처리
 
-- [event-loop](docs/javascript/event-loop)
-- [async/await](docs/javascript/asynchronous)
+- [[011] 비동기 처리](./asynchronous)
 
 ### nodejs/v8 엔진 특징
 
-<!-- 100 ~ 199 -->
-
 #### 싱글 쓰레드
 
-- [event-loop](docs/javascript/event-loop) <!-- 100 -->
+- [[100] event-loop](./event-loop)
 
-#### [자바스크립트 배열 (V8 엔진)](docs/javascript/javascript-array-v8) <!-- 101 -->
+#### [[101] 자바스크립트 배열 (V8 엔진)](./javascript-array-v8)

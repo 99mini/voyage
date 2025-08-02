@@ -1,7 +1,7 @@
 ---
 sidebar_position: 100
 slug: event-loop
-title: 'Event Loop'
+title: '[100] Event Loop'
 authors: [99mini]
 tags: [javascript]
 ---
