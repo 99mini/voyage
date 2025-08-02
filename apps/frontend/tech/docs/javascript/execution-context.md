@@ -1,7 +1,7 @@
 ---
 sidebar_position: 12
 slug: execution-context-n-closure
-title: 'Execution Context & Closure'
+title: '[012] Execution Context & Closure'
 authors: [99mini]
 tags: [javascript]
 ---

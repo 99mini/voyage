@@ -1,7 +1,7 @@
 ---
 sidebar_position: 101
 slug: javascript-array-v8
-title: '자바스크립트 배열 (V8 엔진)'
+title: '[101] 자바스크립트 배열 (V8 엔진)'
 authors: [99mini]
 tags: [javascript]
 ---

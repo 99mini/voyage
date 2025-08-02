@@ -1,7 +1,7 @@
 ---
 sidebar_position: 14
 slug: first-class-object
-title: 'First Class Object (일급 객체)'
+title: '[014] First Class Object (일급 객체)'
 authors: [99mini]
 tags: [javascript]
 ---

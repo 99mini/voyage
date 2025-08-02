@@ -1,7 +1,7 @@
 ---
 sidebar_position: 13
 slug: hoisting
-title: 'Hoisting'
+title: '[013] Hoisting'
 authors: [99mini]
 tags: [javascript]
 ---
