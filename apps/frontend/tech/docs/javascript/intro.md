@@ -25,7 +25,7 @@ tags: [javascript]
 
 #### [[013] 호이스팅](./hoisting)
 
-#### [[014] 클로저](./closure)
+#### 클로저
 
 - [[013] 호이스팅](./hoisting)
 - [[012] 실행 컨텍스트](./execution-context-n-closure)
