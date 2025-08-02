@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 100
 slug: event-loop
 title: 'Event Loop'
 authors: [99mini]
