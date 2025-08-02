@@ -1,7 +1,7 @@
 ---
-sidebar_position: 11
+sidebar_position: 12
 slug: execution-context-n-closure
-title: 'Execution Context & Closure'
+title: '[012] Execution Context & Closure'
 authors: [99mini]
 tags: [javascript]
 ---
@@ -14,7 +14,7 @@ tags: [javascript]
 - 스코프 체인(Scope Chain): 현재 컨텍스트와 외부 컨텍스트의 참조를 포함하여, 변수의 접근 범위를 결정.
 - this 바인딩: 현재 컨텍스트에서의 this 키워드가 참조하는 객체.​
 
-자바스크립트는 싱글 스레드로 동작하며, 실행 컨텍스트는 **콜 스택(Call Stack)**을 통해 관리된다.
+자바스크립트는 싱글 스레드로 동작하며, 실행 컨텍스트는 **콜 스택(Call Stack)** 을 통해 관리된다.
 
 ```javascript title="execution-context.js"
 function foo() {

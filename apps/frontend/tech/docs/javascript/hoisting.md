@@ -1,12 +1,10 @@
 ---
-sidebar_position: 10
+sidebar_position: 13
 slug: hoisting
-title: 'Hoisting'
+title: '[013] Hoisting'
 authors: [99mini]
 tags: [javascript]
 ---
-
-<!-- javascript 특징에 관한 것: 10 ~ 19 -->
 
 javascript에서의 호이스팅(hoisting)
 

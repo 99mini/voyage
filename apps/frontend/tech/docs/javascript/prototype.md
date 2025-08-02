@@ -1,7 +1,7 @@
 ---
-sidebar_position: 12
+sidebar_position: 11
 slug: prototype
-title: 'prototype'
+title: '[011] prototype'
 authors: [99mini]
 tags: [javascript]
 ---

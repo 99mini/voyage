@@ -1,0 +1,8 @@
+{
+  "label": "[401]독서",
+  "position": 401,
+  "link": {
+    "type": "generated-index",
+    "description": "기술서적 독서 모음"
+  }
+}
