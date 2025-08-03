@@ -28,7 +28,7 @@ const config: Config = {
   onBrokenMarkdownLinks: 'warn',
 
   // plugins
-  plugins: [],
+  plugins: ['docusaurus-lunr-search'],
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -190,15 +190,6 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
-    },
-    algolia: {
-      // The application ID provided by Algolia
-      appId: process.env.ALGOLIA_APP_ID,
-
-      // Public API key: it is safe to commit it
-      apiKey: process.env.ALGOLIA_API_KEY,
-
-      indexName: process.env.ALGOLIA_INDEX_NAME,
     },
   } satisfies Preset.ThemeConfig,
 
