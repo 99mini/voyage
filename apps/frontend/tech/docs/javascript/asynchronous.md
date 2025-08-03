@@ -1,12 +1,10 @@
 ---
-sidebar_position: 100
+sidebar_position: 11
 slug: asynchronous
-title: 'asynchronous'
+title: '[011] asynchronous'
 authors: [99mini]
 tags: [javascript]
 ---
-
-<!-- 구현과 관련된 내용: 100 ~ -->
 
 ## `Promise` vs `async/await`
 
