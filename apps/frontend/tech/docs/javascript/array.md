@@ -2,11 +2,14 @@
 sidebar_position: 101
 slug: javascript-array-v8
 title: '[101] 자바스크립트 배열 (V8 엔진)'
+description: '자바스크립트에서 배열의 동작 방식 (v8 엔진)'
 authors: [99mini]
 tags: [javascript]
+keywords: [javascript, array, v8]
+date: 2025-08-03T11:46
 ---
 
-자바스크립트에서 배열의 동작 방식
+자바스크립트에서 배열의 동작 방식 (v8 엔진)
 
 <!-- truncate -->
 
