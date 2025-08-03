@@ -496,6 +496,9 @@ importers:
       '@docusaurus/types':
         specifier: ^3.8.1
         version: 3.8.1(@swc/core@1.10.14(@swc/helpers@0.5.5))(acorn@6.4.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.4.7
 
   apps/frontend/todo:
     dependencies:
@@ -23702,7 +23705,7 @@ snapshots:
 
   unload@2.2.0:
     dependencies:
-      '@babel/runtime': 7.27.1
+      '@babel/runtime': 7.27.6
       detect-node: 2.1.0
 
   unpipe@1.0.0: {}
