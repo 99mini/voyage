@@ -28,7 +28,14 @@ const config: Config = {
   onBrokenMarkdownLinks: 'warn',
 
   // plugins
-  plugins: ['docusaurus-lunr-search'],
+  plugins: [
+    [
+      require.resolve('docusaurus-lunr-search'),
+      {
+        languages: ['en'], // language codes
+      },
+    ],
+  ],
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
