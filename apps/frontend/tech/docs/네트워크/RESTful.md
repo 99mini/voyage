@@ -11,7 +11,7 @@ RESTFUL 개념
 
 <!-- truncate -->
 
-RESTful 웹 API 구현은 REST(Representational State Transfer) 아키텍처 원칙을 사용하여 클라이언트와 서비스 간에 느슨하게 결합된 상태 비 상태 인터페이스를 달성하는 웹 API입니다. RESTful인 웹 API는 표준 HTTP 프로토콜을 지원하여 리소스에 대한 작업을 수행하고 하이퍼미디어 링크 및 HTTP 작업 상태 코드를 포함하는 리소스의 표현을 반환합니다. [[1]](#microsoft---restful-api)
+RESTful 웹 API 구현은 REST(Representational State Transfer) 아키텍처 원칙을 사용하여 클라이언트와 서비스 간에 느슨하게 결합된 상태 비 상태 인터페이스를 달성하는 웹 API입니다. RESTful인 웹 API는 표준 HTTP 프로토콜을 지원하여 리소스에 대한 작업을 수행하고 하이퍼미디어 링크 및 HTTP 작업 상태 코드를 포함하는 리소스의 표현을 반환합니다. [[1]](#1-microsoft---restful-api)
 
 ### RESTful API의 원칙
 

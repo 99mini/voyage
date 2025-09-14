@@ -97,3 +97,18 @@ ui-ux:
   label: 구현
   permalink: /구현
   description: 구현
+
+독서:
+  label: 독서
+  permalink: /독서
+  description: 기술 서적 독서
+
+객체지향:
+  label: 객체지향
+  permalink: /객체지향
+  description: 객체지향 프로그래밍
+
+oop:
+  label: OOP
+  permalink: /oop
+  description: 객체지향 프로그래밍
