@@ -140,7 +140,12 @@ gh release create @apps/frontend/tool@0.3.1 \
   --notes "Release notes here"
 ```
 
+## Examples
+
+For practical examples of using the release automation, see [Release Automation Examples](./release-automation-example.md).
+
 ## Related Documentation
 
+- [Release Automation Examples](./release-automation-example.md)
 - [Contributing Guide](../README.MD#contributing)
 - [Git Flow](../README.MD#git-flow)
