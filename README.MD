@@ -40,6 +40,7 @@
   - [VDS (Voyage Design System)](#vds-voyage-design-system)
 - [Contributing](#contributing)
   - [Git Flow](#git-flow)
+  - [Release Automation](#release-automation)
 - [Author](#author)
 
 # Apps
@@ -204,6 +205,21 @@ provide serverless functions
 - `<app-name>/docs/**`: specific app
 - example: `docs/update-root-readme`
 - example: `tool/docs/create-tool-readme`
+
+## Release Automation
+
+Releases are automatically created when package.json versions are updated.
+
+- **Tag format**: 
+  - Apps: `@apps/[frontend|server|cli]/<app-name>@x.y.z`
+  - Packages: `@packages/<package-name>@x.y.z`
+- **Workflow**: `.github/workflows/release-automation.yml`
+- **Documentation**: [Release Automation Guide](.docs/release-automation.md)
+
+Example tags:
+- `@apps/frontend/tool@0.3.1`
+- `@apps/server/rest@1.4.3`
+- `@packages/vds@0.1.3`
 
 # Author
 
