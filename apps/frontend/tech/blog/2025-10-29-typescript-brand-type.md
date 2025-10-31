@@ -21,7 +21,7 @@ tags: [typescript]
 
 ---
 
-## 🧱 1. 기본 구조 설계
+## 1. 기본 구조 설계
 
 ```typescript
 // features/payment/types.ts
@@ -51,7 +51,7 @@ export type PaymentMethod = CardPayment | EasyPayPayment | PointPayment;
 
 ---
 
-## ⚙️ 2. 판별 유니온(discriminated union) 기반 처리
+## 2. 판별 유니온(discriminated union) 기반 처리
 
 `type` 필드를 기준으로 자동으로 타입이 좁혀집니다.
 즉, `if (payment.type === 'card')`라고 쓰면, 그 안에서는 자동으로 `CardPayment` 타입이 됩니다.
@@ -80,7 +80,7 @@ export function processPayment(payment: PaymentMethod) {
 }
 ```
 
-✅ **장점**
+**장점**
 
 - TypeScript가 자동으로 타입을 좁힘
 - 새로운 타입이 추가되면 switch 문에서 컴파일 에러로 바로 감지됨
@@ -88,7 +88,7 @@ export function processPayment(payment: PaymentMethod) {
 
 ---
 
-## 🧩 3. `__brand`를 이용한 런타임 타입 구분
+## 3. `__brand`를 이용한 런타임 타입 구분
 
 `type`은 주로 "비즈니스 로직용 식별자"로 쓰이지만,
 `__brand`는 "개발자만 쓰는 타입 안전용 내부 식별자"로 활용할 수 있습니다.
@@ -105,7 +105,7 @@ type OrderId = Brand<string, 'OrderId'>;
 const userId: UserId = 'user_123' as UserId;
 const orderId: OrderId = 'order_456' as OrderId;
 
-// 🚫 타입이 달라서 섞을 수 없음
+// 타입이 달라서 섞을 수 없음
 function fetchOrder(id: OrderId) {
   console.log(`Fetching order ${id}`);
 }
@@ -113,14 +113,14 @@ function fetchOrder(id: OrderId) {
 fetchOrder(userId); // ❌ 컴파일 에러!
 ```
 
-✅ **장점**
+**장점**
 
 - 문자열끼리 헷갈릴 수 있는 값을 **논리적으로 구분**
 - 런타임에는 사라지지만, 컴파일 시 완벽한 타입 안정성을 제공
 
 ---
 
-## 🧠 4. `__brand` + `type` 조합 실전 예시
+## 4. `__brand` + `type` 조합 실전 예시
 
 이제 두 개념을 합쳐서, **결제 객체 전체에 브랜드를 부여**해보겠습니다.
 
@@ -165,7 +165,7 @@ function refund(payment: PaymentMethod) {
 
 > [typescript playground에서 바로 보기](https://www.typescriptlang.org/play/?#code/C4TwDgpgBAQghgZwgBTiAthAdsKBeKKAbwChCBLAEwC4oFgAncrAcwG4yo50B7AVxy0sfdACMIDDgF8SJUJFgM4WShEqoM2YAB4AKlAgAPYNkoI6jZiwB8+WIhRpMOKADJiUAPqfRSlbX0pDhIjMB4GXHloAGE4BnUnLTsYP1UEzRxtAHIAYzjKLNt3UkIo2lz8rI5CPPiAORFxBlp6JlZqqFrKAAkeABtVZos29hIg2VDwyPBoAFFEEA0NZ1wCFOU05a1siAWwNEK3Yk4yqCzdhHADjrAGHgA3Kgly3R4EBCyoAB8zgGk4ADWcB4GiqY2CkwiUCiUC2OAAshBgAALHiUOyxeJw3A-eaXJaJHDBABmAhywHIPCwUAYEFJKgAFPsMsBaNjESi0QBKY6EAD0fKg5GJUCZhOAADoYXgZWculkeUQoAKoIBN5sAPuOAHVWoIAKtcAPzWcYWi5krCXeXwbfCyirxBW8widKkIfoQCV9HgsBlZABKdIElCs0J4nXyErDCo6-MFgAGFwCh41BABKjgBAJwCMg1BAKprgBeezg1J0ut0ehkAA0x6IaYmeUAAJEQTVoJV1y00pEWuZHHVhnX1Xe7PSX8lBegNKzW6zgG-kh4MW22cx2uz3C0XkHdHoNaKPxRLbg8ngwZ+2VQ7jyfT2eTwA9K-X69zo-nh+PwgrniQCIgM47tcST6UHgQcwsB4XAjHIegoCpaEZjOUtsSyCVOCkAw+iQIURTFFkzR8VIrQIc49gORU5xyPNuwLT0fT9FRAxRO4+BYZEoDxRY0CgL89zDCUIzvGN42TNMs2I0jFz7F9vyGTdMPY6dW3bEjO3zXti1LQd+nXatay3LopwkA8eKfAynxvYz9MMszTxfN9QDlSc1J-KA-wAqAgJAwwwNwSCYSyZiCRZeDENkKQgA)
 
-✅ **이 구조의 장점 요약**
+**장점 요약**
 
 - `type`: 비즈니스 로직 구분 API, UI에서 활용됨
 - `__brand`: 컴파일타임 타입 구분 코드 내부 안전성 강화
@@ -174,7 +174,7 @@ function refund(payment: PaymentMethod) {
 
 ---
 
-## 🧰 5. 새로운 결제 수단 추가 예시
+## 5. 새로운 결제 수단 추가 예시
 
 이제 "간편 송금" 기능을 새로 추가한다고 가정해봅시다.
 
@@ -188,15 +188,14 @@ export type TransferPayment = BrandedPayment<'transfer'> & {
 export type PaymentMethod = CardPayment | EasyPayPayment | TransferPayment;
 ```
 
-이때 `processPayment()` 함수의 switch문에 `'transfer'` 처리를 추가하지
-않으면?
+이때 `processPayment()` 함수의 switch문에 `'transfer'` 처리를 추가하지 않으면?
 
-> 🚨 TypeScript가 컴파일 타임에 "모든 케이스가 처리되지 않았다"고 알려줍니다.
+> TypeScript가 컴파일 타임에 "모든 케이스가 처리되지 않았다"고 알려줍니다.
 > 즉, **확장성 + 안전성**을 동시에 확보한 구조입니다.
 
 ---
 
-## 🧩 6. 실무에서의 활용 포인트
+## 6. 실무에서의 활용 포인트
 
 상황 활용법
 
@@ -209,9 +208,7 @@ export type PaymentMethod = CardPayment | EasyPayPayment | TransferPayment;
 
 ---
 
-## 🚀 마무리
-
-`type`과 `__brand`는 비슷해 보이지만, **용도가 완전히 다릅니다.**
+## 마무리
 
 **속성 용도 유지 시점**
 
