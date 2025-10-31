@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2  # Need at least 2 commits to compare
+          fetch-depth: 0  # Fetch full history to ensure diffs work reliably
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -88,7 +88,7 @@ jobs:
             # Get commits for this package since last tag
             if [ -n "$prev_tag" ]; then
               echo "### Commits since ${prev_tag}"
-              git log ${prev_tag}..HEAD --oneline -- "$package_path" | sed 's/^/- /'
+              git log "${prev_tag}"..HEAD --oneline -- "$package_path" | sed 's/^/- /'
             else
               echo "### Recent commits"
               git log HEAD~10..HEAD --oneline -- "$package_path" | sed 's/^/- /'
@@ -105,7 +105,7 @@ jobs:
           
           # Get changed files in the last commit
           changed_files=""
-          changed_files=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only HEAD)
+          changed_files=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff-tree --no-commit-id --name-only -r HEAD)
           
           echo "Changed files:"
           echo "$changed_files"
@@ -150,8 +150,8 @@ jobs:
             echo "  Previous version: $previous_version"
             
             # Check if version actually changed
-            if [ "$current_version" != "$previous_version" ] && [ -n "$previous_version" ]; then
-              echo "  Version changed! Creating release..."
+            if { [ "$current_version" != "$previous_version" ] && [ -n "$previous_version" ]; } || { [ -z "$previous_version" ] && [ -n "$current_version" ]; }; then
+              echo "  Version changed or initial release! Creating release..."
               
               # Create tag name
               tag_name=$(create_tag_name "$package_dir" "$current_version")
@@ -170,7 +170,19 @@ jobs:
               fi
               
               # Find previous tag for this package
-              prev_tag=$(git tag -l "*${package_name##*/}@*" --sort=-version:refname | head -n 1 || echo "")
+              # Extract the tag pattern based on the package path
+              if [[ "$package_dir" == apps/frontend/* ]]; then
+                tag_pattern="@apps/frontend/$(basename "$package_dir")@*"
+              elif [[ "$package_dir" == apps/server/* ]]; then
+                tag_pattern="@apps/server/$(basename "$package_dir")@*"
+              elif [[ "$package_dir" == apps/cli/* ]]; then
+                tag_pattern="@apps/cli/$(basename "$package_dir")@*"
+              elif [[ "$package_dir" == packages/* ]]; then
+                tag_pattern="@packages/$(basename "$package_dir")@*"
+              else
+                tag_pattern="${package_name}@*"
+              fi
+              prev_tag=$(git tag -l "$tag_pattern" --sort=-version:refname | head -n 1 || echo "")
               
               # Create tag
               git tag -a "$tag_name" -m "Release $package_name@$current_version"

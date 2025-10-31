@@ -192,6 +192,6 @@ git push origin main
 
 ## Related Documentation
 
-- [Release Automation Guide](.docs/release-automation.md)
+- [Release Automation Guide](./release-automation.md)
 - [Contributing Guide](../README.MD#contributing)
 - [Git Flow](../README.MD#git-flow)
