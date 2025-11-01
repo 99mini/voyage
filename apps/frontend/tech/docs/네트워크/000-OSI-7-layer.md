@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 0
 slug: network-OSI-7-layer
 title: 'OSI 7 계층'
 authors: [99mini]

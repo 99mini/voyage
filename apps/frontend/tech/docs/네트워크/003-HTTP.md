@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 3
 slug: http
 title: 'HTTP'
 authors: [99mini]
