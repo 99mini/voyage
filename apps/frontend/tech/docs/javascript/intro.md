@@ -6,6 +6,8 @@ authors: [99mini]
 tags: [javascript]
 ---
 
+자바스크립트 언어적 특징과 노드JS/V8 엔진의 특징에 대해 설명합니다.
+
 <!-- index numbering rule
 
 0.          intro
