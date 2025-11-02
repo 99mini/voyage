@@ -212,10 +212,10 @@ export type PaymentMethod = CardPayment | EasyPayPayment | TransferPayment;
 
 ## 마무리
 
-**속성 용도 유지 시점**
-
-- `type` 런타임 로직 구분 런타임 유지
-- `__brand` 컴파일타임 안전성 런타임 제거됨
+| 속성 | 용도 | 유지 시점 |
+|---|---|---|
+| `type` | 런타임 로직 구분 | 런타임 유지 |
+| `__brand` | 컴파일타임 안전성 | 런타임에서 제거됨 |
 
 ---
 
