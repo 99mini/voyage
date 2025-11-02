@@ -137,7 +137,7 @@ export type CardPayment = BrandedPayment<'card'> & {
 
 export type EasyPayPayment = BrandedPayment<'easypay'> & {
   type: 'easypay';
-  provider: 'Toss' | 'KakaoPay';
+  provider: 'Toss' | 'KakaoPay' | 'NaverPay';
 };
 
 export type PaymentMethod = CardPayment | EasyPayPayment;
