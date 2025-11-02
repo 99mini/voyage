@@ -8,11 +8,11 @@ date: 2025-02-24T12:31
 
 HTTP에서 GET, POST 방식의 차이
 
-<!-- truncate -->
-
 ## HTTP
 
 HTTP([HyperText Transfer Protocol](https://datatracker.ietf.org/doc/html/rfc7231))는 웹에서 클라이언트와 서버 간의 통신을 위한 프로토콜입니다. 이는 웹 브라우저(클라이언트)가 웹 서버와 통신할 때 사용하는 주요 방법으로, 요청(Request)과 응답(Response) 방식으로 동작합니다.
+
+<!-- truncate -->
 
 ### HTTP Methods
 
