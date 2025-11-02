@@ -140,7 +140,7 @@ export type EasyPayPayment = BrandedPayment<'easypay'> & {
   provider: 'Toss' | 'KakaoPay' | 'NaverPay';
 };
 
-export type PaymentMethod = CardPayment | EasyPayPayment;
+export type PaymentMethod = CardPayment | EasyPayPayment | PointPayment;
 
 function refund(payment: PaymentMethod) {
   // if (payment.type === 'card') { // 동일한 효과
