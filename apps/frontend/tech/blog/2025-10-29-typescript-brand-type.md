@@ -8,16 +8,16 @@ tags: [typescript]
 
 # `__brand`와 `type`으로 타입 안전성과 확장성을 동시에 잡기
 
-대규모 프론트엔드 코드베이스에서 가장 흔한 문제 중 하나는 **객체 형태가 다양해지는 것**입니다.
-예를 들어 결제 시스템을 만든다고 생각해봅시다.
+대규모 프론트엔드 코드베이스에서 가장 흔한 문제 중 하나는 **객체 형태가 다양해지는 것**이다.
+예를 들어 결제 시스템을 만든다고 생각해보자.
 
 - 카드 결제
 - 간편 결제 (토스, 카카오페이 등)
 - 포인트 결제
 
-이들은 모두 "결제 수단(PaymentMethod)"이라는 공통 개념을 공유하지만, 세부 필드는 다릅니다.
+이들은 모두 "결제 수단(PaymentMethod)"이라는 공통 개념을 공유하지만, 세부 필드는 다르다.
 
-이럴 때 **type 필드** 또는 **\_\_brand 필드**를 이용해 **타입 안정성과 확장성**을 모두 확보할 수 있습니다.
+이럴 때 **type 필드** 또는 **\_\_brand 필드**를 이용해 **타입 안정성과 확장성**을 모두 확보할 수 있다.
 
 <!-- truncate -->
 
@@ -55,8 +55,8 @@ export type PaymentMethod = CardPayment | EasyPayPayment | PointPayment;
 
 ## 2. 판별 유니온(discriminated union) 기반 처리
 
-`type` 필드를 기준으로 자동으로 타입이 좁혀집니다.
-즉, `if (payment.type === 'card')`라고 쓰면, 그 안에서는 자동으로 `CardPayment` 타입이 됩니다.
+`type` 필드를 기준으로 자동으로 타입이 좁혀진다.
+즉, `if (payment.type === 'card')`라고 쓰면, 그 안에서는 자동으로 `CardPayment` 타입이 된다.
 
 ```typescript
 // features/payment/utils/processor.ts
@@ -93,7 +93,7 @@ export function processPayment(payment: PaymentMethod) {
 ## 3. `__brand`를 이용한 컴파일타임 타입 구분
 
 `type`은 주로 "비즈니스 로직용 식별자"로 쓰이지만,
-`__brand`는 "개발자만 쓰는 타입 안전용 내부 식별자"로 활용할 수 있습니다.
+`__brand`는 "개발자만 쓰는 타입 안전용 내부 식별자"로 활용할 수 있다.
 
 ```typescript
 // features/payment/types/brand.ts
@@ -124,7 +124,7 @@ fetchOrder(userId); // ❌ 컴파일 에러!
 
 ## 4. `__brand` + `type` 조합 실전 예시
 
-이제 두 개념을 합쳐서, **결제 객체 전체에 브랜드를 부여**해보겠습니다.
+이제 두 개념을 합쳐서, **결제 객체 전체에 브랜드를 부여**해보자.
 
 ```typescript
 type BrandedPayment<T extends string> = BasePayment & { __brand: T };
@@ -192,8 +192,8 @@ export type PaymentMethod = CardPayment | EasyPayPayment | TransferPayment;
 
 이때 `processPayment()` 함수의 switch문에 `'transfer'` 처리를 추가하지 않으면?
 
-> TypeScript가 컴파일 타임에 "모든 케이스가 처리되지 않았다"고 알려줍니다.
-> 즉, **확장성 + 안전성**을 동시에 확보한 구조입니다.
+> TypeScript가 컴파일 타임에 "모든 케이스가 처리되지 않았다"고 알려준다.
+> 즉, **확장성 + 안전성**을 동시에 확보한 구조이다.
 
 ---
 
