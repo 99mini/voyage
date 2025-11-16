@@ -12,7 +12,7 @@ const meta = {
   argTypes: {},
 } satisfies Meta<typeof SeqForm>;
 
-export const Default: React.FC<React.ComponentProps<typeof SeqForm>> = ({ ...args }) => {
+export const Default: React.FC<React.ComponentProps<typeof SeqForm>> = () => {
   return (
     <SeqForm
       InputComponents={[

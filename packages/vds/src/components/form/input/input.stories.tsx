@@ -3,7 +3,7 @@ import type { Meta } from '@storybook/react';
 import Label from '../../atom/label';
 import Input from './input';
 
-const meta: Meta<typeof Input> = {
+const meta = {
   title: 'form/input/Input',
   component: Input,
   tags: ['autodocs'],
@@ -18,6 +18,12 @@ const meta: Meta<typeof Input> = {
 } satisfies Meta<typeof Input>;
 
 export const Default = ({ ...args }) => <Input {...args} />;
+
+export const Unstyled = ({ ...args }) => <Input {...args} variant="unstyled" />;
+
+export const Ghost = ({ ...args }) => <Input {...args} variant="ghost" />;
+
+export const Underline = ({ ...args }) => <Input {...args} variant="underline" />;
 
 export const Placeholder = ({ ...args }) => <Input {...args} placeholder="placeholder" />;
 
