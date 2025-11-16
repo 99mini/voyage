@@ -5,7 +5,7 @@ import type { Meta } from '@storybook/react';
 import FileUploader from './file-uploader';
 
 const meta: Meta<typeof FileUploader> = {
-  title: 'input/FileUploader',
+  title: 'form/input/FileUploader',
   component: FileUploader,
   tags: ['autodocs'],
   argTypes: {},

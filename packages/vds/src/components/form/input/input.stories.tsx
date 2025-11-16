@@ -4,7 +4,7 @@ import Label from '../../atom/label';
 import Input from './input';
 
 const meta: Meta<typeof Input> = {
-  title: 'input/Input',
+  title: 'form/input/Input',
   component: Input,
   tags: ['autodocs'],
   argTypes: {
