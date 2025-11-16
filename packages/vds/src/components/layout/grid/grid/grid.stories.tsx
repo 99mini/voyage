@@ -3,7 +3,7 @@ import React, { CSSProperties } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import GridItem from '../grid-item';
-import Grid from './grid';
+import Grid from './';
 
 const meta = {
   component: Grid,

@@ -1,4 +1,4 @@
-import ImagePreviewer, { type ImagePreviewerProps } from '@/components/image-previewer';
+import ImagePreviewer, { type ImagePreviewerProps } from '@/components/layout/image-previewer';
 
 import { cn } from '@/lib/utils';
 

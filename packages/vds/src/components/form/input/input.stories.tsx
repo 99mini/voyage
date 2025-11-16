@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/react';
 
-import Label from '../label';
+import Label from '../../atom/label';
 import Input from './input';
 
 const meta: Meta<typeof Input> = {
