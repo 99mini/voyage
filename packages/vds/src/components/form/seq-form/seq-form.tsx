@@ -60,8 +60,6 @@ const SeqForm = forwardRef<HTMLFormElement, SeqFormProps>(
   ({ inputs, childrenPosition = 'after', sequential = true, ...props }, ref) => {
     const { children, onSubmit, ...restFormProps } = props;
 
-    const inputLength = inputs.length;
-
     // 각 input의 ref를 관리
     const inputRefs = useRef<Array<React.RefObject<HTMLInputElement>>>(inputs.map(() => ({ current: null })));
 
