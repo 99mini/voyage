@@ -4,7 +4,7 @@ import { Button, Label } from '@/components/atom';
 
 import { Meta } from '@storybook/react/*';
 
-import Input from '../input';
+import Input from '../input/input';
 import SeqForm from './seq-form';
 
 const meta = {

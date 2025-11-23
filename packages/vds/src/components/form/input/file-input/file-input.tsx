@@ -4,7 +4,7 @@ import { PlusCircleIcon, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-import Button from '../../atom/button';
+import Button from '../../../atom/button';
 import Input, { type InputProps } from '../input';
 
 const Outer = ({

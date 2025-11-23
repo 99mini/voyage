@@ -2,7 +2,7 @@ import { useRef } from 'react';
 
 import type { Meta } from '@storybook/react';
 
-import SeqForm from '../seq-form';
+import SeqForm from '../../seq-form';
 import OtpInput, { type OtpInputRef } from './otp';
 
 const meta = {

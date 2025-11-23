@@ -2,7 +2,7 @@ import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-import ImagePreviewGroup, { type ImagePreviewGroupProps } from '../../layout/image-preview-group';
+import ImagePreviewGroup, { type ImagePreviewGroupProps } from '../../../layout/image-preview-group';
 import FileInput, { type FileInputProps } from '../file-input';
 
 export type FileUploaderProps = {

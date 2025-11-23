@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { Meta } from '@storybook/react';
 
-import Label from '../../atom/label';
+import Label from '../../../atom/label';
 import Input from './input';
 
 const meta = {
@@ -276,9 +276,7 @@ export const WithBlurValidation = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '400px' }}>
       <div>
-        <h3 style={{ marginBottom: '8px', fontSize: '14px', fontWeight: '600' }}>
-          onBlur Validation 데모
-        </h3>
+        <h3 style={{ marginBottom: '8px', fontSize: '14px', fontWeight: '600' }}>onBlur Validation 데모</h3>
         <p style={{ marginBottom: '16px', fontSize: '12px', color: '#666' }}>
           각 입력 필드를 클릭한 후, 값을 입력하지 않고 다른 곳을 클릭해보세요. (포커스 해제)
         </p>
