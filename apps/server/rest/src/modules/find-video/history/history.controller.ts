@@ -39,7 +39,7 @@ const isBulk = (bulk: boolean, body: HistoryDto[] | HistoryDto): body is History
 @ApiTags('Find Video')
 @UseGuards(ChromeExtensionGuard)
 @ApiHeader({
-  name: 'Origin',
+  name: 'x-chrome-extension-id',
   description: '크롬 익스텐션 도메인 (chrome-extension://extensionId)',
   required: true,
   schema: { type: 'string' },
