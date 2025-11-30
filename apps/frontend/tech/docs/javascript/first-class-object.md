@@ -113,6 +113,26 @@ console.log(double(4)); // 8
 setTimeout(() => console.log('Hello after 1s'), 1000);
 ```
 
+### 커링 (Currying)
+
+함수를 값으로 다룰 수 있기 때문에 함수를 반환하는 함수를 만들 수도 있다.
+
+```ts
+// 서버 요청을 커링으로 추상화
+
+const request = (baseURL: string) => (endpoint: string, options: RequestInit) =>
+  fetch(`${baseURL}${endpoint}`, options);
+
+const api = request('https://api.example.com');
+
+api('/users', { method: 'GET' });
+// fetch("https://api.example.com/users", { method: 'GET' })
+api('/posts', { method: 'POST', body: JSON.stringify({ title: 'New Post' }) });
+// fetch("https://api.example.com/posts", { method: 'POST', body: JSON.stringify({ title: 'New Post' }) });
+```
+
+baseURL을 고정한 새로운 함수를 만들어 재사용할 수 있다.
+
 ### Reference
 
 ##### [1] [MDN Web Docs - First-class Function](https://developer.mozilla.org/en-US/docs/Glossary/First-class_Function)

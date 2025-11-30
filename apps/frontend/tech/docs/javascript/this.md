@@ -14,7 +14,7 @@ javascript의 this에 대해 설명합니다.
 
 ### 전역문맥(Global Context)
 
-전역문맥에서 this는 전역 객체(`window` 또는 `global`)를 가리킵니다.
+전역문맥에서 this는 전역 객체(`window` 또는 `global`)를 가리킵니다. [[1]](#1-mdn-web-docs---this)
 
 ```javascript title="global-context.js"
 // 브라우저
@@ -53,6 +53,25 @@ const obj = {
 obj.foo(); // {foo: ƒ foo()}
 ```
 
+### 어휘적 문맥 (Lexical Context)
+
+화살표 함수는 어휘적 문맥을 가지므로, this가 상위 문맥의 this를 가리킵니다. [[2]](#2-mdn-web-docs---화살표-함수)
+
+```javascript title="lexical-context.js"
+const obj = {
+  name: 'Voyage',
+  greet: function () {
+    const arrowFunc = () => {
+      console.log(this.name);
+    };
+    arrowFunc();
+  },
+};
+
+obj.greet(); // 'Voyage'
+```
+
 ## Reference
 
-- ###### [MDN Web Docs - this](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators/this)
+- ###### [1] [MDN Web Docs - this](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators/this)
+- ###### [2] [MDN Web Docs - 화살표 함수](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Functions/Arrow_functions#%EC%98%88%EC%A0%9C)
