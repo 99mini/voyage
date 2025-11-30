@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 import { InteractiveFloatingContext } from '../contexts/interactive-floating-context';
 
@@ -6,16 +6,12 @@ import { InterativeFloatingContextType } from '../types/interactive-floating-typ
 
 export type InteractiveFloatingProviderProps = {
   children: ReactNode;
-  /**
-   *
-   * - floatingRef를 통해 관찰된 엘리먼트는 포지션을 원래 자리로 유지
-   * - 사용자가 스크롤을 내릴 때 엘리먼트가 화면에 보이지 않으면, 엘리먼트는 화면에 고정되어 표시됩니다.
-   */
-  floatingRef: React.RefObject<HTMLElement | null>;
 };
 
-export const InteractiveFloatingProvieder = ({ children, floatingRef }: InteractiveFloatingProviderProps) => {
+export const InteractiveFloatingProvieder = ({ children }: InteractiveFloatingProviderProps) => {
   const [interesting, setInteresting] = useState(false);
+
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -33,19 +29,19 @@ export const InteractiveFloatingProvieder = ({ children, floatingRef }: Interact
       },
     );
 
-    if (floatingRef.current) {
-      observer.observe(floatingRef.current);
+    if (ref.current) {
+      observer.observe(ref.current);
     }
 
     return () => {
-      if (floatingRef.current) {
-        observer.unobserve(floatingRef.current);
+      if (ref.current) {
+        observer.unobserve(ref.current);
       }
     };
   }, []);
 
   const initContext: InterativeFloatingContextType = {
-    ref: floatingRef,
+    ref,
     state: {
       interesting,
     },

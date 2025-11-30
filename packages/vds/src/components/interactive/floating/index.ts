@@ -1,1 +1,2 @@
-export * from './interactive-floating';
+export * from './floating';
+export * from './providers/interactive-provider';
