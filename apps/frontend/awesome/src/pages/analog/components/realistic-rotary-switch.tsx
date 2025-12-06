@@ -1,4 +1,4 @@
-import { useRotarySwitch } from './use-rotary-switch';
+import { useRotarySwitch } from '../hooks/use-rotary-switch';
 
 interface RealisticRotarySwitchProps {
   steps?: number;
