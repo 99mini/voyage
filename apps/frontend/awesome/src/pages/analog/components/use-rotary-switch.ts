@@ -46,13 +46,23 @@ export const useRotarySwitch = ({
   }, [enableHapticFeedback]);
 
   const snapToNearestStep = useCallback(
-    (angle: number) => {
-      const normalizedAngle = ((angle % 360) + 360) % 360;
-      const step = Math.round(normalizedAngle / degreesPerStep);
-      const snappedAngle = (step * degreesPerStep) % 360;
-      const finalStep = step % steps;
+    (angle: number, keepRotationCount = false) => {
+      if (keepRotationCount) {
+        // 회전 방향을 유지하면서 가장 가까운 step으로 스냅
+        const step = Math.round(angle / degreesPerStep);
+        const snappedAngle = step * degreesPerStep;
+        const finalStep = ((step % steps) + steps) % steps;
 
-      return { angle: snappedAngle, step: finalStep };
+        return { angle: snappedAngle, step: finalStep };
+      } else {
+        // 0-360 범위로 정규화
+        const normalizedAngle = ((angle % 360) + 360) % 360;
+        const step = Math.round(normalizedAngle / degreesPerStep);
+        const snappedAngle = (step * degreesPerStep) % 360;
+        const finalStep = step % steps;
+
+        return { angle: snappedAngle, step: finalStep };
+      }
     },
     [degreesPerStep, steps],
   );
@@ -148,7 +158,8 @@ export const useRotarySwitch = ({
         return;
       }
 
-      const { angle: snappedAngle, step } = snapToNearestStep(rotation);
+      // 드래그 방향을 유지하면서 가장 가까운 step으로 스냅
+      const { angle: snappedAngle, step } = snapToNearestStep(rotation, true);
 
       setRotation(snappedAngle);
       if (step !== currentStep) {
