@@ -93,16 +93,34 @@ export const useRotarySwitch = ({
   const handleClick = useCallback(
     (clientX: number, clientY: number) => {
       const clickAngle = getAngleFromEvent(clientX, clientY);
-      const { angle: snappedAngle, step } = snapToNearestStep(clickAngle);
+      const { step } = snapToNearestStep(clickAngle);
 
-      setRotation(snappedAngle);
       if (step !== currentStep) {
+        // 현재 회전 각도를 0-360 범위로 정규화
+        const currentNormalizedRotation = ((rotation % 360) + 360) % 360;
+        const targetAngle = (step * 360) / steps;
+
+        // 시계방향과 반시계방향 거리 계산
+        const clockwiseDist = (targetAngle - currentNormalizedRotation + 360) % 360;
+        const counterClockwiseDist = (currentNormalizedRotation - targetAngle + 360) % 360;
+
+        // 최단 거리로 이동
+        let newRotation;
+        if (clockwiseDist <= counterClockwiseDist) {
+          // 시계방향이 더 가까움
+          newRotation = rotation + clockwiseDist;
+        } else {
+          // 반시계방향이 더 가까움
+          newRotation = rotation - counterClockwiseDist;
+        }
+
+        setRotation(newRotation);
         setCurrentStep(step);
         triggerHapticFeedback();
         onChange?.(step);
       }
     },
-    [getAngleFromEvent, snapToNearestStep, currentStep, triggerHapticFeedback, onChange],
+    [getAngleFromEvent, snapToNearestStep, currentStep, rotation, steps, triggerHapticFeedback, onChange],
   );
 
   const handleStart = useCallback(
