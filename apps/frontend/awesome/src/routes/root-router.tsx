@@ -12,6 +12,7 @@ import { PAGE_PATH } from '@/lib/constants/route.constant';
 
 const ClockPage = lazy(() => import('@/pages/clock'));
 const GraphPage = lazy(() => import('@/pages/graph'));
+const AnalogPage = lazy(() => import('@/pages/analog'));
 
 const DynamicRouter = ({ children }: React.PropsWithChildren) => {
   if (typeof window !== 'undefined') {
@@ -32,6 +33,7 @@ function RootRouter() {
             <Route path={PAGE_PATH.ROOT} element={<HomePage />} />
             <Route path={PAGE_PATH.CLOCK} element={<ClockPage />} />
             <Route path={PAGE_PATH.GRAPH} element={<GraphPage />} />
+            <Route path={PAGE_PATH.ANALOG} element={<AnalogPage />} />
           </Routes>
         </main>
         <Footer />
