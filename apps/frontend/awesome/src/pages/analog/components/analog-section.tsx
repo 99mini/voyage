@@ -2,6 +2,7 @@ import ItemLayout from '@/components/common/item-layout';
 import { ThemeLayout } from '@/components/common/theme-layout';
 
 import { MinimalRotarySwitch } from './minimal-rotary-switch';
+import { RealisticRotarySwitch } from './realistic-rotary-switch';
 import { RotarySwitch } from './rotary-switch';
 
 export const AnalogSection = () => {
@@ -12,6 +13,9 @@ export const AnalogSection = () => {
       </ItemLayout>
       <ItemLayout title="Minimal Rotary Switch" description="A minimal rotary switch with dots and clean design">
         <MinimalRotarySwitch />
+      </ItemLayout>
+      <ItemLayout title="Realistic Rotary Switch" description="Hardware-style rotary switch with numbered scale">
+        <RealisticRotarySwitch />
       </ItemLayout>
     </ThemeLayout>
   );
