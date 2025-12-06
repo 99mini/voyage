@@ -2,7 +2,7 @@ import RootLayout from '@/components/layout/root-layout';
 
 import { AnalogSection } from './components/analog-section';
 
-const ClockPage = () => {
+const AnalogPage = () => {
   return (
     <RootLayout>
       <AnalogSection />
@@ -10,4 +10,4 @@ const ClockPage = () => {
   );
 };
 
-export default ClockPage;
+export default AnalogPage;

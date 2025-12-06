@@ -8,6 +8,7 @@ import RootLayout from '@/components/layout/root-layout';
 import { PAGE_PATH, PAGE_TITLE, RoutePath } from '@/lib/constants/route.constant';
 import { generateSafeHash } from '@/lib/utils/string';
 
+import { AnalogSection } from '../analog/components/analog-section';
 import ClockSection from '../clock/components/clock-section';
 import LineGraphSection from '../graph/components/line-graph-section';
 
@@ -17,6 +18,8 @@ const PreviewSection = (path: Omit<RoutePath, '/'>) => {
       return <ClockSection />;
     case PAGE_PATH.GRAPH:
       return <LineGraphSection />;
+    case PAGE_PATH.ANALOG:
+      return <AnalogSection />;
     default:
       return null;
   }
