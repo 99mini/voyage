@@ -1,5 +1,5 @@
 import ItemLayout from '@/components/common/item-layout';
-import ThemeLayout from '@/components/common/theme-layout';
+import { ThemeLayout } from '@/components/common/theme-layout';
 
 import LineGraph from './line-graph';
 

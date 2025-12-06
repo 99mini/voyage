@@ -4,7 +4,7 @@ import useScrollToHash from '@/hooks/use-scroll-to-hash';
 
 import { generateSafeHash, pascalCaseToKebabCase } from '@/lib/utils/string';
 
-const ThemeLayout = ({ title, children }: { title: string; children: React.ReactNode }) => {
+export const ThemeLayout = ({ title, children }: { title: string; children: React.ReactNode }) => {
   const hashTag = generateSafeHash(pascalCaseToKebabCase(title));
   const ref = useScrollToHash(hashTag);
 
