@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import ItemLayout from '@/components/common/item-layout';
-import ThemeLayout from '@/components/common/theme-layout';
+import { ThemeLayout } from '@/components/common/theme-layout';
 
 import AnalogClock from './analog-clock';
 import DigitalClock from './digital-clock';
