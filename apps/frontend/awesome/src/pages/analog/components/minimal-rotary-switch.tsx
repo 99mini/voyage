@@ -1,4 +1,4 @@
-import { useRotarySwitch } from './use-rotary-switch';
+import { useRotarySwitch } from '../hooks/use-rotary-switch';
 
 interface MinimalRotarySwitchProps {
   steps?: number;
@@ -60,7 +60,14 @@ export const MinimalRotarySwitch = ({
             );
           })}
 
-          <circle cx={size / 2} cy={size / 2} r={size / 2 - 40} fill="url(#minimal-gradient)" stroke="#d1d5db" strokeWidth="2" />
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={size / 2 - 40}
+            fill="url(#minimal-gradient)"
+            stroke="#d1d5db"
+            strokeWidth="2"
+          />
 
           <g
             transform={`rotate(${rotation} ${size / 2} ${size / 2})`}
