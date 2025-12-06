@@ -14,6 +14,8 @@ export const RotarySwitch = ({ steps = 12, initialValue = 0, onChange, size = 20
   const knobRef = useRef<HTMLDivElement>(null);
   const lastAngleRef = useRef(0);
   const animationFrameRef = useRef<number>();
+  const startPosRef = useRef({ x: 0, y: 0 });
+  const hasMoved = useRef(false);
 
   const degreesPerStep = 360 / steps;
 
@@ -51,9 +53,26 @@ export const RotarySwitch = ({ steps = 12, initialValue = 0, onChange, size = 20
     return angle;
   }, []);
 
+  const handleClick = useCallback(
+    (clientX: number, clientY: number) => {
+      const clickAngle = getAngleFromEvent(clientX, clientY);
+      const { angle: snappedAngle, step } = snapToNearestStep(clickAngle);
+
+      setRotation(snappedAngle);
+      if (step !== currentStep) {
+        setCurrentStep(step);
+        triggerHapticFeedback();
+        onChange?.(step);
+      }
+    },
+    [getAngleFromEvent, snapToNearestStep, currentStep, triggerHapticFeedback, onChange],
+  );
+
   const handleStart = useCallback(
     (clientX: number, clientY: number) => {
       setIsDragging(true);
+      startPosRef.current = { x: clientX, y: clientY };
+      hasMoved.current = false;
       lastAngleRef.current = getAngleFromEvent(clientX, clientY);
     },
     [getAngleFromEvent],
@@ -62,6 +81,14 @@ export const RotarySwitch = ({ steps = 12, initialValue = 0, onChange, size = 20
   const handleMove = useCallback(
     (clientX: number, clientY: number) => {
       if (!isDragging) return;
+
+      const dx = clientX - startPosRef.current.x;
+      const dy = clientY - startPosRef.current.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance > 5) {
+        hasMoved.current = true;
+      }
 
       const currentAngle = getAngleFromEvent(clientX, clientY);
       let delta = currentAngle - lastAngleRef.current;
@@ -83,28 +110,36 @@ export const RotarySwitch = ({ steps = 12, initialValue = 0, onChange, size = 20
     [isDragging, rotation, getAngleFromEvent],
   );
 
-  const handleEnd = useCallback(() => {
-    if (!isDragging) return;
+  const handleEnd = useCallback(
+    (clientX: number, clientY: number) => {
+      if (!isDragging) return;
 
-    setIsDragging(false);
+      setIsDragging(false);
 
-    const { angle: snappedAngle, step } = snapToNearestStep(rotation);
+      if (!hasMoved.current) {
+        handleClick(clientX, clientY);
+        return;
+      }
 
-    setRotation(snappedAngle);
-    if (step !== currentStep) {
-      setCurrentStep(step);
-      triggerHapticFeedback();
-      onChange?.(step);
-    }
-  }, [isDragging, rotation, currentStep, snapToNearestStep, triggerHapticFeedback, onChange]);
+      const { angle: snappedAngle, step } = snapToNearestStep(rotation);
+
+      setRotation(snappedAngle);
+      if (step !== currentStep) {
+        setCurrentStep(step);
+        triggerHapticFeedback();
+        onChange?.(step);
+      }
+    },
+    [isDragging, rotation, currentStep, snapToNearestStep, triggerHapticFeedback, onChange, handleClick],
+  );
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       handleMove(e.clientX, e.clientY);
     };
 
-    const handleMouseUp = () => {
-      handleEnd();
+    const handleMouseUp = (e: MouseEvent) => {
+      handleEnd(e.clientX, e.clientY);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -113,8 +148,10 @@ export const RotarySwitch = ({ steps = 12, initialValue = 0, onChange, size = 20
       }
     };
 
-    const handleTouchEnd = () => {
-      handleEnd();
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (e.changedTouches.length > 0) {
+        handleEnd(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+      }
     };
 
     if (isDragging) {
@@ -153,37 +190,18 @@ export const RotarySwitch = ({ steps = 12, initialValue = 0, onChange, size = 20
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '20px',
-        padding: '40px',
-        userSelect: 'none',
-      }}
-    >
+    <div className="flex flex-col items-center gap-5 p-10 select-none">
       <div
         ref={knobRef}
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
+        className={`relative touch-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         style={{
-          position: 'relative',
           width: `${size}px`,
           height: `${size}px`,
-          cursor: isDragging ? 'grabbing' : 'grab',
-          touchAction: 'none',
         }}
       >
-        <svg
-          width={size}
-          height={size}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-          }}
-        >
+        <svg width={size} height={size} className="absolute top-0 left-0">
           <defs>
             <radialGradient id="knob-gradient">
               <stop offset="0%" stopColor="#4a4a4a" />
@@ -255,30 +273,9 @@ export const RotarySwitch = ({ steps = 12, initialValue = 0, onChange, size = 20
         </svg>
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '8px',
-        }}
-      >
-        <div
-          style={{
-            fontSize: '32px',
-            fontWeight: 'bold',
-            color: '#3b82f6',
-            fontVariantNumeric: 'tabular-nums',
-          }}
-        >
-          {currentStep}
-        </div>
-        <div
-          style={{
-            fontSize: '14px',
-            color: '#666',
-          }}
-        >
+      <div className="flex flex-col items-center gap-2">
+        <div className="text-3xl font-bold text-blue-500 tabular-nums">{currentStep}</div>
+        <div className="text-sm text-gray-500">
           Position {currentStep} of {steps - 1}
         </div>
       </div>
