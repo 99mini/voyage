@@ -1,18 +1,7 @@
 import { useRotarySwitch } from '../hooks/use-rotary-switch';
+import { BaseRotarySwitchProps } from '../types/base-rotary-switch-props';
 
-interface MinimalRotarySwitchProps {
-  steps?: number;
-  initialValue?: number;
-  onChange?: (value: number) => void;
-  size?: number;
-}
-
-export const MinimalRotarySwitch = ({
-  steps = 12,
-  initialValue = 0,
-  onChange,
-  size = 200,
-}: MinimalRotarySwitchProps) => {
+export const MinimalRotarySwitch = ({ steps = 12, initialValue = 0, onChange, size = 200 }: BaseRotarySwitchProps) => {
   const { currentStep, rotation, isDragging, knobRef, handlers } = useRotarySwitch({
     steps,
     initialValue,
