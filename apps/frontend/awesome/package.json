@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "vite --config vite.config.ts",
-    "build": "sh ./.scripts/build.sh",
+    "build": "sh ./.scripts/build.sh && tsc -b && vite build",
     "build:ssg": "pnpm tsx --tsconfig tsconfig.static.json ./.scripts/build-html.ts",
     "build:static": "pnpm run build && pnpm run build:ssg",
     "deploy": "sh ./.scripts/deploy.sh",
@@ -23,6 +23,7 @@
   "dependencies": {
     "@packages/api-client": "workspace:*",
     "@packages/vds": "workspace:*",
+    "@radix-ui/react-context-menu": "^2.2.16",
     "clsx": "^2.1.1",
     "d3": "^7.9.0",
     "lucide-react": "^0.469.0",
