@@ -2,10 +2,14 @@ import RootRouter from './routes/root-router';
 
 import RootProvider from './contexts/root-provider';
 
-const App = () => {
+interface AppProps {
+  location?: string;
+}
+
+const App = ({ location }: AppProps = {}) => {
   return (
     <RootProvider>
-      <RootRouter />
+      <RootRouter location={location} />
     </RootProvider>
   );
 };
