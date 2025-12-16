@@ -1,0 +1,208 @@
+name: Release Automation
+
+on:
+  push:
+    branches:
+      - main
+      - '*/release/**'
+      - '*/dev-release'
+
+jobs:
+  detect-version-changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: read
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history to ensure diffs work reliably
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      
+      - name: Detect version changes and create releases
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Function to get package info from path
+          get_package_info() {
+            local package_path=$1
+            local package_json="${package_path}/package.json"
+            
+            if [ ! -f "$package_json" ]; then
+              return 1
+            fi
+            
+            local name
+            local version
+            name=$(jq -r '.name' "$package_json")
+            version=$(jq -r '.version' "$package_json")
+            
+            echo "$name|$version|$package_path"
+          }
+          
+          # Function to create tag name from path
+          create_tag_name() {
+            local package_path=$1
+            local version=$2
+            
+            # Determine if it's an app or package
+            if [[ "$package_path" == apps/frontend/* ]]; then
+              local app_name
+              app_name=$(basename "$package_path")
+              echo "@apps/frontend/${app_name}@${version}"
+            elif [[ "$package_path" == apps/server/* ]]; then
+              local app_name
+              app_name=$(basename "$package_path")
+              echo "@apps/server/${app_name}@${version}"
+            elif [[ "$package_path" == apps/cli/* ]]; then
+              local app_name
+              app_name=$(basename "$package_path")
+              echo "@apps/cli/${app_name}@${version}"
+            elif [[ "$package_path" == packages/* ]]; then
+              local pkg_name
+              pkg_name=$(basename "$package_path")
+              echo "@packages/${pkg_name}@${version}"
+            else
+              echo ""
+            fi
+          }
+          
+          # Function to generate release notes
+          generate_release_notes() {
+            local package_name=$1
+            local version=$2
+            local package_path=$3
+            local prev_tag=$4
+            
+            echo "# Release ${package_name}@${version}"
+            echo ""
+            echo "## Changes"
+            echo ""
+            
+            # Get commits for this package since last tag
+            if [ -n "$prev_tag" ]; then
+              echo "### Commits since ${prev_tag}"
+              git log "${prev_tag}"..HEAD --oneline -- "$package_path" | sed 's/^/- /'
+            else
+              echo "### Recent commits"
+              git log HEAD~10..HEAD --oneline -- "$package_path" | sed 's/^/- /'
+            fi
+            
+            echo ""
+            echo "## Package Information"
+            echo ""
+            echo "- **Package**: ${package_name}"
+            echo "- **Version**: ${version}"
+            echo "- **Path**: ${package_path}"
+            echo "- **Release Date**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          }
+          
+          # Get changed files in the last commit
+          changed_files=""
+          changed_files=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff-tree --no-commit-id --name-only -r HEAD)
+          
+          echo "Changed files:"
+          echo "$changed_files"
+          echo ""
+          
+          # Find changed package.json files
+          changed_packages=$(echo "$changed_files" | grep "package.json" | grep -E "(apps|packages)" || true)
+          
+          if [ -z "$changed_packages" ]; then
+            echo "No package.json files changed in apps or packages directories."
+            exit 0
+          fi
+          
+          echo "Changed package.json files:"
+          echo "$changed_packages"
+          echo ""
+          
+          # Process each changed package.json
+          while IFS= read -r package_json_file; do
+            [ -z "$package_json_file" ] && continue
+            package_dir=$(dirname "$package_json_file")
+            
+            # Skip root package.json
+            if [ "$package_dir" = "." ]; then
+              continue
+            fi
+            
+            echo "Processing: $package_dir"
+            
+            # Get current version
+            current_version=""
+            package_name=""
+            current_version=$(jq -r '.version' "$package_json_file")
+            package_name=$(jq -r '.name' "$package_json_file")
+            
+            # Get previous version
+            previous_version=""
+            previous_version=$(git show HEAD~1:"$package_json_file" 2>/dev/null | jq -r '.version' 2>/dev/null || echo "")
+            
+            echo "  Package: $package_name"
+            echo "  Current version: $current_version"
+            echo "  Previous version: $previous_version"
+            
+            # Check if version actually changed
+            if { [ "$current_version" != "$previous_version" ] && [ -n "$previous_version" ]; } || { [ -z "$previous_version" ] && [ -n "$current_version" ]; }; then
+              echo "  Version changed or initial release! Creating release..."
+              
+              # Create tag name
+              tag_name=$(create_tag_name "$package_dir" "$current_version")
+              
+              if [ -z "$tag_name" ]; then
+                echo "  Could not create tag name for $package_dir"
+                continue
+              fi
+              
+              echo "  Tag name: $tag_name"
+              
+              # Check if tag already exists
+              if git rev-parse "$tag_name" >/dev/null 2>&1; then
+                echo "  Tag $tag_name already exists, skipping"
+                continue
+              fi
+              
+              # Find previous tag for this package
+              # Extract the tag pattern based on the package path
+              if [[ "$package_dir" == apps/frontend/* ]]; then
+                tag_pattern="@apps/frontend/$(basename "$package_dir")@*"
+              elif [[ "$package_dir" == apps/server/* ]]; then
+                tag_pattern="@apps/server/$(basename "$package_dir")@*"
+              elif [[ "$package_dir" == apps/cli/* ]]; then
+                tag_pattern="@apps/cli/$(basename "$package_dir")@*"
+              elif [[ "$package_dir" == packages/* ]]; then
+                tag_pattern="@packages/$(basename "$package_dir")@*"
+              else
+                tag_pattern="${package_name}@*"
+              fi
+              prev_tag=$(git tag -l "$tag_pattern" --sort=-version:refname | head -n 1 || echo "")
+              
+              # Create tag
+              git tag -a "$tag_name" -m "Release $package_name@$current_version"
+              git push origin "$tag_name"
+              
+              # Generate release notes
+              release_notes=$(generate_release_notes "$package_name" "$current_version" "$package_dir" "$prev_tag")
+              
+              # Create GitHub release using gh CLI
+              echo "$release_notes" | gh release create "$tag_name" \
+                --title "Release ${package_name}@${current_version}" \
+                --notes-file - \
+                --target "$GITHUB_SHA"
+              
+              echo "  ✅ Release created: $tag_name"
+            else
+              echo "  No version change detected"
+            fi
+            
+            echo ""
+          done <<< "$changed_packages"
+          
+          echo "Release automation completed."
