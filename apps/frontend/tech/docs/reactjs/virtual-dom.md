@@ -7,6 +7,9 @@ tags: [javascript, react]
 date: 2025-07-22
 ---
 
+> [!info] Gemini 요약
+> Virtual DOM의 개념, 동작 방식(Diffing & Patching), 특징(성능 최적화, Batch Update) 및 장단점을 실제 DOM과 비교하여 상세히 설명하는 기술 문서입니다.
+
 Virtual DOM이란? (with React)
 
 <!-- truncate -->

@@ -7,6 +7,9 @@ tags: [typescript]
 date: 2025-04-26
 ---
 
+> [!info] Gemini 요약
+> CSS-in-JS의 개념과 장점, 그리고 styled-components 사용 시 중복 타입 선언을 피하는 유틸리티 함수 활용법을 소개합니다.
+
 [11장] CSS-in-JS
 
 <!-- truncate -->
