@@ -11,15 +11,14 @@
 ## 개발 명령어
 
 ```bash
-# 루트에서
-pnpm dev:func
-
 # 앱 디렉토리에서
 pnpm build        # 쉘 스크립트 빌드 (esbuild)
 pnpm deploy       # DigitalOcean Functions 배포
 pnpm lint
 pnpm format
 ```
+
+> **참고**: `package.json` 에 `dev` 스크립트가 없습니다. 로컬 개발은 `doctl serverless` CLI를 직접 사용하세요.
 
 ## 소스 구조
 
@@ -58,5 +57,5 @@ packages:
 
 - DigitalOcean Functions는 각 함수가 독립적인 HTTP 엔드포인트
 - 배포 전 반드시 `project.yml` 에 함수 등록 필요
-- 로컬 개발: `doctl serverless` CLI 또는 `pnpm dev:func`
+- 로컬 개발: `doctl serverless` CLI 사용 (`dev` 스크립트 없음)
 - 빌드 결과는 각 함수별 번들 파일 생성

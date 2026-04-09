@@ -6,13 +6,14 @@
 
 | 워크플로우 파일 | 트리거 브랜치 | 대상 |
 |---|---|---|
-| `deploy-about.yml` | `about/release/**` | about 앱 |
 | `deploy-tool.yml` | `tool/release/**` | tool 앱 |
 | `deploy-tech.yml` | `tech/release/**` | tech 앱 |
 | `deploy-admin.yml` | `admin/release/**` | admin 앱 |
 | `deploy-awesome.yml` | `awesome/release/**` | awesome 앱 |
 | `deploy-line-art.yml` | `line-art-coloring/release/**` | line-art-coloring 앱 |
 | `deploy-tool-dev.yml` | `tool/dev-release` | tool 개발 환경 |
+
+> **참고**: `about` 앱은 현재 GitHub Actions 자동 배포 워크플로우가 없습니다. 수동 배포(`pnpm deploy:about`) 를 사용하세요.
 
 ## 배포 파이프라인
 

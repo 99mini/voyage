@@ -11,7 +11,7 @@
 ```
 
 - **언어**: 반드시 영어
-- **스코프**: 폴더 이름 사용 (예: `frontend`, `server`, `packages/vds`, `frontend/tool`, `server/rest`)
+- **스코프**: `apps/` 를 제외한 폴더 경로 사용 (예: `frontend`, `server`, `packages/vds`, `frontend/tool`, `server/rest`)
 - **분리**: 기능별로 커밋 분리 — 한 번에 모든 변경사항 커밋 금지
 - **상세 내용**: 제목이 길어지면 body(description) 활용
 
@@ -48,7 +48,9 @@ refactor(server/rest): extract file upload logic to service
 | 버전 릴리즈 | `<app>/release/x.x.x` | `tool/release/0.3.0` |
 | 개발 릴리즈 | `<app>/dev-release` | `tool/dev-release` |
 | 기능 개발 | `<app>/feature/**` | `tool/feature/add-qr-generator` |
-| 버그 수정 | `<app>/bugfix/**` | `vds/bugfix/fix-grid-overflow` |
+| 버그 수정 | `<app>/bugfix/**` | `tool/bugfix/fix-upload-error`, `vds/bugfix/fix-grid-overflow` |
+
+> **패키지 브랜치**: `packages/` 하위 패키지는 패키지명을 `<app>` 자리에 축약해서 사용합니다 (예: `packages/vds` → `vds/feature/...`, `vds/bugfix/...`). 커밋 스코프는 `packages/vds` 로 전체 경로를 씁니다.
 | 전체 chore | `chore/**` | `chore/update-root-dependencies` |
 | 앱별 chore | `<app>/chore/**` | `tool/chore/update-dependencies` |
 | 전체 docs | `docs/**` | `docs/update-root-readme` |

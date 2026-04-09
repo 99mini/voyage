@@ -39,7 +39,7 @@ src/
 Rollup 빌드 시 `.env` 파일에서 주입:
 
 ```bash
-BASE_URL=https://api.zerovoyage.com   # 또는 http://localhost:3000
+BASE_URL=https://api.zerovoyage.com/v1   # 기본값, 또는 http://localhost:3000
 NODE_ENV=development|production
 ```
 

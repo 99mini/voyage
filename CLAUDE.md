@@ -22,6 +22,7 @@
 | `apps/frontend/admin` | [CLAUDE.md](apps/frontend/admin/CLAUDE.md) |
 | `apps/frontend/awesome` | [CLAUDE.md](apps/frontend/awesome/CLAUDE.md) |
 | `apps/frontend/line-art-coloring` | [CLAUDE.md](apps/frontend/line-art-coloring/CLAUDE.md) |
+| `apps/frontend/todo` | (개발 중 — CLAUDE.md 미작성) |
 | `apps/server/rest` | [CLAUDE.md](apps/server/rest/CLAUDE.md) |
 | `apps/server/functions` | [CLAUDE.md](apps/server/functions/CLAUDE.md) |
 | `packages/vds` | [CLAUDE.md](packages/vds/CLAUDE.md) |
@@ -32,8 +33,8 @@
 
 1. **커밋 메시지는 영어로** — Conventional Commits 형식 (`feat(scope): description`)
 2. **`React.FC` 사용 금지** — 컴포넌트 타입은 직접 함수 시그니처 사용
-3. **상대 경로 import 금지** — 항상 `@/*` 별칭 사용
+3. **깊은 상대 경로 금지** — `src/` 루트 기준 경로는 `@/*` 별칭 사용 (같은 폴더 내 `./` 는 허용)
 4. **UI 컴포넌트는 `packages/vds` 우선** — 없으면 VDS에 추가
 5. **루트 패키지 의존성 중복 설치 금지** — 루트 `package.json` 확인 후 설치
-6. **PRD 파일 수정 금지** — `.docs/PRD.md` 는 읽기 전용
+6. **PRD 파일 수정 금지** — 각 앱의 `_docs/PRD.md` 는 읽기 전용
 7. **커밋은 기능 단위로 분리** — 한 번에 모든 변경사항 커밋 금지

@@ -13,7 +13,8 @@ voyage/
 │   │   ├── tech/              # 기술 블로그 (Docusaurus)
 │   │   ├── admin/             # 서버 모니터링 대시보드
 │   │   ├── awesome/           # 인터랙티브 UI 쇼케이스
-│   │   └── line-art-coloring/ # 드로잉 애플리케이션
+│   │   ├── line-art-coloring/ # 드로잉 애플리케이션
+│   │   └── todo/              # 투두 앱 (개발 중)
 │   ├── server/
 │   │   ├── rest/              # NestJS REST API (메인 백엔드)
 │   │   ├── functions/         # DigitalOcean 서버리스 함수
@@ -41,6 +42,7 @@ voyage/
 | admin | `admin` | 0.1.0 | https://admin.zerovoyage.com |
 | awesome | `awesome` | 0.2.1 | https://awesome.zerovoyage.com |
 | line-art-coloring | `line-art-coloring` | 0.1.0 | https://line-art-coloring.zerovoyage.com |
+| todo | `todo` | 0.1.0 | — (개발 중) |
 | REST API | `server-rest` | 1.4.2 | https://api.zerovoyage.com |
 | Functions | `server-functions` | 1.1.0 | — (serverless) |
 
@@ -52,9 +54,9 @@ voyage/
 | api-client | `@packages/api-client` | 0.1.0 | HTTP 클라이언트 (ESM/CJS) |
 | pb-api | `@packages/pb-api` | 0.1.0 | PocketBase 클라이언트 래퍼 |
 
-## 프론트엔드 앱 공통 구조
+## 프론트엔드 앱 대표 구조
 
-모든 Vite 기반 React 앱은 동일한 구조를 따릅니다:
+Vite 기반 React 앱의 **대표적인** 구조입니다. 앱마다 세부 폴더명이 다를 수 있습니다.
 
 ```
 src/
@@ -68,12 +70,14 @@ src/
 │   ├── input/              # 입력 컴포넌트
 │   └── layout/             # 레이아웃 래퍼
 ├── apis/                   # API 호출 함수
-│   ├── _client/            # axios/fetch 클라이언트 설정
-│   └── _model/             # 응답 타입 정의
+│   ├── _client/            # fetch 클라이언트 설정 (앱에 따라 없을 수 있음)
+│   └── _model/             # 응답 타입 정의 (일부 앱은 _modal 로 표기)
 ├── hooks/                  # 공통 훅
 ├── contexts/               # React Context
 └── lib/                    # 유틸리티
 ```
+
+> 앱별 세부 구조는 각 앱의 CLAUDE.md를 참고하세요.
 
 ## 백엔드 NestJS 구조
 

@@ -3,7 +3,7 @@
 ## TypeScript
 
 - **strict 모드** 항상 활성화
-- `tsconfig.base.json` 을 모든 패키지에서 extends
+- `tsconfig.base.json` extends: **서버/공유 패키지만** 적용 (프론트엔드 앱은 각자 독립 tsconfig 사용)
 - 경로 별칭 필수 사용:
   - 프론트엔드: `@/*` → `./src/*`
   - 서버: `@server-rest/*` → `./src/*`
@@ -25,8 +25,9 @@ const MyComponent: React.FC<{ title: string }> = ({ title }) => {
 
 ## Import 규칙
 
-- **상대 경로 import 금지** — 반드시 `@/*` 별칭 사용
-- ESLint `eslint-plugin-no-relative-import-paths` 로 강제
+- **`src/` 루트 기준 경로는 반드시 `@/*` 별칭 사용** — `../../components` 같이 여러 단계를 넘는 상대 경로 금지
+- 같은 폴더/직계 하위의 파일은 상대 경로(`./`) 허용
+- `eslint-plugin-no-relative-import-paths` 플러그인이 포함되어 있으나, 현재 규칙이 명시적으로 활성화되지 않음 — 컨벤션으로 준수
 - Prettier의 `@trivago/prettier-plugin-sort-imports`가 아래 순서로 정렬:
 
 ```
@@ -56,7 +57,7 @@ src/
 ### 상태 관리
 
 - **전역 상태**: Zustand
-- **서버/비동기 상태**: `@tanstack/react-query`
+- **서버/비동기 상태**: `react-query` v3 (대부분 앱) / `@tanstack/react-query` v5 (todo 앱)
 - Context는 인증, 테마 등 앱 전역 설정에만 사용
 
 ### UI 컴포넌트 우선순위

@@ -9,7 +9,7 @@
 | Node.js | 20.0+ |
 | 린팅 | ESLint 9.19.0 + @typescript-eslint |
 | 포매팅 | Prettier 3.0.0 |
-| 테스트 (프론트) | Vitest 3.2.4 |
+| 테스트 (프론트) | Vitest ^2.1.8 (각 앱), ^3.2.4 (루트 워크스페이스) |
 | 테스트 (백엔드) | Jest 29.7.0 |
 
 ## 프론트엔드
@@ -23,7 +23,7 @@
 | 컴포넌트 | Shadcn/UI, Radix UI |
 | 아이콘 | Lucide React |
 | 전역 상태 | Zustand |
-| 서버 상태 | @tanstack/react-query 3.39.3 |
+| 서버 상태 | `react-query` ^3.39.3 (대부분 앱), `@tanstack/react-query` ^5 (todo 앱) |
 | 시각화 | D3.js 7.9 |
 | 미디어 처리 | FFmpeg.wasm 0.10 |
 | 기술 문서 | Docusaurus 3.8.1 (tech 앱 전용) |
