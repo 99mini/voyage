@@ -58,5 +58,5 @@ static/
 
 - **Vite가 아닌 Docusaurus** 기반 — 다른 앱과 빌드 방식 다름
 - `dev` 스크립트가 아닌 `start` 스크립트로 개발 서버 실행 (`pnpm dev:tech` 는 `start` 호출)
-- 문서 작성 규칙은 `_docs/tech_rule.md` 참고
+- 문서 작성 규칙은 `.docs/tech_rule.md` 참고
 - React 19 사용 (다른 프론트엔드 앱은 18.x)
